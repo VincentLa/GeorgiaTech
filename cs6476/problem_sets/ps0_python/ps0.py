@@ -52,7 +52,7 @@ def main():
     im1 = Image.open('./output/ps0-1-a-1.png')
     im2 = Image.open('./output/ps0-1-a-2.png')
 
-    # color_planes(im1, im2)
+    color_planes(im1, im2)
     replacement_pixels(im1, im2)
 
 
