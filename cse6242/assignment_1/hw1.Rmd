@@ -2,13 +2,17 @@
 title: "CSE 6242 Assignment 1"
 author: Vincent La (Georgia Tech ID - vla6)
 date: September 3, 2017
-output: pdf_document
+output:
+  pdf_document:
+    pandoc_args: [
+	"--output=hw1_report.pdf"
+    ]
 ---
 
 ```{r}
 # Assignment 1: http://cse6242.gatech.edu/fall-2017/hw1/
 # To compile R Markdown in terminal run: Rscript -e "rmarkdown::render('hw1.Rmd', clean=TRUE)"
-# To create zip file: zip hw1.zip hw1.Rmd hw1.pdf
+# To create zip file: zip hw1.zip hw1.Rmd hw1_report.pdf
 
 require(ggplot2)
 require(rmarkdown)
