@@ -14,6 +14,10 @@ output:
 We first create a density plot grouped by state to show the distribution of `percprof`, people with a professional education for each county, grouped by state.
 
 ```{r percprofdensityplot}
+# Assignment 2: http://cse6242.gatech.edu/fall-2017/hw2/
+# To compile R Markdown in terminal run: Rscript -e "rmarkdown::render('hw2.Rmd', clean=TRUE)"
+# To create zip file: zip hw2.zip hw2.Rmd hw2_report.pdf
+
 require(ggplot2)
 data(midwest)
 
@@ -71,3 +75,120 @@ ggplot(df, aes(x=perchsd, y=percollege)) +
 In looking at the relationship between `perchsd` and `percollege` there seems to be very strong correlation between the two. This makes sense as counties with high proportion of people have a high school diploma may value education and thus those people will be more likely to complete a college education as well.
 
 Another interesting note is that the distribution of people with high school diploma, `perchsd` almost seems somewhat normally distribution, with perhaps a slight left tail. On the other hand, the distribution of people with college education, `percollege` is more right skewed. This also makes sense since college education is more difficult to obtain.
+
+
+# Question 3: Comparison of Visualization Techniques
+
+Box plots are like histograms in the sense that they also give a sense of the distribution about the data. However, box plots are considered more "lossy" in the sense that it doesn't provide as much information; but displays the key points, such as median, and other "important" quantiles and outliers that histograms are not as useful at displaying.
+
+Histograms are also useful in the sense that they provide more detail than box plots. With a histogram, one can more easily see the "tails" of distributions. Furthermore, with a histogram, one can see exactly how many values fall into a specific bin.
+
+Finally, a QQ plot is a scatter plot of quantiles of one data set on the x axis and quantiles of another data set on the y axis. Sometimes, the x or y axis describes quantiles coming from theoretical distribution as opposed to specific data set. One specific use case of QQ plot using quanties coming from theoretical distribution is to compare to a normal distribution to see if a dataset is normal.
+
+To illustrate a box plot, let's revisit the example from question 1, professional education by state, or `percprof`.
+
+```{r boxplot}
+df = midwest[, c('PID', 'county', 'state', 'percprof')]
+
+# Aggregate across all states
+ggplot(midwest, aes(x='', y=percprof)) + 
+	geom_boxplot()
+
+# Now group by each state, similar to question 1
+ggplot(midwest, aes(x=state, y=percprof, fill=state)) +
+  geom_boxplot()
+```
+
+You can see for the box plots by each state, we see the 1st quartile (bottom of box), median (solid line in middle of box), and 3rd quartile (top of box). Furthermore, you can see outliers that lie outside the IQR in dots. You can compare these with the summary statistics presented in question 1.
+
+
+# Question 4: Random Scatterplots
+
+```{r plotrandomunif}
+plot_random_unif <- function(n){
+#' Plots two vectors of size n drawn from a uniform distribution.
+#' Saves image to './image' directory
+#' Number of plots drawn equal to n, where loop from 1 to n
+file_types = c('png', 'jpeg', 'bmp')
+by_sequence = 1000
+for(ft in file_types){
+	for (i in seq(1, n, by = by_sequence)) {
+		x = runif(n)
+        y = runif(n)
+        df = data.frame(x=x, y=y)
+		
+		ggplot(df, aes(x=x, y=y)) +
+		  geom_point()
+		  ggsave(paste0('./images/example_n', i, '.', ft), device=ft)
+	}
+}
+
+# To extract file size use file.info() and then extract column size
+# file.info('filename.png')$size
+file_type = rep(file_types, n/by_sequence)
+file_name = c()
+file_size = c()
+num_points = c()
+files = list.files(path='./images')
+
+for (f in files){
+	file_name = c(file_name, f)
+	file_size = c(file_size, file.info(paste0('./images/', f))$size)
+	num_points = c(num_points, sub(".*example_n *(.*?) *\\..*", "\\1", f)) # Extracts regex everything after example and before n
+}
+
+df = data.frame(file_name=file_name, file_type=file_type, num_points=num_points, file_size=file_size)
+
+# Print scatter plot of relationship between file size and num points grouped by file type
+ggplot(df, aes(x=num_points, y=file_size)) +
+  geom_point(aes(group=file_type, color=file_type)) +
+  xlab('n') +
+  ylab('file size in bytes')
+}
+
+plot_random_unif(10000)
+```
+
+For this problem, we chose three file types:
+1. png
+2. bmp
+3. jpeg
+
+Immediately, we can see that png images are much much bigger than bmp and jpeg. This makes sense since png is a lossless file type, so it will generally be bigger than bmp or jpeg. Also, the file size does not seem to vary much between different values of n between 1 and 10,000.
+
+
+# Question 5: Diamonds
+
+```{r diamonds}
+data(diamonds)
+df = diamonds[, c('color', 'carat', 'price')]
+print(df)
+print(summary(df))
+
+ggplot(df, aes(x=color)) +
+  geom_bar() +
+  ggtitle('Barplot of Diamond Color')
+
+ggplot(df, aes(x=carat)) +
+  geom_histogram() +
+  ggtitle('Histogram of Diamond Carat')
+
+ggplot(df, aes(x=price)) +
+  geom_histogram() +
+  ggtitle('Histogram of Diamond Price')
+```
+
+Looking first at the barplot of diamond color, we know from looking at `?diamond` that the colors are arranged such that J is the worst, and D is the best. Unsurprisingly, we see relatively low number of "J" colors. There is a bit of a right skew in the colors.
+
+For both carats and price, there is a strong right skew to the data. With carats, the distribution is not as smooth, which makes sense because there are probably relatively "common" values for carats. However, if you look at price, notice that the distribution is much smoother and right skewed. This also makes sense because we know some diamonds can be extremely pricey, but the majority are not as expensive. 
+
+Now, we go ahead and plot the pairs
+
+```{r ggpairs}
+require(GGally)
+ggpairs(df, aes())
+```
+
+Notice that from the box plots of both `carat` and `price` with color, the distribution of `carat` and `price` increase with better quality of `color`. One can notice this by looking at how the IQR shifts to the right for each successive "increase" in color. 
+
+Another interesting point is the strong correlation between `carat` and `price`. Again this should be expected since `carat` is one of the primary determinants of `price` but you can seee the correlation is 0.922, and the scatter plot shows a strong positive relationship.
