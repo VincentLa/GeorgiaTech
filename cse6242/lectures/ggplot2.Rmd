@@ -1,0 +1,12 @@
+---
+title: "GG Plot 2 notes"
+author: Vincent La (Georgia Tech ID - vla6)
+date: September 3, 2017
+output:
+  html_document:
+    toc: true
+    theme: united
+---
+
+Using `qplot`
+
