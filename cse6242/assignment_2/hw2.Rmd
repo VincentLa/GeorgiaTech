@@ -1,0 +1,73 @@
+---
+title: "Assignment 2"
+author: Vincent La (Georgia Tech ID - vla6)
+date: September 3, 2017
+output:
+  html_document:
+    toc: true
+    theme: united
+---
+
+
+# Question 1: Professional Education by State
+
+We first create a density plot grouped by state to show the distribution of `percprof`, people with a professional education for each county, grouped by state.
+
+```{r percprofdensityplot}
+require(ggplot2)
+data(midwest)
+
+df = midwest[, c('PID', 'county', 'state', 'percprof')]
+print(df)
+summary(df)
+
+ggplot(df, aes(x=percprof)) +
+  geom_density(aes(color=state, group=state)) +
+  ggtitle('Distribution of People with Professional Education by State')
+```
+
+We can see from the density above that for each state, the distribution of `percprof` is right-tailed. This makes sense as it's bounded at 0, and there are a few counties where the proportion of people with professional education is very high. However, the median percentage of people with professional education by county for each state is under 5. We calculate the median for each state explicitly below:
+
+```{r percprofsummarystats}
+summary_stats = tapply(df$percprof, df$state, summary)
+print(summary_stats)
+```
+
+Notice that Indiana has the highest median at `r {summary_stats$IN['Median']}`. Ohio has the lowest median at `r {summary_stats$OH['Median']}`.
+
+A second interesting note is that the range varies by state as well. While Michigan has a lowwer median than Indiana, it has the highest maximum and a large range. Wisconsin, on the other hand, has a relatively low range. 
+
+The state with the lowest and highest percentage of population with a professional education are Ohio and Indiana, respectively, looking strictly at medians. We can also revisit this by comparing distributions directly.
+
+
+# Question 2: School and College Education by State
+
+To compare `perchsd` and `percollege`, percentage of population with high school diploma and college education, respectively with state, we will again use density plots.
+
+To compare `percsd` to `percollege` directly, we will use a scatter plot, grouped at the state level to see if there are any state level trends.
+
+```{r question2}
+df = midwest[, c('PID', 'county', 'state', 'perchsd', 'percollege')]
+print(df)
+summary(df)
+
+# Plotting perchsd density plots by state
+ggplot(df, aes(x=perchsd)) +
+  geom_density(aes(color=state, group=state)) +
+  ggtitle('Distribution of People with High School Diploma by state')
+
+# Plotting percollege density plots by state
+ggplot(df, aes(x=percollege)) +
+  geom_density(aes(color=state, group=state)) +
+  ggtitle('Distribution of People with College Education by state')
+
+# Plotting scatter plot of perchsd vs percollege
+# Plotting percollege density plots by state
+ggplot(df, aes(x=perchsd, y=percollege)) +
+  geom_point(aes(color=state, group=state)) +
+  ggtitle('College Education vs High School Diploma by state')
+```
+
+In looking at the relationship between `perchsd` and `percollege` there seems to be very strong correlation between the two. This makes sense as counties with high proportion of people have a high school diploma may value education and thus those people will be more likely to complete a college education as well.
+
+Another interesting note is that the distribution of people with high school diploma, `perchsd` almost seems somewhat normally distribution, with perhaps a slight left tail. On the other hand, the distribution of people with college education, `percollege` is more right skewed. This also makes sense since college education is more difficult to obtain.

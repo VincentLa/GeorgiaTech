@@ -8,5 +8,41 @@ output:
     theme: united
 ---
 
-Using `qplot`
+Using `qplot` function. The basic idea will be to
+1. pass data frame column names
+2. data frame name
+3. geometry
+4. graphing options.
+
+```{r}
+require(ggplot2)
+
+x1 = c(1, 2, 3)
+x2 = c(1, 2, 3)
+DF = data.frame(x1=x1, x2=x2)
+
+qplot(x=x1,
+	  y=x2,
+	  data=DF,
+	  main='figure title', # Annotate graph
+	  geom='point' # Annotate graph, holds geometry of graph, in this case points
+	 )
+```
+
+Using the `ggplot` function.
+1. Pass data frame an column name through `aes` function
+2. Compose function output with additional alyers using + operator
+3. Function (and addition operator) returns an object that can be printed or saved for later.
+
+Strip plots in R
+
+```{r}
+data(faithful)
+names(faithful)
+print(head(faithful))
+
+# plotting histogram
+ggplot(faithful, aes(x = waiting)) +
+  geom_histogram(binwidth = 1)
+```
 
