@@ -1,6 +1,53 @@
 ---
 title: "CSE 6242 Activity 1"
 author: Vincent La (Georgia Tech ID - vla6)
-date: September 3, 2017
-output: pdf_document
+date: September 12, 2017
+output:
+  html_document:
+    toc: true
+    theme: united
 ---
+
+# Loading the Data
+
+First, we load the data. The first thing we're going to look at is temperature. I find this interesting because I have this hypothesis that students in the United States of America are more likely to record their temperatures in Fahrenheit. Students in other parts of the world are more likely to record their temperatures in Celsius. I want to better explore the temperatures recorded in this data set.
+
+```{r datacleaning}
+# Activity 1: http://cse6242.gatech.edu/fall-2017/ac1/
+# To compile R Markdown in terminal run: Rscript -e "rmarkdown::render('ac1.Rmd', clean=TRUE)"
+require(stringr)
+require(ggplot2)
+require(gridExtra)
+
+df = read.csv('ac1_survey.csv')
+print(head(df))
+
+df$max_temp_cleaned = str_extract(df$max_temp,"\\(?[0-9,.]+\\)?")
+df$max_temp_cleaned = as.numeric(df$max_temp_cleaned)
+
+df$temp_type = ifelse(str_detect(df$max_temp, 'F'), "Fahrenheit",
+               ifelse(str_detect(df$max_temp, 'C'), "Celsius",
+               'Unspecified'))
+
+print(head(df))
+summary(df)
+```
+
+After cleaning the data and converting to a numeric, we can plot some distributions.
+
+```{r plotting}
+agg_plot = ggplot(df, aes(x=max_temp_cleaned)) +
+             geom_density(aes()) +
+             ggtitle('Distribution of Temperatures')
+
+# Plotting temperature density plots by temperature type
+grouped_plot = ggplot(df, aes(x=max_temp_cleaned)) +
+                 geom_density(aes(color=temp_type, group=temp_type)) +
+                 ggtitle('Distribution of Temperatures by type')
+
+grid.arrange(agg_plot, grouped_plot, ncol=2)
+```
+
+This plot is interesting because notice that for the temperatures that were recorded as Celsius, most of the temperatures recorded are around 30 degrees. For Fahrenheit, most of the temperatures recorded are around 70 to 80 degrees. This makes sense as it is the summer for the northern hemisphere.
+
+Also interesting is that we have a lot of data points where the temperature type was actually unspecified. Notice that the distribution is very slightly bimodal, but mostly concentrated on the higher end. More specifically, there is a small bump at around 30, but most of the data points are again between 70 to 80 degrees. This probably means that most of the unrecorded temperatures are actually recorded in Fahrenheit, but a few are recorded in Celsius.
