@@ -73,9 +73,7 @@ log_gamma_recursive <- function(n){
 	#' Computers and returns the natural logarith mof the gamma value of a positive integer
 	#' using recursion
 	#' log gamma is defined as ln((n-1)!) = ln(n-1) + ln(n-2) + ... + ln(1)
-
-	# Can stop at n == 2 since n-1 = 1 and log(1) equals 0
-	if (n == 2){
+	if (n == 1){
 		return(0)
 	} else {
 		sum = log(n - 1) + log_gamma_recursive(n - 1)
@@ -142,31 +140,33 @@ make_comparisons <- function(n) {
 	#' sum of log gamma defined above
 	#' Replicate num_runs times for better consistency
 
-	num_runs = 1000
+	num_runs = 1
+	num_by = 100
 
-	gamma_loop = vector('numeric', n - 1)
-	gamma_recursive = vector('numeric', n - 1)
-	lgamma = vector('numeric', n - 1)
-	for (i in seq(2, n, by=1)){
-		gamma_loop[i - 1] = system.time(replicate(num_runs, sum_log_gamma_loop(i)))[1]
-		gamma_recursive[i - 1] = system.time(replicate(num_runs, sum_log_gamma_recursive(i)))[1]
-		lgamma[i - 1] = system.time(replicate(num_runs, sum_lgamma(i)))[1]
+	# initializing vectors to be of length n/num_by
+	gamma_loop = c()
+	gamma_recursive = c()
+	lgamma = c()
+	for (i in seq(2, n, num_by)){
+		gamma_loop = c(gamma_loop, system.time(sum_log_gamma_loop(i))[1])
+		gamma_recursive = c(gamma_recursive, system.time(sum_log_gamma_recursive(i))[1])
+		lgamma = c(lgamma, system.time(sum_lgamma(i))[1])
 	}
 
-	index = c(seq(1, n-1), seq(1, n-1), seq(1, n-1))
+	index = c(seq(2, n, num_by), seq(2, n, num_by), seq(2, n, num_by))
 	times = c(gamma_loop, gamma_recursive, lgamma)
-	method = c(rep('gamma_loop', n-1), rep('gamma_recursive', n-1), rep('lgamma', n-1))
+	method = c(rep('gamma_loop', n/num_by), rep('gamma_recursive', n/num_by), rep('lgamma', n/num_by))
 
 	# To plot: https://stackoverflow.com/questions/13837565/how-to-plot-one-variable-in-ggplot
 	df = data.frame(index=index, times=times, method=method)
-	ggplot(df, aes(x=index, y=times)) + 
+	ggplot(df, aes(x=index, y=times)) +
 		geom_point(aes(color=method, shape=method, group=method)) +
-		xlab('n') + 
-		ylab('Time to Execute (1000 times)')
+		xlab('n') +
+		ylab('Time to Execute')
 }
 
 
-make_comparisons(30)
+make_comparisons(700)
 ```
 
-Looks like Loop approach performs the worst. Recursive approach performs better, but the built in R function performs the best.
+For relatively large values of `n`, recursive approach performs the worst. Loop performs second worst, and the built in R function performs the best.

@@ -3,7 +3,7 @@ channels:
 - defaults
 dependencies:
 - bleach=1.5.0=py36_0
-- bzip2=1.0.6=3
+- bzip2=1.0.6
 - cairo=1.14.8=0
 - curl=7.54.1=0
 - decorator=4.1.2=py36_0
@@ -14,7 +14,7 @@ dependencies:
 - gmp=6.1.0=0
 - gsl=2.2.1=0
 - harfbuzz=0.9.39=2
-- html5lib=0.9999999=py36_0
+- html5lib
 - icu=54.1=0
 - ipykernel=4.6.1=py36_0
 - ipython=6.1.0=py36_0
@@ -28,10 +28,10 @@ dependencies:
 - jupyter_core=4.3.0=py36_0
 - krb5=1.13.2=0
 - libffi=3.2.1=1
-- libgcc=5.2.0=0
+- libgcc
 - libiconv=1.14=0
 - libpng=1.6.30=1
-- libsodium=1.0.10=0
+- libsodium
 - libssh2=1.8.0=0
 - libtiff=4.0.6=3
 - libxml2=2.9.4=0
@@ -42,7 +42,7 @@ dependencies:
 - ncurses=5.9=10
 - notebook=5.0.0=py36_0
 - openssl=1.0.2l=0
-- pandoc=1.15.0.6=0
+- pandoc
 - pandocfilters=1.4.2=py36_0
 - pango=1.40.3=1
 - path.py=10.3.1=py36_0
@@ -177,7 +177,7 @@ dependencies:
 - r-zoo=1.8_0=r3.4.1_0
 - readline=6.2=2
 - setuptools=27.2.0=py36_0
-- simplegeneric=0.8.1=py36_1
+- simplegeneric
 - six=1.10.0=py36_0
 - sqlite=3.13.0=0
 - terminado=0.6=py36_0
@@ -188,7 +188,7 @@ dependencies:
 - wcwidth=0.1.7=py36_0
 - wheel=0.29.0=py36_0
 - xz=5.2.3=0
-- zeromq=4.1.5=0
+- zeromq
 - zlib=1.2.11=0
 - pip:
   - ipython-genutils==0.2.0
