@@ -3,26 +3,31 @@ title: "CSE 6242 Activity 1"
 author: Vincent La (Georgia Tech ID - vla6)
 date: September 12, 2017
 output:
-  html_document:
-    toc: true
-    theme: united
+  pdf_document:
+    pandoc_args: [
+    "--output=ac1.pdf"
+    ]
 ---
 
-# Loading the Data
+# Introduction
+First, we load the data and clean a few of the fields. We don't show it in this report, but a couple of things I did was clean the timestamps, extract numerics from temperature, and extract the temperature type (Celsius vs Fahrenheit).
 
-First, we load the data. The first thing we're going to look at is temperature. I find this interesting because I have this hypothesis that students in the United States of America are more likely to record their temperatures in Fahrenheit. Students in other parts of the world are more likely to record their temperatures in Celsius. I want to better explore the temperatures recorded in this data set.
+# Exploring Temperature
+The first thing we're going to look at is temperature. I find this interesting because I have this hypothesis that students in the United States of America are more likely to record their temperatures in Fahrenheit. Students in other parts of the world are more likely to record their temperatures in Celsius. I want to better explore the temperatures recorded in this data set.
 
-```{r datacleaning}
+```{r datacleaning, echo=FALSE, results='hide',message=FALSE}
 # Activity 1: http://cse6242.gatech.edu/fall-2017/ac1/
 # To compile R Markdown in terminal run: Rscript -e "rmarkdown::render('ac1.Rmd', clean=TRUE)"
 require(stringr)
 require(ggplot2)
 require(gridExtra)
+require(lubridate)
 
 df = read.csv('ac1_survey.csv')
 print(unique(df$timestamp))
 
 df$timestamp_cleaned = strptime(df$timestamp, "%Y/%m/%d %I:%M:%S %p", tz = "US/Mountain")
+df$hour = hour(df$timestamp_cleaned)
 
 
 df$max_temp_cleaned = str_extract(df$max_temp,"\\(?[0-9,.]+\\)?")
@@ -38,7 +43,7 @@ summary(df)
 
 After cleaning the data and converting to a numeric, we can plot some distributions.
 
-```{r plotting}
+```{r plotting, echo=FALSE}
 agg_plot = ggplot(df, aes(x=max_temp_cleaned)) +
              geom_density(aes()) +
              ggtitle('Distribution of Temperatures')
@@ -56,3 +61,15 @@ The first plot is a plot of the distribution of all the temperatures recorded. T
 I find the first plot interesting because we see that the distribution is very slightly bimodal, but mostly concentrated on the higher end. More specifically, there is a small bump at around 30, but most of the data points are again between 70 to 80 degrees. This probably means that most of the temperatures are recorded in Fahrenheit, but some are recorded in Celsius. We can explore this more by looking at the second plot.
 
 In the second plot, we can look more directly at the temperatures by type. For the temperatures that were recorded as Celsius, most of the temperatures recorded are around 30 degrees. For Fahrenheit, most of the temperatures recorded are around 70 to 80 degrees. This makes sense as it is the summer for the northern hemisphere. For the data points that are "Unspecified", the distribution looks similar to the aggregate distribution.
+
+# Relationship Between Time and Temperature
+
+I also wanted to explore the relationship between time and temperature recorded. The hypothesis here would be that those who recorded in Celsius maybe from non-USA countries, whereas those who recorded in Fahrenheit may be from USA, which we might be able to intuit from the timestamps.
+
+```{r temperaturevstime, echo=FALSE}
+ggplot(df, aes(x=max_temp_cleaned, y=hour)) +
+  geom_point(aes()) +
+  ggtitle('Temperature vs Timestamp recorded')
+```
+
+Superficially, it doesn't look like there is much of a relationship between time and temperature recorded.
