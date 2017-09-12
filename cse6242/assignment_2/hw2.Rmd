@@ -1,30 +1,32 @@
 ---
-title: "Assignment 2"
+title: "CSE 6242 Assignment 2"
 author: Vincent La (Georgia Tech ID - vla6)
-date: September 3, 2017
+date: September 12, 2017
 output:
-  html_document:
-    toc: true
-    theme: united
+  pdf_document:
+    pandoc_args: [
+  "--output=hw2_report.pdf"
+    ]
 ---
 
+```{r loading, echo=FALSE, results='hide', message=FALSE}
+# Assignment 2: http://cse6242.gatech.edu/fall-2017/hw2/
+# To compile R Markdown in terminal run: Rscript -e "rmarkdown::render('hw2.Rmd', clean=TRUE)"
+# To create zip file: zip hw2.zip hw2.Rmd hw2_report.pdf
+
+require(ggplot2)
+require(GGally)
+
+
+data(midwest)
+df = midwest[, c('PID', 'county', 'state', 'percprof')]
+```
 
 # Question 1: Professional Education by State
 
 We first create a density plot grouped by state to show the distribution of `percprof`, people with a professional education for each county, grouped by state.
 
 ```{r percprofdensityplot}
-# Assignment 2: http://cse6242.gatech.edu/fall-2017/hw2/
-# To compile R Markdown in terminal run: Rscript -e "rmarkdown::render('hw2.Rmd', clean=TRUE)"
-# To create zip file: zip hw2.zip hw2.Rmd hw2_report.pdf
-
-require(ggplot2)
-data(midwest)
-
-df = midwest[, c('PID', 'county', 'state', 'percprof')]
-print(df)
-summary(df)
-
 ggplot(df, aes(x=percprof)) +
   geom_density(aes(color=state, group=state)) +
   ggtitle('Distribution of People with Professional Education by State')
@@ -39,7 +41,7 @@ print(summary_stats)
 
 Notice that Indiana has the highest median at `r {summary_stats$IN['Median']}`. Ohio has the lowest median at `r {summary_stats$OH['Median']}`.
 
-A second interesting note is that the range varies by state as well. While Michigan has a lowwer median than Indiana, it has the highest maximum and a large range. Wisconsin, on the other hand, has a relatively low range. 
+A second interesting note is that the range varies by state as well. While Michigan has a lowwer median than Indiana, it has the highest maximum and a large range. Wisconsin, on the other hand, has a relatively low range.
 
 The state with the lowest and highest percentage of population with a professional education are Ohio and Indiana, respectively, looking strictly at medians. We can also revisit this by comparing distributions directly.
 
@@ -89,10 +91,18 @@ To illustrate a box plot, let's revisit the example from question 1, professiona
 
 ```{r boxplot}
 df = midwest[, c('PID', 'county', 'state', 'percprof')]
+quants = quantile(df$percprof, c(.25, .5, .75))
+iqr = quants[3] - quants[1]
 
 # Aggregate across all states
-ggplot(midwest, aes(x='', y=percprof)) + 
-	geom_boxplot()
+ggplot(midwest, aes(x='', y=percprof)) +
+	geom_boxplot() +
+  annotate("text", x = '', y = quants[1] - 1.5 * iqr, label = "Lower Whisker", hjust = 1) +
+  annotate("text", x = '', y = quants[1], label = "25th Percentile", hjust = 2) +
+  annotate("text", x = '', y = quants[2], label = "Median", hjust = 5) +
+  annotate("text", x = '', y = quants[3], label = "75th Percentile", hjust = 2) +
+  annotate("text", x = '', y = quants[3] + 1.5 * iqr, label = "Upper Whisker", hjust = 1) +
+  annotate("text", x = '', y = quants[3] + 3.5 * iqr, label = "Outliers", hjust = 1)
 
 # Now group by each state, similar to question 1
 ggplot(midwest, aes(x=state, y=percprof, fill=state)) +
@@ -116,7 +126,7 @@ for(ft in file_types){
 		x = runif(n)
         y = runif(n)
         df = data.frame(x=x, y=y)
-		
+
 		ggplot(df, aes(x=x, y=y)) +
 		  geom_point()
 		  ggsave(paste0('./images/example_n', i, '.', ft), device=ft)
@@ -180,15 +190,14 @@ ggplot(df, aes(x=price)) +
 
 Looking first at the barplot of diamond color, we know from looking at `?diamond` that the colors are arranged such that J is the worst, and D is the best. Unsurprisingly, we see relatively low number of "J" colors. There is a bit of a right skew in the colors.
 
-For both carats and price, there is a strong right skew to the data. With carats, the distribution is not as smooth, which makes sense because there are probably relatively "common" values for carats. However, if you look at price, notice that the distribution is much smoother and right skewed. This also makes sense because we know some diamonds can be extremely pricey, but the majority are not as expensive. 
+For both carats and price, there is a strong right skew to the data. With carats, the distribution is not as smooth, which makes sense because there are probably relatively "common" values for carats. However, if you look at price, notice that the distribution is much smoother and right skewed. This also makes sense because we know some diamonds can be extremely pricey, but the majority are not as expensive.
 
 Now, we go ahead and plot the pairs
 
 ```{r ggpairs}
-require(GGally)
 ggpairs(df, aes())
 ```
 
-Notice that from the box plots of both `carat` and `price` with color, the distribution of `carat` and `price` increase with better quality of `color`. One can notice this by looking at how the IQR shifts to the right for each successive "increase" in color. 
+Notice that from the box plots of both `carat` and `price` with color, the distribution of `carat` and `price` increase with better quality of `color`. One can notice this by looking at how the IQR shifts to the right for each successive "increase" in color.
 
 Another interesting point is the strong correlation between `carat` and `price`. Again this should be expected since `carat` is one of the primary determinants of `price` but you can seee the correlation is 0.922, and the scatter plot shows a strong positive relationship.
