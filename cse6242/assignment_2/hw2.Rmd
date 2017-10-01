@@ -17,7 +17,6 @@ output:
 require(ggplot2)
 require(GGally)
 
-
 data(midwest)
 df = midwest[, c('PID', 'county', 'state', 'percprof')]
 ```
@@ -123,8 +122,8 @@ file_types = c('png', 'jpeg', 'bmp')
 by_sequence = 1000
 for(ft in file_types){
 	for (i in seq(1, n, by = by_sequence)) {
-		x = runif(n)
-        y = runif(n)
+		x = runif(i)
+        y = runif(i)
         df = data.frame(x=x, y=y)
 
 		ggplot(df, aes(x=x, y=y)) +
@@ -135,7 +134,8 @@ for(ft in file_types){
 
 # To extract file size use file.info() and then extract column size
 # file.info('filename.png')$size
-file_type = rep(file_types, n/by_sequence)
+# file_type = rep(file_types, n/by_sequence)
+file_type = c()
 file_name = c()
 file_size = c()
 num_points = c()
@@ -143,6 +143,8 @@ files = list.files(path='./images')
 
 for (f in files){
 	file_name = c(file_name, f)
+	# print(file_name)
+	file_type = c(file_type, sub('.*\\.', '', f))
 	file_size = c(file_size, file.info(paste0('./images/', f))$size)
 	num_points = c(num_points, sub(".*example_n *(.*?) *\\..*", "\\1", f)) # Extracts regex everything after example and before n
 }
@@ -164,7 +166,7 @@ For this problem, we chose three file types:
 2. bmp
 3. jpeg
 
-Immediately, we can see that png images are much much bigger than bmp and jpeg. This makes sense since png is a lossless file type, so it will generally be bigger than bmp or jpeg. Also, the file size does not seem to vary much between different values of n between 1 and 10,000.
+Immediately, we can see that bmp images are much much bigger than png and jpeg. Also interesting to note is that both png and jpeg file size increase with n, but bmp files look almost constant.
 
 
 # Question 5: Diamonds
