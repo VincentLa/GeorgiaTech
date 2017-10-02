@@ -1,0 +1,304 @@
+---
+title: "Project 1: Explore and Prepare Data"
+subtitle: "CSE6242 - Data and Visual Analytics - Fall 2017\n\nDue: Sunday, October 15, 2017 at 11:59 PM UTC-12:00 on T-Square"
+author: Vincent La (Georgia Tech ID - vla6)
+date: October 12, 2017
+output: html_notebook
+---
+
+_Note: This project involves getting data ready for analysis and doing some preliminary investigations. Project 2 will involve modeling and predictions on the same dataset, and will be released at a later date. Both projects will have equal weightage towards your grade. You may reuse some of the preprocessing/analysis steps from Project 1 in Project 2._
+
+# Data
+
+In this project, you will explore a dataset that contains information about movies, including ratings, budget, gross revenue and other attributes. It was prepared by Dr. Guy Lebanon, and here is his description of the dataset:
+
+> The file [`movies_merged`](https://s3.amazonaws.com/content.udacity-data.com/courses/gt-cs6242/project/movies_merged) contains a dataframe with the same name that has 40K rows and 39 columns. Each row represents a movie title and each column represents a descriptor such as `Title`, `Actors`, and `Budget`. I collected the data by querying IMDb’s API (see [www.omdbapi.com](http://www.omdbapi.com/)) and joining it with a separate dataset of movie budgets and gross earnings (unknown to you). The join key was the movie title. This data is available for personal use, but IMDb’s terms of service do not allow it to be used for commercial purposes or for creating a competing repository.
+
+# Objective
+
+Your goal is to investigate the relationship between the movie descriptors and the box office success of movies, as represented by the variable `Gross`. This task is extremely important as it can help a studio decide which titles to fund for production, how much to bid on produced movies, when to release a title, how much to invest in marketing and PR, etc. This information is most useful before a title is released, but it is still very valuable after the movie is already released to the public (for example it can affect additional marketing spend or how much a studio should negotiate with on-demand streaming companies for “second window” streaming rights).
+
+# Instructions
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. Open this file in RStudio to get started.
+
+When you execute code within the notebook, the results appear beneath the code. Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*.
+
+```{r}
+# Project 1: http://cse6242.gatech.edu/fall-2017/pr1/
+# To compile R Markdown in terminal run: Rscript -e "rmarkdown::render('pr1.Rmd', clean=TRUE)"
+x = 1:10
+print(x^2)
+```
+
+Plots appear inline too:
+```{r}
+plot(x, x^2, 'o')
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*. Enter some R code and run it.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).
+
+Please complete all the tasks below by implementing code chunks that have a `TODO` comment in them, running all code chunks so that output and plots are displayed, and typing in answers to each question (**Q:** ...) next to/below the corresponding answer prompt (**A:**). Feel free to add code chunks/show additional output to support any of the answers.
+
+When you are done, you will need to submit the final R markdown file (as **pr1.Rmd**) with all code chunks implemented and executed, and all text responses written in. You also need to submit a PDF export of the markdown file (as **pr1.pdf**), which should show your code, output, plots and written responses--this will be your project report. Compress these two files into a single .zip archive and upload it on T-Square.
+
+# Setup
+
+## Load data
+
+Make sure you've downloaded the [`movies_merged`](https://s3.amazonaws.com/content.udacity-data.com/courses/gt-cs6242/project/movies_merged) file and it is in the current working directory. Now load it into memory:
+
+```{r}
+load('movies_merged')
+cat("Dataset has", dim(movies_merged)[1], "rows and", dim(movies_merged)[2], "columns", end="\n", file="")
+```
+
+This creates an object of the same name (`movies_merged`). For convenience, you can copy it to `df` and start using it:
+
+```{r}
+df = movies_merged
+cat("Column names:", end="\n", file="")
+colnames(df)
+```
+
+## Load R packages
+
+Load any R packages that you will need to use. You can come back to this chunk, edit it and re-run to load any additional packages later.
+
+```{r}
+library(ggplot2)
+library(GGally)
+```
+
+If you are loading any non-standard packages (ones that have not been discussed in class or explicitly allowed for this project), please mention them below. Include any special instructions if they cannot be installed using the regular `install.packages('<pkg name>')` command.
+
+**Non-standard packages used**: None
+
+# Tasks
+
+Each task below is worth **10** points, and is meant to be performed sequentially, i.e. do step 2 after you have processed the data as described in step 1. Total points: **100**
+
+Complete each task by implementing code chunks as described by `TODO` comments, and by responding to questions ("**Q**:") with written answers ("**A**:"). If you are unable to find a meaningful or strong relationship in any of the cases when requested, explain why not by referring to appropriate plots/statistics.
+
+It is okay to handle missing values below by omission, but please omit as little as possible. It is worthwhile to invest in reusable and clear code as you may need to use it or modify it in project 2.
+
+## 1. Remove non-movie rows
+
+The variable `Type` captures whether the row is a movie, a TV series, or a game. Remove all rows from `df` that do not correspond to movies.
+
+```{r}
+# TODO: Remove all rows from df that do not correspond to movies
+df2 <- df[df$Type == "movie",]
+original_dim = dim(df)
+new_dim = dim(df2)
+
+df = df2
+# Differences in rows
+print(original_dim[1] - new_dim[1])
+```
+
+**Q**: How many rows are left after removal? _Enter your response below._
+
+**A**:
+The number of rows left after removal are `r new_dim[1]`.
+
+## 2. Process `Runtime` column
+
+The variable `Runtime` represents the length of the title as a string. Write R code to convert it to a numeric value (in minutes) and replace `df$Runtime` with the new numeric column.
+
+```{r}
+extract_runtime = function(r){
+    times = unlist(r)
+    minutes = 0
+    for (i in 1:length(times) - 1){
+        if (times[i + 1] == 'h'){
+            minutes = minutes + as.numeric(times[i]) * 60
+        } else if (times[i + 1] == 'min'){
+            minutes = minutes + as.numeric(times[i])
+        }
+    }
+    if (minutes == 0){
+        return(NA)
+    } else{
+        return(minutes)
+    }
+}
+
+y=strsplit(df$Runtime,' ')
+new_runtimes = unlist(lapply(y, extract_runtime))
+df$Runtime = new_runtimes
+
+cols = c('Runtime', 'Year', 'Budget')
+summary(df[cols])
+```
+
+Now investigate the distribution of `Runtime` values and how it changes over years (variable `Year`, which you can bucket into decades) and in relation to the budget (variable `Budget`). Include any plots that illustrate.
+
+```{r}
+# TODO: Investigate the distribution of Runtime values and how it varies by Year and Budget
+ggplot(df, aes(x=Runtime)) +
+  geom_histogram() +
+  ggtitle('Histogram of Runtime (minutes)')
+
+ggplot(df, aes(Year, Runtime)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+
+ggplot(df, aes(Budget, Runtime)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+```
+
+_Feel free to insert additional code chunks as necessary._
+
+**Q**: Comment on the distribution as well as relationships. Are there any patterns or trends that you can observe?
+
+**A**:
+
+Looking in the aggregate, it seems like most runtimes are under 2 hours. There is a clear relationship between run time and year, looking a bit like a sigmoid function. This makes sense as very early years, it was probably technologically prohibitive to create long movies. As technology improved, runtimes increased, but there's only so much time you can expect to hold an audience captive. Interestingly enough, during the 1990's there seems to be a downward trend in runtimes until around mid 2000's where it picked up again.
+
+## 3. Encode `Genre` column
+
+The column `Genre` represents a list of genres associated with the movie in a string format. Write code to parse each text string into a binary vector with 1s representing the presence of a genre and 0s the absence, and add it to the dataframe as additional columns. Then remove the original `Genre` column.
+
+For example, if there are a total of 3 genres: Drama, Comedy, and Action, a movie that is both Action and Comedy should be represented by a binary vector <0, 1, 1>. Note that you need to first compile a dictionary of all possible genres and then figure out which movie has which genres (you can use the R `tm` package to create the dictionary).
+
+```{r}
+# TODO: Replace Genre with a collection of binary columns
+require(tm)
+
+summary(df$Genre)
+print(head(df$Genre))
+print(unique(unlist(strsplit(df$Genre, ', '))))
+```
+
+Plot the relative proportions of movies having the top 10 most common genres.
+
+```{r}
+# TODO: Select movies from top 10 most common genres and plot their relative proportions
+```
+
+Examine how the distribution of `Runtime` changes across genres for the top 10 most common genres.
+
+```{r}
+# TODO: Plot Runtime distribution for top 10 most common genres
+```
+
+**Q**: Describe the interesting relationship(s) you observe. Are there any expected or unexpected trends that are evident?
+
+**A**:
+
+## 4. Eliminate mismatched rows
+
+The dataframe was put together by merging two different sources of data and it is possible that the merging process was inaccurate in some cases (the merge was done based on movie title, but there are cases of different movies with the same title). There are 3 columns that contain date information: `Year` (numeric year), `Date` (numeric year), and `Released` (string representation of the release date).
+
+Find and remove all rows where you suspect a merge error occurred based on a mismatch between these variables. To make sure subsequent analysis and modeling work well, avoid removing more than 10% of the rows that have a `Gross` value present.
+
+_Note: Do not remove the rows with `Gross == NA` at this point, just use this a guideline._
+
+```{r}
+# TODO: Remove rows with Year/Date/Released mismatch
+```
+
+**Q**: What is your precise removal logic, and how many rows remain in the resulting dataset?
+
+**A**:
+
+## 5. Explore `Gross` revenue
+
+For the commercial success of a movie, production houses want to maximize Gross revenue. Investigate if Gross revenue is related to Budget, Runtime or Genre in any way.
+
+_Note: To get a meaningful relationship, you may have to partition the movies into subsets such as short vs. long duration, or by genre, etc._
+
+```{r}
+# TODO: Investigate if Gross Revenue is related to Budget, Runtime or Genre
+```
+
+**Q**: Did you find any observable relationships or combinations of Budget/Runtime/Genre that result in high Gross revenue? If you divided the movies into different subsets, you may get different answers for them - point out interesting ones.
+
+**A**:
+
+```{r}
+# TODO: Investigate if Gross Revenue is related to Release Month
+```
+
+## 6. Process `Awards` column
+
+The variable `Awards` describes nominations and awards in text format. Convert it to 2 numeric columns, the first capturing the number of wins, and the second capturing nominations. Replace the `Awards` column with these new columns, and then study the relationship of `Gross` revenue with respect to them.
+
+_Note: The format of the `Awards` column is not standard; you may have to use regular expressions to find the relevant values. Try your best to process them, and you may leave the ones that don't have enough information as NAs or set them to 0s._
+
+```{r}
+# TODO: Convert Awards to 2 numeric columns: wins and nominations
+```
+
+**Q**: How did you construct your conversion mechanism? How many rows had valid/non-zero wins or nominations?
+
+**A**:
+
+```{r}
+# TODO: Plot Gross revenue against wins and nominations
+```
+
+**Q**: How does the gross revenue vary by number of awards won and nominations received?
+
+**A**:
+
+## 7. Movie ratings from IMDb and Rotten Tomatoes
+
+There are several variables that describe ratings, including IMDb ratings (`imdbRating` represents average user ratings and `imdbVotes` represents the number of user ratings), and multiple Rotten Tomatoes ratings (represented by several variables pre-fixed by `tomato`). Read up on such ratings on the web (for example [rottentomatoes.com/about](https://www.rottentomatoes.com/about) and [ www.imdb.com/help/show_leaf?votestopfaq](http:// www.imdb.com/help/show_leaf?votestopfaq)).
+
+Investigate the pairwise relationships between these different descriptors using graphs.
+
+```{r}
+# TODO: Illustrate how ratings from IMDb and Rotten Tomatoes are related
+```
+
+**Q**: Comment on the similarities and differences between the user ratings of IMDb and the critics ratings of Rotten Tomatoes.
+
+**A**:
+
+## 8. Ratings and awards
+
+These ratings typically reflect the general appeal of the movie to the public or gather opinions from a larger body of critics. Whereas awards are given by professional societies that may evaluate a movie on specific attributes, such as artistic performance, screenplay, sound design, etc.
+
+Study the relationship between ratings and awards using graphs (awards here refers to wins and/or nominations).
+
+```{r}
+# TODO: Show how ratings and awards are related
+```
+
+**Q**: How good are these ratings in terms of predicting the success of a movie in winning awards or nominations? Is there a high correlation between two variables?
+
+**A**:
+
+## 9. Expected insights
+
+Come up with two new insights (backed up by data and graphs) that is expected. Here “new” means insights that are not an immediate consequence of one of the above tasks. You may use any of the columns already explored above or a different one in the dataset, such as `Title`, `Actors`, etc.
+
+```{r}
+# TODO: Find and illustrate two expected insights
+```
+
+**Q**: Expected insight #1.
+
+**A**:
+
+
+**Q**: Expected insight #2.
+
+**A**:
+
+
+## 10. Unexpected insight
+
+Come up with one new insight (backed up by data and graphs) that is unexpected at first glance and do your best to motivate it. Same instructions apply as the previous task.
+
+```{r}
+# TODO: Find and illustrate one unexpected insight
+```
+
+**Q**: Unexpected insight.
+
+**A**:
+
