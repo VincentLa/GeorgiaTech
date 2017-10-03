@@ -70,6 +70,12 @@ Load any R packages that you will need to use. You can come back to this chunk, 
 ```{r}
 library(ggplot2)
 library(GGally)
+
+# Note that I'm using Anaconda R, and I was having trouble installing qdapTools. I'm not sure
+# if this is the same on other machines but I did have to install R XML separately
+# https://anaconda.org/r/r-xml
+# conda install -c r r-xml. Only after could I install qdapTools.
+library(qdapTools)
 ```
 
 If you are loading any non-standard packages (ones that have not been discussed in class or explicitly allowed for this project), please mention them below. Include any special instructions if they cannot be installed using the regular `install.packages('<pkg name>')` command.
@@ -167,15 +173,37 @@ For example, if there are a total of 3 genres: Drama, Comedy, and Action, a movi
 # TODO: Replace Genre with a collection of binary columns
 require(tm)
 
-summary(df$Genre)
-print(head(df$Genre))
+# All unique genres in the dataframe
 print(unique(unlist(strsplit(df$Genre, ', '))))
+
+# Example of how to one-hot encode: https://stackoverflow.com/questions/39778387/r-dataframe-one-hot-encoding-of-column-containing-multiple-terms
+
+df = cbind(df, mtabulate(strsplit(df$Genre, ", ")))
+
+cols = c('Genre', 'Action', 'Adult', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Film-Noir', 'Game-Show', 'History', 'Horror', 'Music', 'Musical', 'Mystery', 'N/A', 'News', 'Reality-TV', 'Romance', 'Sci-Fi', 'Short', 'Sport', 'Talk-Show', 'Thriller', 'War', 'Western')
+summary(df[cols])
+print(summary(df[cols]))
+print(head(df[cols]))
+
+# Remove column from dataframe
+df$Genre = NULL
 ```
 
 Plot the relative proportions of movies having the top 10 most common genres.
 
 ```{r}
 # TODO: Select movies from top 10 most common genres and plot their relative proportions
+
+# See https://stackoverflow.com/questions/20679702/r-find-column-with-the-largest-column-sum as reference
+cols = setdiff(cols, 'Genre')
+colCount = colSums(df[cols])
+topTenIds = order(colCount,decreasing=TRUE)[1:10] + 1
+topTenCols = names(df[cols][topTenIds])
+
+# The top 10 most common genres are
+print(topTenCols)
+
+# Probably need to do some manual "stacking" of dataframes by each of the top 10 most common genres.
 ```
 
 Examine how the distribution of `Runtime` changes across genres for the top 10 most common genres.
