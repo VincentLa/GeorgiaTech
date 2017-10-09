@@ -258,6 +258,10 @@ _Note: Do not remove the rows with `Gross == NA` at this point, just use this a 
 
 ```{r}
 # TODO: Remove rows with Year/Date/Released mismatch
+cols4 = c('Year', 'Date', 'Released', 'Gross')
+df4 = df[cols4]
+print(summary(df4))
+print(head(df4))
 ```
 
 **Q**: What is your precise removal logic, and how many rows remain in the resulting dataset?
