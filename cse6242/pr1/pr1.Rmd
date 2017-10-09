@@ -181,9 +181,6 @@ print(unique(unlist(strsplit(df$Genre, ', '))))
 df = cbind(df, mtabulate(strsplit(df$Genre, ", ")))
 
 cols = c('Genre', 'Action', 'Adult', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Film-Noir', 'Game-Show', 'History', 'Horror', 'Music', 'Musical', 'Mystery', 'N/A', 'News', 'Reality-TV', 'Romance', 'Sci-Fi', 'Short', 'Sport', 'Talk-Show', 'Thriller', 'War', 'Western')
-summary(df[cols])
-print(summary(df[cols]))
-print(head(df[cols]))
 
 # Remove column from dataframe
 df$Genre = NULL
@@ -204,17 +201,52 @@ topTenCols = names(df[cols][topTenIds])
 print(topTenCols)
 
 # Probably need to do some manual "stacking" of dataframes by each of the top 10 most common genres.
+# Note that I was somewhat confused on what "relative proportions of movies" meant. I found this helpful
+# https://piazza.com/class/j6gt7ycx6nk145?cid=396
+# Suppose you have ten ice creams.  Let's say that four of them are Chocolate ice cream.  What is the relative proportion of Chocolate ice cream ?   --> 4 / 10
+cols3 = c('Title', 'Runtime', topTenCols)
+df3 = df[cols3]
+print(summary(df3))
+print(head(df3))
+
+library(reshape2)
+df3.long = melt(df3, id.vars=c('Title', 'Runtime'))
+
+# Removing rows where value is 0 to answer the question
+# This is because when value is 0, that means movie is not that genre.
+df3.long = df3.long[apply(df3.long['value'],1,function(z) !any(z==0)),]
+print(summary(df3.long))
+print(head(df3.long))
+
+# Finally plot relative proportions
+# https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+ggplot(df3.long, aes(x=variable)) +
+  geom_bar(aes(y = (..count..)/sum(..count..))) +
+  ylab('Relative Proportion')
 ```
 
 Examine how the distribution of `Runtime` changes across genres for the top 10 most common genres.
 
 ```{r}
 # TODO: Plot Runtime distribution for top 10 most common genres
+# ggplot(df3.long, aes(x=Runtime)) +
+#   geom_density(aes(color=variable, group=variable)) +
+#   ggtitle('Distribution of Runtimes by Movie Genre')
+
+ggplot(df3.long, aes(as.factor(variable), Runtime)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_x_discrete("Genre")
 ```
 
 **Q**: Describe the interesting relationship(s) you observe. Are there any expected or unexpected trends that are evident?
 
 **A**:
+One thing that immediately stood out to me was that in looking at the extreme outliers (Runtimes greater than 300 minutes for example or 5 hours), most of these very long movies tend to be Drama, War, and Documentaries, which fits anecdotally with my priors of what movies would be extremely long.
+
+Animation films tend to be the shortest, which is expected as there are probably many short animation films. I was actually surprised to see that most animation films are very very short.
+
+One that that was unexpected to me was that with the exception of Animation and Family films, most of the median runtimes for all the rest of the genres are very similar.
 
 ## 4. Eliminate mismatched rows
 
