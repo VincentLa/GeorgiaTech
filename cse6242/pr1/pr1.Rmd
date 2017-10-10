@@ -258,15 +258,29 @@ _Note: Do not remove the rows with `Gross == NA` at this point, just use this a 
 
 ```{r}
 # TODO: Remove rows with Year/Date/Released mismatch
+library(lubridate)  # Used to extract year from Released
+
 cols4 = c('Year', 'Date', 'Released', 'Gross')
 df4 = df[cols4]
-print(summary(df4))
-print(head(df4))
+df4$released_year = year(df4$Released)
+df4$not_matched = (df4$Year != df4$released_year) & (df4$Year != df4$Date) & (df4$Date != df4$released_year)
+
+# Number of rows with non-null Gross Value
+print(nrow(df[which(!is.na(df$Gross)), ]))
+
+# Printing rows in the original data set
+print(nrow(df))
+
+df = df[which(df4$not_matched == FALSE | is.na(df4$not_matched)), ]
+print(nrow(df))
 ```
 
 **Q**: What is your precise removal logic, and how many rows remain in the resulting dataset?
 
 **A**:
+Out of the 40,000 original rows, I removed rows where `Year != released_year` and `Year != Date` and `Date != released_year` This resulted in `r nrow(df4[which(df4$not_matched == TRUE & !is.na(df4$Gross)), ])` rows to be removed where there was a non-null `Gross` value. Since there were originally `r nrow(df[which(!is.na(df$Gross)), ])` rows with a non-null `Gross` value, we have indeed removed less than 10 percent of the rows with non-null `Gross` values.
+
+There are now `r nrow(df)` rows in the resulting dataset.
 
 ## 5. Explore `Gross` revenue
 
@@ -276,6 +290,14 @@ _Note: To get a meaningful relationship, you may have to partition the movies in
 
 ```{r}
 # TODO: Investigate if Gross Revenue is related to Budget, Runtime or Genre
+print(summary(df))
+print(head(df))
+
+ggplot(df, aes(Gross, Runtime)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+
+ggplot(df, aes(Gross, Budget)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
 ```
 
 **Q**: Did you find any observable relationships or combinations of Budget/Runtime/Genre that result in high Gross revenue? If you divided the movies into different subsets, you may get different answers for them - point out interesting ones.
