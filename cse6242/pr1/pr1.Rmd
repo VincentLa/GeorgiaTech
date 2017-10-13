@@ -290,14 +290,19 @@ _Note: To get a meaningful relationship, you may have to partition the movies in
 
 ```{r}
 # TODO: Investigate if Gross Revenue is related to Budget, Runtime or Genre
-print(summary(df))
-print(head(df))
+cols = c('Title', 'Gross', 'Runtime', 'Budget', 'Action', 'Adult', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Film-Noir', 'Game-Show', 'History', 'Horror', 'Music', 'Musical', 'Mystery', 'N/A', 'News', 'Reality-TV', 'Romance', 'Sci-Fi', 'Short', 'Sport', 'Talk-Show', 'Thriller', 'War', 'Western')
+df5 = df[cols]
 
-ggplot(df, aes(Gross, Runtime)) +
+print(summary(df5))
+print(head(df5))
+
+ggplot(df, aes(Runtime, Gross)) +
   stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
 
-ggplot(df, aes(Gross, Budget)) +
+ggplot(df, aes(Budget, Gross)) +
   stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+
+# Next melt the df to get genre as one column (like in question 3) and plot grouped by genre
 ```
 
 **Q**: Did you find any observable relationships or combinations of Budget/Runtime/Genre that result in high Gross revenue? If you divided the movies into different subsets, you may get different answers for them - point out interesting ones.
