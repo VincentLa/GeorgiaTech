@@ -290,7 +290,7 @@ _Note: To get a meaningful relationship, you may have to partition the movies in
 
 ```{r}
 # TODO: Investigate if Gross Revenue is related to Budget, Runtime or Genre
-cols = c('Title', 'Gross', 'Runtime', 'Budget', 'Action', 'Adult', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Film-Noir', 'Game-Show', 'History', 'Horror', 'Music', 'Musical', 'Mystery', 'N/A', 'News', 'Reality-TV', 'Romance', 'Sci-Fi', 'Short', 'Sport', 'Talk-Show', 'Thriller', 'War', 'Western')
+cols = c('Title', 'Gross', 'Runtime', 'Budget', 'Released', 'Action', 'Adult', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Film-Noir', 'Game-Show', 'History', 'Horror', 'Music', 'Musical', 'Mystery', 'N/A', 'News', 'Reality-TV', 'Romance', 'Sci-Fi', 'Short', 'Sport', 'Talk-Show', 'Thriller', 'War', 'Western')
 df5 = df[cols]
 
 print(summary(df5))
@@ -303,15 +303,43 @@ ggplot(df, aes(Budget, Gross)) +
   stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
 
 # Next melt the df to get genre as one column (like in question 3) and plot grouped by genre
+df5.long = melt(df5, id.vars=c('Title', 'Gross', 'Runtime', 'Budget', 'Released'), variable.name='genre')
+
+# Removing rows where value is 0 to answer the question
+# This is because when value is 0, that means movie is not that genre.
+df5.long = df5.long[apply(df5.long['value'], 1, function(z) !any(z==0)),]
+
+library(plyr)
+df5.long.runtime <- ddply(df5.long, c('Runtime', 'genre'), function(x) mean(x$Gross))
+names(df5.long.runtime)[names(df5.long.runtime) == 'V1'] <- 'Gross'
+df5.long.runtime = df5.long.runtime[!df5.long.runtime$Runtime > 180,]  # Removing movies greater than 3 hours
+
+df5.long.budget <- ddply(df5.long, c('Budget', 'genre'), function(x) mean(x$Gross))
+names(df5.long.budget)[names(df5.long.budget) == 'V1'] <- 'Gross'
+
+ggplot(df5.long.runtime, aes(Runtime, Gross)) +
+  geom_point(aes(color=genre, group=genre))
+
+ggplot(df5.long.budget, aes(Budget, Gross)) +
+  geom_point(aes(color=genre, group=genre))
 ```
 
 **Q**: Did you find any observable relationships or combinations of Budget/Runtime/Genre that result in high Gross revenue? If you divided the movies into different subsets, you may get different answers for them - point out interesting ones.
 
 **A**:
 
+Yes, it seems that in the aggregate, Gross revenue is positive correlated with Runtime, but only to a certain extent. After about 3 hours or so, the relationship is much murkier. Gross Revenue seems generally positively correlated with Budget.
+
 ```{r}
 # TODO: Investigate if Gross Revenue is related to Release Month
+print(summary(df5.long))
+print(head(df5.long))
+df$released_month = month(df$Released)
+ggplot(df, aes(released_month, Gross)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
 ```
+
+There is definitely a relationship of Gross Revenue and release month. Summer month movies and holiday movies gross significantly more revenue than movies released in other months.
 
 ## 6. Process `Awards` column
 
@@ -321,19 +349,62 @@ _Note: The format of the `Awards` column is not standard; you may have to use re
 
 ```{r}
 # TODO: Convert Awards to 2 numeric columns: wins and nominations
+library(stringi)
+cols = c('Title', 'Awards', 'Gross')
+df6 = df[cols]
+print(unique(df6$Awards))
+
+print(summary(df6))
+print(head(df6))
+
+awards = stri_extract_all(df6$Awards, regex="\\d+")
+award_labels = stri_extract_all(df6$Awards, regex="win|won|nomin")
+print(head(awards))
+print(head(award_labels))
+
+wins_list = c()
+nominations_list = c()
+
+for (i in 1:length(awards)){
+    wins = 0
+    nominations = 0
+    for(j in 1:length(awards[[i]])){
+        if(!is.na(award_labels[[i]][j]) & (award_labels[[i]][j] == 'wins' | award_labels[[i]][j] == 'win' | award_labels[[i]][j] == 'won')){
+            wins = wins + as.numeric(awards[[i]][j])
+        } else if (!is.na(award_labels[[i]][j]) & award_labels[[i]][j] == 'nomin'){
+            nominations = nominations + as.numeric(awards[[i]][j])
+        }
+    }
+    wins_list = c(wins_list, wins)
+    nominations_list = c(nominations_list, nominations)
+}
+
+df$wins = wins_list
+df$nominations = nominations_list
+
+print(head(df[c('Awards', 'wins', 'nominations')], 20))
 ```
 
 **Q**: How did you construct your conversion mechanism? How many rows had valid/non-zero wins or nominations?
 
 **A**:
+To construct the conversion mechanism, I first used `stri_extract_all` to extract all numerical substrings. I then extracted all instances of "win, won, or nomin". I then assigned the numerical to however it corresponded to the position of "win, won, or nomin".
+
 
 ```{r}
 # TODO: Plot Gross revenue against wins and nominations
+ggplot(df, aes(wins, Gross)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+
+ggplot(df, aes(nominations, Gross)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
 ```
 
 **Q**: How does the gross revenue vary by number of awards won and nominations received?
 
 **A**:
+There does not seem to be much of a relationship between gross revenue and awards won.
+
 
 ## 7. Movie ratings from IMDb and Rotten Tomatoes
 
