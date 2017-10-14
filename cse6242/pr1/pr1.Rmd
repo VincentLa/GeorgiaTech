@@ -493,21 +493,33 @@ df$Country = NULL
 
 # cols = setdiff(cols, 'Genre')
 colCount = colSums(df[, 80:ncol(df)])
-topTenIds = order(colCount,decreasing=TRUE)[1:30] + 1
+topTenIds = order(colCount,decreasing=TRUE)[1:70] + 1
 topTenCols = names(df[, 80:ncol(df)][topTenIds])
 
 # The top 30 most common countries are
 print(topTenCols)
 
-cols = c('Title', 'Runtime', 'Gross')
+cols = c('Title', 'Runtime', 'Gross', 'Domestic_Gross')
 cols = c(cols, topTenCols)
 
 df9 = df[cols]
-df9.long = melt(df9, id.vars=c('Title', 'Runtime', 'Gross'), variable.name='country')
+df9.long = melt(df9, id.vars=c('Title', 'Runtime', 'Gross', 'Domestic_Gross'), variable.name='country')
+df9.long = df9.long[apply(df9.long['value'],1,function(z) !any(z==0)),]
+
 print(summary(df9.long))
 print(head(df9.long))
 
 ggplot(df9.long, aes(as.factor(country), Runtime)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_x_discrete("country")
+
+ggplot(df9.long, aes(as.factor(country), Gross)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_x_discrete("country")
+
+ggplot(df9.long, aes(as.factor(country), Domestic_Gross)) +
   geom_boxplot() +
   coord_flip() +
   scale_x_discrete("country")
@@ -517,12 +529,13 @@ ggplot(df9.long, aes(as.factor(country), Runtime)) +
 **Q**: Expected insight #1.
 
 **A**:
-Plotting the Gross Revenue by country, one expected insight is that lower income countries tend to have on average lower distribution of Gross Revenue.
+First we plot runtime by country. While there is different distribution and sample size by country, notice that the median runtime by country is actually really similar. I would expect this because I am not aware of differences in runtime trends by country.
 
 **Q**: Expected insight #2.
 
 **A**:
 
+Plotting the Gross Revenue by country, one expected insight is that lower income countries tend to have on average lower distribution of Gross Revenue. In particular, the big box office hits (positive outliers) come from major countries. Notice this is true, the big box office hits seem to come from countries like Germany, China, and France.
 
 ## 10. Unexpected insight
 
