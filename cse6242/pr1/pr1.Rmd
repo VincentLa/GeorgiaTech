@@ -3,7 +3,11 @@ title: "Project 1: Explore and Prepare Data"
 subtitle: "CSE6242 - Data and Visual Analytics - Fall 2017\n\nDue: Sunday, October 15, 2017 at 11:59 PM UTC-12:00 on T-Square"
 author: Vincent La (Georgia Tech ID - vla6)
 date: October 12, 2017
-output: html_notebook
+output:
+  pdf_document:
+    pandoc_args: [
+  "--output=pr1.pdf"
+    ]
 ---
 
 _Note: This project involves getting data ready for analysis and doing some preliminary investigations. Project 2 will involve modeling and predictions on the same dataset, and will be released at a later date. Both projects will have equal weightage towards your grade. You may reuse some of the preprocessing/analysis steps from Project 1 in Project 2._
@@ -75,6 +79,8 @@ library(GGally)
 # if this is the same on other machines but I did have to install R XML separately
 # https://anaconda.org/r/r-xml
 # conda install -c r r-xml. Only after could I install qdapTools.
+
+# To create zip file: zip pr1.zip pr1.Rmd pr1.pdf
 library(qdapTools)
 ```
 
