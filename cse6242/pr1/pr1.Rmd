@@ -456,11 +456,26 @@ ggplot(df, aes(tomatoRating, wins)) +
 ggplot(df, aes(tomatoRating, nominations)) +
   stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
 
+
+mod1 = lm(wins ~ imdbRating, data = df)
+summary(mod1)
+
+mod1 = lm(nominations ~ imdbRating, data = df)
+summary(mod1)
+
+mod1 = lm(wins ~ tomatoRating, data = df)
+summary(mod1)
+
+mod1 = lm(nominations ~ tomatoRating, data = df)
+summary(mod1)
 ```
 
 **Q**: How good are these ratings in terms of predicting the success of a movie in winning awards or nominations? Is there a high correlation between two variables?
 
 **A**:
+One extremely interesting trend from the graph above is that for both `imdbRatings` and `tomatoRatings` generally there is a positive correlation between ratings and both wins and nominations. But very interestingly enough, the relationship is actually not monotonic. In the extremely upper regions of ratings, the number of wins and nominations actually decrease!
+
+I fit a linear regression between wins and nominations against ratings field. Notice that in each regression the coefficient is significant, which means that there is a significant positive relationship between rating and nominations and wins. However, the R^2 is relatively low, so the correlation is relatively low.
 
 ## 9. Expected insights
 
@@ -468,12 +483,41 @@ Come up with two new insights (backed up by data and graphs) that is expected. H
 
 ```{r}
 # TODO: Find and illustrate two expected insights
+df = cbind(df, mtabulate(strsplit(df$Country, ", ")))
+print(summary(df))
+
+# cols = c('Genre', 'Action', 'Adult', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Film-Noir', 'Game-Show', 'History', 'Horror', 'Music', 'Musical', 'Mystery', 'N/A', 'News', 'Reality-TV', 'Romance', 'Sci-Fi', 'Short', 'Sport', 'Talk-Show', 'Thriller', 'War', 'Western')
+
+# Remove column from dataframe
+df$Country = NULL
+
+# cols = setdiff(cols, 'Genre')
+colCount = colSums(df[, 80:ncol(df)])
+topTenIds = order(colCount,decreasing=TRUE)[1:30] + 1
+topTenCols = names(df[, 80:ncol(df)][topTenIds])
+
+# The top 30 most common countries are
+print(topTenCols)
+
+cols = c('Title', 'Runtime', 'Gross')
+cols = c(cols, topTenCols)
+
+df9 = df[cols]
+df9.long = melt(df9, id.vars=c('Title', 'Runtime', 'Gross'), variable.name='country')
+print(summary(df9.long))
+print(head(df9.long))
+
+ggplot(df9.long, aes(as.factor(country), Runtime)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_x_discrete("country")
+
 ```
 
 **Q**: Expected insight #1.
 
 **A**:
-
+Plotting the Gross Revenue by country, one expected insight is that lower income countries tend to have on average lower distribution of Gross Revenue.
 
 **Q**: Expected insight #2.
 
@@ -486,9 +530,13 @@ Come up with one new insight (backed up by data and graphs) that is unexpected a
 
 ```{r}
 # TODO: Find and illustrate one unexpected insight
+df$made_to_dvd = as.numeric(!is.na(df$DVD))
+
+ggplot(df, aes(imdbRating, made_to_dvd)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
 ```
 
 **Q**: Unexpected insight.
 
 **A**:
-
+One thing that was unexpected to me was I would have expected that there would be a positive correlation between ratings and whether the move was made to a DVD (better movies would more likely be made into a DVD). The relationship I found was somewhat of an "inversed-U" shape. At very low ratings, the proportion of DVD's made is very low. Suprisingly, highly rated ratings also have lower made to DVD ratings.
