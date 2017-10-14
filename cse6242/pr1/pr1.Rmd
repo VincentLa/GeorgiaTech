@@ -403,7 +403,7 @@ ggplot(df, aes(nominations, Gross)) +
 **Q**: How does the gross revenue vary by number of awards won and nominations received?
 
 **A**:
-There does not seem to be much of a relationship between gross revenue and awards won.
+Surprisingly, there does not seem to be much of a relationship between gross revenue and awards won.
 
 
 ## 7. Movie ratings from IMDb and Rotten Tomatoes
@@ -413,12 +413,28 @@ There are several variables that describe ratings, including IMDb ratings (`imdb
 Investigate the pairwise relationships between these different descriptors using graphs.
 
 ```{r}
+library(GGally)
+
 # TODO: Illustrate how ratings from IMDb and Rotten Tomatoes are related
+cols = c('imdbRating', 'imdbVotes', 'tomatoMeter', 'tomatoImage', 'tomatoRating', 'tomatoReviews',
+         'tomatoFresh', 'tomatoRotten', 'tomatoConsensus', 'tomatoUserMeter', 'tomatoUserRating',
+         'tomatoUserReviews')
+df7 = df[cols]
+
+print(summary(df7))
+print(head(df7))
+
+ggpairs(df7, columns=c('imdbRating', 'tomatoMeter', 'tomatoRating'), aes())
 ```
 
 **Q**: Comment on the similarities and differences between the user ratings of IMDb and the critics ratings of Rotten Tomatoes.
 
 **A**:
+First off, it's interesting to note that we have significantly more data of IMDB ratings than Rotten tomatoes. In our data, we have about 1100 movies with missing IMDB ratings. However, we have close to 30,000 movies with missing Rotten Tomatoes ratings.
+
+In the plot above we plot the `ggpairs` of `imdbRating`, `tomatoMeter`, and `tomatoRating`. Notice that the correlation between `tomatoMeter` and `tomatoRating` is very high, at 0.94. This makes sense as it's from the same source. The correlation between `tomatoMeter` and `imdbRating` is a bit lower, at around 0.746 vs 0.794 which is the correlation between `tomatoRating` and `imdbRating`.
+
+Looking at the summary of the variables as well, it looks like `imdbRating` and `tomatoRating` are rated on similar scales. `imdbRating` looks like it's rated on a scale of 1 to 10, while `tomatoRating` looks like it's rated on a scale of 0 to 9.8. However, `tomatoMeter` looks like it's scaled from 0 to 100.
 
 ## 8. Ratings and awards
 
@@ -428,6 +444,18 @@ Study the relationship between ratings and awards using graphs (awards here refe
 
 ```{r}
 # TODO: Show how ratings and awards are related
+ggplot(df, aes(imdbRating, wins)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+
+ggplot(df, aes(imdbRating, nominations)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+
+ggplot(df, aes(tomatoRating, wins)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+
+ggplot(df, aes(tomatoRating, nominations)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+
 ```
 
 **Q**: How good are these ratings in terms of predicting the success of a movie in winning awards or nominations? Is there a high correlation between two variables?
