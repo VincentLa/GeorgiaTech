@@ -72,8 +72,12 @@ colnames(df)
 Load any R packages that you will need to use. You can come back to this chunk, edit it and re-run to load any additional packages later.
 
 ```{r}
+library(plyr)
 library(ggplot2)
 library(GGally)
+library(qdapTools)
+library(tm)
+library(reshape2)
 
 # Note that I'm using Anaconda R, and I was having trouble installing qdapTools. I'm not sure
 # if this is the same on other machines but I did have to install R XML separately
@@ -81,7 +85,6 @@ library(GGally)
 # conda install -c r r-xml. Only after could I install qdapTools.
 
 # To create zip file: zip pr1.zip pr1.Rmd pr1.pdf
-library(qdapTools)
 ```
 
 If you are loading any non-standard packages (ones that have not been discussed in class or explicitly allowed for this project), please mention them below. Include any special instructions if they cannot be installed using the regular `install.packages('<pkg name>')` command.
@@ -143,22 +146,32 @@ new_runtimes = unlist(lapply(y, extract_runtime))
 df$Runtime = new_runtimes
 
 cols = c('Runtime', 'Year', 'Budget')
-summary(df[cols])
 ```
 
 Now investigate the distribution of `Runtime` values and how it changes over years (variable `Year`, which you can bucket into decades) and in relation to the budget (variable `Budget`). Include any plots that illustrate.
 
 ```{r}
-# TODO: Investigate the distribution of Runtime values and how it varies by Year and Budget
+# This first graph shows the distribution of runtimes overall and how it varies by Year and Budget
 ggplot(df, aes(x=Runtime)) +
   geom_histogram() +
   ggtitle('Histogram of Runtime (minutes)')
 
-ggplot(df, aes(Year, Runtime)) +
-  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+# Now we need to show distribution of runtime by decade. Do a boxplot grouped by decade.
+df$decade = round_any(df$Year, 10, f = floor)
+ggplot(df, aes(as.factor(decade), Runtime)) +
+  geom_boxplot() +
+  scale_x_discrete("decade")
 
-ggplot(df, aes(Budget, Runtime)) +
-  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+# Now we need to show distribution of runtime by Budget. Do a boxplot grouped by budget
+df$budget_rounded = round_any(df$Budget, 10000000, f = floor)
+df$budget_rounded[df$Budget >= 60000000] = 60000000
+df$budget_rounded = as.character(df$budget_rounded)
+df$budget_rounded[df$budget_rounded == '600000000'] = 'Over 60M'
+ggplot(df, aes(as.factor(budget_rounded), Runtime)) +
+  geom_boxplot() +
+  scale_x_discrete("Budget Rounded to Nearest 10M")
+
+ggpairs(df, columns=c('Runtime', 'Budget', 'Year'))
 ```
 
 _Feel free to insert additional code chunks as necessary._
@@ -167,7 +180,7 @@ _Feel free to insert additional code chunks as necessary._
 
 **A**:
 
-Looking in the aggregate, it seems like most runtimes are under 2 hours. There is a clear relationship between run time and year, looking a bit like a sigmoid function. This makes sense as very early years, it was probably technologically prohibitive to create long movies. As technology improved, runtimes increased, but there's only so much time you can expect to hold an audience captive. Interestingly enough, during the 1990's there seems to be a downward trend in runtimes until around mid 2000's where it picked up again.
+Looking in the aggregate, it seems like the vast majority of runtimes are under 4 hours, which makes sense. There is a clear relationship between run time and year, looking a bit like a sigmoid function. This makes sense as very early years, it was probably technologically prohibitive to create long movies. As technology improved, runtimes increased, but there's only so much time you can expect to hold an audience captive. In general, it looks like higher the budget, higher the Runtime, but the relationship is not super strong. The correlation between Budget and Runtime is 0.287. 
 
 ## 3. Encode `Genre` column
 
@@ -177,7 +190,6 @@ For example, if there are a total of 3 genres: Drama, Comedy, and Action, a movi
 
 ```{r}
 # TODO: Replace Genre with a collection of binary columns
-require(tm)
 
 # All unique genres in the dataframe
 print(unique(unlist(strsplit(df$Genre, ', '))))
@@ -200,22 +212,18 @@ Plot the relative proportions of movies having the top 10 most common genres.
 # See https://stackoverflow.com/questions/20679702/r-find-column-with-the-largest-column-sum as reference
 cols = setdiff(cols, 'Genre')
 colCount = colSums(df[cols])
-topTenIds = order(colCount,decreasing=TRUE)[1:10] + 1
-topTenCols = names(df[cols][topTenIds])
+topTenIds = order(colCount,decreasing=TRUE)[1:10]
+topTenGenres = names(df[cols][topTenIds])
 
 # The top 10 most common genres are
-print(topTenCols)
+print(topTenGenres)
 
 # Probably need to do some manual "stacking" of dataframes by each of the top 10 most common genres.
 # Note that I was somewhat confused on what "relative proportions of movies" meant. I found this helpful
 # https://piazza.com/class/j6gt7ycx6nk145?cid=396
 # Suppose you have ten ice creams.  Let's say that four of them are Chocolate ice cream.  What is the relative proportion of Chocolate ice cream ?   --> 4 / 10
-cols3 = c('Title', 'Runtime', topTenCols)
+cols3 = c('Title', 'Runtime', topTenGenres)
 df3 = df[cols3]
-print(summary(df3))
-print(head(df3))
-
-library(reshape2)
 df3.long = melt(df3, id.vars=c('Title', 'Runtime'))
 
 # Removing rows where value is 0 to answer the question
@@ -248,11 +256,9 @@ ggplot(df3.long, aes(as.factor(variable), Runtime)) +
 **Q**: Describe the interesting relationship(s) you observe. Are there any expected or unexpected trends that are evident?
 
 **A**:
-One thing that immediately stood out to me was that in looking at the extreme outliers (Runtimes greater than 300 minutes for example or 5 hours), most of these very long movies tend to be Drama, War, and Documentaries, which fits anecdotally with my priors of what movies would be extremely long.
+One thing that immediately stood out to me was that Animation and "Short" films tend to be the shortest, which is expected as there are probably many short animation films (and "short" films are likely to be short). I was actually surprised to see that most animation films are very very short.
 
-Animation films tend to be the shortest, which is expected as there are probably many short animation films. I was actually surprised to see that most animation films are very very short.
-
-One that that was unexpected to me was that with the exception of Animation and Family films, most of the median runtimes for all the rest of the genres are very similar.
+One that that was unexpected to me was that the distribution of runtimes for Thriller, Crime, Action, and Romance films seem to be very similar.
 
 ## 4. Eliminate mismatched rows
 
@@ -269,7 +275,7 @@ library(lubridate)  # Used to extract year from Released
 cols4 = c('Year', 'Date', 'Released', 'Gross')
 df4 = df[cols4]
 df4$released_year = year(df4$Released)
-df4$not_matched = (df4$Year != df4$released_year) & (df4$Year != df4$Date) & (df4$Date != df4$released_year)
+df4$not_matched = (df4$Year != df4$released_year)
 
 # Number of rows with non-null Gross Value
 print(nrow(df[which(!is.na(df$Gross)), ]))
@@ -277,14 +283,14 @@ print(nrow(df[which(!is.na(df$Gross)), ]))
 # Printing rows in the original data set
 print(nrow(df))
 
-df = df[which(df4$not_matched == FALSE | is.na(df4$not_matched)), ]
+df = df[-which(df4$not_matched == TRUE & is.na(df4$Gross)), ]
 print(nrow(df))
 ```
 
 **Q**: What is your precise removal logic, and how many rows remain in the resulting dataset?
 
 **A**:
-Out of the 40,000 original rows, I removed rows where `Year != released_year` and `Year != Date` and `Date != released_year` This resulted in `r nrow(df4[which(df4$not_matched == TRUE & !is.na(df4$Gross)), ])` rows to be removed where there was a non-null `Gross` value. Since there were originally `r nrow(df[which(!is.na(df$Gross)), ])` rows with a non-null `Gross` value, we have indeed removed less than 10 percent of the rows with non-null `Gross` values.
+Out of the 40,000 original rows, I removed rows where `Year != released_year`. I explicitly did not remove any rows where Gross was not equal to `NA`. I did not use `Date` as a criteria since there were so many missing values of `Date`. This resulted in `r nrow(df4[which(df4$not_matched == TRUE & is.na(df4$Gross)), ])` rows to be removed where there was a non-null `Gross` value.
 
 There are now `r nrow(df)` rows in the resulting dataset.
 
@@ -296,53 +302,102 @@ _Note: To get a meaningful relationship, you may have to partition the movies in
 
 ```{r}
 # TODO: Investigate if Gross Revenue is related to Budget, Runtime or Genre
-cols = c('Title', 'Gross', 'Runtime', 'Budget', 'Released', 'Action', 'Adult', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Film-Noir', 'Game-Show', 'History', 'Horror', 'Music', 'Musical', 'Mystery', 'N/A', 'News', 'Reality-TV', 'Romance', 'Sci-Fi', 'Short', 'Sport', 'Talk-Show', 'Thriller', 'War', 'Western')
+# Create three categorical values based on distribution of 25th, and 75 percentiles
+df$runtime_categorical = ifelse(df$Runtime <= 68, 'short', ifelse(df$Runtime <= 101, 'medium', 'long'))
+
+#cols = c('Title', 'Gross', 'Runtime', 'runtime_categorical', 'Budget', 'Released', 'Action', 'Adult', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Film-Noir', 'Game-Show', 'History', 'Horror', 'Music', 'Musical', 'Mystery', 'N/A', 'News', 'Reality-TV', 'Romance', 'Sci-Fi', 'Short', 'Sport', 'Talk-Show', 'Thriller', 'War', 'Western')
+
+# Just look at top ten most common Genres
+cols = c('Title', 'Gross', 'Runtime', 'runtime_categorical', 'Budget', 'budget_rounded')
+cols = c(cols, topTenGenres)
 df5 = df[cols]
 
-print(summary(df5))
-print(head(df5))
+ggplot(df5, aes(as.factor(runtime_categorical), Gross)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_x_discrete("Runtime") +
+  ggtitle('Distribution of Gross by Runtime')
+
+ggplot(df5, aes(runtime_categorical, Gross)) +
+  geom_bar(stat='summary', fill.y='mean')
 
 ggplot(df, aes(Runtime, Gross)) +
   stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+
+ggplot(df5, aes(as.factor(budget_rounded), Gross)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_x_discrete("Budget Rounded") +
+  ggtitle('Distribution of Gross by Budget')
 
 ggplot(df, aes(Budget, Gross)) +
   stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
 
 # Next melt the df to get genre as one column (like in question 3) and plot grouped by genre
-df5.long = melt(df5, id.vars=c('Title', 'Gross', 'Runtime', 'Budget', 'Released'), variable.name='genre')
+df5.long = melt(df5, id.vars=c('Title', 'Gross', 'Runtime', 'runtime_categorical', 'Budget', 'budget_rounded'), variable.name='genre')
 
 # Removing rows where value is 0 to answer the question
 # This is because when value is 0, that means movie is not that genre.
 df5.long = df5.long[apply(df5.long['value'], 1, function(z) !any(z==0)),]
 
-library(plyr)
-df5.long.runtime <- ddply(df5.long, c('Runtime', 'genre'), function(x) mean(x$Gross))
-names(df5.long.runtime)[names(df5.long.runtime) == 'V1'] <- 'Gross'
-df5.long.runtime = df5.long.runtime[!df5.long.runtime$Runtime > 180,]  # Removing movies greater than 3 hours
+ggplot(df5.long, aes(as.factor(genre), Gross)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_x_discrete("Genre")
+ggplot(df5.long, aes(genre, Gross)) +
+  geom_bar(stat='summary', fill.y='mean')
 
-df5.long.budget <- ddply(df5.long, c('Budget', 'genre'), function(x) mean(x$Gross))
-names(df5.long.budget)[names(df5.long.budget) == 'V1'] <- 'Gross'
+ggplot(df5.long[df5.long$runtime_categorical=='short', ], aes(as.factor(genre), Gross)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_x_discrete("Genre") +
+  ggtitle('Short Running Movies')
 
-ggplot(df5.long.runtime, aes(Runtime, Gross)) +
-  geom_point(aes(color=genre, group=genre))
+ggplot(df5.long[df5.long$runtime_categorical=='medium', ], aes(as.factor(genre), Gross)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_x_discrete("Genre") +
+  ggtitle('Medium Running Movies')
 
-ggplot(df5.long.budget, aes(Budget, Gross)) +
-  geom_point(aes(color=genre, group=genre))
+ggplot(df5.long[df5.long$runtime_categorical=='long', ], aes(as.factor(genre), Gross)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_x_discrete("Genre") +
+  ggtitle('Long Running Movies')
+
+ggplot(df5.long[df5.long$runtime_categorical=='short', ], aes(as.factor(genre), Budget)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_x_discrete("Budget") +
+  ggtitle('Short Running Movies')
+
+ggplot(df5.long[df5.long$runtime_categorical=='medium', ], aes(as.factor(genre), Budget)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_x_discrete("Budget") +
+  ggtitle('Medium Running Movies')
+
+ggplot(df5.long[df5.long$runtime_categorical=='long', ], aes(as.factor(genre), Budget)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_x_discrete("Budget") +
+  ggtitle('Long Running Movies')
 ```
 
 **Q**: Did you find any observable relationships or combinations of Budget/Runtime/Genre that result in high Gross revenue? If you divided the movies into different subsets, you may get different answers for them - point out interesting ones.
 
 **A**:
 
-Yes, it seems that in the aggregate, Gross revenue is positive correlated with Runtime, but only to a certain extent. After about 3 hours or so, the relationship is much murkier. Gross Revenue seems generally positively correlated with Budget.
+Yes, looking at the simple bivariate correlations, Gross Revenue and Runtime are positively correlated. Long movies (greater than 75th percentile) are associated with the highest revenue. It also seems that Budget and Gross Revenue are positively correlated. In terms of Genre, when we look at the top ten Genres, Animation and Adventure Films seem to on average gross the most. I also created boxplots for short running, medium running, and long running movies, by Genre, by mostly Animation and Adventure Films seemed to still Gross the most.
 
 ```{r}
 # TODO: Investigate if Gross Revenue is related to Release Month
 print(summary(df5.long))
 print(head(df5.long))
 df$released_month = month(df$Released)
+
 ggplot(df, aes(released_month, Gross)) +
-  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+  geom_bar(stat='summary', fill.y='mean')
 ```
 
 There is definitely a relationship of Gross Revenue and release month. Summer month movies and holiday movies gross significantly more revenue than movies released in other months.
@@ -358,13 +413,9 @@ _Note: The format of the `Awards` column is not standard; you may have to use re
 library(stringi)
 cols = c('Title', 'Awards', 'Gross')
 df6 = df[cols]
-print(unique(df6$Awards))
-
-print(summary(df6))
-print(head(df6))
 
 awards = stri_extract_all(df6$Awards, regex="\\d+")
-award_labels = stri_extract_all(df6$Awards, regex="win|won|nomin")
+award_labels = stri_extract_all(tolower(df6$Awards), regex="win|won|wins|nomin", ignore.case=TRUE)
 print(head(awards))
 print(head(award_labels))
 
@@ -388,13 +439,19 @@ for (i in 1:length(awards)){
 df$wins = wins_list
 df$nominations = nominations_list
 
-print(head(df[c('Awards', 'wins', 'nominations')], 20))
+# Counting number of rows with at least 1 win or 1 nomination.
+sum(ifelse(df$wins==1, 1, 0))
+sum(ifelse(df$nominations==1, 1, 0))
 ```
 
 **Q**: How did you construct your conversion mechanism? How many rows had valid/non-zero wins or nominations?
 
 **A**:
-To construct the conversion mechanism, I first used `stri_extract_all` to extract all numerical substrings. I then extracted all instances of "win, won, or nomin". I then assigned the numerical to however it corresponded to the position of "win, won, or nomin".
+To construct the conversion mechanism, I first used `stri_extract_all` to extract all numerical substrings. I then extracted all instances of "win, won, or nomin", after altering the column to be all lower case so I didn't have to worry about that in the regex. I then assigned the numerical to however it corresponded to the position of "win, won, or nomin".
+
+For example, for the movie "12 Years a Slave", the Awards entry reads "Won 3 Oscars. Another 233 wins & 312 nominations." Thus, I first extract `c('won', 'wins', 'nominations')`. Then I extract `c(3, 233, 312)`. Since the first two values correspond to 'won' and 'wins' respectively, the algorithm adds these 2 together for a total of `236` wins. Since the last value corresponds to nominations, the nominations pulled for this movie is `312` nominations.
+
+I'm interpreting the second part of the question as I can choose whether to report how many rows had valid or non-zero wins or nominations, so I am choosing to report how many rows had non-zero wins and how many rows had non-zero nominations. The number of rows with non-zero wins is `r sum(ifelse(df$wins==1, 1, 0))` and the number of rows with non-zero nominations is `r sum(ifelse(df$nominations==1, 1, 0))`.
 
 
 ```{r}
@@ -404,12 +461,14 @@ ggplot(df, aes(wins, Gross)) +
 
 ggplot(df, aes(nominations, Gross)) +
   stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+
+ggpairs(df, columns=c('Gross', 'wins', 'nominations'))
 ```
 
 **Q**: How does the gross revenue vary by number of awards won and nominations received?
 
 **A**:
-Surprisingly, there does not seem to be much of a relationship between gross revenue and awards won.
+Surprisingly, there does not seem to be that strong of a relationship between gross revenue and awards won or nominated. If we look at the `ggpairs` graph, we can see that the correlation between wins and nominations vs Gross is 0.313 and 0.364, respectively. While the positive correlation is expected, I would have thought it would be more strongly positive.
 
 
 ## 7. Movie ratings from IMDb and Rotten Tomatoes
@@ -427,10 +486,7 @@ cols = c('imdbRating', 'imdbVotes', 'tomatoMeter', 'tomatoImage', 'tomatoRating'
          'tomatoUserReviews')
 df7 = df[cols]
 
-print(summary(df7))
-print(head(df7))
-
-ggpairs(df7, columns=c('imdbRating', 'tomatoMeter', 'tomatoRating'), aes())
+ggpairs(df7, columns=c('imdbRating', 'imdbVotes', 'tomatoMeter', 'tomatoRating'), aes())
 ```
 
 **Q**: Comment on the similarities and differences between the user ratings of IMDb and the critics ratings of Rotten Tomatoes.
@@ -490,7 +546,6 @@ Come up with two new insights (backed up by data and graphs) that is expected. H
 ```{r}
 # TODO: Find and illustrate two expected insights
 df = cbind(df, mtabulate(strsplit(df$Country, ", ")))
-print(summary(df))
 
 # cols = c('Genre', 'Action', 'Adult', 'Adventure', 'Animation', 'Biography', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Film-Noir', 'Game-Show', 'History', 'Horror', 'Music', 'Musical', 'Mystery', 'N/A', 'News', 'Reality-TV', 'Romance', 'Sci-Fi', 'Short', 'Sport', 'Talk-Show', 'Thriller', 'War', 'Western')
 
@@ -499,10 +554,10 @@ df$Country = NULL
 
 # cols = setdiff(cols, 'Genre')
 colCount = colSums(df[, 80:ncol(df)])
-topTenIds = order(colCount,decreasing=TRUE)[1:70] + 1
+topTenIds = order(colCount,decreasing=TRUE)[1:10]
 topTenCols = names(df[, 80:ncol(df)][topTenIds])
 
-# The top 30 most common countries are
+# The top 10 most common countries are
 print(topTenCols)
 
 cols = c('Title', 'Runtime', 'Gross', 'Domestic_Gross')
@@ -511,9 +566,6 @@ cols = c(cols, topTenCols)
 df9 = df[cols]
 df9.long = melt(df9, id.vars=c('Title', 'Runtime', 'Gross', 'Domestic_Gross'), variable.name='country')
 df9.long = df9.long[apply(df9.long['value'],1,function(z) !any(z==0)),]
-
-print(summary(df9.long))
-print(head(df9.long))
 
 ggplot(df9.long, aes(as.factor(country), Runtime)) +
   geom_boxplot() +
@@ -530,18 +582,21 @@ ggplot(df9.long, aes(as.factor(country), Domestic_Gross)) +
   coord_flip() +
   scale_x_discrete("country")
 
+df$rated_cleaned = ifelse(df$Rated %in% c('G', 'PG-13', 'PG', 'R', 'NC-17'), df$Rated, NA)
+ggplot(df, aes(rated_cleaned, Gross)) +
+  geom_bar(stat='summary', fill.y='mean')
 ```
 
 **Q**: Expected insight #1.
 
 **A**:
-First we plot runtime by country. While there is different distribution and sample size by country, notice that the median runtime by country is actually really similar. I would expect this because I am not aware of differences in runtime trends by country.
+First, we pick the top 10 countires that show up in our data set. Notice that we mostly see "major" countires (e.g. USA, UK, France, Canada). This is expected because I would imagine that the countries producing the most movies are from more major countries with higher GDP. Second, we plot runtime by country. While there is different distribution and sample size by country, notice that the median runtime by country is actually really similar. I would expect this because I am not aware of differences in runtime trends by country. Third, notice that most of the big box office hits (positive) outliers, seem to come from the USA. This is also expected as one would expect almost all the blockbuster movies to come from USA.
 
 **Q**: Expected insight #2.
 
 **A**:
 
-Plotting the Gross Revenue by country, one expected insight is that lower income countries tend to have on average lower distribution of Gross Revenue. In particular, the big box office hits (positive outliers) come from major countries. Notice this is true, the big box office hits seem to come from countries like Germany, China, and France.
+Plotting the Gross Revenue by Rated Type, notice that G rated movies on average gross the highest. This is expected as G rated movies attract entire families so more people tend to watch G rated movies. 2nd and 3rd highest are PG13 and PG, respectively.
 
 ## 10. Unexpected insight
 
