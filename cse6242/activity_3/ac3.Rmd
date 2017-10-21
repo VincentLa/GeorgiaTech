@@ -1,0 +1,51 @@
+---
+title: "CSE 6242 Activity 3"
+author: Vincent La (Georgia Tech ID - vla6)
+date: October 21, 2017
+output:
+  pdf_document:
+    pandoc_args: [
+    "--output=ac3.pdf"
+    ]
+---
+
+# Introduction
+We will use the `maps` package that comes with `ggplot2::map_data()`. We will explore populations in cities of the state of California. Pattern and a lot of code comes from the recommended reading "Elegant Graphics for Data Analysis".
+
+# Exploring Population in California Cities
+
+```{r datacleaning, echo=FALSE, results='hide',message=FALSE}
+# Activity 3: http://cse6242.gatech.edu/fall-2017/ac3/
+# To compile R Markdown in terminal run: Rscript -e "rmarkdown::render('ac3.Rmd', clean=TRUE)"
+# To create zip file: zip ac3.zip ac3.Rmd ac3.pdf
+require(ggplot2)
+require(dplyr)
+require(maps)
+
+ca_counties <- map_data("county", "california") %>%
+  select(lon = long, lat, group, id = subregion)
+
+ca_cities <- maps::us.cities %>%
+  tbl_df() %>%
+  filter(country.etc == "CA") %>%
+  select(-country.etc, lon = long) %>%
+  arrange(desc(pop))
+```
+
+After loading in data about California counties and cities we are ready to do some analysis. One interesting thing would be to look at populations by city. I would expect that most of the population would be centered around the SF Bay Area and the LA County area.
+
+Below, we explore two graphs. The first graph will plot California Cities using latitude and longitude, changing the points, according the population. In the second graph, we will overlay that on top of a California County map. Notice that indeed the populations are clustered around the SF Bay are and LA County Area!
+
+```{r plotting, echo=FALSE}
+ggplot(ca_cities, aes(lon, lat)) +
+  geom_point(aes(size = pop)) +
+  scale_size_area() +
+  coord_quickmap()
+
+ggplot(ca_cities, aes(lon, lat)) +
+  geom_polygon(aes(group = group), ca_counties, fill = NA, colour = "grey50") +
+  geom_point(aes(size = pop), colour = "red") +
+  scale_size_area() +
+  coord_quickmap()
+```
+
