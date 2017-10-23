@@ -26,6 +26,7 @@ test = read.csv('./mnist/mnist_test.csv', header=FALSE)
 
 last_row = nrow(train)
 
+# Hacky approach to do preprocessing; I'm sure there's a more efficient way
 train_0_1_cols = c()
 train_3_5_cols = c()
 for (i in 1:ncol(train)){
@@ -83,7 +84,21 @@ image(rotate(ex_3_matrix))
 image(rotate(ex_5_matrix))
 ```
 
-# Theory
+# Question 2: Theory
+
+## Part a: Write down the formula for the loss function used in Logistic Regression, the expression that you want to minimize: L($\theta$)
+
+Taken from the lecture "MLE and Iterative Optimization":
+
+$$\hat{\theta}_{MLE} = argmin_{\theta} \sum_{i=1]}^n log (1 + e^{y^{(i)} * <\theta, x^{(i)}>})$$
+
+Thus, the loss function is
+
+$$L(\theta) = \sum_{i=1]}^n log (1 + e^{y^{(i)} * <\theta, x^{(i)}>})$$
+
+where $y^{(i)} = 1$ or $y^{(i)} = -1$.
+
+## Part b: Derive the gradient of the loss function with respect to model parameters: $\frac{dL(\theta)}{d\theta}$.
 
 
 
