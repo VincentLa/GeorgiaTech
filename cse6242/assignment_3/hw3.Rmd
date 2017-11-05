@@ -16,11 +16,13 @@ output:
 
 require(ggplot2)
 require(GGally)
+require(plyr)
 ```
 
 # Question 1: Data Preprocessing
 
 ```{r preprocessing, eval = FALSE, echo = FALSE}
+setwd("~/git/GeorgiaTech/cse6242/assignment_3")
 train = read.csv('./mnist/mnist_train.csv', header=FALSE)
 test = read.csv('./mnist/mnist_test.csv', header=FALSE)
 
@@ -90,16 +92,255 @@ image(rotate(ex_5_matrix))
 
 Taken from the lecture "MLE and Iterative Optimization":
 
-$$\hat{\theta}_{MLE} = argmin_{\theta} \sum_{i=1]}^n log (1 + e^{y^{(i)} * <\theta, x^{(i)}>})$$
+$$\hat{\theta}_{MLE} = argmin_{\theta} \sum_{i=1}^n log (1 + e^{y^{(i)} * <\theta, x^{(i)}>})$$
 
 Thus, the loss function is
 
-$$L(\theta) = \sum_{i=1]}^n log (1 + e^{y^{(i)} * <\theta, x^{(i)}>})$$
+$$L(\theta) = \sum_{i=1}^n log (1 + e^{y^{(i)} * <\theta, x^{(i)}>})$$
 
 where $y^{(i)} = 1$ or $y^{(i)} = -1$.
 
-## Part b: Derive the gradient of the loss function with respect to model parameters: $\frac{dL(\theta)}{d\theta}$.
+## Part b: Derive the gradient of the loss function with respect to model parameters: $\frac{dL(\theta)}{d\theta}$ or $\frac{\partial L(\theta)}{\partial \theta_j}$.
+
+$$\frac{\partial L(\theta)}{\partial \theta_j} = \frac{\partial \sum_{i=1}^n log(1 + e^{y^{(i)} * <\theta, x^{(i)}>})}{\theta_j}$$
+
+Furthermore, we know that $\frac{\partial}{\partial x} log(x) = \frac{1}{x}$. Also, we can use the chain rule here to complete the derivative.
+
+$$\frac{\partial L(\theta)}{\partial \theta_j} = \sum_{i=1}^n \frac{1}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}} * \frac{\partial}{\partial \theta_j} e^{y^{(i)} * <\theta, x^{(i)}>}$$
+
+$$\frac{\partial L(\theta)}{\partial \theta_j} = \sum_{i=1}^n \frac{e^{y^{(i)} * <\theta, x^{(i)}>}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}} * \frac{\partial}{\partial \theta_j} (y^{(i)} * <\theta, x^{(i)}>)$$
+
+$$\frac{\partial L(\theta)}{\partial \theta_j} = \sum_{i=1}^n \frac{(e^{y^{(i)} * <\theta, x^{(i)}>}) * y^{(i)} x_{j}^{(i)}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}}$$
+
+## Part c: Based on this gradient, express the Stochastic Gradient Descent (SGD) update rule that uses a single sample $<x^{(i)}, y^{(i)}>$ at a time.
+
+Stochastic Gradient Descent (SGD) can be used when your data is very big. The steps are:
+
+1. Initialize the dimensions of $\theta$ vector to random values. 
+2. Pick one labeled data vector $(x^{(i)}, y^{(i)})$ randomly, and update for each $j = 1, ..., d: \theta_i \leftarrow \theta_j - \alpha \frac{\partial log(1 + exp(y^{(i)} < \theta, x^{(i)} >))}{\partial \theta_j}$
+3. Repeat step (2) until the updates of the dimensions of $\theta$ become too small. 
+
+So basically substituting in the expression for $\frac{\partial}{\partial \theta_j} log(1 + exp(y^{(i)} < \theta, x^{(i)} >))$ that we found previously, we get:
+
+$$\frac{\partial}{\partial \theta_j} log(1 + exp(y^{(i)} < \theta, x^{(i)} >)) = \frac{(e^{y^{(i)} * <\theta, x^{(i)}>}) * y^{(i)} x_{j}^{(i)}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}}$$
+
+Thus, the update rule becomes,
+
+for each $j = 1, ..., d: \theta_i \leftarrow \theta_j - \alpha * \frac{(e^{y^{(i)} * <\theta, x^{(i)}>}) * y^{(i)} x_{j}^{(i)}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}}$
+
+## Part d: Write pseudocode for training a model using Logistic Regression and SGD.
+
+1. for (j from 1, ..., d), initialize $\theta_j$ to random values. (Initialize the dimensions of $\theta$ vector to random values.)
+2. Pick one labeled data vector randomly, call it $(x^{(i)}, y^{(i)})$
+3. for (j from 1, ..., d) set $\theta_i$ equal to $\theta_j - \alpha * \frac{(e^{y^{(i)} * <\theta, x^{(i)}>}) * y^{(i)} x_{j}^{(i)}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}}$, where $\alpha$ is some step size, decaying as the gradient descent iterations increase.
+4. Repeat step (3) until the updates of the dimensions of $\theta$ become too small. To be more specific, compute the loss function at epoch, $e$ and then recompute the loss function at the next epoch $e + 1$. If the difference in the loss function is less than some small number, say 0.1, then we terminate.
+
+## Part e: Estimate the number of operations per epoch of SGD, where an epoch is one complete iteration through all the training samples. Express this is Big-O notation, in terms of the number of samples (n) and the dimensionality of each sample (d).
+
+# Section 3: Implementation
+
+```{r implementation-functions}
+# Processing the Data
+## Changing the labels to vectors. Also map values 0 and 3 to -1; 1 and 5 to 1
+train_labels_0_1 = as.vector(train_labels_0_1, mode='numeric')
+train_labels_0_1 = mapvalues(train_labels_0_1, from=c(0, 3), to=c(-1, -1), warn_missing=FALSE)
+
+train_labels_3_5 = as.vector(train_labels_3_5, mode='numeric')
+train_labels_3_5 = mapvalues(train_labels_3_5, from=c(0, 3), to=c(-1, -1), warn_missing=FALSE)
+train_labels_3_5 = mapvalues(train_labels_3_5, from=c(5), to=c(1), warn_missing=FALSE)
+
+test_labels_0_1 = as.vector(test_labels_0_1, mode='numeric')
+test_labels_0_1 = mapvalues(test_labels_0_1, from=c(0, 3), to=c(-1, -1), warn_missing=FALSE)
+
+test_labels_3_5 = as.vector(test_labels_3_5, mode='numeric')
+test_labels_3_5 = mapvalues(test_labels_3_5, from=c(0, 3), to=c(-1, -1), warn_missing=FALSE)
+test_labels_3_5 = mapvalues(test_labels_3_5, from=c(5), to=c(1), warn_missing=FALSE)
+
+## Adding the bias term
+train_0_1_w_bias = rbind(train_0_1, rep(1, ncol(train_0_1)))
+train_3_5_w_bias = rbind(train_3_5, rep(1, ncol(train_3_5)))
+test_0_1_w_bias = rbind(test_0_1, rep(1, ncol(test_0_1)))
+test_3_5_w_bias = rbind(test_3_5, rep(1, ncol(test_3_5)))
 
 
+compute_loss = function(data, labels, theta){
+  # Helper function to compute value of loss function
+  
+  n = ncol(data)
+  loss = 0
+  for(i in 1:n){
+    x_i = data[, i]
+    y_i = labels[i]
+    loss = loss + log(1 + exp(y_i * (theta %*% x_i)))
+  }
+  return(loss)
+}
 
+train = function(data, labels, alpha){
+  # Train a Logistic Regression model
+  # Keyword args:
+  #   data: matrix or dataframe containing the input features (x^(i))
+  #   labels: vector containing the corresponding labels (y^(i))
+  #   alpha: learning rate hyperparameter
+  # Returns:
+  #   theta: vector of model parameters (theta) that minimizes the logistic regression loss L(theta)
+  
+  # Don't need this in the end delete
+  # data=train_0_1
+  # alpha = 0.01
+  # labels=train_labels_0_1
+  
+  # Preprocessing
+  d = nrow(data)
+  n = ncol(data)
+  epochs = 200  # Total number of epochs, arbitrarily set to 100 for now
+  
+  # 1. Initialize theta_j to random values
+  theta = runif(d, 0, 1)
+  e = 1
 
+  while(e <= epochs){
+    # For each epoch shuffle the data
+    data <- data[, sample(ncol(data))]
+    
+    prev_theta = theta
+    prev_loss = compute_loss(data, labels, prev_theta)
+    for(i in 1:n){
+      # 2. Pick one labeled data vector. This works because we earlier shuffled the data
+      x_i = data[, i]
+      y_i = labels[i]
+      
+      # 3. Apply update rule
+      ## NOT REALLY SURE WHAT THE UPDATE RULE IS MUST BE WRONG
+      #update = (alpha * exp(y_i * (theta %*% x_i)) * y_i * x_i)/(1 + exp(y_i * (theta %*% x_i)))
+      update = (alpha * y_i * x_i)/(1 + exp(y_i * (theta %*% x_i)))
+      theta = theta + update 
+    }
+    
+    loss = compute_loss(data, labels, theta)
+    print('here')
+    print(e)
+    print(theta)
+    if(abs(loss - prev_loss) <= 0.1){
+      e = epochs + 1  # Break the loop
+    } else{
+      e = e + 1
+    }
+  }
+  
+  # After algorithm has converged, return theta
+  return(theta)
+}
+
+predict = function(theta, data){
+  # Train a Logistic Regression model
+  # Keyword args:
+  #   theta: vector of model parameters (theta), as returned by train()
+  #   data: matrix or dataframe containing the input features (x^(i))
+  # Returns:
+  #   labels: vector containing predicted labels (\hat{y}^(i))
+  data = as.matrix(data)
+  labels = sign(theta %*% data)
+  return(as.vector(labels, mode='numeric'))
+}
+
+# Setting alpha constant
+alpha = 0.01
+
+theta_0_1 = train(data=train_0_1_w_bias, labels=train_labels_0_1, alpha=alpha)
+training_pred_0_1 = predict(theta_0_1, data=train_0_1_w_bias)
+
+theta_3_5 = train(data=train_3_5_w_bias, labels=train_labels_3_5, alpha=alpha)
+training_pred_3_5 = predict(theta_3_5, data=train_3_5_w_bias)
+
+table(training_pred_0_1, train_labels_0_1)
+table(training_pred_3_5, train_labels_3_5)
+```
+
+### Implementation Notes
+Note that to implement this algorithm, I added a row (basically another feature) for the bias term (a vector one 1's). This allows it so that the hyperplane classifier does not have to necessarily pass through the origin. Furthermore, I mapped the values (0,1) to (-1, +1), respectively. In addition, I mapped the values (3,5) to (-1, +1) as well, respectively.
+
+### Initialization Method
+I initialized $\theta$ with uniform random values between [0, 1]
+
+### Convergence Criteria
+I calculated the Loss function at epoch, $e$, and epoch $e+1$ if the difference in the loss function is less than or equal to 0.1, I stop and consider it converged.
+
+### Modifications
+One minor modification is that I do shuffle the data for each epoch. Otherwise, mostly the same as the update rule discussed in Problem (2). 
+
+### Visualizations
+Below we show the visualizations of the numbers along with the true label and predicted label. Recall that we transformed the labels such that (0, 3) got mapped to (-1) and (1, 5) got mapped to (+1).
+
+```{r implementation-visualizations}
+# First, we will visualize 2 correct predictions for the 0/1 and 3/5 training sets (4 total visualizations)
+correct_0_1_a = which(training_pred_0_1 == train_labels_0_1)[1]
+correct_0_1_b = which(training_pred_0_1 == train_labels_0_1)[2]
+correct_3_5_a = which(training_pred_3_5 == train_labels_3_5)[1]
+correct_3_5_b = which(training_pred_3_5 == train_labels_3_5)[2]
+
+correct_0_1_a_matrix = matrix(train_0_1[, correct_0_1_a], nrow=28, ncol=28)
+correct_0_1_b_matrix = matrix(train_0_1[, correct_0_1_b], nrow=28, ncol=28)
+correct_3_5_a_matrix = matrix(train_3_5[, correct_3_5_a], nrow=28, ncol=28)
+correct_3_5_b_matrix = matrix(train_3_5[, correct_3_5_b], nrow=28, ncol=28)
+
+image(rotate(correct_0_1_a_matrix), main=paste('True Label = ', train_labels_0_1[correct_0_1_a], 'Predicted Label = ', training_pred_0_1[correct_0_1_a]))
+image(rotate(correct_0_1_b_matrix), main=paste('True Label = ', train_labels_0_1[correct_0_1_b], 'Predicted Label = ', training_pred_0_1[correct_0_1_b]))
+image(rotate(correct_3_5_a_matrix), main=paste('True Label = ', train_labels_3_5[correct_3_5_a], 'Predicted Label = ', training_pred_3_5[correct_3_5_a]))
+image(rotate(correct_3_5_b_matrix), main=paste('True Label = ', train_labels_3_5[correct_3_5_b], 'Predicted Label = ', training_pred_3_5[correct_3_5_b]))
+
+mapvalues(test_labels_3_5, from=c(0, 3), to=c(-1, -1), warn_missing=FALSE)
+# Second, we will visualize 2 incorrect predictions for the 0/1 and 3/5 training sets (4 total visualizations)
+incorrect_0_1_a = which(training_pred_0_1 != train_labels_0_1)[1]
+incorrect_0_1_b = which(training_pred_0_1 != train_labels_0_1)[2]
+incorrect_3_5_a = which(training_pred_3_5 != train_labels_3_5)[1]
+incorrect_3_5_b = which(training_pred_3_5 != train_labels_3_5)[2]
+
+incorrect_0_1_a_matrix = matrix(train_0_1[, incorrect_0_1_a], nrow=28, ncol=28)
+incorrect_0_1_b_matrix = matrix(train_0_1[, incorrect_0_1_b], nrow=28, ncol=28)
+incorrect_3_5_a_matrix = matrix(train_3_5[, incorrect_3_5_a], nrow=28, ncol=28)
+incorrect_3_5_b_matrix = matrix(train_3_5[, incorrect_3_5_b], nrow=28, ncol=28)
+
+image(rotate(incorrect_0_1_a_matrix), main=paste('True Label = ', train_labels_0_1[incorrect_0_1_a], 'Predicted Label = ', training_pred_0_1[incorrect_0_1_a]))
+image(rotate(incorrect_0_1_b_matrix), main=paste('True Label = ', train_labels_0_1[incorrect_0_1_b], 'Predicted Label = ', training_pred_0_1[incorrect_0_1_b]))
+image(rotate(incorrect_3_5_a_matrix), main=paste('True Label = ', train_labels_3_5[incorrect_3_5_a], 'Predicted Label = ', training_pred_3_5[incorrect_3_5_a]))
+image(rotate(incorrect_3_5_b_matrix), main=paste('True Label = ', train_labels_3_5[incorrect_3_5_b], 'Predicted Label = ', training_pred_3_5[incorrect_3_5_b]))
+```
+
+# Section 4: Modeling
+
+```{r modeling}
+accuracy = function(labels, labels_pred){
+  # Compute the prediction accuracy
+  # Keyword args:
+  #   labels: vector containing the true labels (y(i))
+  #   labels_pred: vector containing predicted labels (\hat{y}^(i))
+  # Returns:
+  #   acc: fraction of predicted labels that match true labels, as a number between 0 and 1
+  tab = as.matrix(table(labels, labels_pred))
+  true_negatives = tryCatch(tab[1, 1], error = function(e) 0)
+  true_positives = tryCatch(tab[2, 2], error = function(e) 0)
+  return((true_positives + true_negatives)/sum(tab))
+}
+
+model = function(train_data, train_labels, test_data, test_labels, alpha){
+  # Train and evaluate a model.
+  # Keyword args:
+  #   train_data, train_labels: samples to be used for training, and for computing training accuracy
+  #   test_data, test_samples: unseen samples for computing test accuracy
+  #   alpha: learning rate hyperparameter for training
+  # Returns:
+  #   theta: learned model parameters
+  #   train_acc: prediction accuracy on training data
+  #   test_acc: prediction accuracy on test data
+  
+  theta = train(data=train_data, labels=train_labels, alpha=alpha)
+  train_pred = predict(theta=theta, data=train_data)
+  test_pred = predict(theta=theta, data=test_data)
+  
+  train_acc = accuracy(train_labels, train_pred)
+  test_acc = accuract(test_labels, test_pred)
+  
+  return(list('theta'=theta, 'train_acc'=train_acc, 'test_acc'=test_acc))
+}
+```
