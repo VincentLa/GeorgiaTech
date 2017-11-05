@@ -1,7 +1,7 @@
 ---
 title: "CSE 6242 Assignment 3"
 author: Vincent La (Georgia Tech ID - vla6)
-date: October 21, 2017
+date: November 5, 2017
 output:
   pdf_document:
     pandoc_args: [
@@ -54,11 +54,6 @@ train_3_5 = train[train_3_5_cols]
 test_0_1 = test[test_0_1_cols]
 test_3_5 = test[test_3_5_cols]
 
-print(dim(train_0_1))
-print(dim(train_3_5))
-print(dim(test_0_1))
-print(dim(test_3_5))
-
 # Removing true image labels
 train_labels_0_1 = train_0_1[last_row, ]
 test_labels_0_1 = test_0_1[last_row, ]
@@ -77,62 +72,78 @@ ex_0_matrix = matrix(train_0_1[, 'V1'], nrow=28, ncol=28)
 ex_1_matrix = matrix(train_0_1[, 'V12664'], nrow=28, ncol=28)
 ex_3_matrix = matrix(train_3_5[, 'V12666'], nrow=28, ncol=28)
 ex_5_matrix = matrix(train_3_5[, 'V24217'], nrow=28, ncol=28)
-
-# Taken from https://www.r-bloggers.com/creating-an-image-of-a-matrix-in-r-using-image/
-rotate <- function(x) t(apply(x, 2, rev))
-image(rotate(ex_0_matrix))
-image(rotate(ex_1_matrix))
-image(rotate(ex_3_matrix))
-image(rotate(ex_5_matrix))
 ```
 
+```{r viz-class0}
+# Taken from https://www.r-bloggers.com/creating-an-image-of-a-matrix-in-r-using-image/
+rotate <- function(x) t(apply(x, 2, rev))
+image(rotate(ex_0_matrix), main='Class 0')
+```
+
+```{r viz-class1}
+image(rotate(ex_1_matrix), main='Class 1')
+```
+
+```{r viz-class3}
+image(rotate(ex_3_matrix), main='Class 3')
+```
+
+```{r viz-class5}
+image(rotate(ex_5_matrix), main='Class 5')
+```
 # Question 2: Theory
 
 ## Part a: Write down the formula for the loss function used in Logistic Regression, the expression that you want to minimize: L($\theta$)
 
-Taken from the lecture "MLE and Iterative Optimization":
+Taken from the lectures and this Piazza Post: https://piazza.com/class/j6gt7ycx6nk145?cid=631, the loss function is
 
-$$\hat{\theta}_{MLE} = argmin_{\theta} \sum_{i=1}^n log (1 + e^{y^{(i)} * <\theta, x^{(i)}>})$$
-
-Thus, the loss function is
-
-$$L(\theta) = \sum_{i=1}^n log (1 + e^{y^{(i)} * <\theta, x^{(i)}>})$$
+$$L(\theta) = \sum_{i=1}^n log (1 + e^{-y^{(i)} * <\theta, x^{(i)}>})$$
 
 where $y^{(i)} = 1$ or $y^{(i)} = -1$.
 
 ## Part b: Derive the gradient of the loss function with respect to model parameters: $\frac{dL(\theta)}{d\theta}$ or $\frac{\partial L(\theta)}{\partial \theta_j}$.
 
-$$\frac{\partial L(\theta)}{\partial \theta_j} = \frac{\partial \sum_{i=1}^n log(1 + e^{y^{(i)} * <\theta, x^{(i)}>})}{\theta_j}$$
+$$\frac{\partial L(\theta)}{\partial \theta_j} = \frac{\partial \sum_{i=1}^n log(1 + e^{-y^{(i)} * <\theta, x^{(i)}>})}{\theta_j}$$
 
 Furthermore, we know that $\frac{\partial}{\partial x} log(x) = \frac{1}{x}$. Also, we can use the chain rule here to complete the derivative.
 
-$$\frac{\partial L(\theta)}{\partial \theta_j} = \sum_{i=1}^n \frac{1}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}} * \frac{\partial}{\partial \theta_j} e^{y^{(i)} * <\theta, x^{(i)}>}$$
+$$\frac{\partial L(\theta)}{\partial \theta_j} = \sum_{i=1}^n \frac{1}{1 + e^{-y^{(i)} * <\theta, x^{(i)}>}} * \frac{\partial}{\partial \theta_j} e^{-y^{(i)} * <\theta, x^{(i)}>}$$
 
-$$\frac{\partial L(\theta)}{\partial \theta_j} = \sum_{i=1}^n \frac{e^{y^{(i)} * <\theta, x^{(i)}>}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}} * \frac{\partial}{\partial \theta_j} (y^{(i)} * <\theta, x^{(i)}>)$$
+$$\frac{\partial L(\theta)}{\partial \theta_j} = \sum_{i=1}^n \frac{e^{-y^{(i)} * <\theta, x^{(i)}>}}{1 + e^{-y^{(i)} * <\theta, x^{(i)}>}} * \frac{\partial}{\partial \theta_j} (-y^{(i)} * <\theta, x^{(i)}>)$$
 
-$$\frac{\partial L(\theta)}{\partial \theta_j} = \sum_{i=1}^n \frac{(e^{y^{(i)} * <\theta, x^{(i)}>}) * y^{(i)} x_{j}^{(i)}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}}$$
+$$\frac{\partial L(\theta)}{\partial \theta_j} = \sum_{i=1}^n \frac{(e^{-y^{(i)} * <\theta, x^{(i)}>}) * -y^{(i)} x_{j}^{(i)}}{1 + e^{-y^{(i)} * <\theta, x^{(i)}>}}$$
+
+However, notice that the following identity holds:
+
+$$\frac{1}{1 + e^{-y^{(i)} * <\theta, x^{(i)}>}} = \frac{e^{y^{(i)} * <\theta, x^{(i)}>}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}}$$
+
+Substituting this expression into the above, we get:
+
+$$\frac{\partial L(\theta)}{\partial \theta_j} = \sum_{i=1}^n \frac{(e^{0}) * -y^{(i)} x_{j}^{(i)}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}}$$
+
+$$\frac{\partial L(\theta)}{\partial \theta_j} = \sum_{i=1}^n \frac{-y^{(i)} x_{j}^{(i)}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}}$$
 
 ## Part c: Based on this gradient, express the Stochastic Gradient Descent (SGD) update rule that uses a single sample $<x^{(i)}, y^{(i)}>$ at a time.
 
 Stochastic Gradient Descent (SGD) can be used when your data is very big. The steps are:
 
 1. Initialize the dimensions of $\theta$ vector to random values. 
-2. Pick one labeled data vector $(x^{(i)}, y^{(i)})$ randomly, and update for each $j = 1, ..., d: \theta_i \leftarrow \theta_j - \alpha \frac{\partial log(1 + exp(y^{(i)} < \theta, x^{(i)} >))}{\partial \theta_j}$
+2. Pick one labeled data vector $(x^{(i)}, y^{(i)})$ randomly, and update for each $j = 1, ..., d: \theta_i \leftarrow \theta_j - \alpha \frac{\partial log(1 + exp(-y^{(i)} < \theta, x^{(i)} >))}{\partial \theta_j}$
 3. Repeat step (2) until the updates of the dimensions of $\theta$ become too small. 
 
-So basically substituting in the expression for $\frac{\partial}{\partial \theta_j} log(1 + exp(y^{(i)} < \theta, x^{(i)} >))$ that we found previously, we get:
+So basically substituting in the expression for $\frac{\partial}{\partial \theta_j} log(1 + exp(-y^{(i)} < \theta, x^{(i)} >))$ that we found previously, we get:
 
-$$\frac{\partial}{\partial \theta_j} log(1 + exp(y^{(i)} < \theta, x^{(i)} >)) = \frac{(e^{y^{(i)} * <\theta, x^{(i)}>}) * y^{(i)} x_{j}^{(i)}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}}$$
+$$\frac{\partial}{\partial \theta_j} log(1 + exp(-y^{(i)} < \theta, x^{(i)} >)) = \frac{-y^{(i)} x_{j}^{(i)}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}}$$
 
 Thus, the update rule becomes,
 
-for each $j = 1, ..., d: \theta_i \leftarrow \theta_j - \alpha * \frac{(e^{y^{(i)} * <\theta, x^{(i)}>}) * y^{(i)} x_{j}^{(i)}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}}$
+for each $j = 1, ..., d: \theta_i \leftarrow \theta_j + \alpha * \frac{y^{(i)} x_{j}^{(i)}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}}$
 
 ## Part d: Write pseudocode for training a model using Logistic Regression and SGD.
 
 1. for (j from 1, ..., d), initialize $\theta_j$ to random values. (Initialize the dimensions of $\theta$ vector to random values.)
 2. Pick one labeled data vector randomly, call it $(x^{(i)}, y^{(i)})$
-3. for (j from 1, ..., d) set $\theta_i$ equal to $\theta_j - \alpha * \frac{(e^{y^{(i)} * <\theta, x^{(i)}>}) * y^{(i)} x_{j}^{(i)}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}}$, where $\alpha$ is some step size, decaying as the gradient descent iterations increase.
+3. for (j from 1, ..., d) set $\theta_i$ equal to $\theta_j + \alpha * \frac{y^{(i)} x_{j}^{(i)}}{1 + e^{y^{(i)} * <\theta, x^{(i)}>}}$, where $\alpha$ is some step size, learning parameter.
 4. Repeat step (3) until the updates of the dimensions of $\theta$ become too small. To be more specific, compute absolute sum of the updates to each $\theta_j$ at each iteration, If the absolute sum of the updates is small, say 0.000001, then terminate.
 
 ## Part e: Estimate the number of operations per epoch of SGD, where an epoch is one complete iteration through all the training samples. Express this is Big-O notation, in terms of the number of samples (n) and the dimensionality of each sample (d).
@@ -376,7 +387,7 @@ In the next section, we will evalute models over different values of $\alpha$, t
 
 ```{r modeling-evaluate-w-alpha}
 # Now vary alpha
-alphas = c(0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10)
+alphas = c(0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10, 0.2, 0.3, 0.4, 0.5)
 num_runs = 10
 
 train_accs_0_1 = c()
