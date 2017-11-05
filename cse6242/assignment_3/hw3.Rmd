@@ -176,6 +176,13 @@ compute_loss = function(data, labels, theta){
   return(loss)
 }
 
+compute_loss_vectorized = function(data, labels, theta){
+  # Helper function to compute value of loss function
+  n = ncol(data)
+  loss = log(1 + exp((theta %*% as.matrix(data)) %*% labels))
+  return(loss)
+}
+
 train = function(data, labels, alpha){
   # Train a Logistic Regression model
   # Keyword args:
@@ -193,7 +200,7 @@ train = function(data, labels, alpha){
   # Preprocessing
   d = nrow(data)
   n = ncol(data)
-  epochs = 200  # Total number of epochs, arbitrarily set to 100 for now
+  epochs = 20  # Total number of epochs, arbitrarily set to 100 for now
   
   # 1. Initialize theta_j to random values
   theta = runif(d, 0, 1)
@@ -218,9 +225,11 @@ train = function(data, labels, alpha){
     }
     
     loss = compute_loss(data, labels, theta)
+    #loss_vectorized = compute_loss_vectorized(data, labels, theta)
     print('here')
     print(e)
-    print(theta)
+    print(loss)
+    #print(loss_vectorized)
     if(abs(loss - prev_loss) <= 0.1){
       e = epochs + 1  # Break the loop
     } else{
@@ -309,7 +318,7 @@ image(rotate(incorrect_3_5_b_matrix), main=paste('True Label = ', train_labels_3
 
 # Section 4: Modeling
 
-```{r modeling}
+```{r modeling-functions}
 accuracy = function(labels, labels_pred){
   # Compute the prediction accuracy
   # Keyword args:
@@ -339,8 +348,137 @@ model = function(train_data, train_labels, test_data, test_labels, alpha){
   test_pred = predict(theta=theta, data=test_data)
   
   train_acc = accuracy(train_labels, train_pred)
-  test_acc = accuract(test_labels, test_pred)
+  test_acc = accuracy(test_labels, test_pred)
   
   return(list('theta'=theta, 'train_acc'=train_acc, 'test_acc'=test_acc))
 }
+```
+
+```{r modeling-evaluate}
+model_0_1 = model(train_data=train_0_1_w_bias,
+                  train_labels=train_labels_0_1,
+                  test_data=test_0_1_w_bias,
+                  test_labels=test_labels_0_1,
+                  alpha=alpha)
+model_3_5 = model(train_data=train_3_5_w_bias,
+                  train_labels=train_labels_3_5,
+                  test_data=test_3_5_w_bias,
+                  test_labels=test_labels_3_5,
+                  alpha=alpha)
+
+print(paste('with alpha equal to', alpha, 'the training accuracy of model of 0/1 set is', model_0_1$train_acc, 'and the test accuracy of mode of 0/1 set is', model_0_1$test_acc))
+print(paste('with alpha equal to', alpha, 'the training accuracy of model of 3/5 set is', model_3_5$train_acc, 'and the test accuracy of mode of 3/5 set is', model_3_5$test_acc))
+
+# Now vary alpha
+alphas = c(0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10)
+
+models_0_1 = c()
+models_3_5 = c()
+train_accs_0_1 = c()
+train_accs_3_5 = c()
+test_accs_0_1 = c()
+test_accs_3_5 = c()
+for(alpha in alphas){
+  model_0_1 = model(train_data=train_0_1_w_bias,
+                                   train_labels=train_labels_0_1,
+                                   test_data=test_0_1_w_bias,
+                                   test_labels=test_labels_0_1,
+                                   alpha=alpha)
+  models_0_1 = c(models_0_1, model_0_1)
+  model_3_5 = model(train_data=train_3_5_w_bias,
+                                   train_labels=train_labels_3_5,
+                                   test_data=test_3_5_w_bias,
+                                   test_labels=test_labels_3_5,
+                                   alpha=alpha)
+  models_3_5 = c(models_3_5, model_3_5)
+  train_accs_0_1 = c(train_accs_0_1, model_0_1$train_acc)
+  train_accs_3_5 = c(train_accs_3_5, model_3_5$train_acc)
+  test_accs_0_1 = c(test_accs_0_1, model_0_1$test_acc)
+  test_accs_3_5 = c(test_accs_3_5, model_3_5$test_acc)
+}
+
+accuracy_type = c(rep('train', length(alphas)), rep('test', length(alphas)))
+accuracy_0_1 = c(train_accs_0_1, test_accs_0_1)
+accuracy_3_5 = c(train_accs_3_5, test_accs_3_5)
+
+df_0_1 = data.frame(alphas=alphas, accuracy_type=accuracy_type, accuracy=accuracy_0_1)
+df_3_5 = data.frame(alphas=alphas, accuracy_type=accuracy_type, accuracy=accuracy_3_5)
+
+# Plotting scatter plot accuracy
+ggplot(df_0_1, aes(x=alphas, y=accuracy)) +
+  geom_point(aes(color=accuracy_type, group=accuracy_type)) +
+  ggtitle('Training and Test Accuracy over 0/1 Model')
+
+ggplot(df_3_5, aes(x=alphas, y=accuracy)) +
+  geom_point(aes(color=accuracy_type, group=accuracy_type)) +
+  ggtitle('Training and Test Accuracy over 3/5 Model')
+```
+
+###Did you observe any difference in the accuracies for 0/1 and 3/5 models? If so, explain why do you think the difference might be.
+
+### Report the best test accuracy you could achieve for 0/1, and the best test accuracy for 3/5. These may be at different learning rate settings.
+
+### This assignment deals with binary classification. Explain what you would do if you had more than two classes to classify using Logistic Regression (e.g. with a combined 0/1/3/5 dataset).
+One way to do this is to take a one-vs-all appraoch. 
+Let's assume we have 3 classes, then you'd train 3 logistic regression classifiers
+
+class 1 vs class 2 & 3
+class 2 vs class 1 & 3
+class 3 vs class 1 & 2
+
+Then, when you make a prediction, you take the "argmax," that is, the predicted class is the class with the highest probability. The downside though is that the class probabilities are not "meaningful" (i.e,. the don't sum up to one). For example, you could end up with something like
+
+class 1 vs class 2 & 3 ---> 0.78
+class 2 vs class 1 & 3 ---> 0.67
+class 3 vs class 1 & 2 ---> 0.91
+=> predict class 3
+
+# Section 5: Learning Curves
+
+```{r learning-curves}
+sizes = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
+alpha = 0.1
+models_0_1 = c()
+models_3_5 = c()
+train_accs_0_1 = c()
+train_accs_3_5 = c()
+test_accs_0_1 = c()
+test_accs_3_5 = c()
+for(size in sizes){
+  print(size)
+  data_idx_0_1 = sample(ncol(train_0_1_w_bias) * size)
+  data_idx_3_5 = sample(ncol(train_3_5_w_bias) * size)
+  model_0_1 = model(train_data=train_0_1_w_bias[, data_idx_0_1],
+                    train_labels=train_labels_0_1[data_idx_0_1],
+                    test_data=test_0_1_w_bias,
+                    test_labels=test_labels_0_1,
+                    alpha=alpha)
+  models_0_1 = c(models_0_1, model_0_1)
+  model_3_5 = model(train_data=train_3_5_w_bias[, data_idx_3_5],
+                    train_labels=train_labels_3_5[data_idx_3_5],
+                    test_data=test_3_5_w_bias,
+                    test_labels=test_labels_3_5,
+                    alpha=alpha)
+  models_3_5 = c(models_3_5, model_3_5)
+  train_accs_0_1 = c(train_accs_0_1, model_0_1$train_acc)
+  train_accs_3_5 = c(train_accs_3_5, model_3_5$train_acc)
+  test_accs_0_1 = c(test_accs_0_1, model_0_1$test_acc)
+  test_accs_3_5 = c(test_accs_3_5, model_3_5$test_acc)
+}
+
+accuracy_type = c(rep('train', length(sizes)), rep('test', length(sizes)))
+accuracy_0_1 = c(train_accs_0_1, test_accs_0_1)
+accuracy_3_5 = c(train_accs_3_5, test_accs_3_5)
+
+df_0_1 = data.frame(sizes=sizes, accuracy_type=accuracy_type, accuracy=accuracy_0_1)
+df_3_5 = data.frame(sizes=sizes, accuracy_type=accuracy_type, accuracy=accuracy_3_5)
+
+# Plotting scatter plot accuracy
+ggplot(df_0_1, aes(x=sizes, y=accuracy)) +
+  geom_point(aes(color=accuracy_type, group=accuracy_type)) +
+  ggtitle('Training and Test Accuracy over 0/1 Model')
+
+ggplot(df_3_5, aes(x=sizes, y=accuracy)) +
+  geom_point(aes(color=accuracy_type, group=accuracy_type)) +
+  ggtitle('Training and Test Accuracy over 3/5 Model')
 ```
