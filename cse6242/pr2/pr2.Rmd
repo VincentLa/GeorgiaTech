@@ -32,6 +32,7 @@ _Note that **Setup** and **Data Preprocessing** steps do not carry any points, h
 Same as Project 1, load the dataset into memory:
 
 ```{r}
+setwd("~/git/GeorgiaTech/cse6242/pr2")
 load('movies_merged')
 ```
 
@@ -63,6 +64,7 @@ Before we start building models, we should clean up the dataset and perform any 
 
 ```{r}
 # TODO: Remove all rows from df that do not correspond to movies
+df <- df[df$Type == "movie",]
 ```
 
 ## 2. Drop rows with missing `Gross` value
@@ -71,6 +73,7 @@ Since our goal is to model `Gross` revenue against other variables, rows that ha
 
 ```{r}
 # TODO: Remove rows with missing Gross value
+df = df[which(!is.na(df$Gross)), ]
 ```
 
 ## 3. Exclude movies released prior to 2000
@@ -79,6 +82,10 @@ Inflation and other global financial factors may affect the revenue earned by mo
 
 ```{r}
 # TODO: Exclude movies released prior to 2000
+library(lubridate)  # Used to extract year from Released
+
+df$released_year = year(df$Released)
+df = df[which(df$released_year >= 2000), ]
 ```
 
 ## 4. Eliminate mismatched rows
@@ -87,6 +94,16 @@ _Note: You may compare the `Released` column (string representation of release d
 
 ```{r}
 # TODO: Remove mismatched rows
+# This is just taken from my work in pr1
+df$not_matched = (df$Year != df$released_year)
+
+# Number of rows with non-null Gross Value
+print(nrow(df))
+print(nrow(df[which(!is.na(df$Gross)), ]))
+
+# Remove mismatched rows
+df = df[which(!(df$not_matched == TRUE)), ]
+print(nrow(df))
 ```
 
 ## 5. Drop `Domestic_Gross` column
@@ -95,12 +112,34 @@ _Note: You may compare the `Released` column (string representation of release d
 
 ```{r}
 # TODO: Exclude the `Domestic_Gross` column
+df$Domestic_Gross = NULL
 ```
 
 ## 6. Process `Runtime` column
 
 ```{r}
 # TODO: Replace df$Runtime with a numeric column containing the runtime in minutes
+# Taking work from pr1
+extract_runtime = function(r){
+    times = unlist(r)
+    minutes = 0
+    for (i in 1:length(times) - 1){
+        if (times[i + 1] == 'h'){
+            minutes = minutes + as.numeric(times[i]) * 60
+        } else if (times[i + 1] == 'min'){
+            minutes = minutes + as.numeric(times[i])
+        }
+    }
+    if (minutes == 0){
+        return(NA)
+    } else{
+        return(minutes)
+    }
+}
+
+y=strsplit(df$Runtime,' ')
+new_runtimes = unlist(lapply(y, extract_runtime))
+df$Runtime = new_runtimes
 ```
 
 Perform any additional preprocessing steps that you find necessary, such as dealing with missing values or highly correlated columns (feel free to add more code chunks, markdown blocks and plots here as necessary).
@@ -117,6 +156,8 @@ Report the dimensions of the preprocessed dataset you will be using for modeling
 
 ```{r}
 # TODO: Print the dimensions of the final preprocessed dataset and column names
+cat("Dataset has", dim(df)[1], "rows and", dim(df)[2], "columns", end="\n", file="")
+colnames(df)
 ```
 
 # Evaluation Strategy
@@ -133,6 +174,34 @@ Now use the following evaluation procedure for each model:
 
 You can define a helper function that applies this procedure to a given set of features and reuse it.
 
+```{r}
+# Setting up Training and Test DF
+set.seed(1) # Set Seed so that same sample can be reproduced in future also
+
+# Now Selecting 80% of data as sample from total 'n' rows of the data  
+sample <- sample.int(n = nrow(df), size = floor(.8*nrow(df)), replace = F)
+train_df <- df[sample, ]
+test_df  <- df[-sample, ]
+
+# Create training set size vector
+train_sizes = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
+```
+
+```{r}
+# Helper Functions
+getrmse = function(mod, test_df){
+    # From https://stackoverflow.com/questions/43123462/how-to-obtain-rmse-out-of-lm-result
+    train_rss = c(crossprod(mod$residuals))
+    train_mse = train_rss / length(mod$residuals)
+    train_rmse = sqrt(train_mse)
+    
+    test_rmse = sqrt(mean((test_df$Gross - predict.lm(mod, test_df)) ^ 2, na.rm=TRUE))
+    
+    return(list('train_rmse'=train_rmse,
+                'test_rmse'=test_rmse))
+}
+```
+
 # Tasks
 
 Each of the following tasks is worth 20 points, for a total of 100 points for this project. Remember to build each model as specified, evaluate it using the strategy outlined above, and plot the training and test errors by training set size (%).
@@ -143,17 +212,62 @@ Use Linear Regression to predict `Gross` based on available _numeric_ variables.
 
 ```{r}
 # TODO: Build & evaluate model 1 (numeric variables only)
+numeric_cols = colnames(df[, sapply(df, is.numeric)])
+print(numeric_cols)
+print(summary(df[, numeric_cols]))
+
+# Number of times to repeat training for stability
+num_repeat = 10
+model_exp = 'Gross ~ Year + Runtime + imdbRating + imdbVotes + tomatoMeter + tomatoRating + tomatoReviews + tomatoFresh +  tomatoUserMeter + tomatoUserRating + tomatoUserReviews + Budget'
+
+train_rmse_all = c()
+test_rmse_all = c()
+for(train_size in train_sizes){
+  train_rmse_one_size = c()
+  test_rmse_one_size = c()
+  for(r in 1:num_repeat){
+    sample <- sample.int(n = nrow(train_df), size = floor(train_size*nrow(train_df)), replace = F)
+    train_df_subset = train_df[sample, ]
+    
+    # Training and evaluating model
+    mod1 = lm(model_exp, data=train_df_subset)
+    model_eval = getrmse(mod1, test_df)
+    train_rmse = model_eval$train_rmse
+    test_rmse = model_eval$test_rmse
+    
+    train_rmse_one_size = c(train_rmse_one_size, train_rmse)
+    test_rmse_one_size = c(test_rmse_one_size, test_rmse)
+  }
+  train_rmse_all = c(train_rmse_all, mean(train_rmse_one_size))
+  test_rmse_all = c(test_rmse_all, mean(test_rmse_one_size))
+}
+
+rmse_type = c(rep('train', length(train_sizes)), rep('test', length(train_sizes)))
+rmses = c(train_rmse_all, test_rmse_all)
+
+df_eval = data.frame(train_size=train_sizes, rmse_type=rmse_type, rmses=rmses)
+
+ggplot(data=df_eval, aes(x=train_size, y=rmses)) +
+  geom_line(aes(color=rmse_type, group=rmse_type)) +
+  ggtitle('Training and Test RMSE')
 ```
 
 **Q**: List the numeric variables you used.
 
 **A**: 
-
+The numeric variables that we used were `r {numeric_cols}`.
 
 **Q**: What is the best mean test RMSE value you observed, and at what training set size?
 
 **A**: 
 
+```{r}
+# Best test RMSE
+best_testrmse_mod1 = min(df_eval[df_eval$rmse_type=='test', 'rmses'])
+best_train_size_mod1 = train_sizes[which.min(df_eval[df_eval$rmse_type=='test', 'rmses'])]
+```
+
+The best mean test RMSE value I observed was `r {best_testrmse_mod1}` and I observed that at the training set size `r {best_train_size_mod1 * 100}` percent. Notice from the graph above as well that we see that Test RMSE generally decreases with higher training set. This makes sense because with very low training set size, the model will overfit the more limited data.
 
 ## 2. Feature transformations
 
@@ -161,6 +275,11 @@ Try to improve the prediction quality from **Task 1** as much as possible by add
 
 ```{r}
 # TODO: Build & evaluate model 2 (transformed numeric variables only)
+
+# Reporting model summary from mod1
+mod1 = lm(model_exp, data=train_df)
+print(summary(mod1))
+
 ```
 
 **Q**: Explain which transformations you used and why you chose them.
