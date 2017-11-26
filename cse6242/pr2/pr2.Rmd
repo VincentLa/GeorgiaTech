@@ -49,7 +49,12 @@ colnames(df)
 Load any R packages that you will need to use. You can come back to this chunk, edit it and re-run to load any additional packages later.
 
 ```{r}
+library(GGally)  # Used for ggpairs
 library(ggplot2)
+library(lubridate)  # Used to extract year from Released
+library(qdapTools)  # Used for mtabulate (to one-hot encode a column)
+library(reshape)  # Used for melt function
+library(stringi)  # Used for processing Awards
 ```
 
 If you are using any non-standard packages (ones that have not been discussed in class or explicitly allowed for this project), please mention them below. Include any special instructions if they cannot be installed using the regular `install.packages('<pkg name>')` command.
@@ -82,8 +87,6 @@ Inflation and other global financial factors may affect the revenue earned by mo
 
 ```{r}
 # TODO: Exclude movies released prior to 2000
-library(lubridate)  # Used to extract year from Released
-
 df$released_year = year(df$Released)
 df = df[which(df$released_year >= 2000), ]
 ```
@@ -94,8 +97,8 @@ _Note: You may compare the `Released` column (string representation of release d
 
 ```{r}
 # TODO: Remove mismatched rows
-# This is just taken from my work in pr1
-df$not_matched = (df$Year != df$released_year)
+# This is just taken from my work in pr1; only drop if the difference in the years is 2 or greater.
+df$not_matched = (abs(df$Year != df$released_year) >= 2)
 
 # Number of rows with non-null Gross Value
 print(nrow(df))
@@ -146,6 +149,44 @@ Perform any additional preprocessing steps that you find necessary, such as deal
 
 ```{r}
 # TODO(optional): Additional preprocessing
+
+# Plotting Correlation Plots of the different Rating Columns:
+ggpairs(df[c('imdbRating', 'tomatoRating', 'tomatoUserRating', 'tomatoMeter')])
+
+# Plotting Correlation Plots of the different Review number Columns:
+ggpairs(df[c('imdbVotes', 'tomatoReviews', 'tomatoUserReviews')])
+
+# Remove tomato-like Columns to avoid high variance in models.
+df$tomatoMeter = NULL
+df$tomatoRating = NULL
+df$tomatoReviews = NULL
+df$tomatoFresh = NULL
+df$tomatoRotten = NULL
+df$tomatoUserMeter = NULL
+df$tomatoUserRating = NULL
+df$tomatoUserReviews = NULL
+
+# Remove Year since we will use released_year column
+df$Year = NULL
+
+# Also creating categorical value for runtime, just as we did in Project 1 to explore relationships
+df$runtime_categorical = ifelse(df$Runtime <= 68, 'short', ifelse(df$Runtime <= 101, 'medium', 'long'))
+```
+
+From the above, notice that `imdbRating` is very highly correlated with `tomatoRating`, `tomatoUserRating` and `tomatoMeter`. Thus, to avoid high variance in the models, it makes more sense to just include `imdbRating` as a proxy for the rating of the movie. 
+
+When plotting a similar plot for user reviews, it again, it looks like `imdbVotes` is highly correlated with `tomatoReviews`. Furthermore, while `imdbVotes` is not as correlated with `tomatoUserReviews`, there does seem to be still sufficient linear correlation. Based on these two plots, in this assignment, we're going to remove all the 'tomato' columns to avoid unnecessary potentially high variance in models (ala bias-variance tradeoff). It seems that both `imdbRating` and `imdbVotes` capture enough information along these dimensions.
+
+We will also remove movies released in 2017. Notice that if we look at the distribution of movies by year:
+
+```{r}
+table(df$released_year)
+```
+
+notice that only 4 movies were released in 2017 in our data set. This is probably just a consequence of when this data was pulled. It probably is not representative to include this data, since this is not actually representative of movies in 2017. Thus, we will remove these 4 observations
+
+```{r}
+df = df[which(df$released_year < 2017), ]
 ```
 
 _**Note**: Do NOT convert categorical variables (like `Genre`) into binary columns yet. You will do that later as part of a model improvement task._
@@ -176,12 +217,20 @@ You can define a helper function that applies this procedure to a given set of f
 
 ```{r}
 # Setting up Training and Test DF
-set.seed(1) # Set Seed so that same sample can be reproduced in future also
+split_train_test_df = function(df, train_split=0.8){
+  # Given a DataFrame, randomly split to training and test DataFrame
+  # Now Selecting 80% of data as sample from total 'n' rows of the data
+  set.seed(100)
+  sample <- sample.int(n = nrow(df), size = floor(.8*nrow(df)), replace = F)
+  train_df <- df[sample, ]
+  test_df  <- df[-sample, ]
+  return(list('train_df'=train_df,
+              'test_df'=test_df))
+}
 
-# Now Selecting 80% of data as sample from total 'n' rows of the data  
-sample <- sample.int(n = nrow(df), size = floor(.8*nrow(df)), replace = F)
-train_df <- df[sample, ]
-test_df  <- df[-sample, ]
+split_df = split_train_test_df(df, train_split=0.8)
+train_df = split_df$train_df
+test_df = split_df$test_df
 
 # Create training set size vector
 train_sizes = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
@@ -211,6 +260,50 @@ Each of the following tasks is worth 20 points, for a total of 100 points for th
 Use Linear Regression to predict `Gross` based on available _numeric_ variables. You can choose to include all or a subset of them.
 
 ```{r}
+# Helper function to build model
+eval_model = function(train_df, test_df, model_exp, train_sizes, num_repeat=10){
+  # Keyword Args:
+  #  train_df: Training DataFrame
+  #  test_df: Test DataFrame
+  #  model_exp: Expression of linear regression model as a string
+  # Returns: df_eval which is a DataFrame with test and train rmse
+  train_rmse_all = c()
+  test_rmse_all = c()
+  for(train_size in train_sizes){
+    train_rmse_one_size = c()
+    test_rmse_one_size = c()
+    for(r in 1:num_repeat){
+      sample <- sample.int(n = nrow(train_df), size = floor(train_size*nrow(train_df)), replace = F)
+      train_df_subset = train_df[sample, ]
+      
+      # Training and evaluating model
+      mod1 = lm(model_exp, data=train_df_subset)
+      model_eval = getrmse(mod1, test_df)
+      train_rmse = model_eval$train_rmse
+      test_rmse = model_eval$test_rmse
+      
+      train_rmse_one_size = c(train_rmse_one_size, train_rmse)
+      test_rmse_one_size = c(test_rmse_one_size, test_rmse)
+    }
+    train_rmse_all = c(train_rmse_all, mean(train_rmse_one_size))
+    test_rmse_all = c(test_rmse_all, mean(test_rmse_one_size))
+  }
+  
+  rmse_type = c(rep('train', length(train_sizes)), rep('test', length(train_sizes)))
+  rmses = c(train_rmse_all, test_rmse_all)
+  
+  df_eval = data.frame(train_size=train_sizes, rmse_type=rmse_type, rmses=rmses)
+  best_test_rmse = min(df_eval[df_eval$rmse_type=='test', 'rmses'])
+  best_train_size = train_sizes[which.min(df_eval[df_eval$rmse_type=='test', 'rmses'])]
+
+  return(list('df_eval'=df_eval,
+              'best_test_rmse'=best_test_rmse,
+              'best_train_size'=best_train_size))  
+}
+```
+
+
+```{r}
 # TODO: Build & evaluate model 1 (numeric variables only)
 numeric_cols = colnames(df[, sapply(df, is.numeric)])
 print(numeric_cols)
@@ -218,44 +311,21 @@ print(summary(df[, numeric_cols]))
 
 # Number of times to repeat training for stability
 num_repeat = 10
-model_exp = 'Gross ~ Year + Runtime + imdbRating + imdbVotes + tomatoMeter + tomatoRating + tomatoReviews + tomatoFresh +  tomatoUserMeter + tomatoUserRating + tomatoUserReviews + Budget'
+model1_cols = c('released_year', 'Runtime', 'imdbRating', 'imdbVotes', 'Budget')
+model1_exp = paste('Gross~', paste(model1_cols, collapse='+'))
 
-train_rmse_all = c()
-test_rmse_all = c()
-for(train_size in train_sizes){
-  train_rmse_one_size = c()
-  test_rmse_one_size = c()
-  for(r in 1:num_repeat){
-    sample <- sample.int(n = nrow(train_df), size = floor(train_size*nrow(train_df)), replace = F)
-    train_df_subset = train_df[sample, ]
-    
-    # Training and evaluating model
-    mod1 = lm(model_exp, data=train_df_subset)
-    model_eval = getrmse(mod1, test_df)
-    train_rmse = model_eval$train_rmse
-    test_rmse = model_eval$test_rmse
-    
-    train_rmse_one_size = c(train_rmse_one_size, train_rmse)
-    test_rmse_one_size = c(test_rmse_one_size, test_rmse)
-  }
-  train_rmse_all = c(train_rmse_all, mean(train_rmse_one_size))
-  test_rmse_all = c(test_rmse_all, mean(test_rmse_one_size))
-}
-
-rmse_type = c(rep('train', length(train_sizes)), rep('test', length(train_sizes)))
-rmses = c(train_rmse_all, test_rmse_all)
-
-df_eval = data.frame(train_size=train_sizes, rmse_type=rmse_type, rmses=rmses)
+eval_model1 = eval_model(train_df, test_df, model1_exp, train_sizes, num_repeat=10)
+df_eval = eval_model1$df_eval
 
 ggplot(data=df_eval, aes(x=train_size, y=rmses)) +
   geom_line(aes(color=rmse_type, group=rmse_type)) +
-  ggtitle('Training and Test RMSE')
+  ggtitle('Model 1: Training and Test RMSE')
 ```
 
 **Q**: List the numeric variables you used.
 
 **A**: 
-The numeric variables that we used were `r {numeric_cols}`.
+The numeric variables that we used were `r {numeric_cols}`. (Recall that we stripped out the tomato-like columns in our preprocessing steps above.)
 
 **Q**: What is the best mean test RMSE value you observed, and at what training set size?
 
@@ -263,8 +333,8 @@ The numeric variables that we used were `r {numeric_cols}`.
 
 ```{r}
 # Best test RMSE
-best_testrmse_mod1 = min(df_eval[df_eval$rmse_type=='test', 'rmses'])
-best_train_size_mod1 = train_sizes[which.min(df_eval[df_eval$rmse_type=='test', 'rmses'])]
+best_testrmse_mod1 = eval_model1$best_test_rmse
+best_train_size_mod1 = eval_model1$best_train_size
 ```
 
 The best mean test RMSE value I observed was `r {best_testrmse_mod1}` and I observed that at the training set size `r {best_train_size_mod1 * 100}` percent. Notice from the graph above as well that we see that Test RMSE generally decreases with higher training set. This makes sense because with very low training set size, the model will overfit the more limited data.
@@ -273,41 +343,375 @@ The best mean test RMSE value I observed was `r {best_testrmse_mod1}` and I obse
 
 Try to improve the prediction quality from **Task 1** as much as possible by adding feature transformations of the numeric variables. Explore both numeric transformations such as power transforms and non-numeric transformations of the numeric variables like binning (e.g. `is_budget_greater_than_3M`).
 
-```{r}
+```{r helper-plot-relative-proportions}
+# Helper function to plot relative proportions
+plot_relative_proportions = function(df, cols){
+  # Keyword Args:
+  #  df: DataFrame with columns you want to plot relative proportions of
+  #  cols: The columns you want to plot relative proportions of
+  # Returns:
+  #  plot_proportions: ggplot of proportions
+  #  top_cols: Vector of Column Counts
+  df.subset = df[c('Title', cols)]
+  df.long = melt(df.subset, id.vars=c('Title'))
+  
+  # Removing rows where value is 0 because when value is 0, that means movie is not that genre.
+  df.long = df.long[apply(df.long['value'], 1, function(z) !any(z==0)), ]
+
+  # Finally plot relative proportions
+  # https://sebastiansauer.github.io/percentage_plot_ggplot2_V2/
+  plot_proportions = ggplot(df.long, aes(x=variable)) +
+    geom_bar(aes(y = (..count..)/sum(..count..))) +
+    ylab('Relative Proportion')
+  
+  top_cols = sort(colSums(df[cols]), decreasing=TRUE)
+  return(list('plot_proportions'=plot_proportions,
+              'top_cols'=top_cols))  
+}
+```
+
+```{r helper-transforms}
+# From Lesson 8: Preprocessing Data (22. Skewness and Power Transformations)
+# Also from Lessong 10: Logistic Regression (19. Increasing Data Dimensionality)
+# The Transforms we are going to use are
+# 1. x^2
+# 2. log(x) (in theory we could choose difference values of lambda to choose different types of power transformations. In this case for simplicity, we will stick with log transformations (e.g. lambda = 0))
+
+# Helper function to create power transforms
+create_power_transforms = function(df, column){
+  # Keyword Args:
+  #  df: DataFrame with data that you want to add power transformations to
+  #  column: Column within df that you want to do power transformations to
+  # Returns:
+  #  df: DataFrame with new columns as transformations
+  
+  # Power Transforms
+  df[[paste0(column, '2')]] = df[[column]] ^ 2
+  df[[paste0(column, '4')]] = df[[column]] ^ 4
+  df[[paste0('log', column)]] = log(df[[column]])
+  return(df)
+}
+
+create_binning_transforms = function(x, threshold){
+  # Keyword Args:
+  #  x: Vector of data you want to transfor
+  #  threshold: Threshold over which transformed vector equals 1, else 0
+  # Returns:
+  #  binned: New binned transformed vector
+  
+  # Power Transforms
+  binned = as.numeric(x >= threshold)
+  return(binned)
+}
+```
+
+
+```{r warning=FALSE}
 # TODO: Build & evaluate model 2 (transformed numeric variables only)
 
-# Reporting model summary from mod1
-mod1 = lm(model_exp, data=train_df)
-print(summary(mod1))
+# Creating new variables
+df$is_budget_greater_than_60m = as.numeric(df$Budget >= 60000000)
+train_df$is_budget_greater_than_60m = as.numeric(train_df$Budget >= 60000000)
+test_df$is_budget_greater_than_60m = as.numeric(test_df$Budget >= 60000000)
 
+df$imdbRating_greater_than_75 = as.numeric(df$imdbRating >= 7.5)
+train_df$imdbRating_greater_than_75= as.numeric(train_df$Budget >= 7.5)
+test_df$imdbRating_greater_than_75 = as.numeric(test_df$Budget >= 7.5)
+
+df = create_power_transforms(df, 'Budget')
+train_df = create_power_transforms(train_df, 'Budget')
+test_df = create_power_transforms(test_df, 'Budget')
+
+df = create_power_transforms(df, 'Runtime')
+train_df = create_power_transforms(train_df, 'Runtime')
+test_df = create_power_transforms(test_df, 'Runtime')
+
+df = create_power_transforms(df, 'imdbRating')
+train_df = create_power_transforms(train_df, 'imdbRating')
+test_df = create_power_transforms(test_df, 'imdbRating')
+
+df = create_power_transforms(df, 'imdbVotes')
+train_df = create_power_transforms(train_df, 'imdbVotes')
+test_df = create_power_transforms(test_df, 'imdbVotes')
+
+df = create_power_transforms(df, 'released_year')
+train_df = create_power_transforms(train_df, 'released_year')
+test_df = create_power_transforms(test_df, 'released_year')
+
+df$is_budget_greater_than_60m_budget2 = df$is_budget_greater_than_60m * df$Budget2
+train_df$is_budget_greater_than_60m_budget2 = train_df$is_budget_greater_than_60m * train_df$Budget2
+test_df$is_budget_greater_than_60m_budget2 = test_df$is_budget_greater_than_60m * test_df$Budget2
+
+df$imdbRating_greater_than_75_imdbRating2 = df$imdbRating_greater_than_75 * df$imdbRating2
+train_df$imdbRating_greater_than_75_imdbRating2 = train_df$imdbRating_greater_than_75 * train_df$imdbRating2
+test_df$imdbRating_greater_than_75_imdbRating2 = test_df$imdbRating_greater_than_75 * test_df$imdbRating2
+
+
+model2_cols = c(model1_cols, c('Budget2', 'is_budget_greater_than_60m',
+                               'is_budget_greater_than_60m_budget2',
+                               'imdbRating_greater_than_75',
+                               'imdbRating2',
+                               'imdbRating_greater_than_75_imdbRating2'))
+model2_exp = paste('Gross~', paste(model2_cols, collapse='+'))
+
+eval_model2 = eval_model(train_df, test_df, model2_exp, train_sizes, num_repeat=10)
+df_eval_mod2 = eval_model2$df_eval
+ggplot(data=df_eval_mod2, aes(x=train_size, y=rmses)) +
+  geom_line(aes(color=rmse_type, group=rmse_type)) +
+  ggtitle('Model 2: Training and Test RMSE')
 ```
 
 **Q**: Explain which transformations you used and why you chose them.
 
-**A**: 
+**A**:
+In addition to the features from Part 1, I created the following new features
+1. Power Transformation of Budget: (budget-squared)
+2. Binned Budget: Created an indicator variable for if budget greater than 60 million
+3. Interaction Variable for Budget: Budget-Squared interacted with indicator variable for if budget was greater than 60 million
+4. Binned imdbRating: Created an indicator variable for if the imdbRating was greater than 7.5
+5. Power Transformation for imdbRating: (imdbRating-squared)
+5. Ineraction Variable for imdbRating: imdbRating-squared with interaction varaible for if the imdbRating was greater than 7.5.
 
+First, I created a binned variable for imdbRating at 7.5 and interacted this binned variable with imdbRating to capture a different relationship after 7.5 (more on this below).
+
+I chose to look at imdbRating because I noticed an interesting relationship with imdbRating and Gross. If you look at the plot below, we plot the average Gross given imdbRating, and notice that the relationship seems to be linear until about 7.5. Then the average gross increases a lot. This is an interesting relationship because maybe movies below 7.5 rating are mostly not that great and so the relationship is linear. But if a movie is really really good, when the relationship between Gross and rating changes, that is a really really good movie grosses much much more. Thus, I chose to create a binned variable at `imdbRating = 7.5` and interacted it with `imdbRating2` to try to capture a different relationship after `imdbRating = 7.5`, where `imdbRating2` is the squared term of imdbRating (since the relationship after imdbRating=7.5 looks exponential).
+
+```{r}
+ggplot(df, aes(imdbRating, Gross)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+```
+
+Second, I look at the relationship between Budget and Gross. This is because if we remember back to Project 1, higher budget films tended to gross much higher. Looking at the graphs below, it seems like $60M would be an interesting bin, and after $60M the relationship looks perhaps quadratic, so we use the power transformation of Budget^2 after $60M.
+
+```{r}
+# Distribution of Gross by Budget
+# Now we need to show distribution of runtime by Budget. Do a boxplot grouped by budget
+df$budget_rounded = round_any(df$Budget, 10000000, f = floor)
+df$budget_rounded[df$Budget >= 60000000] = 60000000
+df$budget_rounded = as.character(df$budget_rounded)
+df$budget_rounded[df$budget_rounded == '600000000'] = 'Over 60M'
+
+ggplot(df, aes(as.factor(budget_rounded), Gross)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_x_discrete("Budget Rounded") +
+  ggtitle('Distribution of Gross by Budget')
+
+ggplot(df, aes(Budget, Gross)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+```
 
 **Q**: How did the RMSE change compared to Task 1?
 
 **A**: 
 
+Above, we already plotted the Training and Test RMSE for Model 2. Furthermore, we can directly compare the best test RMSE below:
+
+```{r}
+print(eval_model1$best_test_rmse)
+print(eval_model2$best_test_rmse)
+
+improvement_in_rmse_model2 = eval_model2$best_test_rmse - eval_model1$best_test_rmse
+percentage_improvement_in_rmse_model2 = 1.0 * abs(eval_model2$best_test_rmse - eval_model1$best_test_rmse) / eval_model1$best_test_rmse
+print('Improvement in RMSE')
+print(improvement_in_rmse_model2)
+
+# As a percentage
+print(percentage_improvement_in_rmse_model2)
+```
+
+Notice that the improvement in model2 is `r {improvement_in_rmse_model2}` which actually represents a `r {percentage_improvement_in_rmse_model2 * 100}` percentage gain!
+
+Also, we can look at where the best test MSE occured, as a function of training size:
+
+```{r}
+# Best test RMSE
+best_testrmse_mod2 = eval_model2$best_test_rmse
+best_train_size_mod2 = eval_model2$best_train_size
+```
+
+The best mean test RMSE value I observed was `r {best_testrmse_mod2}` and I observed that at the training set size `r {best_train_size_mod2 * 100}` percent. Notice from the graph above as well that we see that Test RMSE generally decreases with higher training set. This makes sense because with very low training set size, the model will overfit the more limited data.
 
 ## 3. Non-numeric variables
 
 Write code that converts genre, actors, directors, and other categorical variables to columns that can be used for regression (e.g. binary columns as you did in Project 1). Also process variables such as awards into more useful columns (again, like you did in Project 1). Now use these converted columns only to build your next model.
 
+```{r helper-one-hot-encoding}
+# Create a helper function to help one-hot encode certain text columns
+# For example, Genre, Actors, Directors
+# By default we will keep the top ten of each
+create_one_hot_encoded = function(df, column, numTopCols=10){
+  # Keyword Args:
+  #  df: DataFrame with data and column you want to one-hot-encode
+  #  column: Column within the df that you want to one-hot encode
+  # Returns:
+  #  df: Original DataFrame with newly appended columns of numTopCols highest occuring value of Column
+  #  top_cols: The top_cols that were returned
+  
+  # Example of how to one-hot encode: https://stackoverflow.com/questions/39778387/r-dataframe-one-hot-encoding-of-column-containing-multiple-terms
+  df = cbind(df, mtabulate(strsplit(df[[column]], ",")))
+  cols = unique(unlist(strsplit(df[[column]], ',')))
+  top_cols = sort(colSums(df[cols]), decreasing=TRUE)
+  top_cols_names = names(top_cols[1:numTopCols])
+  non_top_cols_names = setdiff(cols, top_cols_names)
+  
+  # Remove the non_top_cols
+  df[non_top_cols_names] = list(NULL)
+  return(list('df'=df,
+              'top_cols'=top_cols_names)) 
+}
+```
+
+```{r process-categorical}
+# Processing Genre Column -- Work taken from PR1
+# Note: Change 'Sci-Fi' to 'SciFi' because dashes in column names are really annoying in R
+# Also changing N/A in Genre to na since / are also really annoying
+df$Genre <- gsub('Sci-Fi', 'SciFi', df$Genre)
+
+# Processing Rating Column -- Work taken from PR1
+df$rated_cleaned = ifelse(df$Rated %in% c('G', 'PG-13', 'PG', 'R', 'NC-17'), df$Rated, NA)
+df$rated_cleaned <- gsub('PG-13', 'PG13', df$rated_cleaned)
+df$rated_cleaned <- gsub('NC-17', 'NC17', df$rated_cleaned)
+
+# Preprocessing Categorical Variables to remove N/A
+df$Actors <- gsub('N/A', 'na', df$Actors)
+df$Country <- gsub('N/A', 'na', df$Country)
+df$Director <- gsub('N/A', 'na', df$Director)
+df$Genre <- gsub('N/A', 'na', df$Genre)
+df$Writer <- gsub('N/A', 'na', df$Writer)
+df$rated_cleaned <- gsub('N/A', 'na', df$rated_cleaned)
+
+# Preprocessing Categorical Variables to remove spaces
+df$Actors <- gsub(' ', '', df$Actors)
+df$Country <- gsub(' ', '', df$Country)
+df$Director <- gsub(' ', '', df$Director)
+df$Genre <- gsub(' ', '', df$Genre)
+df$Writer <- gsub(' ', '', df$Writer)
+df$rated_cleaned <- gsub(' ', '', df$rated_cleaned)
+
+# Preprocessing to remove parantheses
+df$Writer <- gsub('\\(', '', df$Writer)
+df$Writer <- gsub('\\)', '', df$Writer)
+
+# Creating one-hot encoded Categorical columns
+genre_one_hot_encoded = create_one_hot_encoded(df, 'Genre', 10)
+df = genre_one_hot_encoded$df
+top_genres = genre_one_hot_encoded$top_cols
+
+actor_one_hot_encoded = create_one_hot_encoded(df, 'Actors', 20)
+df = actor_one_hot_encoded$df
+top_actors = actor_one_hot_encoded$top_cols
+
+director_one_hot_encoded = create_one_hot_encoded(df, 'Director', 20)
+df = director_one_hot_encoded$df
+top_directors = director_one_hot_encoded$top_cols
+
+country_one_hot_encoded = create_one_hot_encoded(df, 'Country', 10)
+df = country_one_hot_encoded$df
+top_countries = country_one_hot_encoded$top_cols
+
+writer_one_hot_encoded = create_one_hot_encoded(df, 'Writer', 20)
+df = writer_one_hot_encoded$df
+top_writers = writer_one_hot_encoded$top_cols
+
+rating_one_hot_encoded = create_one_hot_encoded(df, 'rated_cleaned', 5)
+df = rating_one_hot_encoded$df
+top_ratings = rating_one_hot_encoded$top_cols
+
+# Remove columns from DataFrame
+df$Genre = NULL
+df$Director = NULL
+df$Actors = NULL
+df$Country = NULL
+df$Rating = NULL
+```
+
+
+```{r process-awards}
+# Processing Awards column
+# Work taken from PR1
+cols = c('Title', 'Awards', 'Gross')
+df6 = df[cols]
+
+awards = stri_extract_all(df6$Awards, regex="\\d+")
+award_labels = stri_extract_all(tolower(df6$Awards), regex="win|won|wins|nomin", ignore.case=TRUE)
+
+wins_list = c()
+nominations_list = c()
+
+for (i in 1:length(awards)){
+    wins = 0
+    nominations = 0
+    for(j in 1:length(awards[[i]])){
+        if(!is.na(award_labels[[i]][j]) & (award_labels[[i]][j] == 'wins' | award_labels[[i]][j] == 'win' | award_labels[[i]][j] == 'won')){
+            wins = wins + as.numeric(awards[[i]][j])
+        } else if (!is.na(award_labels[[i]][j]) & award_labels[[i]][j] == 'nomin'){
+            nominations = nominations + as.numeric(awards[[i]][j])
+        }
+    }
+    wins_list = c(wins_list, wins)
+    nominations_list = c(nominations_list, nominations)
+}
+
+df$wins = wins_list
+df$nominations = nominations_list
+```
+
 ```{r}
 # TODO: Build & evaluate model 3 (converted non-numeric variables only)
+# Recreating train and test splits, since I added new columns
+split_df = split_train_test_df(df, train_split=0.8)
+train_df = split_df$train_df
+test_df = split_df$test_df
+
+# Turning a vector of columns in a model expression: https://stackoverflow.com/questions/7986805/how-do-i-run-a-multiple-linear-regression-using-a-vector-as-my-predictors
+model3_cols = c(top_genres, top_directors, top_actors, top_countries, top_writers, top_ratings, c('wins', 'nominations'))
+model3_exp = paste('Gross~', paste(model3_cols, collapse='+'))
+
+eval_model3 = eval_model(train_df, test_df, model3_exp, train_sizes, num_repeat=10)
+df_eval_mod3 = eval_model3$df_eval
+ggplot(data=df_eval_mod3, aes(x=train_size, y=rmses)) +
+  geom_line(aes(color=rmse_type, group=rmse_type)) +
+  ggtitle('Model 3: Training and Test RMSE')
 ```
 
 **Q**: Explain which categorical variables you used, and how you encoded them into features.
 
 **A**: 
 
+The categorical variables that I used were
+
+1. Genres (top 10)
+2. Directors (top 20)
+3. Actors (top 20)
+4. Countries (top 10)
+5. Writers (top 20)
+6. Awards (processed into wins and nominations)
+
+The reason for these categorical variables why I only use the top 10/20 is because of curse of dimensionality. If I included all as features, I would have too much variation (ala bias-variance tradeoff). To encode them into features, for each entity (e.g. genre, director, actor) I created a new one-hot encoded binary variable. Each variable would equal 1 if the movie contained that entity, else 0. Please see the helper function I defined `create_one_hot_encoded` for the code that I used. 
+
 
 **Q**: What is the best mean test RMSE value you observed, and at what training set size? How does this compare with Task 2?
 
 **A**: 
+
+```{r}
+# Best test RMSE
+best_testrmse_mod3 = eval_model3$best_test_rmse
+best_train_size_mod3 = eval_model3$best_train_size
+```
+
+The best mean test RMSE value I observed was `r {best_testrmse_mod3}` and I observed that at the training set size `r {best_train_size_mod3 * 100}` percent. Notice from the graph above as well for model 3 that we see that Test RMSE generally decreases with higher training set. Again, this makes sense because with very low training set size, the model will overfit the more limited data.
+
+We can also compare the best test RMSE directly between Models 1, 2, and 3
+
+```{r}
+print(eval_model1$best_test_rmse)
+print(eval_model2$best_test_rmse)
+print(eval_model3$best_test_rmse)
+```
+
+Notice that compared to Model 2, Model 3 performed much worse. This is because we only used categorical variables for Model 3 and we have a pretty sparse data set just using categorical variables. This also potentially suggests that just using the categorical variables is not sufficient, we need to combine numerical and even interact numerical and categorical variables to come up with an even better model.
 
 
 ## 4. Numeric and categorical variables
@@ -316,12 +720,49 @@ Try to improve the prediction quality as much as possible by using both numeric 
 
 ```{r}
 # TODO: Build & evaluate model 4 (numeric & converted non-numeric variables)
+model4_cols = unique(c(model2_cols, model3_cols))
+model4_exp = paste('Gross~', paste(model4_cols, collapse='+'))
+
+eval_model4 = eval_model(train_df, test_df, model4_exp, train_sizes, num_repeat=10)
+df_eval_mod4 = eval_model4$df_eval
+ggplot(data=df_eval_mod4, aes(x=train_size, y=rmses)) +
+  geom_line(aes(color=rmse_type, group=rmse_type)) +
+  ggtitle('Model 4: Training and Test RMSE')
 ```
 
 **Q**: Compare the observed RMSE with Tasks 2 & 3.
 
 **A**: 
+For Model 4, I simply combined (but no additional interactions) the terms from Task 2 and 3 together. The Training vs Test RMSE for Model 4 is shown above. In addition, we can directly compare the best test RMSEs:
 
+```{r}
+print(eval_model1$best_test_rmse)
+print(eval_model2$best_test_rmse)
+print(eval_model3$best_test_rmse)
+print(eval_model4$best_test_rmse)
+```
+
+The improvement of model 4 was:
+
+```{r}
+improvement_in_rmse_model4 = eval_model4$best_test_rmse - eval_model2$best_test_rmse
+percentage_improvement_in_rmse_model4 = 1.0 * abs(eval_model4$best_test_rmse - eval_model2$best_test_rmse) / eval_model2$best_test_rmse
+print('Improvement in RMSE')
+print(improvement_in_rmse_model4)
+
+# As a percentage
+print(percentage_improvement_in_rmse_model4)
+```
+
+Notice that the improvement in Model 4 was `r {improvement_in_rmse_model4}` which represents a `r {percentage_improvement_in_rmse_model4 * 100}` percent improvement over Model 2! While this improvement might seem modest, in Part 5, we explore how to improve this even further with meaningful interactions.
+
+```{r}
+# Best test RMSE
+best_testrmse_mod4 = eval_model4$best_test_rmse
+best_train_size_mod4 = eval_model4$best_train_size
+```
+
+The best mean test RMSE value I observed for Model 4 was `r {best_testrmse_mod4}` and I observed that at the training set size `r {best_train_size_mod4 * 100}` percent. Notice again, we see a similar pattern as other models. From the graph above, notice that for Model 4 that we see that Test RMSE generally decreases with higher training set. Again, this makes sense because with very low training set size, the model will overfit the more limited data.
 
 ## 5. Additional features
 
