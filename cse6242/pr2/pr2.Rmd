@@ -1,14 +1,12 @@
 ---
 title: 'Project 2: Modeling and Evaluation'
 subtitle: "CSE6242 - Data and Visual Analytics - Fall 2017\n\nDue: Sunday, November 26, 2017 at 11:59 PM UTC-12:00 on T-Square"
+author: Vincent La (Georgia Tech ID - vla6)
 output:
-  html_notebook:
-    code_folding: none
-    theme: default
-  html_document:
-    code_folding: none
-    theme: default
-  pdf_document: default
+  pdf_document:
+    pandoc_args: [
+  "--output=pr2.pdf"
+    ]
 ---
 
 # Data
@@ -120,7 +118,7 @@ df$Domestic_Gross = NULL
 
 ## 6. Process `Runtime` column
 
-```{r}
+```{r warning=FALSE}
 # TODO: Replace df$Runtime with a numeric column containing the runtime in minutes
 # Taking work from pr1
 extract_runtime = function(r){
@@ -147,7 +145,7 @@ df$Runtime = new_runtimes
 
 Perform any additional preprocessing steps that you find necessary, such as dealing with missing values or highly correlated columns (feel free to add more code chunks, markdown blocks and plots here as necessary).
 
-```{r}
+```{r warning=FALSE}
 # TODO(optional): Additional preprocessing
 
 # Plotting Correlation Plots of the different Rating Columns:
@@ -225,12 +223,14 @@ split_train_test_df = function(df, train_split=0.8){
   train_df <- df[sample, ]
   test_df  <- df[-sample, ]
   return(list('train_df'=train_df,
-              'test_df'=test_df))
+              'test_df'=test_df,
+              'train_idx'=sample))
 }
 
 split_df = split_train_test_df(df, train_split=0.8)
 train_df = split_df$train_df
 test_df = split_df$test_df
+train_idx = split_df$train_idx
 
 # Create training set size vector
 train_sizes = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
@@ -239,6 +239,7 @@ train_sizes = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1)
 ```{r}
 # Helper Functions
 getrmse = function(mod, test_df){
+    # Helper function to return both the training RMSE and test RMSE given model and test DataFrame
     # From https://stackoverflow.com/questions/43123462/how-to-obtain-rmse-out-of-lm-result
     train_rss = c(crossprod(mod$residuals))
     train_mse = train_rss / length(mod$residuals)
@@ -251,21 +252,14 @@ getrmse = function(mod, test_df){
 }
 ```
 
-# Tasks
-
-Each of the following tasks is worth 20 points, for a total of 100 points for this project. Remember to build each model as specified, evaluate it using the strategy outlined above, and plot the training and test errors by training set size (%).
-
-## 1. Numeric variables
-
-Use Linear Regression to predict `Gross` based on available _numeric_ variables. You can choose to include all or a subset of them.
-
 ```{r}
-# Helper function to build model
+# Helper function to build and evaluate model according to the instructions provided
 eval_model = function(train_df, test_df, model_exp, train_sizes, num_repeat=10){
   # Keyword Args:
   #  train_df: Training DataFrame
   #  test_df: Test DataFrame
   #  model_exp: Expression of linear regression model as a string
+  #  num_repeat: Number of times to repeat evaluating the model (since there might be high variance)
   # Returns: df_eval which is a DataFrame with test and train rmse
   train_rmse_all = c()
   test_rmse_all = c()
@@ -302,6 +296,13 @@ eval_model = function(train_df, test_df, model_exp, train_sizes, num_repeat=10){
 }
 ```
 
+# Tasks
+
+Each of the following tasks is worth 20 points, for a total of 100 points for this project. Remember to build each model as specified, evaluate it using the strategy outlined above, and plot the training and test errors by training set size (%).
+
+## 1. Numeric variables
+
+Use Linear Regression to predict `Gross` based on available _numeric_ variables. You can choose to include all or a subset of them.
 
 ```{r}
 # TODO: Build & evaluate model 1 (numeric variables only)
@@ -316,10 +317,6 @@ model1_exp = paste('Gross~', paste(model1_cols, collapse='+'))
 
 eval_model1 = eval_model(train_df, test_df, model1_exp, train_sizes, num_repeat=10)
 df_eval = eval_model1$df_eval
-
-ggplot(data=df_eval, aes(x=train_size, y=rmses)) +
-  geom_line(aes(color=rmse_type, group=rmse_type)) +
-  ggtitle('Model 1: Training and Test RMSE')
 ```
 
 **Q**: List the numeric variables you used.
@@ -332,12 +329,17 @@ The numeric variables that we used were `r {numeric_cols}`. (Recall that we stri
 **A**: 
 
 ```{r}
+# Plotting Training and Test RMSE
+ggplot(data=df_eval, aes(x=train_size, y=rmses)) +
+  geom_line(aes(color=rmse_type, group=rmse_type)) +
+  ggtitle('Model 1: Training and Test RMSE')
+
 # Best test RMSE
 best_testrmse_mod1 = eval_model1$best_test_rmse
 best_train_size_mod1 = eval_model1$best_train_size
 ```
 
-The best mean test RMSE value I observed was `r {best_testrmse_mod1}` and I observed that at the training set size `r {best_train_size_mod1 * 100}` percent. Notice from the graph above as well that we see that Test RMSE generally decreases with higher training set. This makes sense because with very low training set size, the model will overfit the more limited data.
+The best mean test RMSE value I observed was $`r {best_testrmse_mod1}`$ and I observed that at the training set size `r {best_train_size_mod1 * 100}` percent. Notice from the graph above as well that we see that Test RMSE generally decreases with higher training set. This makes sense because with very low training set size, the model will overfit the more limited data.
 
 ## 2. Feature transformations
 
@@ -386,8 +388,11 @@ create_power_transforms = function(df, column){
   #  df: DataFrame with new columns as transformations
   
   # Power Transforms
-  df[[paste0(column, '2')]] = df[[column]] ^ 2
-  df[[paste0(column, '4')]] = df[[column]] ^ 4
+  # For now, let's only consider power transformations where lambda = 2 or -1. In theory
+  # we could try infinite values of lambda with some kind of cross validation approach to tune this
+  # but for simplicity let's just use inverse and quadratic.
+  df[[paste0(column, '2')]] = (df[[column]] ^ 2 - 1) / 2  # lambda = 2
+  df[[paste0(column, 'neg1')]] = -1 * (df[[column]] ^ (-1) - 1) / (-1)  # lambda = -1
   df[[paste0('log', column)]] = log(df[[column]])
   return(df)
 }
@@ -411,77 +416,79 @@ create_binning_transforms = function(x, threshold){
 
 # Creating new variables
 df$is_budget_greater_than_60m = as.numeric(df$Budget >= 60000000)
-train_df$is_budget_greater_than_60m = as.numeric(train_df$Budget >= 60000000)
-test_df$is_budget_greater_than_60m = as.numeric(test_df$Budget >= 60000000)
-
 df$imdbRating_greater_than_75 = as.numeric(df$imdbRating >= 7.5)
-train_df$imdbRating_greater_than_75= as.numeric(train_df$Budget >= 7.5)
-test_df$imdbRating_greater_than_75 = as.numeric(test_df$Budget >= 7.5)
-
 df = create_power_transforms(df, 'Budget')
-train_df = create_power_transforms(train_df, 'Budget')
-test_df = create_power_transforms(test_df, 'Budget')
-
 df = create_power_transforms(df, 'Runtime')
-train_df = create_power_transforms(train_df, 'Runtime')
-test_df = create_power_transforms(test_df, 'Runtime')
-
 df = create_power_transforms(df, 'imdbRating')
-train_df = create_power_transforms(train_df, 'imdbRating')
-test_df = create_power_transforms(test_df, 'imdbRating')
-
 df = create_power_transforms(df, 'imdbVotes')
-train_df = create_power_transforms(train_df, 'imdbVotes')
-test_df = create_power_transforms(test_df, 'imdbVotes')
-
 df = create_power_transforms(df, 'released_year')
-train_df = create_power_transforms(train_df, 'released_year')
-test_df = create_power_transforms(test_df, 'released_year')
 
-df$is_budget_greater_than_60m_budget2 = df$is_budget_greater_than_60m * df$Budget2
-train_df$is_budget_greater_than_60m_budget2 = train_df$is_budget_greater_than_60m * train_df$Budget2
-test_df$is_budget_greater_than_60m_budget2 = test_df$is_budget_greater_than_60m * test_df$Budget2
+# Adding bins by years
+df$early_2000s = as.numeric(df$released_year <= 2004)
+df$mid_2000s = as.numeric(df$released_year >= 2005 & df$released_year <= 2009)
+df$post_2010 = as.numeric(df$released_year >= 2010)
 
-df$imdbRating_greater_than_75_imdbRating2 = df$imdbRating_greater_than_75 * df$imdbRating2
-train_df$imdbRating_greater_than_75_imdbRating2 = train_df$imdbRating_greater_than_75 * train_df$imdbRating2
-test_df$imdbRating_greater_than_75_imdbRating2 = test_df$imdbRating_greater_than_75 * test_df$imdbRating2
+# Adding bins by Runtime
+df$RuntimeUnder75 = as.numeric(df$Runtime <= 75)
+df$RuntimeBetween75_125 = as.numeric(df$Runtime > 75 & df$Runtime <= 125)
+df$RuntimeGreater125 = as.numeric(df$Runtime > 125)
 
+# "Recreate" the training and test df with the same indices to include the new columns
+train_df <- df[train_idx, ]
+test_df  <- df[-train_idx, ]
 
-model2_cols = c(model1_cols, c('Budget2', 'is_budget_greater_than_60m',
-                               'is_budget_greater_than_60m_budget2',
-                               'imdbRating_greater_than_75',
+model2_cols = c(model1_cols, c('imdbRating_greater_than_75',
                                'imdbRating2',
-                               'imdbRating_greater_than_75_imdbRating2'))
+                               'is_budget_greater_than_60m',
+                               'RuntimeUnder75',
+                               'RuntimeBetween75_125',
+                               'RuntimeGreater125',
+                               'Runtime2',
+                               'early_2000s',
+                               'mid_2000s',
+                               'post_2010'
+                               ))
 model2_exp = paste('Gross~', paste(model2_cols, collapse='+'))
 
 eval_model2 = eval_model(train_df, test_df, model2_exp, train_sizes, num_repeat=10)
 df_eval_mod2 = eval_model2$df_eval
-ggplot(data=df_eval_mod2, aes(x=train_size, y=rmses)) +
-  geom_line(aes(color=rmse_type, group=rmse_type)) +
-  ggtitle('Model 2: Training and Test RMSE')
 ```
 
 **Q**: Explain which transformations you used and why you chose them.
 
 **A**:
 In addition to the features from Part 1, I created the following new features
-1. Power Transformation of Budget: (budget-squared)
-2. Binned Budget: Created an indicator variable for if budget greater than 60 million
-3. Interaction Variable for Budget: Budget-Squared interacted with indicator variable for if budget was greater than 60 million
-4. Binned imdbRating: Created an indicator variable for if the imdbRating was greater than 7.5
-5. Power Transformation for imdbRating: (imdbRating-squared)
-5. Ineraction Variable for imdbRating: imdbRating-squared with interaction varaible for if the imdbRating was greater than 7.5.
 
-First, I created a binned variable for imdbRating at 7.5 and interacted this binned variable with imdbRating to capture a different relationship after 7.5 (more on this below).
+1. Binned imdbRating: Created an indicator variable for if the imdbRating was greater than 7.5
+2. Power Transformation for imdbRating: lambda=2
+3. Binned Budget: Created an indicator variable for if budget greater than 60 million
+4. Binned Runtime (under 75, between 75 and 125, and over 125)
+5. Power Transformation for Runtime: lambda=2
+6. Binned Released Year (between 2000 and 2004; 2005 and 2009; 2010 and after)
 
-I chose to look at imdbRating because I noticed an interesting relationship with imdbRating and Gross. If you look at the plot below, we plot the average Gross given imdbRating, and notice that the relationship seems to be linear until about 7.5. Then the average gross increases a lot. This is an interesting relationship because maybe movies below 7.5 rating are mostly not that great and so the relationship is linear. But if a movie is really really good, when the relationship between Gross and rating changes, that is a really really good movie grosses much much more. Thus, I chose to create a binned variable at `imdbRating = 7.5` and interacted it with `imdbRating2` to try to capture a different relationship after `imdbRating = 7.5`, where `imdbRating2` is the squared term of imdbRating (since the relationship after imdbRating=7.5 looks exponential).
+First, I created a binned variable for imdbRating at 7.5. (Note, later on in part 5 as we explore more interesting relationships, I interact this binned variable with imdbRating to capture a different relationship after 7.5 -- more on this below).
 
-```{r}
+I chose to look at imdbRating because I noticed an interesting relationship with imdbRating and Gross. If you look at the plot below, we plot the average Gross given imdbRating, and notice that the relationship seems to be linear until about 7.5. Then the average gross increases a lot. This is an interesting relationship because maybe movies below 7.5 rating are mostly not that great and so the relationship is linear. But if a movie is really really good, when the relationship between Gross and rating changes, that is a really really good movie grosses much much more. Thus, I chose to create a binned variable at `imdbRating = 7.5`. This will allow for the model to potentially capture a difference in the effect of rating on `Gross` for movies with ratings greater than 7.5. However, from the graph, notice that the slope of the relationship is not constant before and after 7.5. Thus, in part 5, we will also create an interaction variable to try to capture a different relationship after `imdbRating = 7.5` with `imdbRating2` where `imdbRating2` is the squared term of imdbRating (since the relationship after imdbRating=7.5 looks exponential. Furthermore, looking at the `GGPairs` graph, it looks like `imdbRating2` has a higher linear correlation with `Gross` than `imdbRating`. The other power transformations did not seem to increase linear correlation.)
+
+```{r warning=FALSE}
 ggplot(df, aes(imdbRating, Gross)) +
-  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point") +
+  ggtitle('Relationship between Gross and imdbRating')
+
+ggpairs(df[c('imdbRating', 'imdbRating2', 'imdbRatingneg1', 'logimdbRating', 'Gross')])
 ```
 
-Second, I look at the relationship between Budget and Gross. This is because if we remember back to Project 1, higher budget films tended to gross much higher. Looking at the graphs below, it seems like $60M would be an interesting bin, and after $60M the relationship looks perhaps quadratic, so we use the power transformation of Budget^2 after $60M.
+Next, I looked at the relationship between `Gross` and `imdbVotes`. From the graphs below, it doesn't look like there are meaningful bins that would add value. Furthermore, looking at the `GGPairs` plot, none of the power transformations add higher linear correlation with Gross, so it does not make sense to add additional transformations with `imdbVotes` into our model.
+
+```{r warning=FALSE}
+ggplot(df, aes(imdbVotes, Gross)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point") +
+  ggtitle('Relationship between Gross and imdbVotes')
+
+ggpairs(df[c('imdbVotes', 'imdbVotes2', 'imdbVotesneg1', 'logimdbVotes', 'Gross')])
+```
+
+Next, I look at the relationship between Budget and Gross. This is because if we remember back to Project 1, higher budget films tended to gross much higher. Looking at the graphs below, it seems like $60M would be an interesting bin. However, we also plot the GGPairs plot of `Budget2` (power transformation with lambda = 2), `Budgetneg1` (power transformation with lambda = -1), `logBudget` (power transformation with lambda = 0) and `Budget` against `Gross` and you can see at least with the linear correlation, none of the power transformations offer better linear correlation with `Gross` than `Budget`. Thus, we choose not to add any of the power transformations of `Budget` into this model.
 
 ```{r}
 # Distribution of Gross by Budget
@@ -499,15 +506,49 @@ ggplot(df, aes(as.factor(budget_rounded), Gross)) +
 
 ggplot(df, aes(Budget, Gross)) +
   stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+
+ggpairs(df[c('Budget', 'Budget2', 'Budgetneg1', 'logBudget', 'Gross')])
 ```
+
+Next, we look at the relationship between Runtime and Gross. There are a few things that are interesting here. Notice first that if we look at the relationship between `Gross` and `Runtime` there seem to be a few interesting "cut points". For `Runtime` between 0 and 75 (up until the orange dotted line), the relationship seems to be flat. For `Runtime` between 75 and 125, the relationship is linearly positively sloped. Finally, for `Runtime` more than 125 (over 2 hours), the relationship with Gross seems to be very highly variable. Furthermore, the overall relationship seems to be slightly quadratic; notice that in the `GGPairs` plot, the correlation between `Runtime2` (power transformation with lambda = 2) and `Gross`  is higher than the correlation between `Runtime` and `Gross`. Thus, we choose to add bins for `Runtime` up to 75, between 75 and 125, and over 125. Furthermore, we choose to add power transformation of `Runtime2`. In Question 5, we will also explore adding interactions between the binned variable and the power transformation, which seems appropriate since the relationship between `Runtime` and `Gross` does not seem to be the same within these points.
+
+```{r warning=FALSE}
+ggplot(df, aes(Runtime, Gross)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point") +
+  geom_vline(xintercept=75, color='orange', linetype='longdash') +
+  geom_vline(xintercept=125, color='blue', linetype='longdash') +
+  ggtitle('Average Gross vs Runtime')
+
+ggpairs(df[c('Runtime', 'Runtime2', 'Runtimeneg1', 'logRuntime', 'Gross')])
+```
+
+Finally, the last numerical column is `released_year`. If we plot the average gross amount by `released_year` we see there are actually "cycles" that appear to be forming.
+
+```{r warning=FALSE}
+ggplot(df, aes(released_year, Gross)) +
+  geom_point(stat='summary') +
+  geom_vline(xintercept=2004.5, color='orange', linetype='longdash') +
+  geom_vline(xintercept=2009.5, color='blue', linetype='longdash') +
+  ggtitle('Relationship between Gross and Released Year')
+
+ggpairs(df[c('released_year', 'released_year2', 'released_yearneg1', 'logreleased_year', 'Gross')])
+```
+
+For example, in the graph above, we see that gross amounts are generally increasing between 2000 to 2004. Then drops in 2005 and generally rises again between 2005 and 2009. Then, average gross amounts drops again in 2010. This is likely reflective of the economy/business cycles. Especially the drop between 2009 to 2010 could be a reflection of the Great Recession where people spent less money on entertainment. Thus, I wanted to, instead of just using `released_year` as a continuous variable, create three bins of years: early 2000's, mid 2000's, and post 2010.
+
+However, notice that in the `GGPairs` plot, none of the power transformations seemed to offer any additional linear correlation; thus I chose not to add any power transformations of `released_year` into the model.
 
 **Q**: How did the RMSE change compared to Task 1?
 
 **A**: 
 
-Above, we already plotted the Training and Test RMSE for Model 2. Furthermore, we can directly compare the best test RMSE below:
+Below, we plot the Training and Test RMSE for Model 2. Furthermore, we can directly compare the best test RMSE below:
 
 ```{r}
+ggplot(data=df_eval_mod2, aes(x=train_size, y=rmses)) +
+  geom_line(aes(color=rmse_type, group=rmse_type)) +
+  ggtitle('Model 2: Training and Test RMSE')
+
 print(eval_model1$best_test_rmse)
 print(eval_model2$best_test_rmse)
 
@@ -520,7 +561,7 @@ print(improvement_in_rmse_model2)
 print(percentage_improvement_in_rmse_model2)
 ```
 
-Notice that the improvement in model2 is `r {improvement_in_rmse_model2}` which actually represents a `r {percentage_improvement_in_rmse_model2 * 100}` percentage gain!
+Notice that the improvement in model2 is $`r {improvement_in_rmse_model2}`$ which actually represents a `r {percentage_improvement_in_rmse_model2 * 100}` percentage gain! While this might seem modest; remember that we did note some meaningful interactions that will be further explored in Part 5!
 
 Also, we can look at where the best test MSE occured, as a function of training size:
 
@@ -530,7 +571,7 @@ best_testrmse_mod2 = eval_model2$best_test_rmse
 best_train_size_mod2 = eval_model2$best_train_size
 ```
 
-The best mean test RMSE value I observed was `r {best_testrmse_mod2}` and I observed that at the training set size `r {best_train_size_mod2 * 100}` percent. Notice from the graph above as well that we see that Test RMSE generally decreases with higher training set. This makes sense because with very low training set size, the model will overfit the more limited data.
+The best mean test RMSE value I observed was $`r {best_testrmse_mod2}`$ and I observed that at the training set size `r {best_train_size_mod2 * 100}` percent. Notice from the graph above as well that we see that Test RMSE generally decreases with higher training set. This makes sense because with very low training set size, the model will overfit the more limited data.
 
 ## 3. Non-numeric variables
 
@@ -569,7 +610,7 @@ create_one_hot_encoded = function(df, column, numTopCols=10){
 df$Genre <- gsub('Sci-Fi', 'SciFi', df$Genre)
 
 # Processing Rating Column -- Work taken from PR1
-df$rated_cleaned = ifelse(df$Rated %in% c('G', 'PG-13', 'PG', 'R', 'NC-17'), df$Rated, NA)
+df$rated_cleaned = ifelse(df$Rated %in% c('G', 'PG-13', 'PG', 'R', 'NC-17'), df$Rated, 'Other')
 df$rated_cleaned <- gsub('PG-13', 'PG13', df$rated_cleaned)
 df$rated_cleaned <- gsub('NC-17', 'NC17', df$rated_cleaned)
 
@@ -657,12 +698,11 @@ df$wins = wins_list
 df$nominations = nominations_list
 ```
 
-```{r}
+```{r warning=FALSE}
 # TODO: Build & evaluate model 3 (converted non-numeric variables only)
-# Recreating train and test splits, since I added new columns
-split_df = split_train_test_df(df, train_split=0.8)
-train_df = split_df$train_df
-test_df = split_df$test_df
+# "Recreate" the training and test df with the same indices to include the new columns
+train_df <- df[train_idx, ]
+test_df  <- df[-train_idx, ]
 
 # Turning a vector of columns in a model expression: https://stackoverflow.com/questions/7986805/how-do-i-run-a-multiple-linear-regression-using-a-vector-as-my-predictors
 model3_cols = c(top_genres, top_directors, top_actors, top_countries, top_writers, top_ratings, c('wins', 'nominations'))
@@ -670,9 +710,6 @@ model3_exp = paste('Gross~', paste(model3_cols, collapse='+'))
 
 eval_model3 = eval_model(train_df, test_df, model3_exp, train_sizes, num_repeat=10)
 df_eval_mod3 = eval_model3$df_eval
-ggplot(data=df_eval_mod3, aes(x=train_size, y=rmses)) +
-  geom_line(aes(color=rmse_type, group=rmse_type)) +
-  ggtitle('Model 3: Training and Test RMSE')
 ```
 
 **Q**: Explain which categorical variables you used, and how you encoded them into features.
@@ -687,6 +724,7 @@ The categorical variables that I used were
 4. Countries (top 10)
 5. Writers (top 20)
 6. Awards (processed into wins and nominations)
+7. Ratings (e.g. R, PG13, PG, G; top 5)
 
 The reason for these categorical variables why I only use the top 10/20 is because of curse of dimensionality. If I included all as features, I would have too much variation (ala bias-variance tradeoff). To encode them into features, for each entity (e.g. genre, director, actor) I created a new one-hot encoded binary variable. Each variable would equal 1 if the movie contained that entity, else 0. Please see the helper function I defined `create_one_hot_encoded` for the code that I used. 
 
@@ -701,11 +739,15 @@ best_testrmse_mod3 = eval_model3$best_test_rmse
 best_train_size_mod3 = eval_model3$best_train_size
 ```
 
-The best mean test RMSE value I observed was `r {best_testrmse_mod3}` and I observed that at the training set size `r {best_train_size_mod3 * 100}` percent. Notice from the graph above as well for model 3 that we see that Test RMSE generally decreases with higher training set. Again, this makes sense because with very low training set size, the model will overfit the more limited data.
+The best mean test RMSE value I observed was $`r {best_testrmse_mod3}`$ and I observed that at the training set size `r {best_train_size_mod3 * 100}` percent. Notice from the graph above as well for model 3 that we see that Test RMSE generally decreases with higher training set. Again, this makes sense because with very low training set size, the model will overfit the more limited data.
 
 We can also compare the best test RMSE directly between Models 1, 2, and 3
 
 ```{r}
+ggplot(data=df_eval_mod3, aes(x=train_size, y=rmses)) +
+  geom_line(aes(color=rmse_type, group=rmse_type)) +
+  ggtitle('Model 3: Training and Test RMSE')
+
 print(eval_model1$best_test_rmse)
 print(eval_model2$best_test_rmse)
 print(eval_model3$best_test_rmse)
@@ -718,16 +760,13 @@ Notice that compared to Model 2, Model 3 performed much worse. This is because w
 
 Try to improve the prediction quality as much as possible by using both numeric and non-numeric variables from **Tasks 2 & 3**.
 
-```{r}
+```{r warning=FALSE}
 # TODO: Build & evaluate model 4 (numeric & converted non-numeric variables)
 model4_cols = unique(c(model2_cols, model3_cols))
 model4_exp = paste('Gross~', paste(model4_cols, collapse='+'))
 
 eval_model4 = eval_model(train_df, test_df, model4_exp, train_sizes, num_repeat=10)
 df_eval_mod4 = eval_model4$df_eval
-ggplot(data=df_eval_mod4, aes(x=train_size, y=rmses)) +
-  geom_line(aes(color=rmse_type, group=rmse_type)) +
-  ggtitle('Model 4: Training and Test RMSE')
 ```
 
 **Q**: Compare the observed RMSE with Tasks 2 & 3.
@@ -736,13 +775,17 @@ ggplot(data=df_eval_mod4, aes(x=train_size, y=rmses)) +
 For Model 4, I simply combined (but no additional interactions) the terms from Task 2 and 3 together. The Training vs Test RMSE for Model 4 is shown above. In addition, we can directly compare the best test RMSEs:
 
 ```{r}
+ggplot(data=df_eval_mod4, aes(x=train_size, y=rmses)) +
+  geom_line(aes(color=rmse_type, group=rmse_type)) +
+  ggtitle('Model 4: Training and Test RMSE')
+
 print(eval_model1$best_test_rmse)
 print(eval_model2$best_test_rmse)
 print(eval_model3$best_test_rmse)
 print(eval_model4$best_test_rmse)
 ```
 
-The improvement of model 4 was:
+The improvement of Model 4 compared to Model 2 was:
 
 ```{r}
 improvement_in_rmse_model4 = eval_model4$best_test_rmse - eval_model2$best_test_rmse
@@ -754,7 +797,7 @@ print(improvement_in_rmse_model4)
 print(percentage_improvement_in_rmse_model4)
 ```
 
-Notice that the improvement in Model 4 was `r {improvement_in_rmse_model4}` which represents a `r {percentage_improvement_in_rmse_model4 * 100}` percent improvement over Model 2! While this improvement might seem modest, in Part 5, we explore how to improve this even further with meaningful interactions.
+Notice that the improvement in Model 4 was $`r {improvement_in_rmse_model4}`$ which represents a further `r {percentage_improvement_in_rmse_model4 * 100}` percent improvement over Model 2! While this improvement might seem modest, again, in Part 5, we explore how to improve this even further with meaningful interactions. Furthermore, note that there is a massive improvement over Part 3 where we just had categorical variables. 
 
 ```{r}
 # Best test RMSE
@@ -762,22 +805,191 @@ best_testrmse_mod4 = eval_model4$best_test_rmse
 best_train_size_mod4 = eval_model4$best_train_size
 ```
 
-The best mean test RMSE value I observed for Model 4 was `r {best_testrmse_mod4}` and I observed that at the training set size `r {best_train_size_mod4 * 100}` percent. Notice again, we see a similar pattern as other models. From the graph above, notice that for Model 4 that we see that Test RMSE generally decreases with higher training set. Again, this makes sense because with very low training set size, the model will overfit the more limited data.
+The best mean test RMSE value I observed for Model 4 was $`r {best_testrmse_mod4}`$ and I observed that at the training set size `r {best_train_size_mod4 * 100}` percent. Notice again, we see a similar pattern as other models. From the graph above, notice that for Model 4 that we see that Test RMSE generally decreases with higher training set. Again, this makes sense because with very low training set size, the model will overfit the more limited data.
 
 ## 5. Additional features
 
 Now try creating additional features such as interactions (e.g. `is_genre_comedy` x `is_budget_greater_than_3M`) or deeper analysis of complex variables (e.g. text analysis of full-text columns like `Plot`).
 
-```{r}
+```{r warning=FALSE}
 # TODO: Build & evaluate model 5 (numeric, non-numeric and additional features)
+
+# Creating interaction variables between variables, as explored and discussed in Part 2
+df$imdbRating_greater_than_75_imdbRating = df$imdbRating_greater_than_75 * df$imdbRating
+df$imdbRating_greater_than_75_imdbRating2 = df$imdbRating_greater_than_75 * df$imdbRating2
+df$is_budget_greater_than_60m_budget = df$is_budget_greater_than_60m * df$Budget
+df$Runtime_RuntimeUnder75 = df$Runtime * df$RuntimeUnder75
+df$Runtime_RuntimeBetween75_125 = df$Runtime * df$RuntimeBetween75_125
+df$Runtime_RuntimeGreater125 = df$Runtime * df$RuntimeGreater125
+df$released_year_early_2000s = df$released_year * df$early_2000s
+df$released_year_mid_2000s = df$released_year * df$mid_2000s
+df$released_year_post_2010 = df$released_year * df$post_2010
+
+# Creating Family Friendly variable that is G, PG, or PG13. Also adding interactions. 
+df$family_friendly = as.numeric(df$G + df$PG + df$PG13 >= 1)
+df$family_friendly_wins = df$family_friendly * df$wins
+df$family_friendly_nominations = df$family_friendly * df$nominations
+
+# Made to DVD
+df$made_to_dvd = as.numeric(!is.na(df$DVD))
+
+# Number of Languages
+df$number_of_languages = sapply(strsplit(df[['Language']], ","), length)
+
+# "Recreate" the training and test df with the same indices to include the new columns
+train_df <- df[train_idx, ]
+test_df  <- df[-train_idx, ]
+
+additional_model5_cols = c('imdbRating_greater_than_75_imdbRating',
+                           'imdbRating_greater_than_75_imdbRating2',
+                           'is_budget_greater_than_60m_budget',
+                           'Runtime_RuntimeUnder75',
+                           'Runtime_RuntimeBetween75_125',
+                           'Runtime_RuntimeGreater125',
+                           'released_year_early_2000s',
+                           'released_year_mid_2000s',
+                           'released_year_post_2010',
+                           'family_friendly',
+                           'family_friendly_wins',
+                           'family_friendly_nominations',
+                           'made_to_dvd',
+                           'number_of_languages')
+model5_cols = unique(c(model4_cols, additional_model5_cols))
+model5_exp = paste('Gross~', paste(model5_cols, collapse='+'))
+
+eval_model5 = eval_model(train_df, test_df, model5_exp, train_sizes, num_repeat=10)
+df_eval_mod5 = eval_model5$df_eval
 ```
 
 **Q**: Explain what new features you designed and why you chose them.
 
 **A**: 
+In addition to the features from the previous parts, I created the following new interaction features. Note that the reasoning behind these interactions were already partly explored in Part 2, and I will elaborate further here
 
+1. Interaction of `imdbRating` and `imdbRating_greater_than_75`
+2. Interaction of `imdbRating2` and `imdbRating_greater_than_75`
+3. Interaction of `Budget` and `is_budget_greater_than_60m`
+4. Interaction of `Runtime` and `RuntimeUnder75`, `RuntimeBetween75_125`, and `RuntimeGreater125`
+5. Interaction of `Runtime2` and `RuntimeUnder75`, `RuntimeBetween75_125`, and `RuntimeGreater125`
+6. Interaction of `released_year` and `early_2000s`, `mid_2000s`, and `post_2010`
+
+Furthermore, I explore other relationships that were entirely previously undiscussed such as
+
+7. `family_friendly`: Defined as MPAA rating of G, PG, or PG-13
+8. `family_friendly_wins`: Interaction of `family_friendly` and `wins`
+9. `family_friendly_nominations`: Interaction of `family_friendly` and `nominations`.
+10. `made_to_dvd`: Indicator variable for if movie was made to DVD, intuition being if made to DVD perhaps it was a successful movie and Grossed more.
+11. `number_of_languages`: Parsed the `Language` column and count number of languages movie is made. Intuition being if multiple languages, it is an international release/success and thus Grossed more.
+
+For the first 6 interactions, we explored these a bit in Part 2, but I'll elaborate furhter here. Recall that in Part 2, I created a binned variable for imdbRating at 7.5. Now, I will interact this binned variable with `imdbRating` and `imdbRating2` to capture a different relationship after 7.5 (more on this below).
+
+If we re-look at the relationship between `imdbRating` and `Gross`, we plot the average Gross given imdbRating, and notice that the relationship seems to be linear until about 7.5. Then the average gross increases a lot. This is an interesting relationship because maybe movies below 7.5 rating are mostly not that great and so the relationship is linear. But if a movie is really really good, when the relationship between Gross and rating changes, that is a really really good movie grosses much much more. Thus, I chose to create a binned variable at `imdbRating = 7.5` and interacted it with `imdbRating` and `imdbRating2` to try to capture a different relationship after `imdbRating = 7.5`, where `imdbRating2` is the squared term of imdbRating (since the relationship after imdbRating=7.5 looks exponential).
+
+```{r}
+ggplot(df, aes(imdbRating, Gross)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+```
+
+Second, I look at the relationship between Budget and Gross. This is because if we remember back to Project 1, higher budget films tended to gross much higher. Looking at the graphs below, it seems like $60M would be an interesting bin, and I wanted to capture the interaction of the binned variable with `Budget` to allow for a difference in slope after $60M. 
+
+```{r}
+# Distribution of Gross by Budget
+# Now we need to show distribution of runtime by Budget. Do a boxplot grouped by budget
+df$budget_rounded = round_any(df$Budget, 10000000, f = floor)
+df$budget_rounded[df$Budget >= 60000000] = 60000000
+df$budget_rounded = as.character(df$budget_rounded)
+df$budget_rounded[df$budget_rounded == '600000000'] = 'Over 60M'
+
+ggplot(df, aes(as.factor(budget_rounded), Gross)) +
+  geom_boxplot() +
+  coord_flip() +
+  scale_x_discrete("Budget Rounded") +
+  ggtitle('Distribution of Gross by Budget')
+
+ggplot(df, aes(Budget, Gross)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point")
+```
+
+Next, with regards to `Runtime` recall from Part 2 we saw an interesting relationship between the bins of pre-75, between 75 and 125, and after 125 (reproduced visual below). To capture this interaction, we interacted `Runtime` and `Runtime2` with the binned variables.
+
+```{r warning=FALSE}
+ggplot(df, aes(Runtime, Gross)) +
+  stat_summary(fun.y = "mean", colour = "red", size = 2, geom = "point") +
+  geom_vline(xintercept=75, color='orange', linetype='longdash') +
+  geom_vline(xintercept=125, color='blue', linetype='longdash') +
+  ggtitle('Average Gross vs Runtime')
+```
+
+Next, with regards to `released_year` recall from Part 2 we saw an interesting relationship, potentially explained by Economic business cycles. Below, we reproduce the visualization, and to allow for the model to capture this interesting effect, we interact `released_year` with the binned variables.
+
+```{r warning=FALSE}
+ggplot(df, aes(released_year, Gross)) +
+  geom_point(stat='summary') +
+  geom_vline(xintercept=2004.5, color='orange', linetype='longdash') +
+  geom_vline(xintercept=2009.5, color='blue', linetype='longdash') +
+  ggtitle('Relationship between Gross and Released Year')
+```
+
+Next, I wanted to explore MPAA Ratings more because I noticed a pretty significant difference in Gross by different MPAA Ratings. In particular, we can see from the graph below that:
+
+```{r warning=FALSE}
+ggplot(df, aes(rated_cleaned, Gross)) +
+  geom_bar(stat='summary')
+```
+
+It looks like G, PG, and PG13 rated movies gross much higher on average than other MPAA rated movies. This makes sense as these types of movies are more "family friendly" and can relate to a much bigger audience. Thus, I created a binary variable `family_friendly` and interacted it with `wins` and `nominations` to see if there was any meaningful interactions. If we look at the ggpairs, it looks promising. 
+
+```{r}
+# Plotting Correlation Plots of the different Review number Columns:
+ggpairs(df[c('family_friendly', 'wins', 'family_friendly_wins', 'Gross')])
+ggpairs(df[c('family_friendly', 'nominations', 'family_friendly_nominations', 'Gross')])
+```
+
+Among other things from the `ggpairs` graph above, you can see that the correlation between `Gross` vs. `wins` and `nominations` is fairly high (approximately 0.3 for each), but interacted with `family_friendly`, the correlation goes up to almost 0.5! Thus, it seems like there is a meaningful interaction between `wins`, `nominations` and `family_friendly`. This essentially means that for family friendly movies, winning and/or being nominated for an award has functionally different relationship with Gross than non-family friendly movies. 
 
 **Q**: Comment on the final RMSE values you obtained, and what you learned through the course of this project.
 
 **A**:
+For Model 5, we can directly compare the best test RMSEs:
 
+```{r warning=FALSE}
+ggplot(data=df_eval_mod5, aes(x=train_size, y=rmses)) +
+  geom_line(aes(color=rmse_type, group=rmse_type)) +
+  ggtitle('Model 5: Training and Test RMSE')
+
+print(eval_model1$best_test_rmse)
+print(eval_model2$best_test_rmse)
+print(eval_model3$best_test_rmse)
+print(eval_model4$best_test_rmse)
+print(eval_model5$best_test_rmse)
+```
+
+The improvement of Model 5 compared to Model 4 was:
+
+```{r}
+improvement_in_rmse_model5 = eval_model5$best_test_rmse - eval_model4$best_test_rmse
+percentage_improvement_in_rmse_model5 = 1.0 * abs(eval_model5$best_test_rmse - eval_model4$best_test_rmse) / eval_model4$best_test_rmse
+print('Improvement in RMSE')
+print(improvement_in_rmse_model5)
+
+# As a percentage
+print(percentage_improvement_in_rmse_model5)
+```
+
+Notice that the improvement in Model 5 was $`r {improvement_in_rmse_model4}`$ which represents a further `r {percentage_improvement_in_rmse_model5 * 100}` percent improvement over Model 4! In addition, notice that the all-in improvement of Model 5 compared to Model 1 is $`r {eval_model5$best_test_rmse - eval_model1$best_test_rmse}`$ which represents a `r {1.0 * abs(eval_model5$best_test_rmse - eval_model1$best_test_rmse) / eval_model1$best_test_rmse * 100}` percentage improvement! 
+
+```{r}
+# Best test RMSE
+best_testrmse_mod5 = eval_model5$best_test_rmse
+best_train_size_mod5 = eval_model5$best_train_size
+```
+
+The best mean test RMSE value I observed for Model 5 was $`r {best_testrmse_mod5}`$ and I observed that at the training set size `r {best_train_size_mod5 * 100}` percent. Notice again, we see a similar pattern as other models. From the graph above, notice that for Model 5 that we see that Test RMSE generally decreases with higher training set. Again, this makes sense because with very low training set size, the model will overfit the more limited data.
+
+This project was immensely useful in getting experience into digging deeper about building models. Even with this relatively limited data set; on the order of 1000s of observations and 100s of features, there is practically infinite ways we can engineer new features and thus do feature selection as to what we want to put into our models. 
+
+One thing I definitely learned was that feature engineering is useful. Especially with linear regression, the relationship between an outcome variable and potential features is very rarely truly linear. Exploring which transformations and interactions improve the model is important. However, this is not riskless!!! Because of curse of dimensionality and bias/variance tradeoff, you cannot just put whatever you want into the model. Thus, the hold-out test set is important. 
+
+Another thing that I learned is the importance of training/test split, and I found the relationship with size of training set interesting. The test error seemed to generally decrease and generally the lowest test error was found when trained on 100% of training set. This is a key lesson since if you train on small sample size, the model will overfit the small training set (even with a relatively inflexible method like linear regression!) Thus, always be careful of overfitting and never trust the training error.
+
+If I wanted to take this a step forward, I would definitely want to include some kind of validation set/procedure (e.g. K-fold validation). However, given the scope of this project assignment and this Piazza post: https://piazza.com/class/j6gt7ycx6nk145?cid=1123, I did not do so here. However, this would be one tool to help us figure out the best features to include in our model. For example, this would be a good tool to help us figure out what power transformations to use. 
