@@ -1,0 +1,55 @@
+---
+title: "CSE 6242 Activity 5"
+author: Vincent La (Georgia Tech ID - vla6)
+date: November 27, 2017
+output:
+  pdf_document:
+    pandoc_args: [
+    "--output=ac5.pdf"
+    ]
+---
+
+# Introduction
+We will use the `igraph` package to visualize the graph data set.
+
+The name of the Graph data is "Road networks" taken from the Stanford Large Network Dataset Collection. Specifically we will be analyzing the "California road network" (http://snap.stanford.edu/data/roadNet-CA.html). In this graph dataset, intersections and endpoints are represented by nodes and the roads connecting these intersections are represented by undirected edges. 
+
+# Exploring The Graph Dataset
+
+```{r}
+# Activity 3: http://cse6242.gatech.edu/fall-2017/ac5/
+# To create zip file: zip ac5.zip ac5.Rmd ac5.pdf
+require(igraph)
+require(ggplot2)
+
+setwd("~/git/GeorgiaTech/cse6242/activity_5")
+
+ca_road_net <- read.table("roadNet-CA.txt")
+ca_road_net <- graph.data.frame(ca_road_net)
+
+# Number of edges
+num_edges = ecount(ca_road_net)
+num_vertices = vcount(ca_road_net)
+
+# Looking at distribution of Degrees of Vertices
+# Degree Distribution starts at 0 degrees
+max_degree = length(degree_distribution(ca_road_net)) - 1
+degrees = 0:max_degree
+distribution_df = data.frame(degrees=degrees, pmf=degree_distribution(ca_road_net))
+ggplot(distribution_df, aes(x=degrees, y=pmf)) +
+  geom_point() +
+  ggtitle('Distribution of Degrees of Vertices')
+
+print(degree_distribution)
+```
+
+We plot the distribution of degrees of vertices above. Notice that the modal (and median in this case) degrees is 6, which is interesting. 
+
+# Visualizing a part of the Graph
+
+In the next part, we visualize a section of the graph (too big to visualize the entire thing). 
+
+```{r}
+ca_road_net.copy <- delete.vertices(ca_road_net, which(degree(ca_road_net) != 10))
+plot(ca_road_net.copy)
+```
