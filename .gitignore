@@ -2,3 +2,6 @@
 *.csv
 vla6_exam*
 .DS_Store
+
+roadNet-CA.txt.gz
+roadNet-CA.txt
