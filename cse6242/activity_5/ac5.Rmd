@@ -22,7 +22,8 @@ The name of the Graph data is "Road networks" taken from the Stanford Large Netw
 require(igraph)
 require(ggplot2)
 
-setwd("~/git/GeorgiaTech/cse6242/activity_5")
+#setwd("~/git/GeorgiaTech/cse6242/activity_5")
+setwd("C:/Users/vla/git/GeorgiaTech/cse6242/activity_5")
 
 ca_road_net <- read.table("roadNet-CA.txt")
 ca_road_net <- graph.data.frame(ca_road_net)
@@ -47,9 +48,10 @@ We plot the distribution of degrees of vertices above. Notice that the modal (an
 
 # Visualizing a part of the Graph
 
-In the next part, we visualize a section of the graph (too big to visualize the entire thing). 
+In the next part, we visualize a section of the graph (too big to visualize the entire thing). More specifically, we visualize the first 15 vertices. We also weight the depiction of each node by its degrees. This visualization depicts the graph of California road network. A brief description is as follows. Nodes 4 and 3 have the highest degrees in this graph with degree 4. Nodes 7 and 8 are completely unconnected from the rest.
 
 ```{r}
-ca_road_net.copy <- delete.vertices(ca_road_net, which(degree(ca_road_net) != 10))
-plot(ca_road_net.copy)
+induced = induced_subgraph(ca_road_net, V(ca_road_net)[[1:15]])
+nodesize = degree(induced) * 5
+plot(induced, vertex.size=nodesize)
 ```
