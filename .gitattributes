@@ -15,3 +15,6 @@
 *.PDF	 diff=astextplain
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
+
+# Use Git LFS for CSVs
+*.csv filter=lfs diff=lfs merge=lfs -text
