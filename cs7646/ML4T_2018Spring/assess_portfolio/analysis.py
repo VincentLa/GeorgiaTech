@@ -1,14 +1,88 @@
-"""Analyze a portfolio.
+"""
+Analyze a portfolio.
 
 Copyright 2017, Georgia Tech Research Corporation
 Atlanta, Georgia 30332-0415
 All Rights Reserved
+
+Run by cd'ing into the directory containing analysis.py and typing the following in terminal:
+PYTHONPATH=../:. python analysis.py
+
+This will add the python path appropriately
+
+Note on running the grading script see: http://quantsoftware.gatech.edu/ML4T_Software_Setup
 """
 
 import pandas as pd
 import numpy as np
 import datetime as dt
 from util import get_data, plot_data
+
+
+def normalize_data(df):
+    """
+    Helper function to normalize Stock data by dividing by first day
+
+    Taken from: https://classroom.udacity.com/courses/ud501/lessons/3975568860/concepts/41007386010923
+    """
+    return df / df.iloc[0, :]
+
+
+def compute_daily_portfolio_value(df_prices, syms, allocs):
+    """
+    Helper function to compute daily portfolio values.
+
+    Keyword Args:
+        df_prices: DataFrame containing time series data of prices
+    """
+    df_prices['daily_portfolio_value'] = 0
+    for s, a in zip(syms, allocs):
+        df_prices['daily_portfolio_value'] += df_prices[s] * a
+    return df_prices
+
+
+def compute_portfolio_stats(df_prices, allocs=[0.1, 0.2, 0.3, 0.4], rfr=0.0, sf=252.0):
+    """
+    Helper function to compute portfolio stats.
+
+    Keyword Args:
+        df_prices: DataFrame containing time series data of prices
+        allocs: A list of allocations to the stocks, must sum to 1
+        rfr: The risk free return per sample period for the entire date range. We assume no changes
+        sf: Sampling frequency per year
+
+    Returns:
+        cr: Cumulative return
+        adr: Average Daily Return
+        sddr: Standard deviation of daily return
+        sr: Sharpe Ratio
+    """
+    syms = list(df_prices.columns)
+    df_prices = compute_daily_portfolio_value(df_prices, syms, allocs)
+    last_day = df_prices.shape[0] - 1
+
+    # Cumulative Return = daily_portfolio_value[t] / daily_portfolio_value[0] - 1
+    cr = df_prices.daily_portfolio_value.iloc[last_day] / df_prices.daily_portfolio_value.iloc[0] - 1
+
+    # Daily Return = daily_portfolio_value[t] / daily_portfolio_value[t - 1] - 1
+    # Taken from: https://classroom.udacity.com/courses/ud501/lessons/4156938722/concepts/41858589820923
+    df_prices['daily_return'] = df_prices.daily_portfolio_value /\
+        df_prices.daily_portfolio_value.shift(1) - 1
+    # df_prices['daily_return'].iloc[0] = 0  # set daily returns for first day to 0 Perhaps don't need since we're calculating statistics excluding first day?
+
+    # Average Daily Return
+    adr = df_prices.daily_return.mean()
+
+    # Standard deviation of daily return
+    sddr = df_prices.daily_return.std()
+
+    # Compute Sharp Ratio (mean of difference of daily return and rfr) / (std of differences of daily return and rfr)
+    # https://classroom.udacity.com/courses/ud501/lessons/4242038556/concepts/41998985500923
+    # https://classroom.udacity.com/courses/ud501/lessons/4242038556/concepts/41998985510923
+    sr = (df_prices.daily_return - rfr).mean() / (df_prices.daily_return - rfr).std()
+    sr *= np.sqrt(sf)
+
+    return df_prices, cr, adr, sddr, sr
 
 
 # This is the function that will be tested by the autograder
@@ -19,21 +93,29 @@ def assess_portfolio(sd=dt.datetime(2008, 1, 1), ed = dt.datetime(2009, 1, 1), \
                      sv=1000000, rfr=0.0, sf=252.0, \
                      gen_plot=False):
 
-    # Read in adjusted closing prices for given symbols, date range
+    # Step 1: Read in adjusted closing prices for given symbols, date range
     dates = pd.date_range(sd, ed)
     prices_all = get_data(syms, dates)  # automatically adds SPY
+
+    # Step 2: Normalize the prices according to the first day
+    prices_all = normalize_data(prices_all)
+
     prices = prices_all[syms]  # only portfolio symbols
     prices_SPY = prices_all['SPY']  # only SPY, for comparison later
 
-
-    print(prices.head())
-
-    print('adding code next')
     # Get daily portfolio value
-    port_val = prices_SPY # add code here to compute daily portfolio values
+    port_val = prices_SPY  # add code here to compute daily portfolio values
 
-    # Get portfolio statistics (note: std_daily_ret = volatility)
-    cr, adr, sddr, sr = [0.25, 0.001, 0.0005, 2.1] # add code here to compute stats
+    # Step 3, 4, 5, 6: Calculate daily portfolio value by finding the normalized allocation each day
+    # Then, calculate portfolio statistics
+    prices, cr, adr, sddr, sr = compute_portfolio_stats(prices, allocs)
+
+    print('printing daily values')
+    print(prices.head(10))
+    print(cr)
+    print(adr)
+    print(sddr)
+    print(sr)
 
     # Compare daily portfolio value with SPY using a normalized plot
     if gen_plot:
@@ -42,7 +124,7 @@ def assess_portfolio(sd=dt.datetime(2008, 1, 1), ed = dt.datetime(2009, 1, 1), \
         pass
 
     # Add code here to properly compute end value
-    ev = sv
+    ev = sv * (1 + cr)
 
     return cr, adr, sddr, sr, ev
 
@@ -53,20 +135,42 @@ def test_code():
     # Define input parameters
     # Note that ALL of these values will be set to different values by
     # the autograder!
-    start_date = dt.datetime(2009,1,1)
-    end_date = dt.datetime(2010,1,1)
+
+    # start_date = dt.datetime(2009, 1, 1)
+    # end_date = dt.datetime(2010, 1, 1)
+    # symbols = ['GOOG', 'AAPL', 'GLD', 'XOM']
+    # allocations = [0.2, 0.3, 0.4, 0.1]
+    # start_val = 1000000
+    # risk_free_rate = 0.0
+    # sample_freq = 252
+
+    # Example 1:
+    start_date = dt.datetime(2010, 1, 1)
+    end_date = dt.datetime(2010, 12, 31)
     symbols = ['GOOG', 'AAPL', 'GLD', 'XOM']
     allocations = [0.2, 0.3, 0.4, 0.1]
     start_val = 1000000
     risk_free_rate = 0.0
     sample_freq = 252
 
+    # Example 2:
+    start_date = dt.datetime(2010, 1, 1)
+    end_date = dt.datetime(2010, 12, 31)
+    symbols = ['AXP', 'HPQ', 'IBM', 'HNZ']
+    allocations = [0.0, 0.0, 0.0, 1.0]
+
+    # Example 3:
+    start_date = dt.datetime(2010, 6, 1)
+    end_date = dt.datetime(2010, 12, 31)
+    symbols = ['GOOG', 'AAPL', 'GLD', 'XOM']
+    allocations = [0.2, 0.3, 0.4, 0.1]
+
     # Assess the portfolio
-    cr, adr, sddr, sr, ev = assess_portfolio(sd = start_date, ed = end_date,\
-        syms = symbols, \
-        allocs = allocations,\
-        sv = start_val, \
-        gen_plot = False)
+    cr, adr, sddr, sr, ev = assess_portfolio(sd=start_date, ed=end_date,\
+        syms=symbols, \
+        allocs=allocations,\
+        sv=start_val, \
+        gen_plot=False)
 
     # Print statistics
     print "Start Date:", start_date
