@@ -13,6 +13,7 @@ This will add the python path appropriately
 Note on running the grading script see: http://quantsoftware.gatech.edu/ML4T_Software_Setup
 """
 
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import datetime as dt
@@ -103,25 +104,27 @@ def assess_portfolio(sd=dt.datetime(2008, 1, 1), ed = dt.datetime(2009, 1, 1), \
     prices = prices_all[syms]  # only portfolio symbols
     prices_SPY = prices_all['SPY']  # only SPY, for comparison later
 
-    # Get daily portfolio value
-    port_val = prices_SPY  # add code here to compute daily portfolio values
-
     # Step 3, 4, 5, 6: Calculate daily portfolio value by finding the normalized allocation each day
     # Then, calculate portfolio statistics
     prices, cr, adr, sddr, sr = compute_portfolio_stats(prices, allocs)
 
-    print('printing daily values')
-    print(prices.head(10))
-    print(cr)
-    print(adr)
-    print(sddr)
-    print(sr)
+    # Get daily portfolio value
+    port_val = prices.daily_portfolio_value
 
     # Compare daily portfolio value with SPY using a normalized plot
     if gen_plot:
         # add code to plot here
         df_temp = pd.concat([port_val, prices_SPY], keys=['Portfolio', 'SPY'], axis=1)
-        pass
+
+        plt.figure(figsize=(7, 4))
+        plt.plot(df_temp['Portfolio'], color='b', label='Portfolio')
+        plt.plot(df_temp['SPY'], color='g', label='SPY')
+        plt.grid(True)
+        plt.legend(loc=0)
+        plt.xlabel('Date')
+        plt.ylabel('Normalized Price')
+        plt.title('Daily portfolio value and SPY')
+        plt.savefig('./output/plot.png')
 
     # Add code here to properly compute end value
     ev = sv * (1 + cr)
@@ -170,7 +173,7 @@ def test_code():
         syms=symbols, \
         allocs=allocations,\
         sv=start_val, \
-        gen_plot=False)
+        gen_plot=True)
 
     # Print statistics
     print "Start Date:", start_date
