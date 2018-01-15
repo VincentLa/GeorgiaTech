@@ -11,7 +11,18 @@ PYTHONPATH=../:. python analysis.py
 This will add the python path appropriately
 
 Note on running the grading script see: http://quantsoftware.gatech.edu/ML4T_Software_Setup
+
+To SSH into Georgia Tech's machine:
+ssh -X vla6@buffet02.cc.gatech.edu
+
+To SFTP copy stuff over:
+scp -r ML4T_2018Spring/* vla6@buffet02.cc.gatech.edu:ML4T_2018Spring/
+
+Note this Piazza post on saving images: https://piazza.com/class/jc95nj7xalax8?cid=65
 """
+
+import matplotlib
+matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -124,6 +135,7 @@ def assess_portfolio(sd=dt.datetime(2008, 1, 1), ed = dt.datetime(2009, 1, 1), \
         plt.xlabel('Date')
         plt.ylabel('Normalized Price')
         plt.title('Daily portfolio value and SPY')
+        plt.show()
         plt.savefig('./output/plot.png')
 
     # Add code here to properly compute end value
