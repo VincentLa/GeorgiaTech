@@ -1,5 +1,5 @@
 """
-A simple wrapper for Decision Tree Learner.
+A simple wrapper for Random Tree Learner.
 
 Building Decision Tree Slides: http://quantsoftware.gatech.edu/images/4/4e/How-to-learn-a-decision-tree.pdf
 """
@@ -7,7 +7,7 @@ Building Decision Tree Slides: http://quantsoftware.gatech.edu/images/4/4e/How-t
 import numpy as np
 import pandas as pd
 
-class DTLearner(object):
+class RTLearner(object):
 
     def __init__(self, leaf_size=1, verbose=False):
         self.leaf_size = leaf_size
@@ -37,10 +37,8 @@ class DTLearner(object):
             return np.array([[-1,  y_value, np.nan, np.nan]])
         else:
             # Else Recursively build a tree
-            # Determine best feature i to split on based on correlation
-            corr = np.corrcoef(dataX, dataY, rowvar=False)
-            corr_coef = np.absolute(corr[:, -1][0:-1])
-            i = np.nanargmax(corr_coef)
+            # Instead of selecting feature based on correlation, select based on random int generator
+            i = np.random.randint(low=0, high=dataX.shape[1])
 
             # Split the values based on median, unless the median = the max or the min then take the average
             # This is because if the median equals either the median or max it doesn't actually split the data

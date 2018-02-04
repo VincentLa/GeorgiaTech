@@ -1,0 +1,12 @@
+{
+  "grade_learners.py::test_learners[InsaneLearner Test Case-InsaneLearner-simple.csv-1498076428-None]": true, 
+  "grade_learners.py::test_learners[Random Classname Test Case-RandomName-simple.csv-1498076428-None]": true, 
+  "grade_learners.py::test_learners[Test Case 01: Bagging-BagLearner-Istanbul.csv-1481090001-None]": true, 
+  "grade_learners.py::test_learners[Test Case 02: Bagging-BagLearner-Istanbul.csv-1481090002-None]": true, 
+  "grade_learners.py::test_learners[Test Case 03: Bagging-BagLearner-Istanbul.csv-1481090003-None]": true, 
+  "grade_learners.py::test_learners[Test Case 04: Bagging-BagLearner-Istanbul.csv-1481090004-None]": true, 
+  "grade_learners.py::test_learners[Test Case 05: Bagging-BagLearner-Istanbul.csv-1481090005-None]": true, 
+  "grade_learners.py::test_learners[Test Case 06: Bagging-BagLearner-Istanbul.csv-1481090006-None]": true, 
+  "grade_learners.py::test_learners[Test Case 07: Bagging-BagLearner-Istanbul.csv-1481090007-None]": true, 
+  "grade_learners.py::test_learners[Test Case 08: Bagging-BagLearner-Istanbul.csv-1481090008-None]": true
+}

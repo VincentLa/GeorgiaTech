@@ -26,7 +26,7 @@ class LinRegLearner(object):
         # build and save the model
         self.model_coefs, residuals, rank, s = np.linalg.lstsq(newdataX, dataY)
         
-    def query(self,points):
+    def query(self, points):
         """
         @summary: Estimate a set of test points given the model we built.
         @param points: should be a numpy array with each row corresponding to a specific query.

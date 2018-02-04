@@ -5,6 +5,10 @@ Usage:
 - Run this script with both ml4t/ and student solution in PYTHONPATH, e.g.:
     PYTHONPATH=ml4t:MC3-P1/jdoe7 python ml4t/mc3_p1_grading/grade_learners.py
 
+Vincent:
+Run by cd'ing into the directory containing grade_learners.py and typing the following in terminal:
+PYTHONPATH=../:. python grade_learners.py
+
 Copyright 2017, Georgia Tech Research Corporation
 Atlanta, Georgia 30332-0415
 All Rights Reserved
