@@ -6,6 +6,15 @@ All Rights Reserved
 
 See this helpful post on unuseful error in SciPy: https://piazza.com/class/jc95nj7xalax8?cid=189
 Udacity Lesson for Optimizers Starts Here: https://classroom.udacity.com/courses/ud501/lessons/4351588706/concepts/43677793140923
+
+Run by cd'ing into the directory containing analysis.py and typing the following in terminal:
+PYTHONPATH=../:. python grade_optimization.py
+
+To SSH into Georgia Tech's machine:
+ssh -X vla6@buffet02.cc.gatech.edu
+
+To SFTP copy stuff over:
+scp -r ML4T_2018Spring/* vla6@buffet02.cc.gatech.edu:ML4T_2018Spring/
 """
 
 import matplotlib
