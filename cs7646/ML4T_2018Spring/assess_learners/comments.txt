@@ -1,5 +1,5 @@
 <pre>--- Summary ---
-Tests passed: 8 out of 18
+Tests passed: 18 out of 18
 
 --- Details ---
 Test #0: passed 
@@ -10,44 +10,14 @@ Test #4: passed
 Test #5: passed 
 Test #6: passed 
 Test #7: passed 
-Test #8: failed 
-Description: Test Case 01: Bagging (group: BagLearner)
-ImportError: No module named BagLearner
-
-Test #9: failed 
-Description: Test Case 02: Bagging (group: BagLearner)
-ImportError: No module named BagLearner
-
-Test #10: failed 
-Description: Test Case 03: Bagging (group: BagLearner)
-ImportError: No module named BagLearner
-
-Test #11: failed 
-Description: Test Case 04: Bagging (group: BagLearner)
-ImportError: No module named BagLearner
-
-Test #12: failed 
-Description: Test Case 05: Bagging (group: BagLearner)
-ImportError: No module named BagLearner
-
-Test #13: failed 
-Description: Test Case 06: Bagging (group: BagLearner)
-ImportError: No module named BagLearner
-
-Test #14: failed 
-Description: Test Case 07: Bagging (group: BagLearner)
-ImportError: No module named BagLearner
-
-Test #15: failed 
-Description: Test Case 08: Bagging (group: BagLearner)
-ImportError: No module named BagLearner
-
-Test #16: failed 
-Description: InsaneLearner Test Case (group: InsaneLearner)
-ImportError: No module named BagLearner
-
-Test #17: failed 
-Description: Random Classname Test Case (group: RandomName)
-ImportError: No module named BagLearner
-
+Test #8: passed 
+Test #9: passed 
+Test #10: passed 
+Test #11: passed 
+Test #12: passed 
+Test #13: passed 
+Test #14: passed 
+Test #15: passed 
+Test #16: passed 
+Test #17: passed 
 </pre>
