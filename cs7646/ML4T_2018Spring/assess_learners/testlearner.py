@@ -307,7 +307,7 @@ if __name__=="__main__":
 
     plt.figure(figsize=(7, 4))
     plt.plot(dfdt1['test_rmse'], color='r', label='Test RMSE (DTLearner No Bagging)')
-    plt.plot(dfrt1['test_rmse'], color='c', label='Test RMSE (RTLearner No Bagging)')
+    plt.plot(dfrt1['test_rmse'], color='c', label='Test RMSE (RTLearner No Bagging)')  # This produces no graph because RT with one leaf fails
     plt.grid(True)
     plt.legend(loc=0)
     plt.xlabel('Leaf Size')
