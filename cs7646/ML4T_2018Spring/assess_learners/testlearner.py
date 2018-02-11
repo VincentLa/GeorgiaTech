@@ -107,16 +107,40 @@ if __name__=="__main__":
 
         c = np.corrcoef(predY, y=trainY)
         train_corr = c[0, 1]
-        
+
         # evaluate out of sample
         predY = learner.query(testX) # get the predictions
         rmse = math.sqrt(((testY - predY) ** 2).sum()/testY.shape[0])
         test_rmse = rmse
-        
+
         c = np.corrcoef(predY, y=testY)
         test_corr = c[0, 1]
 
         return train_rmse, train_corr, test_rmse, test_corr
+
+
+    def test_rt_learner(leaf_size):
+        learner = rt.RTLearner(leaf_size=leaf_size, verbose = True)
+        learner.addEvidence(trainX, trainY) # train it
+
+        # evaluate in sample
+        predY = learner.query(trainX) # get the predictions
+        rmse = math.sqrt(((trainY - predY) ** 2).sum()/trainY.shape[0])
+        train_rmse = rmse
+
+        c = np.corrcoef(predY, y=trainY)
+        train_corr = c[0, 1]
+
+        # evaluate out of sample
+        predY = learner.query(testX) # get the predictions
+        rmse = math.sqrt(((testY - predY) ** 2).sum()/testY.shape[0])
+        test_rmse = rmse
+
+        c = np.corrcoef(predY, y=testY)
+        test_corr = c[0, 1]
+
+        return train_rmse, train_corr, test_rmse, test_corr
+
 
     max_leaf_size = 300
     train_rmses = np.array([])
@@ -167,12 +191,12 @@ if __name__=="__main__":
 
         c = np.corrcoef(predY, y=trainY)
         train_corr = c[0, 1]
-        
+
         # evaluate out of sample
         predY = learner.query(testX) # get the predictions
         rmse = math.sqrt(((testY - predY) ** 2).sum()/testY.shape[0])
         test_rmse = rmse
-        
+
         c = np.corrcoef(predY, y=testY)
         test_corr = c[0, 1]
 
@@ -187,7 +211,7 @@ if __name__=="__main__":
         'leaf_size': leaf_sizes_total,
         'bags': bags_total,
     })
-    
+
     train_rmses = np.array([])
     train_corrs = np.array([])
     test_rmses = np.array([])
@@ -224,7 +248,7 @@ if __name__=="__main__":
     dfdtlarge1.set_index('leaf_size', inplace=True)
     dfdtlarge10.set_index('leaf_size', inplace=True)
     dfdtlarge200.set_index('leaf_size', inplace=True)
-    
+
     plt.figure(figsize=(7, 4))
     plt.plot(dfdt1['test_rmse'], linestyle='dashed', color='g', label='Test RMSE (No Bagging)')
     plt.plot(dfdt10['test_rmse'], color='g', label='Test RMSE (Bags = 15)')
@@ -245,7 +269,7 @@ if __name__=="__main__":
     plt.legend(loc=0)
     plt.xlabel('Leaf Size')
     plt.ylabel('RMSE')
-    plt.title('Test vs Train RMSE')
+    plt.title('Test RMSE')
     plt.show()
     plt.savefig('./plot2b.png')
 
@@ -254,11 +278,31 @@ if __name__=="__main__":
 
     print('Starting to Answer Report Question 3')
 
+    # No Bagging Random Tree:
+    train_rmses = np.array([])
+    train_corrs = np.array([])
+    test_rmses = np.array([])
+    test_corrs = np.array([])
+    for l in range(1, max_leaf_size):
+        train_rmse, train_corr, test_rmse, test_corr = test_rt_learner(l)
+        train_rmses = np.append(train_rmses, train_rmse)
+        train_corrs = np.append(train_corrs, train_corr)
+        test_rmses = np.append(test_rmses, test_rmse)
+        test_corrs = np.append(test_corrs, test_corr)
+    dfrt_nobagging = pd.DataFrame({
+        'leaf_size': list(range(1, max_leaf_size)),
+        'bags': [0] * len(list(range(1, max_leaf_size))),
+        'train_rmse': train_rmses,
+        'train_corr': train_corrs,
+        'test_rmse': test_rmses,
+        'test_corr': test_corrs
+    })
+
     dfrt = pd.DataFrame({
         'leaf_size': leaf_sizes_total,
         'bags': bags_total,
     })
-    
+
     train_rmses = np.array([])
     train_corrs = np.array([])
     test_rmses = np.array([])
@@ -281,32 +325,32 @@ if __name__=="__main__":
     dfdt_combined['learner'] = 'DTLearner'
     dfrt['learner'] = 'RTLearner'
 
-    dfdtrt_combined = pd.concat([dfdt_combined, dfrt])
+    dfdtrt_combined = pd.concat([dfdt_combined, dfrt_nobagging, dfrt])
     dfdtrt_combined.to_csv('question3.csv')
 
-    dfrt1 = dfrt.loc[(dfrt.bags==0) & (dfrt.leaf_size <= 10)]
-    dfrt10 = dfrt.loc[(dfrt.bags==15) & (dfrt.leaf_size <= 10)]
-    dfrt20 = dfrt.loc[(dfrt.bags==30) & (dfrt.leaf_size <= 10)]
-    dfrt200 = dfrt.loc[(dfrt.bags==200) & (dfrt.leaf_size <= 10)]
+    dfrt1 = dfrt_nobagging.loc[(dfrt_nobagging.bags==0) & (dfrt_nobagging.leaf_size <= 50)]
+    dfrt10 = dfrt.loc[(dfrt.bags==15) & (dfrt.leaf_size <= 50)]
+    dfrt20 = dfrt.loc[(dfrt.bags==30) & (dfrt.leaf_size <= 50)]
+    dfrt200 = dfrt.loc[(dfrt.bags==200) & (dfrt.leaf_size <= 50)]
 
     dfrt1.set_index('leaf_size', inplace=True)
     dfrt10.set_index('leaf_size', inplace=True)
     dfrt20.set_index('leaf_size', inplace=True)
     dfrt200.set_index('leaf_size', inplace=True)
-    
+
     plt.figure(figsize=(7, 4))
-    plt.plot(dfdt200['test_rmse'], color='r', label='Test RMSE (DTLearner Bags = 200)')
+    plt.plot(dfdtlarge200['test_rmse'], color='r', label='Test RMSE (DTLearner Bags = 200)')
     plt.plot(dfrt200['test_rmse'], color='c', label='Test RMSE (RTLearner Bags = 200)')
     plt.grid(True)
     plt.legend(loc=0)
     plt.xlabel('Leaf Size')
     plt.ylabel('RMSE')
-    plt.title('Test vs Train RMSE')
+    plt.title('Test RMSE (DT vs RT Learner Comparison with Bagging)')
     plt.show()
     plt.savefig('./plot3.png')
 
     plt.figure(figsize=(7, 4))
-    plt.plot(dfdt1['test_rmse'], color='r', label='Test RMSE (DTLearner No Bagging)')
+    plt.plot(dfdtlarge1['test_rmse'], color='r', label='Test RMSE (DTLearner No Bagging)')
     plt.plot(dfrt1['test_rmse'], color='c', label='Test RMSE (RTLearner No Bagging)')  # This produces no graph because RT with one leaf fails
     plt.grid(True)
     plt.legend(loc=0)

@@ -1,5 +1,5 @@
 """
-QUESTION FOR JAMES
+QUESTION
 Not sure if this is implemented correctly. What does it mean contain 20 Bag Learner instances composed of 20 LinRegLearner instances?
 
 Do I have to create 20 different BagLearner where in each the bags is equal to 20?
