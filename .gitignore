@@ -1,6 +1,7 @@
 *.mp4
 vla6_exam*
 .DS_Store
+*.pyc
 
 roadNet-CA.txt.gz
 roadNet-CA.txt

@@ -9,7 +9,7 @@ import pandas as pd
 
 class BagLearner(object):
 
-    def __init__(self, learner, kwargs, bags, boost, verbose=False):
+    def __init__(self, learner, kwargs, bags, boost=False, verbose=False):
         self.kwargs = kwargs
         self.bags = bags
         self.boost = boost
