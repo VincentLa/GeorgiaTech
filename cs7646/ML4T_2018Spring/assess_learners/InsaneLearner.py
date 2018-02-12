@@ -5,7 +5,6 @@ import LinRegLearner as lrl
 class InsaneLearner(object):
 
     def __init__(self, verbose=False):
-        # self.learner = bl.BagLearner(learner=lrl.LinRegLearner, kwargs={}, bags=20, boost=False, verbose=False)
         self.learner = bl.BagLearner(bl.BagLearner, {'learner':lrl.LinRegLearner, 'kwargs':{}, 'bags':20}, bags = 20)
 
     def author(self):
