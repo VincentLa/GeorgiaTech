@@ -41,7 +41,7 @@ def best4DT(seed=1489683273):
     # Generating Y using Decision Rules
     Y = np.array([])
     col_idx = np.random.randint(low=0, high=num_cols)
-    slice_col = X[:, col_idx]   
+    slice_col = X[:, col_idx]
     col_mean = np.mean(slice_col)
     for i in range(num_rows):
         if(X[i, col_idx] < col_mean):

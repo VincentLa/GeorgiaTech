@@ -6,7 +6,7 @@ Usage:
     PYTHONPATH=ml4t:MC3-P1/jdoe7 python ml4t/mc3_p1_grading/grade_learners.py
 
 Vincent:
-PYTHONPATH=../:. python grade_optimization.py
+PYTHONPATH=../:. python grade_best4.py
 
 Copyright 2017, Georgia Tech Research Corporation
 Atlanta, Georgia 30332-0415
@@ -15,7 +15,7 @@ All Rights Reserved
 
 import pytest
 from grading.grading import grader, GradeResult, time_limit, run_with_timeout, IncorrectOutput
-# These two lines will be commented out in the final grading script. 
+# These two lines will be commented out in the final grading script.
 from LinRegLearner import LinRegLearner
 from DTLearner import DTLearner
 
@@ -33,7 +33,7 @@ import time
 
 seconds_per_test_case = 5
 
-max_points = 100.0 
+max_points = 100.0
 html_pre_block = True  # surround comments with HTML <pre> tag (for T-Square comments field)
 
 # Test cases
@@ -169,7 +169,7 @@ def test_learners(description, group, max_tests, needed_wins, row_limits, col_li
                             "      Second dataX:\n{}\n".format(diff_dataX)+\
                             "      First dataY:\n{}\n".format(dataY)+\
                             "      Second dataY:\n{}\n".format(diff_dataY))
-                points_earned = max(0,points_earned-20)            
+                points_earned = max(0,points_earned-20)
         if incorrect:
             if group=='author':
                 raise IncorrectOutput, "Test failed on one or more criteria.\n  {}".format('\n'.join(msgs))
@@ -190,7 +190,7 @@ def test_learners(description, group, max_tests, needed_wins, row_limits, col_li
     except Exception as e:
         # Test result: failed
         msg = "Description: {} (group: {})\n".format(description, group)
-        
+
         # Generate a filtered stacktrace, only showing erroneous lines in student file(s)
         tb_list = tb.extract_tb(sys.exc_info()[2])
         for i in xrange(len(tb_list)):
