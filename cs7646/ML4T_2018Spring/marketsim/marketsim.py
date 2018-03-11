@@ -12,6 +12,12 @@ Using https://www.youtube.com/watch?v=TstVUVbu-Tk as a guide
 
 Extra Point: https://www.youtube.com/watch?v=TstVUVbu-Tk 1:03:00
 June 15th, 2011, ignore all orders.
+
+To SSH into Georgia Tech's machine:
+ssh -X vla6@buffet02.cc.gatech.edu
+
+To SFTP copy stuff over:
+scp -r ML4T_2018Spring/marketsim vla6@buffet02.cc.gatech.edu:ML4T_2018Spring/marketsim
 """
 
 import pandas as pd
