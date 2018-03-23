@@ -17,6 +17,10 @@ See Time Series Lecture: https://classroom.udacity.com/courses/ud501/lessons/415
 -- Transaction costs for ManualStrategy: Commission: $9.95, Impact: 0.005.
 -- Transaction costs for BestPossibleStrategy: Commission: $0.00, Impact: 0.00.
 """
+import matplotlib
+matplotlib.use('Agg')
+
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import datetime as dt
@@ -33,24 +37,72 @@ def normalize_data(df):
     return df / df.iloc[0, :]
 
 
-def bollinger_bands(df):
+def bollinger_bands(df, stocks=['JPM'], window=20):
     """
     """
-    pass
+    # Plot Stock Data
+    ax = df[stocks].plot(title='JPM Bollinger Bands', label='JPM')
+
+    # Compute Rolling mean using a 20 day window
+    # Compute Rolling std using a 20 day window
+    rm = pd.rolling_mean(df['JPM'], window=window)
+    rm_std = pd.rolling_std(df['JPM'], window=window)
+    upper_band = rm + rm_std * 2
+    lower_band = rm - rm_std * 2
+
+    # Add rolling mean to same plot
+    rm.plot(label='Rolling mean', ax=ax)
+    upper_band.plot(label='Upper Band', ax=ax)
+    lower_band.plot(label='Lower Band', ax=ax)
+
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Price")
+    ax.legend(loc='lower left')
+    plt.savefig('./bollinger.png')
 
 
-def sma(df):
+def sma(df, stocks=['JPM'], window=20):
     """
     Calculate Simple Moving Average
     """
-    pass
+    # Plot Stock Data
+    ax = df[stocks].plot(title='JPM SMA (Simple Moving Average)', label='JPM')
 
-def rate_of_change(df):
+    # Compute Rolling mean using a 20 day window
+    # Compute Rolling std using a 20 day window
+    rm = pd.rolling_mean(df['JPM'], window=window)
+    price_over_rm = df['JPM'] / rm
+
+    # Add rolling mean to same plot
+    rm.plot(label='SMA', ax=ax)
+    price_over_rm.plot(label='Price / SMA', ax=ax)
+
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Price")
+    ax.legend(loc='lower left')
+    plt.savefig('./sma.png')
+
+
+def rate_of_change(df, stocks=['JPM'], window=20):
     """
+    ROC is is a technical indicator that measures the percentage change between the most
+
+    recent price and the price "window" days ago.
     REMOVE THESE BEFORE SUBMITTING
     https://www.quantinsti.com/blog/build-technical-indicators-in-python/#roc
     """
-    pass
+    N = df['JPM'].diff(window)
+    D = df['JPM'].shift(window)
+
+    ax = df[stocks].plot(title='JPM ROC (Rate of Change)', label='JPM')
+
+    ROC = pd.Series(N/D, name='Rate of Change')
+    ROC.plot(label='ROC', ax=ax)
+
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Price")
+    ax.legend(loc='lower left')
+    plt.savefig('./roc.png')
 
 
 def create_indicators(stocks=['JPM'], start_date=dt.date(2008, 1, 1), end_date=dt.date(2009, 1, 1)):
@@ -63,6 +115,11 @@ def create_indicators(stocks=['JPM'], start_date=dt.date(2008, 1, 1), end_date=d
     prices = normalize_data(prices)
 
     print(prices.head())
+
+    # Make Technical Indicators
+    bollinger_bands(df=prices)
+    sma(df=prices)
+    rate_of_change(df=prices)
 
 
 def main():
