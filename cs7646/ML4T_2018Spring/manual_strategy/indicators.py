@@ -88,8 +88,6 @@ def rate_of_change(df, stocks=['JPM'], window=20):
     ROC is is a technical indicator that measures the percentage change between the most
 
     recent price and the price "window" days ago.
-    REMOVE THESE BEFORE SUBMITTING
-    https://www.quantinsti.com/blog/build-technical-indicators-in-python/#roc
     """
     N = df['JPM'].diff(window)
     D = df['JPM'].shift(window)
@@ -105,9 +103,30 @@ def rate_of_change(df, stocks=['JPM'], window=20):
     plt.savefig('./roc.png')
 
 
-def create_indicators(stocks=['JPM'], start_date=dt.date(2008, 1, 1), end_date=dt.date(2009, 1, 1)):
+def exponential_weighted_moving_average(df, stocks=['JPM'], window=20):
     """
-    Develop and describe 3 technical indicators
+    Gives less weight in a moving average to data that are farther in time.
+
+    The reason why this is helpful is because the Simple Moving average does reduce
+    the noise. However, this comes at a cost, in that the SMA timeseries will lag the original
+    prices themselves. One way to reduce this lag is to use the Exponential Weighted Moving Average
+
+    Also, according to https://piazza.com/class/jc95nj7xalax8?cid=1131, we can just use Pandas's
+    implementation of the exponential weighted moving average.
+    """
+    ewma = df['JPM'].ewm(span=window, adjust=False).mean()
+    ax = df[stocks].plot(title='JPM EWMA (Exponential Weighted Moving Average)', label='JPM')
+    ewma.plot(label='EWMA', ax=ax)
+
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Price")
+    ax.legend(loc='lower left')
+    plt.savefig('./ewma.png')
+
+
+def create_indicators(stocks=['JPM'], start_date=dt.date(2008, 1, 1), end_date=dt.date(2009, 12, 31)):
+    """
+    Develop and describe 4 technical indicators
     """
     prices = get_data(stocks, pd.date_range(start_date, end_date))
 
@@ -120,6 +139,7 @@ def create_indicators(stocks=['JPM'], start_date=dt.date(2008, 1, 1), end_date=d
     bollinger_bands(df=prices)
     sma(df=prices)
     rate_of_change(df=prices)
+    exponential_weighted_moving_average(df=prices)
 
 
 def main():
