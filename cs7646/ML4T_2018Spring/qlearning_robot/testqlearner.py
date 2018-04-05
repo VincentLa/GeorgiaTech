@@ -118,7 +118,7 @@ def test(map, epochs, learner, verbose):
         state = discretize(robopos) #convert the location to a state
         action = learner.querysetstate(state) #set the state and get first action
         count = 0
-        while (robopos != goalpos) & (count<100000):
+        while (robopos != goalpos) & (count<10000):
 
             #move to new location according to action and then get a new action
             newpos, stepreward = movebot(data,robopos,action)

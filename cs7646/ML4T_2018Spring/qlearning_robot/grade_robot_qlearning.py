@@ -31,8 +31,6 @@ import util
 main_code = "QLearner"  # module name to import
 
 robot_qlearning_testing_seed=1490652871
-random.seed(robot_qlearning_testing_seed)
-np.random.seed(robot_qlearning_testing_seed)
 QLearningTestCase = namedtuple('QLearning', ['description', 'group','world_file','best_reward','median_reward','max_time','points'])
 qlearning_test_cases = [
     QLearningTestCase(
@@ -157,6 +155,9 @@ def test_qlearning(description, group, world_file, best_reward, median_reward, m
         msgs = []
         if group=='nodyna':
             def timeoutwrapper_nodyna():
+                # Note: the following will NOT be commented durring final grading
+                # random.seed(robot_qlearning_testing_seed)
+                # np.random.seed(robot_qlearning_testing_seed)
                 learner = QLearner.QLearner(num_states=100,\
                                             num_actions = 4, \
                                             alpha = 0.2, \
@@ -173,6 +174,9 @@ def test_qlearning(description, group, world_file, best_reward, median_reward, m
                 msgs.append("   Reward too low, expected %s, found %s"%(median_reward,student_reward))
         elif group=='dyna':
             def timeoutwrapper_dyna():
+                # Note: the following will NOT be commented durring final grading
+                # random.seed(robot_qlearning_testing_seed)
+                # np.random.seed(robot_qlearning_testing_seed)
                 learner = QLearner.QLearner(num_states=100,\
                                             num_actions = 4, \
                                             alpha = 0.2, \
@@ -190,6 +194,9 @@ def test_qlearning(description, group, world_file, best_reward, median_reward, m
         elif group=='author':
             points_earned = -20
             def timeoutwrapper_author():
+                # Note: the following will NOT be commented durring final grading
+                # random.seed(robot_qlearning_testing_seed)
+                # np.random.seed(robot_qlearning_testing_seed)
                 learner = QLearner.QLearner(num_states=100,\
                                             num_actions = 4, \
                                             alpha = 0.2, \
