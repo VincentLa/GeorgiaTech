@@ -39,6 +39,8 @@ class QLearner(object):
         self.radr = radr
         self.dyna = dyna
         self.tc = np.zeros((num_states, num_actions, num_states)) + 0.00001
+        self.t = np.zeros((num_states, num_actions, num_states))
+        self.r = np.zeros((num_states, num_actions))
 
 
     def querysetstate(self, s):
@@ -86,6 +88,13 @@ class QLearner(object):
         # Update rar after each update
         self.rar = self.rar * self.radr
 
+        # Update T for Dyna
+        self.tc[self.s, self.a, s_prime] += 1
+        self.t[self.s, self.a, s_prime] = self.tc[self.s, self.a, s_prime] / self.tc[self.s, self.a].sum()
+
+        # Update R for Dyna
+        self.r[self.s, self.a] = (1 - self.alpha) * self.r[self.s, self.a] + self.alpha * r
+
         # Update s and action
         self.s = s_prime
         self.a = action
@@ -94,16 +103,21 @@ class QLearner(object):
         # Update T
         # Update R
 
-        # for d in range(self.dyna):
-        #     self.s = np.random.randint(low=0, high=num_states)
-        #     self.a = np.random.randint(low=0, high=num_actions)
-        #     s_prime = Infer from T
-        #     r = self.r[self.s, self.a]
+        for d in range(self.dyna):
+            s = np.random.randint(low=0, high=self.num_states)
+            a = np.random.randint(low=0, high=self.num_actions)
+            s_prime = np.random.choice(self.num_states, p=(self.t[s, a]/self.t[s, a].sum()))
+            # print('hello')
+            # print(s_prime)
+            r = self.r[s, a]
 
-        #     # Update Q
-        #     later_rewards = self.gamma * self.q[s_prime, self.a]
-        #     self.q[self.s, self.a] = (1 - self.alpha) * self.q[self.s, self.a] + self.alpha * (r + self.gamma * later_rewards)
+            # Update Q
+            later_rewards = self.gamma * self.q[s_prime, a]
+            self.q[s, a] = (1 - self.alpha) * self.q[s, a] + self.alpha * (r + self.gamma * later_rewards)
 
+            # self.a = action
+
+        # print('hello')
         return action
 
 if __name__=="__main__":

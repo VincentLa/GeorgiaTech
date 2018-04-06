@@ -64,7 +64,7 @@ def movebot(data,oldpos,a):
     randomrate = 0.20 # how often do we move randomly
     quicksandreward = -100 # penalty for stepping on quicksand
 
-    # decide if we're going to ignore the action and 
+    # decide if we're going to ignore the action and
     # choose a random one instead
     if rand.uniform(0.0, 1.0) <= randomrate: # going rogue
         a = rand.randint(0,3) # choose the random direction
@@ -111,7 +111,7 @@ def test(map, epochs, learner, verbose):
     startpos = getrobotpos(map) #find where the robot starts
     goalpos = getgoalpos(map) #find where the goal is
     scores = np.zeros((epochs,1))
-    for epoch in range(1,epochs+1): 
+    for epoch in range(1,epochs+1):
         total_reward = 0
         data = map.copy()
         robopos = startpos
@@ -128,7 +128,7 @@ def test(map, epochs, learner, verbose):
                 r = stepreward # negative reward for not being at the goal
             state = discretize(newpos)
             action = learner.query(state,r)
-    
+
             if data[robopos] != 6:
                 data[robopos] = 4 # mark where we've been for map printing
             if data[newpos] != 6:
@@ -160,19 +160,19 @@ def test_code():
     rand.seed(5)
 
     ######## run non-dyna test ########
-    learner = ql.QLearner(num_states=100,\
-        num_actions = 4, \
-        alpha = 0.2, \
-        gamma = 0.9, \
-        rar = 0.98, \
-        radr = 0.999, \
-        dyna = 0, \
-        verbose=False) #initialize the learner
-    epochs = 500
-    total_reward = test(data, epochs, learner, verbose)
-    print epochs, "median total_reward" , total_reward
-    print
-    non_dyna_score = total_reward
+    # learner = ql.QLearner(num_states=100,\
+    #     num_actions = 4, \
+    #     alpha = 0.2, \
+    #     gamma = 0.9, \
+    #     rar = 0.98, \
+    #     radr = 0.999, \
+    #     dyna = 0, \
+    #     verbose=False) #initialize the learner
+    # epochs = 500
+    # total_reward = test(data, epochs, learner, verbose)
+    # print epochs, "median total_reward" , total_reward
+    # print
+    # non_dyna_score = total_reward
 
     ######## run dyna test ########
     learner = ql.QLearner(num_states=100,\
