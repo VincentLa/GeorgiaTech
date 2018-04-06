@@ -10,3 +10,10 @@ The basic setup of a DT are:
     4. Right Link: The Right Child
 4. Root
 5. Leaves 
+
+# Q Learning
+What is Q?
+Q(s, a) = immediate reward + discounted reward (note Q is not greedy)
+
+How to use Q?
+pi(s) = argmax_a(Q[s, a]) -- The optimal policy given a state is the action that maximizes Q. 
