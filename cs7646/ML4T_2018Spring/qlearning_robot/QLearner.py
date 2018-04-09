@@ -77,11 +77,15 @@ class QLearner(object):
         else:
             """Choose action that that maximizes Q value given state (0:25 in lecture)"""
             # Update Q with s_prime and r
+            later_rewards = self.gamma * self.q[s_prime, self.a]
+            self.q[self.s, self.a] = (1 - self.alpha) * self.q[self.s, self.a] + self.alpha * (r + self.gamma * later_rewards)
+
+            # Choose ArgMax Action
             argmax_actions = np.argmax(self.q, axis=1)
             action = argmax_actions[s_prime]
 
-        later_rewards = self.gamma * self.q[s_prime, action]
-        self.q[self.s, self.a] = (1 - self.alpha) * self.q[self.s, self.a] + self.alpha * (r + self.gamma * later_rewards)
+        # later_rewards = self.gamma * self.q[s_prime, action]
+        # self.q[self.s, self.a] = (1 - self.alpha) * self.q[self.s, self.a] + self.alpha * (r + self.gamma * later_rewards)
 
         if self.verbose: print "s =", s_prime,"a =",action,"r =",r
 
