@@ -110,6 +110,8 @@ class QLearner(object):
         for d in range(self.dyna):
             s = np.random.randint(low=0, high=self.num_states)
             a = np.random.randint(low=0, high=self.num_actions)
+
+
             s_prime = np.random.choice(self.num_states, p=(self.t[s, a]/self.t[s, a].sum()))
             # print('hello')
             # print(s_prime)
@@ -119,7 +121,8 @@ class QLearner(object):
             later_rewards = self.gamma * self.q[s_prime, a]
             self.q[s, a] = (1 - self.alpha) * self.q[s, a] + self.alpha * (r + self.gamma * later_rewards)
 
-            # self.a = action
+            # self.s = s_prime
+            # self.a = a
 
         # print('hello')
         return action
