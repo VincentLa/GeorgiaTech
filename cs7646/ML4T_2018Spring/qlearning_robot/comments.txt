@@ -1,5 +1,5 @@
 <pre>--- Summary ---
-Tests passed: 9 out of 11
+Tests passed: 11 out of 11
 
 --- Details ---
 Test #0: passed 
@@ -10,27 +10,7 @@ Test #4: passed
 Test #5: passed 
 Test #6: passed 
 Test #7: passed 
-Test #8: failed 
-Test case description: World 1, dyna=200
-IncorrectOutput: Test failed on one or more output criteria.
-  Inputs:
-    group: dyna
-    world_file: world01.csv
-    median_reward: -29.5
-
-  Failures:
-   Reward too low, expected -29.5, found -215.5
-
-Test #9: failed 
-Test case description: World 2, dyna=200
-IncorrectOutput: Test failed on one or more output criteria.
-  Inputs:
-    group: dyna
-    world_file: world02.csv
-    median_reward: -19
-
-  Failures:
-   Reward too low, expected -19, found -124.5
-
+Test #8: passed 
+Test #9: passed 
 Test #10: passed 
 </pre>
