@@ -19,7 +19,7 @@ IncorrectOutput: Test failed on one or more output criteria.
     median_reward: -29.5
 
   Failures:
-   Reward too low, expected -29.5, found -197.5
+   Reward too low, expected -29.5, found -215.5
 
 Test #9: failed 
 Test case description: World 2, dyna=200
@@ -30,7 +30,7 @@ IncorrectOutput: Test failed on one or more output criteria.
     median_reward: -19
 
   Failures:
-   Reward too low, expected -19, found -126.0
+   Reward too low, expected -19, found -124.5
 
 Test #10: passed 
 </pre>
