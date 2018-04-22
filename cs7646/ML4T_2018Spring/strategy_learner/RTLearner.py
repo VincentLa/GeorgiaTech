@@ -7,6 +7,29 @@ Building Decision Tree Slides: http://quantsoftware.gatech.edu/images/4/4e/How-t
 import numpy as np
 import pandas as pd
 
+
+def mode(a, axis=0):
+    """
+    NP Implementation of calculating the Mode
+    
+    See https://stackoverflow.com/questions/12399107/alternative-to-scipy-mode-function-in-numpy for more information
+    """
+    scores = np.unique(np.ravel(a))       # get ALL unique values
+    testshape = list(a.shape)
+    testshape[axis] = 1
+    oldmostfreq = np.zeros(testshape)
+    oldcounts = np.zeros(testshape)
+
+    for score in scores:
+        template = (a == score)
+        counts = np.expand_dims(np.sum(template, axis),axis)
+        mostfrequent = np.where(counts > oldcounts, score, oldmostfreq)
+        oldcounts = np.maximum(counts, oldcounts)
+        oldmostfreq = mostfrequent
+
+    return np.asscalar(mostfrequent)
+
+
 class RTLearner(object):
 
     def __init__(self, leaf_size=1, verbose=False):
@@ -29,7 +52,7 @@ class RTLearner(object):
             # If the number of rows left is equal to the leaf size
             # Setting the feature to split on as -1 to signify no splits
             # Aggregate by taking the mean
-            y_value = np.mean(dataY)
+            y_value = mode(dataY)
             return np.array([[-1,  y_value, np.nan, np.nan]])
         if(np.unique(dataY).shape[0] == 1):
             # If all values of Y are the same, then make a leaf and return

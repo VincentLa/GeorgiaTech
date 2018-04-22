@@ -41,46 +41,48 @@ def bollinger_bands(df, stocks=['JPM'], window=20):
     """
     """
     # Plot Stock Data
-    ax = df[stocks].plot(title='JPM Bollinger Bands', label='JPM')
+    # ax = df[stocks].plot(title='JPM Bollinger Bands', label='JPM')
 
     # Compute Rolling mean using a 20 day window
     # Compute Rolling std using a 20 day window
-    rm = pd.rolling_mean(df['JPM'], window=window)
-    rm_std = pd.rolling_std(df['JPM'], window=window)
+    rm = pd.rolling_mean(df[stocks].iloc[:, 0], window=window)
+    rm_std = pd.rolling_std(df[stocks].iloc[:, 0], window=window)
     upper_band = rm + rm_std * 2
     lower_band = rm - rm_std * 2
 
     # Add rolling mean to same plot
-    rm.plot(label='Rolling mean', ax=ax)
-    upper_band.plot(label='Upper Band', ax=ax)
-    lower_band.plot(label='Lower Band', ax=ax)
+    # rm.plot(label='Rolling mean', ax=ax)
+    # upper_band.plot(label='Upper Band', ax=ax)
+    # lower_band.plot(label='Lower Band', ax=ax)
 
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Price")
-    ax.legend(loc='lower left')
-    plt.savefig('./bollinger.png')
+    # ax.set_xlabel("Date")
+    # ax.set_ylabel("Price")
+    # ax.legend(loc='lower left')
+    # plt.savefig('./bollinger.png')
 
+    return lower_band, upper_band
 
 def sma(df, stocks=['JPM'], window=20):
     """
     Calculate Simple Moving Average
     """
     # Plot Stock Data
-    ax = df[stocks].plot(title='JPM SMA (Simple Moving Average)', label='JPM')
+    # ax = df[stocks].plot(title='JPM SMA (Simple Moving Average)', label='JPM')
 
     # Compute Rolling mean using a 20 day window
     # Compute Rolling std using a 20 day window
-    rm = pd.rolling_mean(df['JPM'], window=window)
-    price_over_rm = df['JPM'] / rm
+    rm = pd.rolling_mean(df[stocks].iloc[:, 0], window=window)
+    price_over_rm = df[stocks].iloc[:, 0] / rm
+    return rm
 
     # Add rolling mean to same plot
-    rm.plot(label='SMA', ax=ax)
-    price_over_rm.plot(label='Price / SMA', ax=ax)
+    # rm.plot(label='SMA', ax=ax)
+    # price_over_rm.plot(label='Price / SMA', ax=ax)
 
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Price")
-    ax.legend(loc='lower left')
-    plt.savefig('./sma.png')
+    # ax.set_xlabel("Date")
+    # ax.set_ylabel("Price")
+    # ax.legend(loc='lower left')
+    # plt.savefig('./sma.png')
 
 
 def rate_of_change(df, stocks=['JPM'], window=20):
@@ -89,18 +91,19 @@ def rate_of_change(df, stocks=['JPM'], window=20):
 
     recent price and the price "window" days ago.
     """
-    N = df['JPM'].diff(window)
-    D = df['JPM'].shift(window)
+    N = df[stocks].iloc[:, 0].diff(window)
+    D = df[stocks].iloc[:, 0].shift(window)
 
-    ax = df[stocks].plot(title='JPM ROC (Rate of Change)', label='JPM')
+    # ax = df[stocks].plot(title='JPM ROC (Rate of Change)', label='JPM')
 
     ROC = pd.Series(N/D, name='Rate of Change')
-    ROC.plot(label='ROC', ax=ax)
+    # ROC.plot(label='ROC', ax=ax)
 
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Price")
-    ax.legend(loc='lower left')
-    plt.savefig('./roc.png')
+    # ax.set_xlabel("Date")
+    # ax.set_ylabel("Price")
+    # ax.legend(loc='lower left')
+    # plt.savefig('./roc.png')
+    return ROC
 
 
 def exponential_weighted_moving_average(df, stocks=['JPM'], window=20):
@@ -114,14 +117,15 @@ def exponential_weighted_moving_average(df, stocks=['JPM'], window=20):
     Also, according to https://piazza.com/class/jc95nj7xalax8?cid=1131, we can just use Pandas's
     implementation of the exponential weighted moving average.
     """
-    ewma = df['JPM'].ewm(span=window, adjust=False).mean()
-    ax = df[stocks].plot(title='JPM EWMA (Exponential Weighted Moving Average)', label='JPM')
-    ewma.plot(label='EWMA', ax=ax)
+    ewma = df[stocks].iloc[:, 0].ewm(span=window, adjust=False).mean()
+    # ax = df[stocks].plot(title='JPM EWMA (Exponential Weighted Moving Average)', label='JPM')
+    # ewma.plot(label='EWMA', ax=ax)
 
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Price")
-    ax.legend(loc='lower left')
-    plt.savefig('./ewma.png')
+    # ax.set_xlabel("Date")
+    # ax.set_ylabel("Price")
+    # ax.legend(loc='lower left')
+    # plt.savefig('./ewma.png')
+    return ewma
 
 
 def create_indicators(stocks=['JPM'], start_date=dt.date(2008, 1, 1), end_date=dt.date(2009, 12, 31)):

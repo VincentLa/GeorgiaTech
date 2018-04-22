@@ -26,12 +26,29 @@ Steps
 
 To run:
 PYTHONPATH=../:. python StrategyLearner.py
+
+Note FYI on Format of df_trades: https://piazza.com/class/jc95nj7xalax8?cid=1638.
+Also see https://piazza.com/class/jc95nj7xalax8?cid=1581
 """
 
 import datetime as dt
 import pandas as pd
 import util as ut
 import random
+from dateutil import relativedelta
+
+import indicators as ind
+import RTLearner as rt
+
+
+def map_y_values(ret, YBUY=0.01, YSELL=-0.01):
+    if ret > YBUY:
+        return 1  # LONG
+    elif ret < YSELL:
+        return -1  # SHORT
+    else:
+        return 0 # CASH
+
 
 class StrategyLearner(object):
 
@@ -39,6 +56,7 @@ class StrategyLearner(object):
     def __init__(self, verbose = False, impact=0.0):
         self.verbose = verbose
         self.impact = impact
+        self.learner = rt.RTLearner(leaf_size=5, verbose = False)
 
     def author(self):
         return 'vla6' # replace tb34 with your Georgia Tech username
@@ -46,19 +64,19 @@ class StrategyLearner(object):
     def addEvidence(self, symbol = "IBM", sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,1,1), sv = 10000): 
         """
         Learner will be provided with a stock symbol and time period.
-
-        Returns:
-          df_trades: A data frame whose values represent trades for each day. Legal values are +1000.0
-                     indicating a BUY of 1000 shares, -1000.0 indicating a SELL of 1000 shares,
-                     and 0.0 indicating NOTHING. Values of +2000 and -2000 for trades are also legal
-                     when switching from long to short or short to long so long as net holdings are
-                     constrained to -1000, 0, and 1000.
         """
+        # As per https://piazza.com/class/jc95nj7xalax8?cid=939, can look back n days before start date for run-up
+        # for technical indicators like rolling mean.
+        n = 20  # This is the window we use (hardcoded)
+        lookbacksd = sd - relativedelta.relativedelta(days=30)
+        lookforwarded = ed + relativedelta.relativedelta(days=30)
+
         # example usage of the old backward compatible util function
         syms=[symbol]
-        dates = pd.date_range(sd, ed)
+        dates = pd.date_range(lookbacksd, lookforwarded)
         prices_all = ut.get_data(syms, dates)  # automatically adds SPY
         prices = prices_all[syms]  # only portfolio symbols
+        feature_df = prices.copy()
         prices_SPY = prices_all['SPY']  # only SPY, for comparison later
         if self.verbose: print prices
   
@@ -68,32 +86,122 @@ class StrategyLearner(object):
         volume_SPY = volume_all['SPY']  # only SPY, for comparison later
         if self.verbose: print volume
 
-        # add your code to do learning here
-        print(prices.head())
+        # Adding Code to do Learning Here
+
+        ############################################################################################
+        # Construct Features
+        ############################################################################################
+        # First, compute indicators and add as X variables. There should be 3 - 5 features, each corresponding
+        # to the indicator
+        lower_bollinger_band, upper_bollinger_band = ind.bollinger_bands(df=prices, stocks=syms)
+        sma = ind.sma(df=prices, stocks=syms)
+        roc = ind.rate_of_change(df=prices, stocks=syms)
+        ewma = ind.exponential_weighted_moving_average(df=prices, stocks=syms)
+
+        feature_df['lower_bollinger_band'] = lower_bollinger_band
+        feature_df['upper_bollinger_band'] = upper_bollinger_band
+        feature_df['sma'] = sma
+        feature_df['roc'] = roc
+        feature_df['ewma'] = ewma
+
+        # Second, compute the Y values for each date.
+        YBUY = 0.01
+        YSELL = -0.01
+        ret = (feature_df[symbol].shift(-1 * n) / feature_df[symbol]) - 1.0
+        feature_df['ret'] = ret
+        feature_df['y'] = feature_df.ret.apply(map_y_values)
+        feature_df = feature_df.loc[feature_df.index >= sd]
+        feature_df = feature_df.loc[feature_df.index <= ed]
+        feature_df.drop(['ret'], axis=1, inplace=True)
+        # print(feature_df.head(5))
+
+        ############################################################################################
+        # Use RTLearner to Do Learning
+        ############################################################################################
+        Xcols = list(feature_df.columns)
+        Xcols.remove('y')
+        ycols = 'y'
+        trainX = feature_df[Xcols].as_matrix()
+        trainY = feature_df[ycols]
+
+        self.learner.addEvidence(trainX, trainY)
 
     # this method should use the existing policy and test it against new data
-    def testPolicy(self, symbol = "IBM", \
-        sd=dt.datetime(2009,1,1), \
-        ed=dt.datetime(2010,1,1), \
-        sv = 10000):
+    def testPolicy(self, symbol = "IBM", sd=dt.datetime(2009,1,1), ed=dt.datetime(2010,1,1), sv = 10000):
+        """
+        Returns:
+          df_trades: A data frame whose values represent trades for each day. Legal values are +1000.0
+                     indicating a BUY of 1000 shares, -1000.0 indicating a SELL of 1000 shares,
+                     and 0.0 indicating NOTHING. Values of +2000 and -2000 for trades are also legal
+                     when switching from long to short or short to long so long as net holdings are
+                     constrained to -1000, 0, and 1000.
+        """
 
         # here we build a fake set of trades
         # your code should return the same sort of data
-        dates = pd.date_range(sd, ed)
+        n = 20  # This is the window we use (hardcoded)
+        lookbacksd = sd - relativedelta.relativedelta(days=30)
+        lookforwarded = ed + relativedelta.relativedelta(days=30)
+
+        syms=[symbol]
+        dates = pd.date_range(lookbacksd, lookforwarded)
         prices_all = ut.get_data([symbol], dates)  # automatically adds SPY
+        prices = prices_all[syms]  # only portfolio symbols
+        feature_df = prices.copy()
         trades = prices_all[[symbol,]]  # only portfolio symbols
+        trades = trades.loc[trades.index >= sd]
+        trades = trades.loc[trades.index <= ed]
         trades_SPY = prices_all['SPY']  # only SPY, for comparison later
         trades.values[:,:] = 0 # set them all to nothing
         trades.values[0,:] = 1000 # add a BUY at the start
-        trades.values[40,:] = -1000 # add a SELL 
-        trades.values[41,:] = 1000 # add a BUY 
-        trades.values[60,:] = -2000 # go short from long
-        trades.values[61,:] = 2000 # go long from short
-        trades.values[-1,:] = -1000 #exit on the last day
-        if self.verbose: print type(trades) # it better be a DataFrame!
-        if self.verbose: print trades
+        # trades.values[40,:] = -1000 # add a SELL 
+        # trades.values[41,:] = 1000 # add a BUY 
+        # trades.values[60,:] = -2000 # go short from long
+        # trades.values[61,:] = 2000 # go long from short
+        # trades.values[-1,:] = -1000 #exit on the last day
+        ############################################################################################
+        # Constructing test feature DF -- should be exact copy of code
+        ############################################################################################
+        lower_bollinger_band, upper_bollinger_band = ind.bollinger_bands(df=prices, stocks=syms)
+        sma = ind.sma(df=prices, stocks=syms)
+        roc = ind.rate_of_change(df=prices, stocks=syms)
+        ewma = ind.exponential_weighted_moving_average(df=prices, stocks=syms)
+
+        feature_df['lower_bollinger_band'] = lower_bollinger_band
+        feature_df['upper_bollinger_band'] = upper_bollinger_band
+        feature_df['sma'] = sma
+        feature_df['roc'] = roc
+        feature_df['ewma'] = ewma
+        feature_df = feature_df.loc[feature_df.index >= sd]
+        feature_df = feature_df.loc[feature_df.index <= ed]
+
+        ############################################################################################
+        # Adding our own trades dataframe
+        ############################################################################################
+        # Use the learner to output predictions
+        points = feature_df.as_matrix()
+        testY = self.learner.query(points=points)
+
+        df_trades = trades.copy()
+
+        current_position = 1000
+        trades = [1000]
+        for i in range(1, len(testY)):
+            if testY[i] == 1:
+                trade = 1000 - current_position
+            elif testY[i] == -1:
+                trade = -1000 - current_position
+            else:
+                trade = 0
+            current_position += trade
+            trades.append(trade)
+        df_trades['trade'] = trades
+        df_trades = df_trades[['trade']]
+
+        if self.verbose: print type(df_trades) # it better be a DataFrame!
+        if self.verbose: print df_trades
         if self.verbose: print prices_all
-        return trades
+        return df_trades
 
 
 def main():
@@ -102,6 +210,7 @@ def main():
     """
     strategy_learner = StrategyLearner()
     strategy_learner.addEvidence(symbol='JPM')
+    strategy_learner.testPolicy(symbol='JPM')
 
 
 if __name__=="__main__":

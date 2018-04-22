@@ -1,0 +1,28 @@
+<pre>--- Summary ---
+Tests passed: 3 out of 4
+
+--- Details ---
+Test #0: failed 
+Test case description: ML4T-220
+Traceback:
+  File "grade_strategy_learner.py", line 231, in test_strategy
+    raise IncorrectOutput, "Test failed on one or more output criteria.\n  Inputs:\n{}\n  Failures:\n{}".format(inputs_str, "\n".join(msgs))
+IncorrectOutput: Test failed on one or more output criteria.
+  Inputs:
+    insample_args: {'ed': datetime.datetime(2009, 12, 31, 0, 0), 'symbol': 'ML4T-220', 'sv': 100000, 'sd': datetime.datetime(2008, 1, 1, 0, 0)}
+    outsample_args: {'ed': datetime.datetime(2011, 12, 31, 0, 0), 'symbol': 'ML4T-220', 'sv': 100000, 'sd': datetime.datetime(2010, 1, 1, 0, 0)}
+    benchmark_type: clean
+    benchmark: 1.0
+    train_time: 25
+    test_time: 5
+    max_time: 60
+    seed: 1481090000
+
+  Failures:
+  in-sample return (-2.88962966) did not beat benchmark (1.0)
+  out-sample return (-2.93255935) did not beat benchmark (1.0)
+
+Test #1: passed 
+Test #2: passed 
+Test #3: passed 
+</pre>
