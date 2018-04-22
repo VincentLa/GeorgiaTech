@@ -37,7 +37,7 @@ def main():
 
     print('Assessing Manual Strategy Against Strategy Learner')
     # Manual Strategy
-    ms.assess_manual_strategy()
+    manual_vals, benchmark_vals = ms.assess_manual_strategy()
 
     # Strategy Learner
     strategy_learner = sl.StrategyLearner()

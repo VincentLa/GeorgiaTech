@@ -259,6 +259,7 @@ def assess_manual_strategy(
     plt.cla()
     plt.clf()
     plt.close()
+    return manual_vals, benchmark_vals
 
 
 def main():

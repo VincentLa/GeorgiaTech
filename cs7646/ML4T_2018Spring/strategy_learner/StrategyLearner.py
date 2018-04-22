@@ -196,8 +196,8 @@ class StrategyLearner(object):
                 trade = 0
             current_position += trade
             trades.append(trade)
-        df_trades['trade'] = trades
-        df_trades = df_trades[['trade']]
+        df_trades['Symbol'] = trades
+        df_trades = df_trades[['Symbol']]
 
         if self.verbose: print type(df_trades) # it better be a DataFrame!
         if self.verbose: print df_trades
