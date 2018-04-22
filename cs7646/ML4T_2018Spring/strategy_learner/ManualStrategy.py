@@ -4,6 +4,9 @@ Strategy Learner -- Manual Strategy
 Code implementing a ManualStrategy object (your manual strategy).
 It should implement testPolicy() which returns a trades data frame (see below).
 The main part of this code should call marketsimcode as necessary to generate the plots used in the report.
+
+Vincent La
+Georgia Tech ID: vla6
 """
 import matplotlib
 matplotlib.use('Agg')
@@ -15,6 +18,10 @@ import datetime as dt
 import os
 from util import get_data, plot_data
 # from marketsimcode import compute_portvals
+
+
+def author():
+    return 'vla6'
 
 
 def compute_portvals(orders, start_val = 1000000, commission=9.95, impact=0.005):
@@ -181,7 +188,9 @@ def assess_manual_strategy(
         symbol='JPM',
         sd=dt.datetime(2008, 1, 1),
         ed=dt.datetime(2009, 12, 31),
-        sv=100000):
+        sv=100000,
+        commission=0,
+        impact=0):
     """
     Provide a chart that reports:
       -- Benchmark (The performance of a portfolio starting with $100,000 cash,
@@ -219,8 +228,8 @@ def assess_manual_strategy(
         'Shares': shares,
     })
 
-    manual_vals = compute_portvals(orders=manual_policy_orders, start_val=sv, commission=9.95, impact=0.005)
-    benchmark_vals = compute_portvals(orders=benchmark_orders, start_val=sv, commission=9.95, impact=0.005)
+    manual_vals = compute_portvals(orders=manual_policy_orders, start_val=sv, commission=commission, impact=impact)
+    benchmark_vals = compute_portvals(orders=benchmark_orders, start_val=sv, commission=commission, impact=impact)
 
     manual_cum_ret, manual_std_daily_ret, manual_avg_daily_ret = get_portfolio_stats(manual_vals)
     bench_cum_ret, bench_std_daily_ret, bench_avg_daily_ret = get_portfolio_stats(benchmark_vals)
@@ -239,11 +248,11 @@ def assess_manual_strategy(
     manual_vals = normalize_data(manual_vals)
     benchmark_vals = normalize_data(benchmark_vals)
 
-    ax = manual_vals['portfolio_value'].plot(
-        title='Portfolio Values Comparison', label='Manual Portfolio', color='black')
+    # ax = manual_vals['portfolio_value'].plot(
+    #     title='Portfolio Values Comparison', label='Manual Portfolio', color='black')
 
-    # Add Benchmark to same plot
-    benchmark_vals['portfolio_value'].plot(label='Benchmark Portfolio', ax=ax, color='blue')
+    # # Add Benchmark to same plot
+    # benchmark_vals['portfolio_value'].plot(label='Benchmark Portfolio', ax=ax, color='blue')
 
     # Add Long and Short Values
     # for l in long_entry_points:
@@ -251,14 +260,14 @@ def assess_manual_strategy(
     # for s in short_entry_points:
     #     ax.axvline(x=s, color='red', linestyle='--')
 
-    ax.set_xlabel("Date")
-    ax.set_ylabel("Portfolio Value")
-    ax.legend(loc='upper left')
-    plt.savefig(plot_title)
+    # ax.set_xlabel("Date")
+    # ax.set_ylabel("Portfolio Value")
+    # ax.legend(loc='upper left')
+    # plt.savefig(plot_title)
 
-    plt.cla()
-    plt.clf()
-    plt.close()
+    # plt.cla()
+    # plt.clf()
+    # plt.close()
     return manual_vals, benchmark_vals
 
 

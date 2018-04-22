@@ -1,5 +1,6 @@
 """
-Template for implementing StrategyLearner  (c) 2016 Tucker Balch
+Vincent La
+Georgia Tech ID: vla6
 
 See http://quantsoftware.gatech.edu/Strategy_learner for instructions
 See http://quantsoftware.gatech.edu/Classification_Trader_Hints for hints
@@ -61,7 +62,7 @@ class StrategyLearner(object):
     def author(self):
         return 'vla6' # replace tb34 with your Georgia Tech username
 
-    def addEvidence(self, symbol = "IBM", sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,1,1), sv = 10000): 
+    def addEvidence(self, symbol = "IBM", sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,12,31), sv = 10000): 
         """
         Learner will be provided with a stock symbol and time period.
         """
@@ -196,8 +197,8 @@ class StrategyLearner(object):
                 trade = 0
             current_position += trade
             trades.append(trade)
-        df_trades['Symbol'] = trades
-        df_trades = df_trades[['Symbol']]
+        df_trades['Shares'] = trades
+        df_trades = df_trades[['Shares']]
 
         if self.verbose: print type(df_trades) # it better be a DataFrame!
         if self.verbose: print df_trades
