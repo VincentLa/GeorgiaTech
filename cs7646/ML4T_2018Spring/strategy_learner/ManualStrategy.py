@@ -1,12 +1,12 @@
 """
+Vincent La
+Georgia Tech ID: vla6
+
 Strategy Learner -- Manual Strategy
 
 Code implementing a ManualStrategy object (your manual strategy).
 It should implement testPolicy() which returns a trades data frame (see below).
 The main part of this code should call marketsimcode as necessary to generate the plots used in the report.
-
-Vincent La
-Georgia Tech ID: vla6
 """
 import matplotlib
 matplotlib.use('Agg')
@@ -135,7 +135,7 @@ def bollinger_bands(df, stocks=['JPM'], window=20):
     return upper_band, lower_band
 
 
-def testPolicy(symbol="JPM", sd=dt.datetime(2010,1,1), ed=dt.datetime(2011,12,31), sv=100000):
+def testPolicy(symbol="JPM", sd=dt.datetime(2010,1,1), ed=dt.datetime(2011,12,31), sv=100000, impact=0):
     """
     Do Stuff
     """
@@ -156,8 +156,8 @@ def testPolicy(symbol="JPM", sd=dt.datetime(2010,1,1), ed=dt.datetime(2011,12,31
     current_position = 1000
     for i in range(1, num_rows):
         today_price = prices.ix[i][symbol]
-        lower_bollinger = lower_band.ix[i]
-        upper_bollinger = upper_band.ix[i]
+        lower_bollinger = lower_band.ix[i] * (1 - impact)
+        upper_bollinger = upper_band.ix[i] * (1 + impact)
 
         # If price is less than or equal to lower band, buy until position of +1000
         if today_price <= lower_bollinger:
@@ -211,7 +211,7 @@ def assess_manual_strategy(
     shares = [0] * len(dates)
     shares[0] = 1000  # On first date buy 1000 shares of JPM
 
-    manual_policy_orders = testPolicy(symbol=symbol, sd=sd, ed=ed, sv=sv)
+    manual_policy_orders = testPolicy(symbol=symbol, sd=sd, ed=ed, sv=sv, impact=impact)
     long_entry_points = []
     short_entry_points = []
     for date, row in manual_policy_orders.iterrows():

@@ -1,15 +1,13 @@
 """
-Strategy Learner Experiment 1: http://quantsoftware.gatech.edu/Strategy_learner
+Strategy Learner Experiment 2: http://quantsoftware.gatech.edu/Strategy_learner
 
 Vincent La
 Georgia Tech ID: vla6
 
 To run:
-PYTHONPATH=../:. python experiment1.py
+PYTHONPATH=../:. python experiment2.py
 
-Using exactly the same indicators that you used in manual_strategy, compare your manual strategy
-with your learning strategy in sample. Plot the performance of both strategies in sample along
-with the benchmark. Trade only the symbol JPM for this evaluation. 
+Expand on Experiment 1 by adding in non-zero impact.
 """
 import matplotlib
 matplotlib.use('Agg')
@@ -67,9 +65,9 @@ def main():
     out_of_sample_ed = dt.datetime(2011, 12, 31)
     # Setting commission and impact to 0 as per: https://piazza.com/class/jc95nj7xalax8?cid=1474
     commission = 0
-    impact = 0
+    impact = 0.1
 
-    plot_title = './in_sample_strategy_comparison.png'
+    plot_title = './in_sample_strategy_comparison_impact_1.png'
 
     print('Assessing Manual Strategy Against Strategy Learner')
     # Manual Strategy
@@ -93,7 +91,7 @@ def main():
 
     # Making Plots
     ax = manual_vals['portfolio_value'].plot(
-        title='Portfolio Values Comparison', label='Manual Portfolio', color='black')
+        title='Impact = {}'.format(impact), label='Manual Portfolio', color='black')
 
     # Adding strategy learner vals
     strategy_learner_vals['portfolio_value'].plot(label='Strategy Learner Portfolio', ax=ax, color='red')
@@ -104,6 +102,7 @@ def main():
     ax.set_xlabel("Date")
     ax.set_ylabel("Portfolio Value")
     ax.legend(loc='upper left')
+    ax.set_ylim(-1.5, 2.5)
     plt.savefig(plot_title)
 
     plt.cla()

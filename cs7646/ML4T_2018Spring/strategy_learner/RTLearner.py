@@ -1,4 +1,7 @@
 """
+Vincent La
+Georgia Tech ID: vla6
+
 A simple wrapper for Random Tree Learner.
 
 Building Decision Tree Slides: http://quantsoftware.gatech.edu/images/4/4e/How-to-learn-a-decision-tree.pdf

@@ -1,4 +1,7 @@
 """
+Vincent La
+Georgia Tech ID: vla6
+
 Your code that implements your indicators as functions that operate on dataframes.
 The "main" code in indicators.py should generate the charts that illustrate your
 indicators in the report.
@@ -26,6 +29,10 @@ import numpy as np
 import datetime as dt
 import os
 from util import get_data, plot_data
+
+
+def author():
+    return 'vla6'
 
 
 def normalize_data(df):
