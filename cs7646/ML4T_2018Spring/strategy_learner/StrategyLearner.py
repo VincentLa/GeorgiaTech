@@ -105,8 +105,9 @@ class StrategyLearner(object):
         feature_df['ewma'] = ewma
 
         # Second, compute the Y values for each date.
-        YBUY = 0.04
-        YSELL = -0.04
+        # Also adding in impact of impact.
+        YBUY = 0.04 + self.impact
+        YSELL = -0.04 - self.impact
         ret = (feature_df[symbol].shift(-1 * n) / feature_df[symbol]) - 1.0
         feature_df['ret'] = ret
         feature_df['y'] = feature_df.ret.apply(map_y_values, args=(YBUY, YSELL))
