@@ -1,0 +1,11 @@
+Question 1:
+1. Pr(~X) = 0.8
+2. Pr(X, Y) = 0.04
+3. Pr(Y) = 0.6
+
+Question 2:
+Memory scales *Exponentially* in the number of state variables.
+
+Question 3:
+
+Question 4:
