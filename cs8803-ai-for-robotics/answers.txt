@@ -7,5 +7,10 @@ Question 2:
 Memory scales *Exponentially* in the number of state variables.
 
 Question 3:
+Non-normalized Probabilities
+1. P(F|B) = 0.0009
+2. P(~F|B) = 0.0999
 
-Question 4:
+Normalized Probabilities
+1. P(F|B) = 0.0089
+2. P(~F|B) = 0.991
