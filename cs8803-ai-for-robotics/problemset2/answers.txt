@@ -1,0 +1,35 @@
+Question 1:
+Variance is smaller 
+
+Question 2:
+0.5 -- the new variance is half the original
+
+Question 3:
+No
+
+Question 4:
+4 dimensions
+
+Question 5:
+1 0 0.1 0
+0 1 0   0.1
+0 0 1   0
+0 0 0   1
+
+Question 6
+P =  matrix([[0, 0, 0, 0],
+             [0, 0, 0, 0],
+             [0, 0, 1000, 0],
+             [0, 0, 0, 1000]])  # initial uncertainty: 0 for positions x and y, 1000 for the two velocities
+F =  matrix([[1, 0, dt, 0],
+             [0, 1, 0, dt],
+             [0, 0, 1, 0],
+             [0, 0, 0, 1]])  # next state function: generalize the 2d version to 4d
+H =  matrix([[1, 0, 0, 0],
+             [0, 1, 0, 0]])  # measurement function: reflect the fact that we observe x and y but not the two velocities
+R =  matrix([[0.1, 0],
+             [0, 0.1]])  # measurement uncertainty: use 2x2 matrix with 0.1 as main diagonal
+I =  matrix([[1, 0, 0, 0],
+             [0, 1, 0, 0],
+             [0, 0, 1, 0],
+             [0, 0, 0, 1]])  # 4d identity matrix
