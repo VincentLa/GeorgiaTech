@@ -14,6 +14,9 @@
 # Complete the function estimate_next_pos. You will be considered 
 # correct if your estimate is within 0.01 stepsizes of Traxbot's next
 # true position. 
+# 
+# NOTE
+# Consider adding cumualtive average distance and cumulative turning angle.
 #
 # ----------
 # GRADING
