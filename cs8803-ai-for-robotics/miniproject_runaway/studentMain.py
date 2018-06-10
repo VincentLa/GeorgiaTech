@@ -107,58 +107,30 @@ def estimate_next_pos(measurement, OTHER = None):
     if OTHER is None:
         OTHER = {
             'measurements': [measurement],
-            'orientations': [atan(measurement[1] / measurement[0])],
-            'step_size': None,
-            'turning_angle': None,
         }
         xy_estimate = measurement
         return xy_estimate, OTHER 
 
-    previous_point = OTHER['measurements'][len(OTHER['measurements']) - 1]
-    current_orientation = (atan((measurement[1] - previous_point[1]) / (measurement[0] - previous_point[0]))) % (2 * pi)
-    OTHER['orientations'].append(current_orientation)
     OTHER['measurements'].append(measurement)
     xy_estimate = measurement
 
-    if len(OTHER['measurements']) == 3:
+    if len(OTHER['measurements']) >= 3:
+        number_measurements = len(OTHER['measurements'])
+
         # Find initial orientation
-        x0, y0 = OTHER['measurements'][0]
-        x1, y1 = OTHER['measurements'][1]
-        x2, y2 = OTHER['measurements'][2]
+        x0, y0 = OTHER['measurements'][number_measurements - 3]
+        x1, y1 = OTHER['measurements'][number_measurements - 2]
+        x2, y2 = OTHER['measurements'][number_measurements - 1]
 
-        step_size = distance_between((x0, y0), (x1, y1))
-        initial_orientation = atan((y1 - y0) / (x1 - x0))
+        step_size = distance_between((x1, y1), (x2, y2))
 
-        # Next, find turning angle
-        # Prime is the third point if robot continues to go straight
-        # prime = move(motion=[0, step_size], orientation=initial_orientation, measurement=(x1, y1))
-        # xprime, yprime = prime
+        heading1 = atan2(y1 - y0, x1 - x0)
+        heading2 = atan2(y2 - y1, x2 - x1)
+        turning_angle = (heading2 - heading1) % (2 * pi)
 
-        # # Law of cosines: https://www.mathsisfun.com/algebra/trig-solving-sss-triangles.html
-        # b = distance_between((x1, y1), prime)
-        # c = distance_between((x2, y2), prime)
-        # a = distance_between((x1, y1), (x2, y2))
-        # cos_angle_prime = (b**2 + c**2 - a**2) / (2 * b * c) 
-
-        # print('printing prime')
-        # print(prime)
-        turning_angle = (atan2(y1 - y0, x1 - x0) - atan2(y2 - y1, x2 - x1)) % (2 * pi)
-
-        # turning_angle = acos(cos_angle_prime)
-        OTHER['step_size'] = step_size
-        OTHER['turning_angle'] = turning_angle
-        xy_estimate = measurement
-    elif len(OTHER['measurements']) > 3:
-        print('printing current_orientation')
-        print(current_orientation)
-        turning_angle = OTHER['turning_angle']
-        step_size = OTHER['step_size']
-        new_orientation = (current_orientation + turning_angle) % (2 * pi)
+        new_orientation = (heading2 + turning_angle) % (2 * pi)
         xy_estimate = move(motion=[0, step_size], orientation=new_orientation, measurement=measurement)
 
-    print(OTHER)
-    print(xy_estimate)
-    print('')
     # You must return xy_estimate (x, y), and OTHER (even if it is None) 
     # in this order for grading purposes.
     return xy_estimate, OTHER 
