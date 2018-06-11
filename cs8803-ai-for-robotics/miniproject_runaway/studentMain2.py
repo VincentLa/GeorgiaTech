@@ -1,5 +1,6 @@
 # ----------
 # Part Two
+# Author: Vincent La (vla6)
 #
 # Now we'll make the scenario a bit more realistic. Now Traxbot's
 # sensor measurements are a bit noisy (though its motions are still
@@ -41,7 +42,7 @@ import random
 # next position. The OTHER variable that your function returns will be 
 # passed back to your function the next time it is called. You can use
 # this to keep track of important information over time.
-def estimate_next_pos(measurement, OTHER = None):
+def estimate_next_pos(measurement, OTHER=None):
     """Estimate the next (x, y) position of the wandering Traxbot
     based on noisy (x, y) measurements."""
     # If first measurement, create a list.
@@ -74,10 +75,6 @@ def estimate_next_pos(measurement, OTHER = None):
         myrobot = robot(x=measurement[0], y=measurement[1])
         myrobot.move(new_orientation, step_size)
         xy_estimate = (myrobot.x, myrobot.y)
-
-    # You must return xy_estimate (x, y), and OTHER (even if it is None) 
-    # in this order for grading purposes.
-    # print(OTHER)
     return xy_estimate, OTHER 
 
 # A helper function you may find useful.

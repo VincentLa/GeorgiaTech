@@ -1,6 +1,8 @@
 # ----------
 # Part Three
 #
+# Author: Vincent La (vla6)
+#
 # Now you'll actually track down and recover the runaway Traxbot. 
 # In this step, your speed will be about twice as fast the runaway bot,
 # which means that your bot's distance parameter will be about twice that
@@ -50,6 +52,35 @@ def next_move(hunter_position, hunter_heading, target_measurement, max_distance,
       From Part 2, copy work to estimate the hunter's new position
       Then have the robot move to that prediction as fast as possible.
     """
+    if OTHER is None:
+        OTHER = {
+            'target_measurements': [(0, 0), target_measurement],
+        }
+        # Where xy_estimate is estimate of where the target rob is. 
+        xy_estimate = target_measurement
+    else:
+        OTHER['target_measurements'].append(target_measurement)
+        number_target_measurements = len(OTHER['target_measurements'])
+        x0, y0 = OTHER['target_measurements'][number_target_measurements - 3]
+        x1, y1 = OTHER['target_measurements'][number_target_measurements - 2]
+        x2, y2 = OTHER['target_measurements'][number_target_measurements - 1]  # Equivalent to target_measurement
+
+        step_size = distance_between((x2, y2), (x1, y1))
+        heading1 = atan2(y1 - y0, x1 - x0)
+        heading2 = atan2(y2 - y1, x2 - x1)
+        turning_angle = (heading2 - heading1) % (2 * pi)
+
+        new_orientation = (heading2 + turning_angle) % (2 * pi)
+        myrobot = robot(x=x2, y=y2)
+        myrobot.move(new_orientation, step_size)
+        xy_estimate = (myrobot.x, myrobot.y)
+
+    # get our distance and angle from the robot
+    dist_to_rob = distance_between(hunter_position, xy_estimate)
+    angle_to_rob = atan2((xy_estimate[1] - hunter_position[1]),(xy_estimate[0] - hunter_position[0]))
+    turning = (((angle_to_rob + pi) % (2 * pi)) - pi) - (((hunter_heading + pi)%(2*pi)) - pi)
+    distance = min(dist_to_rob, max_distance)
+
     return turning, distance, OTHER
 
 def distance_between(point1, point2):

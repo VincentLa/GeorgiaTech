@@ -1,4 +1,5 @@
 # ----------
+# Author: Vincent La (vla6)
 # Background
 # 
 # A robotics company named Trax has created a line of small self-driving robots 
@@ -110,11 +111,12 @@ def estimate_next_pos(measurement, OTHER = None):
         }
         xy_estimate = measurement
         return xy_estimate, OTHER 
-
-    OTHER['measurements'].append(measurement)
-    xy_estimate = measurement
-
-    if len(OTHER['measurements']) >= 3:
+    elif len(OTHER['measurements']) < 3:
+        OTHER['measurements'].append(measurement)
+        xy_estimate = measurement
+        return xy_estimate, OTHER 
+    else:
+        OTHER['measurements'].append(measurement)
         number_measurements = len(OTHER['measurements'])
 
         # Find initial orientation
@@ -130,6 +132,9 @@ def estimate_next_pos(measurement, OTHER = None):
 
         new_orientation = (heading2 + turning_angle) % (2 * pi)
         xy_estimate = move(motion=[0, step_size], orientation=new_orientation, measurement=measurement)
+        # myrobot = robot(x=measurement[0], y=measurement[1])
+        # myrobot.move(new_orientation, step_size)
+        # xy_estimate = (myrobot.x, myrobot.y)
 
     # You must return xy_estimate (x, y), and OTHER (even if it is None) 
     # in this order for grading purposes.
@@ -179,7 +184,7 @@ def naive_next_pos(measurement, OTHER = None):
 
 # This is how we create a target bot. Check the robot.py file to understand
 # How the robot class behaves.
-test_target = robot(2.1, 4.3, 0.5, 2*pi / 34.0, 1.5)
-test_target.set_noise(0.0, 0.0, 0.0)
+# test_target = robot(2.1, 4.3, 0.5, 2*pi / 34.0, 1.5)
+# test_target.set_noise(0.0, 0.0, 0.0)
 
-demo_grading(estimate_next_pos, test_target)
+# demo_grading(estimate_next_pos, test_target)
