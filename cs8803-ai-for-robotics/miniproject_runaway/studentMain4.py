@@ -34,61 +34,73 @@ def estimate_next_pos(measurement, OTHER = None):
             'measurements': [measurement],
             'turning_angles': [],
             'distances': [],
+            'xy_estimates': [measurement],
+            'is_new_measurement': True
         }
         xy_estimate = measurement
         return xy_estimate, OTHER 
     elif len(OTHER['measurements']) < 3:
-        if measurement != OTHER['measurements'][-1]:
+        if OTHER['is_new_measurement']:
             OTHER['measurements'].append(measurement)
-        xy_estimate = measurement
+            xy_estimate = measurement
+            OTHER['xy_estimates'].append(xy_estimate)
+        else:
+            xy_estimate = OTHER['xy_estimates'][-1]
         # print('other measurements in elif')
         # print(OTHER['measurements'])
         return xy_estimate, OTHER 
     else:
-        if measurement != OTHER['measurements'][-1]:
+        print('printing length of measurements')
+        print(len(OTHER['measurements']))
+        if OTHER['is_new_measurement']:
             OTHER['measurements'].append(measurement)
-        number_measurements = len(OTHER['measurements'])
 
-        # Find initial orientation
-        x0, y0 = OTHER['measurements'][number_measurements - 3]
-        x1, y1 = OTHER['measurements'][number_measurements - 2]
-        x2, y2 = OTHER['measurements'][number_measurements - 1]
+        if OTHER['is_new_measurement']:
+            number_measurements = len(OTHER['measurements'])
 
-        step_size = distance_between((x1, y1), (x2, y2))
+            # Find initial orientation
+            x0, y0 = OTHER['measurements'][number_measurements - 3]
+            x1, y1 = OTHER['measurements'][number_measurements - 2]
+            x2, y2 = OTHER['measurements'][number_measurements - 1]
 
-        heading1 = atan2(y1 - y0, x1 - x0)
-        heading2 = atan2(y2 - y1, x2 - x1)
-        turning_angle = (heading2 - heading1) % (2 * pi)
-        # turning_angle = (((heading2 + pi)%(2*pi)) - pi) - (((heading1 + pi)%(2*pi)) - pi)
-        if turning_angle > pi:
-            turning_angle -= 2 * pi
-        elif turning_angle < -pi:
-            turning_angle += 2 * pi
+            step_size = distance_between((x1, y1), (x2, y2))
 
-        # Take overall average to account for noise
-        distances = np.array(OTHER['distances'] + [step_size])
-        turning_angles = np.array(OTHER['turning_angles'] + [turning_angle])
+            heading1 = atan2(y1 - y0, x1 - x0)
+            heading2 = atan2(y2 - y1, x2 - x1)
+            turning_angle = (heading2 - heading1) % (2 * pi)
+            # turning_angle = (((heading2 + pi)%(2*pi)) - pi) - (((heading1 + pi)%(2*pi)) - pi)
+            if turning_angle > pi:
+                turning_angle -= 2 * pi
+            elif turning_angle < -pi:
+                turning_angle += 2 * pi
 
-        step_size = np.mean(distances)
-        turning_angle = np.mean(turning_angles)
+            # Take overall average to account for noise
+            distances = np.array(OTHER['distances'] + [step_size])
+            turning_angles = np.array(OTHER['turning_angles'] + [turning_angle])
 
-        # print('measurement')
-        # print(OTHER['measurements'])
+            step_size = np.mean(distances)
+            turning_angle = np.mean(turning_angles)
 
-        # print('turning_angle')
-        # print(turning_angle)
+            # print('measurement')
+            # print(OTHER['measurements'])
 
-        # print('printing turning angle arrays')
-        # print(OTHER['turning_angles'])
-        
-        if measurement != OTHER['measurements'][-1]:
+            print('turning_angle')
+            print(turning_angle)
+
+            # print('printing turning angle arrays')
+            # print(OTHER['turning_angles'])
+            
             OTHER['distances'].append(step_size)
             OTHER['turning_angles'].append(turning_angle)
 
-        new_orientation = heading2 + turning_angle
-        myrobot = robot(x=x2, y=y2)
-        myrobot.move(new_orientation, step_size)
-        xy_estimate = (myrobot.x, myrobot.y)
+            new_orientation = heading2 + turning_angle
+            myrobot = robot(x=x2, y=y2)
+            myrobot.move(new_orientation, step_size)
+            xy_estimate = (myrobot.x, myrobot.y)
+
+            OTHER['xy_estimates'].append(xy_estimate)
+        else:
+            xy_estimate = OTHER['xy_estimates'][-1]
 
     return xy_estimate, OTHER 
 
@@ -104,11 +116,23 @@ def next_move(hunter_position, hunter_heading, target_measurement, max_distance,
       From Part 2, copy work to estimate the hunter's new position
       Then have the robot move to that prediction as fast as possible.
     """
+    print('starting next move')
+    print('')
+    print('')
+
+    # Resetting to new measurement
+    if OTHER is not None:
+        OTHER['is_new_measurement'] = True
+
+    # backup
+    backup_xy, OTHER = estimate_next_pos(target_measurement, OTHER)
+
     # find how many turns in the circle
     if OTHER is not None and len(OTHER['turning_angles']) != 0:
+        print(OTHER)
         net_ang = OTHER['turning_angles'][-1]
-        # print('net_ang')
-        # print(net_ang)
+        print('net_ang')
+        print(net_ang)
         if net_ang != 0:
             num_turns = int(abs(2*pi / (net_ang)))
         else:
@@ -122,12 +146,19 @@ def next_move(hunter_position, hunter_heading, target_measurement, max_distance,
     # print('printing other')
     # print(OTHER)
     # for each turn in the number of turns
+    # Within this for loop we don't actually have new measurements so we don't want to store.
+    OTHER['is_new_measurement'] = False
     last_xy, last_other = target_measurement, dict(OTHER) if isinstance(OTHER, dict) else OTHER
     turning, distance = None, None
+
     for turn in range(num_turns):
-        # print('in for loop')
+        print('in for loop')
+        print('last xy')
+        print(last_xy)
         # find location estimate
         next_xy, next_other = estimate_next_pos(last_xy, last_other)
+        print('next_xy')
+        print(next_xy)
         distance_to_next = distance_between(hunter_position, next_xy)
         if distance_to_next < max_distance * (turn + 1):
             # print('in if')
@@ -140,6 +171,12 @@ def next_move(hunter_position, hunter_heading, target_measurement, max_distance,
 
     # backup
     backup_xy, OTHER = estimate_next_pos(target_measurement, OTHER)
+
+    if len(OTHER['measurements']) > 5:
+        print('quitting now')
+        print(OTHER)
+        print(len(OTHER['turning_angles']))
+        quit()
     if not turning:
         distance = distance_between(hunter_position, backup_xy)
         angle_to_rob = atan2((backup_xy[1] - hunter_position[1]),(backup_xy[0] - hunter_position[0] + 0.000001))
