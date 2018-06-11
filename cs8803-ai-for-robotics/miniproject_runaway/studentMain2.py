@@ -34,6 +34,7 @@ from robot import *  # Check the robot.py tab to see how this works.
 from math import *
 from matrix import * # Check the matrix.py tab to see how this works.
 import random
+import numpy as np
 
 
 # This is the function you have to write. Note that measurement is a 
@@ -49,6 +50,8 @@ def estimate_next_pos(measurement, OTHER = None):
     if OTHER is None:
         OTHER = {
             'measurements': [measurement],
+            'turning_angles': [],
+            'distances': [],
         }
         xy_estimate = measurement
         return xy_estimate, OTHER 
@@ -70,23 +73,25 @@ def estimate_next_pos(measurement, OTHER = None):
         heading1 = atan2(y1 - y0, x1 - x0)
         heading2 = atan2(y2 - y1, x2 - x1)
         turning_angle = (heading2 - heading1) % (2 * pi)
-
-        # new_orientation = (heading2 + turning_angle) % (2 * pi)
-        # xy_estimate = move(motion=[0, step_size], orientation=new_orientation, measurement=(x2, y2))
-
-        # turning_angle = (((heading2 + pi)%(2*pi)) - pi) - (((heading1 + pi)%(2*pi)) - pi)
         if turning_angle > pi:
             turning_angle -= 2 * pi
         elif turning_angle < -pi:
             turning_angle += 2 * pi
+
+        # Take overall average to account for noise
+        distances = np.array(OTHER['distances'] + [step_size])
+        turning_angles = np.array(OTHER['turning_angles'] + [turning_angle])
+
+        step_size = np.mean(distances)
+        turning_angle = np.mean(turning_angle)
+        OTHER['distances'].append(step_size)
+        OTHER['turning_angles'].append('turning_angle')
+
         new_orientation = heading2 + turning_angle
         myrobot = robot(x=x2, y=y2)
         myrobot.move(new_orientation, step_size)
         xy_estimate = (myrobot.x, myrobot.y)
 
-    # You must return xy_estimate (x, y), and OTHER (even if it is None) 
-    # in this order for grading purposes.
-    # print(OTHER)
     return xy_estimate, OTHER 
 
 # A helper function you may find useful.
