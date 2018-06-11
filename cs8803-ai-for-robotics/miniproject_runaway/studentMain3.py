@@ -71,7 +71,6 @@ def estimate_next_pos(measurement, OTHER = None):
         heading1 = atan2(y1 - y0, x1 - x0)
         heading2 = atan2(y2 - y1, x2 - x1)
         turning_angle = (heading2 - heading1) % (2 * pi)
-        # turning_angle = (((heading2 + pi)%(2*pi)) - pi) - (((heading1 + pi)%(2*pi)) - pi)
         if turning_angle > pi:
             turning_angle -= 2 * pi
         elif turning_angle < -pi:

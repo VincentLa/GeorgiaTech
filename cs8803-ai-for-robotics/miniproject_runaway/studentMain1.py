@@ -130,10 +130,6 @@ def estimate_next_pos(measurement, OTHER = None):
         heading2 = atan2(y2 - y1, x2 - x1)
         turning_angle = (heading2 - heading1) % (2 * pi)
 
-        # new_orientation = (heading2 + turning_angle) % (2 * pi)
-        # xy_estimate = move(motion=[0, step_size], orientation=new_orientation, measurement=(x2, y2))
-
-        # turning_angle = (((heading2 + pi)%(2*pi)) - pi) - (((heading1 + pi)%(2*pi)) - pi)
         if turning_angle > pi:
             turning_angle -= 2 * pi
         elif turning_angle < -pi:
