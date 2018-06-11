@@ -38,11 +38,15 @@ def estimate_next_pos(measurement, OTHER = None):
         xy_estimate = measurement
         return xy_estimate, OTHER 
     elif len(OTHER['measurements']) < 3:
-        OTHER['measurements'].append(measurement)
+        if measurement != OTHER['measurements'][-1]:
+            OTHER['measurements'].append(measurement)
         xy_estimate = measurement
+        # print('other measurements in elif')
+        # print(OTHER['measurements'])
         return xy_estimate, OTHER 
     else:
-        OTHER['measurements'].append(measurement)
+        if measurement != OTHER['measurements'][-1]:
+            OTHER['measurements'].append(measurement)
         number_measurements = len(OTHER['measurements'])
 
         # Find initial orientation
@@ -68,15 +72,18 @@ def estimate_next_pos(measurement, OTHER = None):
         step_size = np.mean(distances)
         turning_angle = np.mean(turning_angles)
 
+        # print('measurement')
+        # print(OTHER['measurements'])
+
         # print('turning_angle')
         # print(turning_angle)
 
         # print('printing turning angle arrays')
         # print(OTHER['turning_angles'])
-        # if len(OTHER['turning_angles']) > 12:
-        #     quit()
-        OTHER['distances'].append(step_size)
-        OTHER['turning_angles'].append(turning_angle)
+        
+        if measurement != OTHER['measurements'][-1]:
+            OTHER['distances'].append(step_size)
+            OTHER['turning_angles'].append(turning_angle)
 
         new_orientation = heading2 + turning_angle
         myrobot = robot(x=x2, y=y2)
