@@ -39,6 +39,60 @@ from robot import *
 from math import *
 from matrix import *
 import random
+import numpy as np
+
+
+def estimate_next_pos(measurement, OTHER = None):
+    """Copied from Question 2"""
+    # If first measurement, create a list.
+    if OTHER is None:
+        OTHER = {
+            'measurements': [measurement],
+            'turning_angles': [],
+            'distances': [],
+        }
+        xy_estimate = measurement
+        return xy_estimate, OTHER 
+    elif len(OTHER['measurements']) < 3:
+        OTHER['measurements'].append(measurement)
+        xy_estimate = measurement
+        return xy_estimate, OTHER 
+    else:
+        OTHER['measurements'].append(measurement)
+        number_measurements = len(OTHER['measurements'])
+
+        # Find initial orientation
+        x0, y0 = OTHER['measurements'][number_measurements - 3]
+        x1, y1 = OTHER['measurements'][number_measurements - 2]
+        x2, y2 = OTHER['measurements'][number_measurements - 1]
+
+        step_size = distance_between((x1, y1), (x2, y2))
+
+        heading1 = atan2(y1 - y0, x1 - x0)
+        heading2 = atan2(y2 - y1, x2 - x1)
+        turning_angle = (heading2 - heading1) % (2 * pi)
+        # turning_angle = (((heading2 + pi)%(2*pi)) - pi) - (((heading1 + pi)%(2*pi)) - pi)
+        if turning_angle > pi:
+            turning_angle -= 2 * pi
+        elif turning_angle < -pi:
+            turning_angle += 2 * pi
+
+        # Take overall average to account for noise
+        distances = np.array(OTHER['distances'] + [step_size])
+        turning_angles = np.array(OTHER['turning_angles'] + [turning_angle])
+
+        step_size = np.mean(distances)
+        turning_angle = np.mean(turning_angle)
+        OTHER['distances'].append(step_size)
+        OTHER['turning_angles'].append('turning_angle')
+
+        new_orientation = heading2 + turning_angle
+        myrobot = robot(x=x2, y=y2)
+        myrobot.move(new_orientation, step_size)
+        xy_estimate = (myrobot.x, myrobot.y)
+
+    return xy_estimate, OTHER 
+
 
 def next_move(hunter_position, hunter_heading, target_measurement, max_distance, OTHER = None):
     """
@@ -54,37 +108,19 @@ def next_move(hunter_position, hunter_heading, target_measurement, max_distance,
     """
     if OTHER is None:
         OTHER = {
-            'target_measurements': [(0, 0), target_measurement],
+            'measurements': [target_measurement],
+            'turning_angles': [],
+            'distances': [],
         }
-        # Where xy_estimate is estimate of where the target rob is. 
         xy_estimate = target_measurement
     else:
-        OTHER['target_measurements'].append(target_measurement)
-        number_target_measurements = len(OTHER['target_measurements'])
-        x0, y0 = OTHER['target_measurements'][number_target_measurements - 3]
-        x1, y1 = OTHER['target_measurements'][number_target_measurements - 2]
-        x2, y2 = OTHER['target_measurements'][number_target_measurements - 1]  # Equivalent to target_measurement
-
-        step_size = distance_between((x2, y2), (x1, y1))
-        heading1 = atan2(y1 - y0, x1 - x0)
-        heading2 = atan2(y2 - y1, x2 - x1)
-        turning_angle = (heading2 - heading1) % (2 * pi)
-
-        if turning_angle > pi:
-            turning_angle -= 2 * pi
-        elif turning_angle < -pi:
-            turning_angle += 2 * pi
-
-        new_orientation = (heading2 + turning_angle) % (2 * pi)
-        myrobot = robot(x=x2, y=y2)
-        myrobot.move(new_orientation, step_size)
-        xy_estimate = (myrobot.x, myrobot.y)
+        xy_estimate, OTHER = estimate_next_pos(target_measurement, OTHER=OTHER)
 
     # get our distance and angle from the robot
     distance_to_target_robot = distance_between(hunter_position, xy_estimate)
     angle_to_target_robot = atan2((xy_estimate[1] - hunter_position[1]),(xy_estimate[0] - hunter_position[0]))
-    turning = (((angle_to_target_robot + pi) % (2 * pi)) - pi) - (((hunter_heading + pi)%(2*pi)) - pi)
-    # turning = angle_to_target_robot - hunter_heading
+    # turning = (((angle_to_target_robot + pi) % (2 * pi)) - pi) - (((hunter_heading + pi)%(2*pi)) - pi)
+    turning = angle_to_target_robot - hunter_heading
     distance = min(distance_to_target_robot, max_distance)
 
     return turning, distance, OTHER
@@ -172,13 +208,13 @@ def naive_next_move(hunter_position, hunter_heading, target_measurement, max_dis
     distance = max_distance # full speed ahead!
     return turning, distance, OTHER
 
-# target = robot(0.0, 10.0, 0.0, 2*pi / 30, 1.5)
-# measurement_noise = .05*target.distance
-# target.set_noise(0.0, 0.0, measurement_noise)
+target = robot(0.0, 10.0, 0.0, 2*pi / 30, 1.5)
+measurement_noise = .05*target.distance
+target.set_noise(0.0, 0.0, measurement_noise)
 
-# hunter = robot(-10.0, -10.0, 0.0)
+hunter = robot(-10.0, -10.0, 0.0)
 
-# print demo_grading(hunter, target, naive_next_move)
+print demo_grading(hunter, target, naive_next_move)
 
 
 
