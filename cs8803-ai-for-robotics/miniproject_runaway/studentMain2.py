@@ -86,7 +86,7 @@ def estimate_next_pos(measurement, OTHER = None):
         step_size = np.mean(distances)
         turning_angle = np.mean(turning_angle)
         OTHER['distances'].append(step_size)
-        OTHER['turning_angles'].append('turning_angle')
+        OTHER['turning_angles'].append(turning_angle)
 
         new_orientation = heading2 + turning_angle
         myrobot = robot(x=x2, y=y2)
@@ -138,8 +138,8 @@ def naive_next_pos(measurement, OTHER = None):
 
 # This is how we create a target bot. Check the robot.py file to understand
 # How the robot class behaves.
-# test_target = robot(2.1, 4.3, 0.5, 2*pi / 34.0, 1.5)
-# measurement_noise = 0.05 * test_target.distance
-# test_target.set_noise(0.0, 0.0, measurement_noise)
+test_target = robot(2.1, 4.3, 0.5, 2*pi / 34.0, 1.5)
+measurement_noise = 0.05 * test_target.distance
+test_target.set_noise(0.0, 0.0, measurement_noise)
 
-# demo_grading(estimate_next_pos, test_target)
+demo_grading(estimate_next_pos, test_target)

@@ -70,8 +70,8 @@ def estimate_next_pos(measurement, OTHER = None):
 
         heading1 = atan2(y1 - y0, x1 - x0)
         heading2 = atan2(y2 - y1, x2 - x1)
-        turning_angle = (heading2 - heading1) % (2 * pi)
-        # turning_angle = (((heading2 + pi)%(2*pi)) - pi) - (((heading1 + pi)%(2*pi)) - pi)
+        # turning_angle = (heading2 - heading1) % (2 * pi)
+        turning_angle = (((heading2 + pi)%(2*pi)) - pi) - (((heading1 + pi)%(2*pi)) - pi)
         if turning_angle > pi:
             turning_angle -= 2 * pi
         elif turning_angle < -pi:
@@ -84,7 +84,7 @@ def estimate_next_pos(measurement, OTHER = None):
         step_size = np.mean(distances)
         turning_angle = np.mean(turning_angle)
         OTHER['distances'].append(step_size)
-        OTHER['turning_angles'].append('turning_angle')
+        OTHER['turning_angles'].append(turning_angle)
 
         new_orientation = heading2 + turning_angle
         myrobot = robot(x=x2, y=y2)
@@ -208,13 +208,13 @@ def naive_next_move(hunter_position, hunter_heading, target_measurement, max_dis
     distance = max_distance # full speed ahead!
     return turning, distance, OTHER
 
-target = robot(0.0, 10.0, 0.0, 2*pi / 30, 1.5)
-measurement_noise = .05*target.distance
-target.set_noise(0.0, 0.0, measurement_noise)
+# target = robot(0.0, 10.0, 0.0, 2*pi / 30, 1.5)
+# measurement_noise = .05*target.distance
+# target.set_noise(0.0, 0.0, measurement_noise)
 
-hunter = robot(-10.0, -10.0, 0.0)
+# hunter = robot(-10.0, -10.0, 0.0)
 
-print demo_grading(hunter, target, naive_next_move)
+# print demo_grading(hunter, target, next_move)
 
 
 
