@@ -84,7 +84,7 @@ def estimate_next_pos(measurement, OTHER = None):
         turning_angles = np.array(OTHER['turning_angles'] + [turning_angle])
 
         step_size = np.mean(distances)
-        turning_angle = np.mean(turning_angle)
+        turning_angle = np.mean(turning_angles)
         OTHER['distances'].append(step_size)
         OTHER['turning_angles'].append(turning_angle)
 

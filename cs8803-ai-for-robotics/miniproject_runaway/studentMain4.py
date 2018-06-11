@@ -54,8 +54,8 @@ def estimate_next_pos(measurement, OTHER = None):
 
         heading1 = atan2(y1 - y0, x1 - x0)
         heading2 = atan2(y2 - y1, x2 - x1)
-        # turning_angle = (heading2 - heading1) % (2 * pi)
-        turning_angle = (((heading2 + pi)%(2*pi)) - pi) - (((heading1 + pi)%(2*pi)) - pi)
+        turning_angle = (heading2 - heading1) % (2 * pi)
+        # turning_angle = (((heading2 + pi)%(2*pi)) - pi) - (((heading1 + pi)%(2*pi)) - pi)
         if turning_angle > pi:
             turning_angle -= 2 * pi
         elif turning_angle < -pi:
@@ -66,7 +66,15 @@ def estimate_next_pos(measurement, OTHER = None):
         turning_angles = np.array(OTHER['turning_angles'] + [turning_angle])
 
         step_size = np.mean(distances)
-        turning_angle = np.mean(turning_angle)
+        turning_angle = np.mean(turning_angles)
+
+        # print('turning_angle')
+        # print(turning_angle)
+
+        # print('printing turning angle arrays')
+        # print(OTHER['turning_angles'])
+        # if len(OTHER['turning_angles']) > 12:
+        #     quit()
         OTHER['distances'].append(step_size)
         OTHER['turning_angles'].append(turning_angle)
 
@@ -76,7 +84,6 @@ def estimate_next_pos(measurement, OTHER = None):
         xy_estimate = (myrobot.x, myrobot.y)
 
     return xy_estimate, OTHER 
-
 
 def next_move(hunter_position, hunter_heading, target_measurement, max_distance, OTHER = None):
     """
@@ -92,7 +99,9 @@ def next_move(hunter_position, hunter_heading, target_measurement, max_distance,
     """
     # find how many turns in the circle
     if OTHER is not None and len(OTHER['turning_angles']) != 0:
-        net_ang = OTHER['turning_angles'][len(OTHER['turning_angles']) - 1]
+        net_ang = OTHER['turning_angles'][-1]
+        # print('net_ang')
+        # print(net_ang)
         if net_ang != 0:
             num_turns = int(abs(2*pi / (net_ang)))
         else:
@@ -101,8 +110,10 @@ def next_move(hunter_position, hunter_heading, target_measurement, max_distance,
     else:
         # default
         num_turns = 5
-    print(num_turns)
+    # print(num_turns)
 
+    # print('printing other')
+    # print(OTHER)
     # for each turn in the number of turns
     last_xy, last_other = target_measurement, dict(OTHER) if isinstance(OTHER, dict) else OTHER
     turning, distance = None, None
