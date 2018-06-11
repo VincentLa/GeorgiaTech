@@ -35,38 +35,6 @@ from matrix import * # Check the matrix.py tab to see how this works.
 import random
 
 
-# Helper Function to Move
-def move(motion, orientation, measurement):
-    """
-    Helper function returning coordinates after a move
-
-    Keyword Args:
-      motion: list of two elements. First element is the turn, second is the distance,
-      orientation: Current orientation in radians
-      measurement: tuple (x, y)
-    """
-
-    length = 1  # An assumption -- maybe should be 0.5?
-    alpha = motion[0]
-    d = motion[1]
-    theta = orientation
-    beta = d / length * tan(alpha)
-    x, y = measurement[0], measurement[1]
-    
-    if abs(beta) <= 0.001:
-        x = x + d * cos(theta)
-        y = y + d * sin(theta)
-    else:
-        R = d / beta
-        cx = x - sin(theta) * R
-        cy = y + cos(theta) * R
-        x = cx + sin(theta + beta) * R
-        y = cy - cos(theta + beta) * R
-        orientation = (theta + beta) % (2 * pi)
-    measurement = (x, y)
-    
-    return measurement  #, orientation
-
 # This is the function you have to write. Note that measurement is a 
 # single (x, y) point. This function will have to be called multiple
 # times before you have enough information to accurately predict the
@@ -102,7 +70,10 @@ def estimate_next_pos(measurement, OTHER = None):
         turning_angle = (heading2 - heading1) % (2 * pi)
 
         new_orientation = (heading2 + turning_angle) % (2 * pi)
-        xy_estimate = move(motion=[0, step_size], orientation=new_orientation, measurement=measurement)
+
+        myrobot = robot(x=measurement[0], y=measurement[1])
+        myrobot.move(new_orientation, step_size)
+        xy_estimate = (myrobot.x, myrobot.y)
 
     # You must return xy_estimate (x, y), and OTHER (even if it is None) 
     # in this order for grading purposes.
@@ -152,8 +123,8 @@ def naive_next_pos(measurement, OTHER = None):
 
 # This is how we create a target bot. Check the robot.py file to understand
 # How the robot class behaves.
-test_target = robot(2.1, 4.3, 0.5, 2*pi / 34.0, 1.5)
-measurement_noise = 0.05 * test_target.distance
-test_target.set_noise(0.0, 0.0, measurement_noise)
+# test_target = robot(2.1, 4.3, 0.5, 2*pi / 34.0, 1.5)
+# measurement_noise = 0.05 * test_target.distance
+# test_target.set_noise(0.0, 0.0, measurement_noise)
 
-demo_grading(estimate_next_pos, test_target)
+# demo_grading(estimate_next_pos, test_target)
