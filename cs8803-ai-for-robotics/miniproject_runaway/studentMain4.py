@@ -1,6 +1,8 @@
 # ----------
 # Part Four
 #
+# Author: Vincent La (vla6)
+#
 # Again, you'll track down and recover the runaway Traxbot. 
 # But this time, your speed will be about the same as the runaway bot. 
 # This may require more careful planning than you used last time.
@@ -24,10 +26,12 @@ from math import *
 from matrix import *
 import random
 import numpy as np
+import copy
 
 
 def estimate_next_pos(measurement, OTHER = None):
-    """Copied from Question 2"""
+    """Estimate the next (x, y) position of the wandering Traxbot
+    based on noisy (x, y) measurements."""
     # If first measurement, create a list.
     if OTHER is None:
         OTHER = {
@@ -38,15 +42,11 @@ def estimate_next_pos(measurement, OTHER = None):
         xy_estimate = measurement
         return xy_estimate, OTHER 
     elif len(OTHER['measurements']) < 3:
-        if measurement != OTHER['measurements'][-1]:
-            OTHER['measurements'].append(measurement)
+        OTHER['measurements'].append(measurement)
         xy_estimate = measurement
-        # print('other measurements in elif')
-        # print(OTHER['measurements'])
         return xy_estimate, OTHER 
     else:
-        if measurement != OTHER['measurements'][-1]:
-            OTHER['measurements'].append(measurement)
+        OTHER['measurements'].append(measurement)
         number_measurements = len(OTHER['measurements'])
 
         # Find initial orientation
@@ -58,12 +58,15 @@ def estimate_next_pos(measurement, OTHER = None):
 
         heading1 = atan2(y1 - y0, x1 - x0)
         heading2 = atan2(y2 - y1, x2 - x1)
-        turning_angle = (heading2 - heading1) % (2 * pi)
-        # turning_angle = (((heading2 + pi)%(2*pi)) - pi) - (((heading1 + pi)%(2*pi)) - pi)
+        # turning_angle = (heading2 - heading1) % (2 * pi)
+        turning_angle = (((heading2 + pi)%(2*pi)) - pi) - (((heading1 + pi)%(2*pi)) - pi)
         if turning_angle > pi:
             turning_angle -= 2 * pi
         elif turning_angle < -pi:
             turning_angle += 2 * pi
+
+        # print('printing turning angle')
+        # print(turning_angle)
 
         # Take overall average to account for noise
         distances = np.array(OTHER['distances'] + [step_size])
@@ -71,19 +74,8 @@ def estimate_next_pos(measurement, OTHER = None):
 
         step_size = np.mean(distances)
         turning_angle = np.mean(turning_angles)
-
-        # print('measurement')
-        # print(OTHER['measurements'])
-
-        # print('turning_angle')
-        # print(turning_angle)
-
-        # print('printing turning angle arrays')
-        # print(OTHER['turning_angles'])
-        
-        if measurement != OTHER['measurements'][-1]:
-            OTHER['distances'].append(step_size)
-            OTHER['turning_angles'].append(turning_angle)
+        OTHER['distances'].append(step_size)
+        OTHER['turning_angles'].append(turning_angle)
 
         new_orientation = heading2 + turning_angle
         myrobot = robot(x=x2, y=y2)
@@ -105,8 +97,17 @@ def next_move(hunter_position, hunter_heading, target_measurement, max_distance,
       Then have the robot move to that prediction as fast as possible.
     """
     # find how many turns in the circle
+    # print('in next move')
+    # print('')
+    # print('')
+
+    # if OTHER is not None:
+        # print(OTHER['measurements'])
+    # print(OTHER)
+
     if OTHER is not None and len(OTHER['turning_angles']) != 0:
         net_ang = OTHER['turning_angles'][-1]
+        # print(OTHER)
         # print('net_ang')
         # print(net_ang)
         if net_ang != 0:
@@ -122,7 +123,7 @@ def next_move(hunter_position, hunter_heading, target_measurement, max_distance,
     # print('printing other')
     # print(OTHER)
     # for each turn in the number of turns
-    last_xy, last_other = target_measurement, dict(OTHER) if isinstance(OTHER, dict) else OTHER
+    last_xy, last_other = target_measurement, copy.deepcopy(OTHER) if isinstance(OTHER, dict) else OTHER
     turning, distance = None, None
     for turn in range(num_turns):
         # print('in for loop')
@@ -235,13 +236,13 @@ def naive_next_move(hunter_position, hunter_heading, target_measurement, max_dis
     distance = max_distance # full speed ahead!
     return turning, distance, OTHER
 
-target = robot(0.0, 10.0, 0.0, 2*pi / 30, 1.5)
-measurement_noise = .05*target.distance
-target.set_noise(0.0, 0.0, measurement_noise)
+# target = robot(0.0, 10.0, 0.0, 2*pi / 30, 1.5)
+# measurement_noise = .05*target.distance
+# target.set_noise(0.0, 0.0, measurement_noise)
 
-hunter = robot(-10.0, -10.0, 0.0)
+# hunter = robot(-10.0, -10.0, 0.0)
 
-print demo_grading(hunter, target, next_move)
+# print demo_grading(hunter, target, next_move)
 
 
 
