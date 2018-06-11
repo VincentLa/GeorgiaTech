@@ -105,22 +105,22 @@ def next_move(hunter_position, hunter_heading, target_measurement, max_distance,
     previous_xy_measurement, previous_other = target_measurement, copy.deepcopy(OTHER) if isinstance(OTHER, dict) else OTHER
     turning, distance = None, None
     for turn in range(number_of_turns):
-        next_xy, next_other = estimate_next_pos(previous_xy_measurement, previous_other)
-        distance_to_next_estimated_target = distance_between(hunter_position, next_xy)
+        next_estimated_xy_measurement, next_other = estimate_next_pos(previous_xy_measurement, previous_other)
+        distance_to_next_estimated_target = distance_between(hunter_position, next_estimated_xy_measurement)
         # This is taken from hint:
         # https://piazza.com/class/jh0tfongvk362a?cid=118
         # See thread starting with Anonymous author starting with "In part 4, I set the hunter to go n steps further..."
         # Essentially, if we are within the max distance times number of turns, we move in that direction since
         # it's highly probable that we can cut it off once the lost robot gets there.
         if distance_to_next_estimated_target < max_distance * (turn + 1):
-            distance = distance_to_next_estimated_target
-            angle_to_target_robot = atan2((next_xy[1] - hunter_position[1]), (next_xy[0] - hunter_position[0]))
+            angle_to_target_robot = atan2((next_estimated_xy_measurement[1] - hunter_position[1]), (next_estimated_xy_measurement[0] - hunter_position[0]))
             turning = angle_to_target_robot - hunter_heading
+            distance = distance_to_next_estimated_target
             break
         # If the loop hasn't broken, that means we haven't found a cutoff point. That is, we aren't close enough
         # to estimate where we can cut off the target robot.
         # Thus, now continue the loop
-        previous_xy_measurement = next_xy
+        previous_xy_measurement = next_estimated_xy_measurement
         previous_other = next_other
 
     next_target_robot_position, OTHER = estimate_next_pos(target_measurement, OTHER)
@@ -128,9 +128,9 @@ def next_move(hunter_position, hunter_heading, target_measurement, max_distance,
     # What if we are so far out that we aren't within striking distance of the target robot at all?
     # Then, default to just move closer to the last known hunter position so that we can get more information.
     if turning is None:
-        distance = distance_between(hunter_position, next_target_robot_position)
         angle_to_target_robot = atan2((next_target_robot_position[1] - hunter_position[1]),(next_target_robot_position[0] - hunter_position[0]))
         turning = angle_to_target_robot - hunter_heading
+        distance = distance_between(next_target_robot_position, hunter_position)
 
     return turning, distance, OTHER
 
