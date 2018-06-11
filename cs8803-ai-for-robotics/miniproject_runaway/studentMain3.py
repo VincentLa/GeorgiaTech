@@ -70,16 +70,22 @@ def next_move(hunter_position, hunter_heading, target_measurement, max_distance,
         heading2 = atan2(y2 - y1, x2 - x1)
         turning_angle = (heading2 - heading1) % (2 * pi)
 
+        if turning_angle > pi:
+            turning_angle -= 2 * pi
+        elif turning_angle < -pi:
+            turning_angle += 2 * pi
+
         new_orientation = (heading2 + turning_angle) % (2 * pi)
         myrobot = robot(x=x2, y=y2)
         myrobot.move(new_orientation, step_size)
         xy_estimate = (myrobot.x, myrobot.y)
 
     # get our distance and angle from the robot
-    dist_to_rob = distance_between(hunter_position, xy_estimate)
-    angle_to_rob = atan2((xy_estimate[1] - hunter_position[1]),(xy_estimate[0] - hunter_position[0]))
-    turning = (((angle_to_rob + pi) % (2 * pi)) - pi) - (((hunter_heading + pi)%(2*pi)) - pi)
-    distance = min(dist_to_rob, max_distance)
+    distance_to_target_robot = distance_between(hunter_position, xy_estimate)
+    angle_to_target_robot = atan2((xy_estimate[1] - hunter_position[1]),(xy_estimate[0] - hunter_position[0]))
+    turning = (((angle_to_target_robot + pi) % (2 * pi)) - pi) - (((hunter_heading + pi)%(2*pi)) - pi)
+    # turning = angle_to_target_robot - hunter_heading
+    distance = min(distance_to_target_robot, max_distance)
 
     return turning, distance, OTHER
 

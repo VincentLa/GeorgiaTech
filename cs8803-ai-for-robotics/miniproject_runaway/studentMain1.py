@@ -130,14 +130,22 @@ def estimate_next_pos(measurement, OTHER = None):
         heading2 = atan2(y2 - y1, x2 - x1)
         turning_angle = (heading2 - heading1) % (2 * pi)
 
-        new_orientation = (heading2 + turning_angle) % (2 * pi)
-        xy_estimate = move(motion=[0, step_size], orientation=new_orientation, measurement=measurement)
-        # myrobot = robot(x=measurement[0], y=measurement[1])
-        # myrobot.move(new_orientation, step_size)
-        # xy_estimate = (myrobot.x, myrobot.y)
+        # new_orientation = (heading2 + turning_angle) % (2 * pi)
+        # xy_estimate = move(motion=[0, step_size], orientation=new_orientation, measurement=(x2, y2))
+
+        # turning_angle = (((heading2 + pi)%(2*pi)) - pi) - (((heading1 + pi)%(2*pi)) - pi)
+        if turning_angle > pi:
+            turning_angle -= 2 * pi
+        elif turning_angle < -pi:
+            turning_angle += 2 * pi
+        new_orientation = heading2 + turning_angle
+        myrobot = robot(x=x2, y=y2)
+        myrobot.move(new_orientation, step_size)
+        xy_estimate = (myrobot.x, myrobot.y)
 
     # You must return xy_estimate (x, y), and OTHER (even if it is None) 
     # in this order for grading purposes.
+    # print(OTHER)
     return xy_estimate, OTHER 
 
 # A helper function you may find useful.
