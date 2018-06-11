@@ -64,9 +64,6 @@ def estimate_next_pos(measurement, OTHER = None):
         elif turning_angle < -pi:
             turning_angle += 2 * pi
 
-        # print('printing turning angle')
-        # print(turning_angle)
-
         # Take overall average to account for noise
         distances = np.array(OTHER['distances'] + [step_size])
         turning_angles = np.array(OTHER['turning_angles'] + [turning_angle])
@@ -95,59 +92,46 @@ def next_move(hunter_position, hunter_heading, target_measurement, max_distance,
       From Part 2, copy work to estimate the hunter's new position
       Then have the robot move to that prediction as fast as possible.
     """
-    # find how many turns in the circle
-    # print('in next move')
-    # print('')
-    # print('')
-
-    # if OTHER is not None:
-        # print(OTHER['measurements'])
-    # print(OTHER)
-
+    # In this part, estimate the number of turns that the target will take in a circle.
+    # If we don't have enough information, just assume 30 for now (as that is what's provided in test case in this file).
     if OTHER is not None and len(OTHER['turning_angles']) != 0:
-        net_ang = OTHER['turning_angles'][-1]
-        # print(OTHER)
-        # print('net_ang')
-        # print(net_ang)
-        if net_ang != 0:
-            num_turns = int(abs(2*pi / (net_ang)))
-        else:
-            # default
-            num_turns = 5
+        number_of_turns = abs(2*pi / (OTHER['turning_angles'][-1]))
+        number_of_turns = int(number_of_turns)
     else:
-        # default
-        num_turns = 5
-    # print(num_turns)
+        number_of_turns = 30
 
-    # print('printing other')
-    # print(OTHER)
-    # for each turn in the number of turns
-    last_xy, last_other = target_measurement, copy.deepcopy(OTHER) if isinstance(OTHER, dict) else OTHER
+    # Now, we loop over all the turns
+    # Basically the goal is to fine on which turn the hunter can intersect the target
+    previous_xy_measurement, previous_other = target_measurement, copy.deepcopy(OTHER) if isinstance(OTHER, dict) else OTHER
     turning, distance = None, None
-    for turn in range(num_turns):
-        # print('in for loop')
-        # find location estimate
-        next_xy, next_other = estimate_next_pos(last_xy, last_other)
-        distance_to_next = distance_between(hunter_position, next_xy)
-        if distance_to_next < max_distance * (turn + 1):
-            # print('in if')
-            distance = distance_to_next
-            angle_to_rob = atan2((next_xy[1] - hunter_position[1]),(next_xy[0] - hunter_position[0] + 0.000001))
-            turning = (((angle_to_rob + pi)%(2*pi)) - pi) - (((hunter_heading + pi)%(2*pi)) - pi)
+    for turn in range(number_of_turns):
+        next_xy, next_other = estimate_next_pos(previous_xy_measurement, previous_other)
+        distance_to_next_estimated_target = distance_between(hunter_position, next_xy)
+        # This is taken from hint:
+        # https://piazza.com/class/jh0tfongvk362a?cid=118
+        # See thread starting with Anonymous author starting with "In part 4, I set the hunter to go n steps further..."
+        # Essentially, if we are within the max distance times number of turns, we move in that direction since
+        # it's highly probable that we can cut it off once the lost robot gets there.
+        if distance_to_next_estimated_target < max_distance * (turn + 1):
+            distance = distance_to_next_estimated_target
+            angle_to_target_robot = atan2((next_xy[1] - hunter_position[1]), (next_xy[0] - hunter_position[0]))
+            turning = angle_to_target_robot - hunter_heading
             break
-        last_xy = next_xy
-        last_other = next_other
+        # If the loop hasn't broken, that means we haven't found a cutoff point. That is, we aren't close enough
+        # to estimate where we can cut off the target robot.
+        # Thus, now continue the loop
+        previous_xy_measurement = next_xy
+        previous_other = next_other
 
-    # backup
-    backup_xy, OTHER = estimate_next_pos(target_measurement, OTHER)
-    if not turning:
-        distance = distance_between(hunter_position, backup_xy)
-        angle_to_rob = atan2((backup_xy[1] - hunter_position[1]),(backup_xy[0] - hunter_position[0] + 0.000001))
-        turning = pi - abs(abs(angle_to_rob - hunter_heading) - pi)
+    next_target_robot_position, OTHER = estimate_next_pos(target_measurement, OTHER)
+    
+    # What if we are so far out that we aren't within striking distance of the target robot at all?
+    # Then, default to just move closer to the last known hunter position so that we can get more information.
+    if turning is None:
+        distance = distance_between(hunter_position, next_target_robot_position)
+        angle_to_target_robot = atan2((next_target_robot_position[1] - hunter_position[1]),(next_target_robot_position[0] - hunter_position[0]))
+        turning = angle_to_target_robot - hunter_heading
 
-    # The OTHER variable is a place for you to store any historical information about
-    # the progress of the hunt (or maybe some localization information). Your return format
-    # must be as follows in order to be graded properly.
     return turning, distance, OTHER
 
 def distance_between(point1, point2):

@@ -118,7 +118,6 @@ def next_move(hunter_position, hunter_heading, target_measurement, max_distance,
     # get our distance and angle from the robot
     distance_to_target_robot = distance_between(hunter_position, xy_estimate)
     angle_to_target_robot = atan2((xy_estimate[1] - hunter_position[1]),(xy_estimate[0] - hunter_position[0]))
-    # turning = (((angle_to_target_robot + pi) % (2 * pi)) - pi) - (((hunter_heading + pi)%(2*pi)) - pi)
     turning = angle_to_target_robot - hunter_heading
     distance = min(distance_to_target_robot, max_distance)
 
