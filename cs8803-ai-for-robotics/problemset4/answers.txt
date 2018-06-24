@@ -1,0 +1,14 @@
+Question 1:
+Admissable: Yes
+
+Question 2:
+Admissable: No
+
+Question 3:
+A* may find a suboptimal path
+
+Question 4:
+
+3 2 2 
+3 X 1
+4 X 0
