@@ -2,9 +2,9 @@
 pressure_tau_p = .4
 pressure_tau_d = 1
 
-rocket_tau_p = 0.
-rocket_tau_i = 0.
-rocket_tau_d = 0.
+rocket_tau_p = 10
+rocket_tau_i = 0
+rocket_tau_d = 1
 
 
 def pressure_pd_solution(delta_t, current_pressure, data):
@@ -17,7 +17,6 @@ def pressure_pd_solution(delta_t, current_pressure, data):
             'ErrorP': Proportional error.  Initialized to 0.0
             'ErrorD': Derivative error.  Initialized to 0.0
     """
-    print(current_pressure)
 
     # TODO: remove naive solution
     #adjust_pressure = current_pressure
@@ -47,8 +46,24 @@ def rocket_pid_solution(delta_t, current_velocity, optimal_velocity, data):
     """
 
     # TODO: remove naive solution
-    throttle = optimal_velocity - current_velocity
+    # throttle = optimal_velocity - current_velocity
 
     # TODO: implement PID Solution here
+    data['ErrorD'] = (optimal_velocity - current_velocity) - data['ErrorP']
+    data['ErrorP'] = optimal_velocity - current_velocity
+    data['ErrorI'] += data['ErrorP']
+
+    if optimal_velocity != -0.1:
+        rocket_tau_p = 16
+        rocket_tau_i = .33
+        rocket_tau_d = 2.2
+    else:  # If we are landing we don't care about smoothing so jack up Tau P to something really high
+        rocket_tau_p = 1000
+        rocket_tau_i = 0
+        rocket_tau_d = 0
+
+    throttle = rocket_tau_p * data['ErrorP'] + rocket_tau_d * data['ErrorD'] + rocket_tau_i * data['ErrorI']
+
+    throttle = max(min(throttle, 1), 0)
 
     return throttle, data
