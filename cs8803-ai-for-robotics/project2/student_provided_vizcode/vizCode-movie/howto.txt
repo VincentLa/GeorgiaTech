@@ -1,0 +1,23 @@
+
+Put in test code...
+
+
+<strong>exec_count = 1
+</strong>
+
+def execute_student_plan(warehouse, todo, max_distance, max_steering):
+    global exec_count
+
+    student_planner = partB.DeliveryPlanner(copy.copy(warehouse), copy.copy(todo),
+                                            max_distance, max_steering)
+
+    action_list = student_planner.plan_delivery()
+
+    <strong>drawMoves.drawWH2(exec_count, warehouse, todo, action_list)</strong>
+<strong>    exec_count += </strong><strong>1</strong>
+
+    state = State(warehouse, todo, max_distance, max_steering)
+    num_delivered = 0
+    next_box_to_deliver = num_delivered
+
+

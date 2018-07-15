@@ -1,0 +1,7 @@
+PART A TEST CASE RESULTS
+-----------
+Test Case 1
+cost: 23.00  (expected min 23.00)
+credit: 1.00
+-----------
+Total Credit: 1.00

@@ -1,0 +1,10 @@
+This code was written by Itamar Grutman (fall 2017 class) he says:
+
+If anyone here is a python noob like me, maybe you'd make use of the visualization code I wrote below. It allowed me to catch quite a few problems with my logic.
+
+It uses matplotlib and accepts a warehouse, a box list and a vector of sequential positions. It will show the walls, the boxes and the path including the lines that mark the entire width of the robot movement to see any crashes.
+
+call it like this:
+
+drawWH(params['warehouse'], params['todo'], pos)
+
