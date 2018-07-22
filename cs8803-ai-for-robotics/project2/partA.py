@@ -1,4 +1,7 @@
-#
+"""
+Author: Vincent La; GTech ID: vla6
+"""
+##########
 # === Introduction ===
 #
 # In this problem, you will build a planner that helps a robot
@@ -123,21 +126,217 @@
 # - Ask any questions about the directions or specifications on Piazza.
 #
 
-
 class DeliveryPlanner:
 
     def __init__(self, warehouse, todo):
-        pass
+        """Initialize the Class"""
+        # Create a Set of all the items in the warehouse
+        # Then, remove items until only boxes remain
+        items = {item for row in warehouse for item in row}
+        items.discard('.')
+        items.discard('#')
+        items.discard('@')        
+
+        self.warehouse = warehouse
+        self.todo = todo
+        self.boxes = items.copy()
+
+        # Futhermore, we define a list called "delta" which contains all possible moves.
+        # Same as in: https://classroom.udacity.com/courses/cs373/lessons/48646841/concepts/486468390923
+        self.delta = [(-1, 0),  # go up
+                      (0, -1),  # go left
+                      (1, 0),  # go down
+                      (0, 1),  # go right
+                      (-1, -1),  # go Up-Left
+                      (1, -1),  # Go Down-Left
+                      (-1, 1),  # Go Up Right
+                      (1, 1),  # Go Down Right
+                     ]
+
+###
+### DEFINING HELPER FUNCTIONS
+###
+    def score_moves(self, move):
+        """
+        Score Movement. From Rules:
+
+        - The robot may move horizontally or vertically at a cost of 2 per move.
+        - The robot may move diagonally at a cost of 3 per move.
+        """
+        # If movement is up, down, left, or right, the movement coordinates abs value will sum to 1
+        # If movement is diagonal, the movement coordinates will sum to 2
+        # Since there are only up down left right or diagonal movement we can return 3 in all other cases.
+        if abs(move[0] + move[1]) == 1:
+            return 2
+        else:
+            return 3
+
+    def get_location(self, item):
+        """
+        Finds the location of the item.
+
+        In cases where there are multiple locations. Return the first
+        """
+        for row in range(0, len(self.warehouse)):
+            for column in range(len(self.warehouse[0])):
+                if self.warehouse[row][column] == item:
+                    return (row, column)
+
+    def heuristic(self, current_location, goal):
+        """
+        Define a Heuristic for the A* Algorithm
+        
+        The Heuristic needs to be admissable. That is, the estimated cost must always be lower
+        than or equal to the actual cost of reaching the goal state. In this case, we simply calculate
+        the number of rows and columns that we are currently away from the goal. This is admissable 
+        since we know there are # barriers that we may not be able to pass through.
+
+        The Heuristic being defined as the number of steps to the goal is consistent with the heuristic
+        defined in https://classroom.udacity.com/courses/cs373/lessons/48646841/concepts/487510240923.
+        """
+        num_rows_away = abs(goal[0] - current_location[0])
+        num_cols_away = abs(goal[1] - current_location[1])
+        heuristic = num_rows_away + num_cols_away
+        return heuristic
+
+    def search(self, init, goal):
+        """
+        Use A* to Search the Warehouse and find the path to the goal.
+
+        Note that a lot of the search code comes from the A* Lecture in Udacity.
+        (https://classroom.udacity.com/courses/cs373/lessons/48646841/concepts/487510240923)
+        
+        Keyword Args:
+            init: Initial Location
+            goal: Goal Location
+
+        Returns:
+            search will return the shortest path from init to goal
+        """
+        if init == goal:
+            # If trying to take in action in the already occupied space, this is an illegal move.
+            # Implement a hack-around fix to move to the next adjacent unoccupied space
+            for i in range(len(self.delta)):
+                move = self.delta[i]
+                x2 = init[0] + move[0]
+                y2 = init[1] + move[1]
+
+                # Locations of Obstacles and Boxes
+                obstacles_and_boxes = ['#'] + list(self.boxes)
+
+                # If (x2, y2) still within limits of the warehouse and the space is not an obstacle or existing box
+                if x2 >= 0 and x2 < len(self.warehouse) and y2 >= 0 and y2 < len(self.warehouse[0]) and self.warehouse[x2][y2] not in obstacles_and_boxes:
+                    return (x2, y2), ['move {} {}'.format(x2, y2)]
+
+        ### All this code is from Udacity Lecture essentially to implement A*
+        closed = [[0 for col in range(len(self.warehouse[0]))] for row in range(len(self.warehouse))]
+        closed[init[0]][init[1]] = 1
+        
+        action = [[-1 for col in range(len(self.warehouse[0]))] for row in range(len(self.warehouse))]
+
+        x = init[0]
+        y = init[1]
+        g = 0
+        current_location = (x, y)
+        h = self.heuristic(current_location, goal)
+
+        open = [[g, h, x, y]]
+
+        found = False  # flag that is set when search is complete
+        resign = False  # flag set if we can't find expand
+
+        while not found and not resign:
+            if len(open) == 0:
+                resign = True
+                return 'fail'
+            else:
+                open.sort()
+                open.reverse()
+                next = open.pop()
+                x = next[2]
+                y = next[3]
+                g = next[0]
+
+                if x == goal[0] and y == goal[1]:
+                    found = True
+                else:
+                    for i in range(len(self.delta)):
+                        move = self.delta[i]
+                        cost = self.score_moves(move)
+                        x2 = x + move[0]
+                        y2 = y + move[1]
+
+                        if x2 >= 0 and x2 < len(self.warehouse) and y2 >= 0 and y2 < len(self.warehouse[0]):
+                            # Note it is illegal to move into an existing box as well (until we pick it up)
+                            # This works because in plan_delivery function, we pop self.boxes when we lift
+                            obstacles_and_boxes = ['#'] + list(self.boxes)
+                            if closed[x2][y2] == 0 and self.warehouse[x2][y2] not in obstacles_and_boxes:
+                                g2 = g + cost
+                                expanded_node = (x2, y2)
+                                h2 = self.heuristic(expanded_node, goal)
+                                open.append([g2, h2, x2, y2])
+                                closed[x2][y2] = 1
+                                action[x2][y2] = move
+
+        x = goal[0] - action[goal[0]][goal[1]][0]
+        y = goal[1] - action[goal[0]][goal[1]][1]
+        final_location = (x, y)
+
+        path = []
+        while (x, y) != (init[0], init[1]):
+            # As per format required by assignment
+            path = ['move {x} {y}'.format(x=x, y=y)] + path
+            x2 = x - action[x][y][0]
+            y2 = y - action[x][y][1]
+            x = x2
+            y = y2
+
+        return final_location, path
 
     def plan_delivery(self):
+        """
+        Final Function. Plan the Delivery using functions defined above.
+        """
+        moves = []
+        dropzone = self.get_location('@')
 
-        moves = ['move 2 1',
-                 'move 1 0',
-                 'lift 1',
-                 'move 2 1',
-                 'down 2 2',
-                 'move 1 2',
-                 'lift 2',
-                 'down 2 2']
+        # Initialize first location to the drop zone since this is where we start
+        previous_location = dropzone
 
+        while self.todo:
+            """
+            At this point, the remaining steps are straightforward.
+
+            If there are boxes remaining in the to-do list:
+
+            1. Find the location of the next box
+            2. Search the path to the next box
+            3. Pick up the box
+            4. Search Path to the Dropzone
+            5. Return Box to the Dropzone
+            6. Remove box from the list of to do's
+            7. Repeat until To do list is empty
+            """
+
+            # 1. Find the location of the next box
+            next_box = self.todo[0]
+            next_box_location = self.get_location(next_box)
+            self.boxes.remove(next_box)
+
+            # 2. Search the path to the next box
+            previous_location, next_move = self.search(previous_location, next_box_location)
+            moves += next_move
+
+            # 3. Pick up the box
+            moves += ['lift {}'.format(next_box)]
+
+            # 4. Search Path to the Dropzone
+            previous_location, next_move = self.search(previous_location, dropzone)
+            moves += next_move
+
+            # 5. Return Box to the Dropzone
+            moves += ['down {} {}'.format(dropzone[0], dropzone[1])]
+
+            # 6. Remove box from the list of to do's
+            self.todo.remove(next_box)
         return moves

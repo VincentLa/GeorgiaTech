@@ -1,0 +1,7 @@
+PART B TEST CASE RESULTS
+-----------
+Test Case 1
+cost: 36.14  (expected min 38.00)
+credit: 1.05
+-----------
+Total Credit: 1.05
