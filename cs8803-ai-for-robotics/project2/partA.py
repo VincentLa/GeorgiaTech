@@ -140,7 +140,6 @@ class DeliveryPlanner:
         self.warehouse = warehouse
         self.todo = todo
         self.boxes = items.copy()
-        self.original_boxes = self.boxes.copy()
 
         # Futhermore, we define a list called "delta" which contains all possible moves.
         # Same as in: https://classroom.udacity.com/courses/cs373/lessons/48646841/concepts/486468390923
@@ -176,13 +175,11 @@ class DeliveryPlanner:
         """
         Finds the location of the item.
 
-        In some cases there can be multiple locations. Return the first
+        In cases where there are multiple locations. Return the first
         """
-        locations = []
         for row in range(0, len(self.warehouse)):
             for column in range(len(self.warehouse[0])):
                 if self.warehouse[row][column] == item:
-                    locations.append((row, column))
                     return (row, column)
 
     def heuristic(self, current_location, goal):
@@ -197,8 +194,8 @@ class DeliveryPlanner:
         The Heuristic being defined as the number of steps to the goal is consistent with the heuristic
         defined in https://classroom.udacity.com/courses/cs373/lessons/48646841/concepts/487510240923.
         """
-        num_rows_away = abs(current_location[0] - goal[0])
-        num_cols_away = abs(current_location[1] - goal[1])
+        num_rows_away = abs(goal[0] - current_location[0])
+        num_cols_away = abs(goal[1] - current_location[1])
         heuristic = num_rows_away + num_cols_away
         return heuristic
 
@@ -217,8 +214,8 @@ class DeliveryPlanner:
             search will return the shortest path from init to goal
         """
         if init == goal:
-            # If trying to move into the already occupied space, this is an illegal move.
-            # Implement a hack-around fix to try to move to the next adjacent unoccupied space
+            # If trying to take in action in the already occupied space, this is an illegal move.
+            # Implement a hack-around fix to move to the next adjacent unoccupied space
             for i in range(len(self.delta)):
                 move = self.delta[i]
                 x2 = init[0] + move[0]
@@ -232,9 +229,10 @@ class DeliveryPlanner:
                     return (x2, y2), ['move {} {}'.format(x2, y2)]
 
         ### All this code is from Udacity Lecture essentially to implement A*
-        closed = [[0 for row in range(len(self.warehouse[0]))] for col in range(len(self.warehouse))]
+        closed = [[0 for col in range(len(self.warehouse[0]))] for row in range(len(self.warehouse))]
         closed[init[0]][init[1]] = 1
-        action = [[-1 for row in range(len(self.warehouse[0]))] for col in range(len(self.warehouse))]
+        
+        action = [[-1 for col in range(len(self.warehouse[0]))] for row in range(len(self.warehouse))]
 
         x = init[0]
         y = init[1]
@@ -285,7 +283,7 @@ class DeliveryPlanner:
         final_location = (x, y)
 
         path = []
-        while x != init[0] or y != init[1]:
+        while (x, y) != (init[0], init[1]):
             # As per format required by assignment
             path = ['move {x} {y}'.format(x=x, y=y)] + path
             x2 = x - action[x][y][0]
