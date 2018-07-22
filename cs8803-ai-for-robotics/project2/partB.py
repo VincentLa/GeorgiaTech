@@ -1,7 +1,6 @@
-#######################
-# by James Peng (jpeng63)
-# CS8803
-#######################
+"""
+Author: Vincent La; GTech ID: vla6
+"""
 #
 # === Introduction ===
 #
