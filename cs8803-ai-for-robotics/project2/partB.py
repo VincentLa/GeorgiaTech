@@ -130,50 +130,23 @@ Author: Vincent La; GTech ID: vla6
 #
 
 import math
-PI = math.pi
-
-# Taken from robot.py
-def compute_distance(p, q):
-    x1, y1 = p
-    x2, y2 = q
-
-    dx = x2 - x1
-    dy = y2 - y1
-
-    return math.sqrt(dx**2 + dy**2)
-
-
-# Taken from robot.py
-def compute_bearing(p, q):
-    x1, y1 = p
-    x2, y2 = q
-
-    dx = x2 - x1
-    dy = y2 - y1
-
-    return math.atan2(dy, dx)
-
-
-# Taken from robot.py
-def truncate_angle(t):
-    return ((t+PI) % (2*PI)) - PI
+from robot import PI
+from robot import compute_distance
+from robot import compute_bearing
+from robot import truncate_angle
 
 
 class DeliveryPlanner:
 
     # delta is a dictionary with keys as moves and values as costs
-    delta = {(-1, 0): 1,
-             (0, -1): 1,
-             (1, 0): 1,
-             (0, 1): 1,
-             }
+    # delta = {(-1, 0): 1,
+    #          (0, -1): 1,
+    #          (1, 0): 1,
+    #          (0, 1): 1,
+    #          }
 
     def __init__(self, warehouse, todo, max_distance, max_steering):
-
-        ######################################################################################
-        # TODO: You may use this function for any initialization required for your planner
-        ######################################################################################
-
+        """Initialize the class"""
         self.warehouse = warehouse
         self.todo = todo
         self.scale = 8
@@ -183,11 +156,20 @@ class DeliveryPlanner:
         for item in todo:
             self.scaled_todo_set.add((int(item[0] * self.scale), int(item[1] * self.scale)))
 
+        # Discretize the warehouse (based on hints in https://piazza.com/class/jh0tfongvk362a?cid=427)
         self.discretize()
+
+        # Futhermore, we define a list called "delta" which contains all possible moves.
+        # Same as in: https://classroom.udacity.com/courses/cs373/lessons/48646841/concepts/486468390923
+        self.delta = [(-1, 0),  # go up
+                      (0, -1),  # go left
+                      (1, 0),  # go down
+                      (0, 1),  # go right
+                     ]
 
     def discretize(self):
         """
-        returns scaled discrete version of the warehouse
+        Based on hints in https://piazza.com/class/jh0tfongvk362a?cid=427, discretize the Warehouse
         """
         # scaling
         self.scaled_todo = [(x[0] * self.scale, x[1] * self.scale) for x in self.todo]
@@ -220,7 +202,45 @@ class DeliveryPlanner:
 
         self.discrete_warehouse = [''.join(sublist) for sublist in real_warehouse]
 
-    def traverse(self, init, goal, cut_last = False):
+    # def get_location(self, item):
+    #     """
+    #     Finds the location of the item.
+
+    #     In cases where there are multiple locations. Return the first
+    #     """
+    #     print(self.discrete_warehouse)
+    #     for row in range(0, len(self.discrete_warehouse)):
+    #         for column in range(len(self.discrete_warehouse[0])):
+    #             if self.discrete_warehouse[row][column][0] == item:
+    #                 return (row + self.scale / 2, column - self.scale / 2, 0)
+
+    def get_location(self, symbol):
+        """
+        returns the coordinates of either an item or the origin
+        """
+        coord = [(sublist.index(symbol), -sub_idx,0)
+                for sub_idx, sublist
+                in enumerate(self.discrete_warehouse) if symbol in sublist][0]
+        return (coord[0] + self.scale/2, coord[1] - self.scale/2, 0)
+
+    def heuristic(self, current_location, goal):
+        """
+        Define a Heuristic for the A* Algorithm
+        
+        The Heuristic needs to be admissable. That is, the estimated cost must always be lower
+        than or equal to the actual cost of reaching the goal state. In this case, we simply calculate
+        the number of rows and columns that we are currently away from the goal. This is admissable 
+        since we know there are # barriers that we may not be able to pass through.
+
+        The Heuristic being defined as the number of steps to the goal is consistent with the heuristic
+        defined in https://classroom.udacity.com/courses/cs373/lessons/48646841/concepts/487510240923.
+        """
+        num_rows_away = abs(goal[0] - current_location[0])
+        num_cols_away = abs(goal[1] - current_location[1])
+        heuristic = num_rows_away + num_cols_away
+        return heuristic
+
+    def traverse(self, init, goal, cut_last=False):
         """ 
         finds the shortest path from the init to the goal and the location of the final spot
         """
@@ -255,7 +275,8 @@ class DeliveryPlanner:
                 if x == goal[0] and y == goal[1]:
                     found = True
                 else:
-                    for move, cost in self.delta.iteritems():
+                    for move in self.delta:
+                        cost = 1  # Since all the moves are just distance 1
                         x2 = x + move[0]
                         y2 = y + move[1]
                         #TODO: handle case where you go through box
@@ -284,18 +305,6 @@ class DeliveryPlanner:
             y = y2
 
         return last_loc, moves  # make sure you return the shortest path
-
-    def find_coord(self, symbol):
-        """
-        returns the coordinates of either an item or the origin
-        """
-        coord = [(sublist.index(symbol), -sub_idx,0)
-                for sub_idx, sublist
-                in enumerate(self.discrete_warehouse) if symbol in sublist][0]
-        return (coord[0] + self.scale/2, coord[1] - self.scale/2, 0)
-
-    def heuristic(self, curr, goal):
-        return abs(curr[0] - goal[0]) + abs(curr[1] - goal[1])
 
     def translate_move_list(self, moves, start):
         new_moves = []
@@ -358,7 +367,7 @@ class DeliveryPlanner:
         """
         moves = []
         # initializing the initial coordinates/end coordinates
-        base_loc = self.find_coord('@')
+        base_loc = self.get_location('@')
         last_loc = (base_loc[0], base_loc[1], 0)
 
         i = 0
