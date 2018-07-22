@@ -1,4 +1,7 @@
-#
+"""
+Author: Vincent La; GTech ID: vla6
+"""
+##########
 # === Introduction ===
 #
 # In this problem, you will build a planner that helps a robot
@@ -123,21 +126,195 @@
 # - Ask any questions about the directions or specifications on Piazza.
 #
 
-
 class DeliveryPlanner:
 
+    # delta is a dictionary with keys as moves and values as costs
+    delta = {(-1, 0): 3,
+             (0, -1): 3,
+             (1, 0): 3,
+             (0, 1): 3,
+             (-1, -1): 4,
+             (1, -1): 4,
+             (-1, 1): 4,
+             (1, 1): 4,
+             }
+
     def __init__(self, warehouse, todo):
-        pass
+        self.warehouse = warehouse
+        self.todo = todo
+        self.boxes_set = set()
+        for sublist in self.warehouse:
+            for item in sublist:
+                if item not in ['.', '#', '@']:
+                    self.boxes_set.add(item)
+        self.original_boxes_set = self.boxes_set.copy()
+
+    def traverse(self, init, goal):
+        """ 
+        finds the shortest path from the init to the goal and the location of the final spot
+        """
+
+        # structure of this code copied from Udacity lecture
+        # https://classroom.udacity.com/courses/cs373/lessons/48646841/concepts/486468390923
+
+        if init == goal:
+            return init, ['illegal']
+
+        closed = [[0 for row in range(len(self.warehouse[0]))] for col in range(len(self.warehouse))]
+        closed[init[0]][init[1]] = 1
+        action = [[-1 for row in range(len(self.warehouse[0]))] for col in range(len(self.warehouse))]
+
+
+        x = init[0]
+        y = init[1]
+        g = 0
+        h = self.heuristic((x,y), goal)
+
+        open = [[g, h, x, y]]
+
+        found = False  # flag that is set when search is complete
+        resign = False  # flag set if we can't find expand
+
+        while not found and not resign:
+            if len(open) == 0:
+                resign = True
+                return 'fail'
+            else:
+                open.sort()
+                open.reverse()
+                next = open.pop()
+                x = next[2]
+                y = next[3]
+                g = next[0]
+
+                if x == goal[0] and y == goal[1]:
+                    found = True
+                else:
+                    for move, cost in self.delta.iteritems():
+                        x2 = x + move[0]
+                        y2 = y + move[1]
+                        #TODO: handle case where you go through box
+                        if x2 >= 0 and x2 < len(self.warehouse) and y2 >= 0 and y2 < len(self.warehouse[0]):
+                            if closed[x2][y2] == 0 and self.warehouse[x2][y2] not in ['#'] + list(self.boxes_set):
+                                g2 = g + cost
+                                h2 = self.heuristic((x2, y2), goal)
+                                open.append([g2, h2, x2, y2])
+                                closed[x2][y2] = 1
+                                action[x2][y2] = move
+
+
+        x = goal[0] - action[goal[0]][goal[1]][0]
+        y = goal[1] - action[goal[0]][goal[1]][1]
+        last_loc = (x, y)
+
+        moves = []
+        while x != init[0] or y != init[1]:
+            moves = ['move {x} {y}'.format(x=x, y=y)] + moves
+            x2 = x - action[x][y][0]
+            y2 = y - action[x][y][1]
+            x = x2
+            y = y2
+
+        return last_loc, moves  # make sure you return the shortest path
+
+    def find_coord(self, symbol):
+        """
+        returns the coordinates of either an item or the origin
+        """
+        coord = [(sub_idx, sublist.index(symbol))
+                for sub_idx, sublist
+                in enumerate(self.warehouse) if symbol in sublist][0]
+        return coord
+
+    def check_adjacent(self, coord_1, coord_2):
+        if coord_1 == coord_2:
+            return False
+        elif coord_1[0] in [coord_2[0] - 1, coord_2[0], coord_2[0] + 1] and \
+                        coord_1[1] in [coord_2[1] - 1, coord_2[1], coord_2[1] + 1]:
+            return True
+        else:
+            return False
+
+    def heuristic(self, curr, goal):
+        return abs(curr[0] - goal[0]) + abs(curr[1] - goal[1])
+
+    def handle_illegal(self, moves):
+        if 'illegal' not in moves:
+            return moves
+
+        legal_move_list = []
+        curr_loc = self.find_coord('@')
+        skip_flag = False
+        for idx, move in enumerate(moves):
+            if move != 'illegal' and skip_flag == False:
+                legal_move_list.append(move)
+                continue
+            if skip_flag == True:
+                skip_flag = False
+            else:
+                if (idx + 2 < len(moves) - 1) and ('move' in moves[idx + 2]):
+                    moves[idx + 1], moves[idx + 2] = moves[idx + 2], moves[idx + 1]
+                else:
+                    for move, cost in self.delta.iteritems():
+                        x2 = curr_loc[0] + move[0]
+                        y2 = curr_loc[1] + move[1]
+                        # TODO: This is hacky
+                        if 'lift' in moves[idx-1] and 'down' in moves[min(idx + 1, len(moves)-1)]:
+                            try:
+                                self.original_boxes_set.remove(moves[idx-1][-1])
+                            except:
+                                pass
+                            if x2 >= 0 and x2 < len(self.warehouse) and y2 >= 0 and y2 < len(self.warehouse[0]) \
+                                    and self.warehouse[y2][x2] not in ['#'] + list(self.original_boxes_set):
+                                legal_move_list.append('move {} {}'.format(y2, x2))
+                                legal_move_list.append(moves[min(idx + 1, len(moves)-1)])
+                                legal_move_list.append('move {} {}'.format(curr_loc[0], curr_loc[1]))
+                                skip_flag = True
+                                break
+                        else:
+                            if (idx + 2 < len(moves) - 1):
+                                req_adj = self.find_coord(moves[idx + 2][-1])
+                            else:
+                                req_adj = (x2 + 1, y2)
+                            if x2 >= 0 and x2 < len(self.warehouse) and y2 >= 0 and y2 < len(self.warehouse[0])\
+                                and self.warehouse[x2][y2] != '#' and self.check_adjacent((x2, y2), req_adj):
+                                legal_move_list.append('move {} {}'.format(x2, y2))
+                                break
+            if 'move' in move:
+                curr_loc = (int(move[5]), int(move[7]))
+        return legal_move_list
 
     def plan_delivery(self):
+        """
+        :returns moves
+        """
+        moves = []
 
-        moves = ['move 2 1',
-                 'move 1 0',
-                 'lift 1',
-                 'move 2 1',
-                 'down 2 2',
-                 'move 1 2',
-                 'lift 2',
-                 'down 2 2']
+        # initializing the initial coordinates/end coordinates
+        base_loc = self.find_coord('@')
+        last_loc = base_loc
 
-        return moves
+        # while to-do list exists
+        while self.todo:
+            next_todo = self.todo[0]
+            goal = self.find_coord(next_todo)
+            self.boxes_set.remove(next_todo)
+
+            # traverse to the item
+            last_loc, next_move = self.traverse(last_loc, goal)
+            moves += next_move
+
+            # pick up the item
+            moves += ['lift {}'.format(next_todo)]
+
+            # traverse to the base
+            last_loc, next_move = self.traverse(last_loc, base_loc)
+            moves += next_move
+
+            # drop the item
+            moves += ['down {base_x} {base_y}'.format(base_x = base_loc[0], base_y = base_loc[1])]
+
+            # pop the first item from to-do list
+            self.todo = self.todo[1:]
+        legal_moves = self.handle_illegal(moves)
+        return legal_moves
