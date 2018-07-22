@@ -408,88 +408,88 @@ class PartATestCase(unittest.TestCase):
 
         return score
 
-    # @timeout(TIME_LIMIT)
-    # def test_case1(self):
-    #     params = {
-    #         'test_case': 1,
-    #         'warehouse': ['1#2',
-    #                       '.#.',
-    #                       '..@'],
-    #         'todo': ['1', '2'],
-    #         'min_cost': 23,
-    #      }
-    #     score = self.run_test_with_params(params)
-    #     # assert False
-    #     print 'credit: {}'.format(score)
+    @timeout(TIME_LIMIT)
+    def test_case1(self):
+        params = {
+            'test_case': 1,
+            'warehouse': ['1#2',
+                          '.#.',
+                          '..@'],
+            'todo': ['1', '2'],
+            'min_cost': 23,
+         }
+        score = self.run_test_with_params(params)
+        # assert False
+        print 'credit: {}'.format(score)
 
-# # Notice that we have included several extra test cases below.
-# # You can uncomment one or more of these for extra tests.
-# #
-#     @timeout(TIME_LIMIT)
-#     def test_case2(self):
-#         params = {
-#             'test_case': 2,
-#             'warehouse': ['@....1'],
-#             'todo': ['1'],
-#             'min_cost': 20,
-#         }
-#         score = self.run_test_with_params(params)
-#         print 'credit: {}'.format(score)
+# Notice that we have included several extra test cases below.
+# You can uncomment one or more of these for extra tests.
+#
+    @timeout(TIME_LIMIT)
+    def test_case2(self):
+        params = {
+            'test_case': 2,
+            'warehouse': ['@....1'],
+            'todo': ['1'],
+            'min_cost': 20,
+        }
+        score = self.run_test_with_params(params)
+        print 'credit: {}'.format(score)
 
-#     @timeout(TIME_LIMIT)
-#     def test_case3(self):
-#         params = {
-#             'test_case': 3,
-#             'warehouse': ['1.#@#.4',
-#                           '2#.#.#3'],
-#             'todo': ['1', '2', '3', '4'],
-#             'min_cost': 57,
-#         }
-#         score = self.run_test_with_params(params)
-#         print 'credit: {}'.format(score)
+    @timeout(TIME_LIMIT)
+    def test_case3(self):
+        params = {
+            'test_case': 3,
+            'warehouse': ['1.#@#.4',
+                          '2#.#.#3'],
+            'todo': ['1', '2', '3', '4'],
+            'min_cost': 57,
+        }
+        score = self.run_test_with_params(params)
+        print 'credit: {}'.format(score)
 
-#     # *** CREDIT TO: Kowsalya Subramanian for adding this test case
-#     @timeout(TIME_LIMIT)
-#     def test_case4(self):
-#         params = {
-#             'test_case': 4,
-#             'warehouse': ['3#@',
-#                           '2#.',
-#                           '1..'],
-#             'todo': ['1', '2', '3'],
-#             'min_cost': 44,
-#         }
-#         score = self.run_test_with_params(params)
-#         print 'credit: {}'.format(score)
+    # *** CREDIT TO: Kowsalya Subramanian for adding this test case
+    @timeout(TIME_LIMIT)
+    def test_case4(self):
+        params = {
+            'test_case': 4,
+            'warehouse': ['3#@',
+                          '2#.',
+                          '1..'],
+            'todo': ['1', '2', '3'],
+            'min_cost': 44,
+        }
+        score = self.run_test_with_params(params)
+        print 'credit: {}'.format(score)
 
-    # # *** CREDIT TO: Gideon Rossman for adding this test case
-    # # @timeout(TIME_LIMIT)
-    # # def test_case5(self):
-    # #     params = {
-    # #         'test_case': 5,
-    # #         'warehouse': ['..1.',
-    # #                       '..@.',
-    # #                       '....',
-    # #                       '2...'],
-    # #         'todo': ['1', '2'],
-    # #         'min_cost': 16,
-    # #     }
-    # #     score = self.run_test_with_params(params)
-    # #     print 'credit: {}'.format(score)
+    # *** CREDIT TO: Gideon Rossman for adding this test case
+    @timeout(TIME_LIMIT)
+    def test_case5(self):
+        params = {
+            'test_case': 5,
+            'warehouse': ['..1.',
+                          '..@.',
+                          '....',
+                          '2...'],
+            'todo': ['1', '2'],
+            'min_cost': 16,
+        }
+        score = self.run_test_with_params(params)
+        print 'credit: {}'.format(score)
 
-    # # *** CREDIT TO: venkatasatyanarayana kamisetti for adding this test case
-    # @timeout(TIME_LIMIT)
-    # def test_case6(self):
-    #     params = {
-    #         'test_case': 6,
-    #         'warehouse': ['1..',
-    #                       '...',
-    #                       '@.2'],
-    #         'todo': ['1', '2'],
-    #         'min_cost': 16,
-    #     }
-    #     score = self.run_test_with_params(params)
-    #     print 'credit: {}'.format(score)
+    # *** CREDIT TO: venkatasatyanarayana kamisetti for adding this test case
+    @timeout(TIME_LIMIT)
+    def test_case6(self):
+        params = {
+            'test_case': 6,
+            'warehouse': ['1..',
+                          '...',
+                          '@.2'],
+            'todo': ['1', '2'],
+            'min_cost': 16,
+        }
+        score = self.run_test_with_params(params)
+        print 'credit: {}'.format(score)
 
     # *** CREDIT TO: Dana Johnson for adding this test case
     @timeout(TIME_LIMIT)
@@ -510,50 +510,50 @@ class PartATestCase(unittest.TestCase):
         score = self.run_test_with_params(params)
         print 'credit: {}'.format(score)
 
-    # # # *** CREDIT TO: Dana Johnson for adding this test case
-    # @timeout(TIME_LIMIT)
-    # def test_case8(self):
-    #     params = {
-    #         'test_case': 8,
-    #         'warehouse': ['#######2',
-    #                       '#......1',
-    #                       '#@......'],
-    #         'todo': ['1', '2'],
-    #         'min_cost': 47.0,
-    #     }
-    #     score = self.run_test_with_params(params)
-    #     print 'credit: {}'.format(score)
+    # *** CREDIT TO: Dana Johnson for adding this test case
+    @timeout(TIME_LIMIT)
+    def test_case8(self):
+        params = {
+            'test_case': 8,
+            'warehouse': ['#######2',
+                          '#......1',
+                          '#@......'],
+            'todo': ['1', '2'],
+            'min_cost': 47.0,
+        }
+        score = self.run_test_with_params(params)
+        print 'credit: {}'.format(score)
 
-    # @timeout(TIME_LIMIT)
-    # def test_case9(self):
-    #     params = {
-    #         'test_case': 9,
-    #         'warehouse': ['..#1..',
-    #                       '......',
-    #                       '..####',
-    #                       '..#2.#',
-    #                       '.....@'],
-    #         'todo': ['1', '2'],
-    #         'min_cost': 43.0
-    #     }
-    #     score = self.run_test_with_params(params)
-    #     print 'credit: {}'.format(score)
+    @timeout(TIME_LIMIT)
+    def test_case9(self):
+        params = {
+            'test_case': 9,
+            'warehouse': ['..#1..',
+                          '......',
+                          '..####',
+                          '..#2.#',
+                          '.....@'],
+            'todo': ['1', '2'],
+            'min_cost': 43.0
+        }
+        score = self.run_test_with_params(params)
+        print 'credit: {}'.format(score)
 
-    # # Test Case 10
-    # @timeout(TIME_LIMIT)
-    # def test_case10(self):
-    #     params = {
-    #         'test_case': 10,
-    #         'warehouse': ['..#1..',
-    #                       '#....#',
-    #                       '..##.#',
-    #                       '..#2.#',
-    #                       '#....@'],
-    #         'todo': ['1','2'],
-    #         'min_cost': 30.0
-    #     }
-    #     score = self.run_test_with_params(params)
-    #     print 'credit: {}'.format(score)
+    # Test Case 10
+    @timeout(TIME_LIMIT)
+    def test_case10(self):
+        params = {
+            'test_case': 10,
+            'warehouse': ['..#1..',
+                          '#....#',
+                          '..##.#',
+                          '..#2.#',
+                          '#....@'],
+            'todo': ['1','2'],
+            'min_cost': 30.0
+        }
+        score = self.run_test_with_params(params)
+        print 'credit: {}'.format(score)
    
 #Only run all of the test automatically if this file was executed from the command line. Otherwise, let Nose/py.test do it's own thing with the test cases. 
 if __name__ == "__main__":

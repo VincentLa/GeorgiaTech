@@ -128,17 +128,6 @@ Author: Vincent La; GTech ID: vla6
 
 class DeliveryPlanner:
 
-    # delta is a dictionary with keys as moves and values as costs
-    # delta = {(-1, 0): 2,
-    #          (0, -1): 2,
-    #          (1, 0): 2,
-    #          (0, 1): 2,
-    #          (-1, -1): 3,
-    #          (1, -1): 3,
-    #          (-1, 1): 3,
-    #          (1, 1): 3,
-    #          }
-
     def __init__(self, warehouse, todo):
         """Initialize the Class"""
         # Create a Set of all the items in the warehouse
@@ -165,14 +154,9 @@ class DeliveryPlanner:
                       (1, 1),  # Go Down Right
                      ]
 
-        print('HELLO')
-        print(warehouse)
-        print(self.original_boxes)
-        print(self.boxes)
-
-    #
-    # DEFINING HELPER FUNCTIONS
-    #
+###
+### DEFINING HELPER FUNCTIONS
+###
     def score_moves(self, move):
         """
         Score Movement. From Rules:
@@ -187,15 +171,6 @@ class DeliveryPlanner:
             return 2
         else:
             return 3
-
-    def check_adjacent(self, coord_1, coord_2):
-        if coord_1 == coord_2:
-            return False
-        elif coord_1[0] in [coord_2[0] - 1, coord_2[0], coord_2[0] + 1] and \
-                        coord_1[1] in [coord_2[1] - 1, coord_2[1], coord_2[1] + 1]:
-            return True
-        else:
-            return False
 
     def get_location(self, item):
         """
@@ -241,18 +216,22 @@ class DeliveryPlanner:
         Returns:
             search will return the shortest path from init to goal
         """
-        print('In Search Function')
-        print(init)
-
-        print('PRINTING GOAL')
-        print(goal)
         if init == goal:
-        #     print('ILLEGAL')
-        #     print(init, goal)
-            return init, ['move {} {}'.format(init[0], init[1])]
-            # return init, ['illegal']
+            # If trying to move into the already occupied space, this is an illegal move.
+            # Implement a hack-around fix to try to move to the next adjacent unoccupied space
+            for i in range(len(self.delta)):
+                move = self.delta[i]
+                x2 = init[0] + move[0]
+                y2 = init[1] + move[1]
 
-        ### All this code is from Udacity Lecture essentially
+                # Locations of Obstacles and Boxes
+                obstacles_and_boxes = ['#'] + list(self.boxes)
+
+                # If (x2, y2) still within limits of the warehouse and the space is not an obstacle or existing box
+                if x2 >= 0 and x2 < len(self.warehouse) and y2 >= 0 and y2 < len(self.warehouse[0]) and self.warehouse[x2][y2] not in obstacles_and_boxes:
+                    return (x2, y2), ['move {} {}'.format(x2, y2)]
+
+        ### All this code is from Udacity Lecture essentially to implement A*
         closed = [[0 for row in range(len(self.warehouse[0]))] for col in range(len(self.warehouse))]
         closed[init[0]][init[1]] = 1
         action = [[-1 for row in range(len(self.warehouse[0]))] for col in range(len(self.warehouse))]
@@ -268,7 +247,6 @@ class DeliveryPlanner:
         found = False  # flag that is set when search is complete
         resign = False  # flag set if we can't find expand
 
-        print("Line 271")
         while not found and not resign:
             if len(open) == 0:
                 resign = True
@@ -281,50 +259,30 @@ class DeliveryPlanner:
                 y = next[3]
                 g = next[0]
 
-                print('line 284')
                 if x == goal[0] and y == goal[1]:
-                    print('in if statement')
-                    print(found)
                     found = True
-                    print('End of if')
                 else:
-                    print('line 288')
                     for i in range(len(self.delta)):
                         move = self.delta[i]
                         cost = self.score_moves(move)
                         x2 = x + move[0]
                         y2 = y + move[1]
 
-                        print('line 294')
                         if x2 >= 0 and x2 < len(self.warehouse) and y2 >= 0 and y2 < len(self.warehouse[0]):
+                            # Note it is illegal to move into an existing box as well (until we pick it up)
+                            # This works because in plan_delivery function, we pop self.boxes when we lift
                             obstacles_and_boxes = ['#'] + list(self.boxes)
-                            obstacles = ['#']
                             if closed[x2][y2] == 0 and self.warehouse[x2][y2] not in obstacles_and_boxes:
-                            # if closed[x2][y2] == 0 and self.warehouse[x2][y2] not in obstacles:
                                 g2 = g + cost
                                 expanded_node = (x2, y2)
                                 h2 = self.heuristic(expanded_node, goal)
                                 open.append([g2, h2, x2, y2])
                                 closed[x2][y2] = 1
                                 action[x2][y2] = move
-                    print('BEFORE BEFORE WHILE')
-                    print(init == goal)
-                    print('BEFORE WHILE')
-
-        print('line 314')
-        print('printing goal')
-        print(goal)
-        print('printing action')
-        print(action)
-        print(action[goal[0]][goal[1]])
 
         x = goal[0] - action[goal[0]][goal[1]][0]
         y = goal[1] - action[goal[0]][goal[1]][1]
-        print('line 317')
         final_location = (x, y)
-        
-        print('printing final location')
-        print(final_location)
 
         path = []
         while x != init[0] or y != init[1]:
@@ -337,88 +295,50 @@ class DeliveryPlanner:
 
         return final_location, path
 
-    # def handle_illegal(self, moves):
-    #     if 'illegal' not in moves:
-    #         return moves
-
-    #     legal_move_list = []
-    #     curr_loc = self.get_location('@')
-    #     skip_flag = False
-    #     for idx, move in enumerate(moves):
-    #         if move != 'illegal' and skip_flag == False:
-    #             legal_move_list.append(move)
-    #             continue
-    #         if skip_flag == True:
-    #             skip_flag = False
-    #         else:
-    #             if (idx + 2 < len(moves) - 1) and ('move' in moves[idx + 2]):
-    #                 moves[idx + 1], moves[idx + 2] = moves[idx + 2], moves[idx + 1]
-    #             else:
-    #                 for move in self.delta:
-    #                     cost = self.score_moves(move)
-    #                     x2 = curr_loc[0] + move[0]
-    #                     y2 = curr_loc[1] + move[1]
-    #                     # TODO: This is hacky
-    #                     if 'lift' in moves[idx-1] and 'down' in moves[min(idx + 1, len(moves)-1)]:
-    #                         try:
-    #                             self.original_boxes.remove(moves[idx-1][-1])
-    #                         except:
-    #                             pass
-    #                         if x2 >= 0 and x2 < len(self.warehouse) and y2 >= 0 and y2 < len(self.warehouse[0]) \
-    #                                 and self.warehouse[y2][x2] not in ['#'] + list(self.original_boxes):
-    #                             legal_move_list.append('move {} {}'.format(y2, x2))
-    #                             legal_move_list.append(moves[min(idx + 1, len(moves)-1)])
-    #                             legal_move_list.append('move {} {}'.format(curr_loc[0], curr_loc[1]))
-    #                             skip_flag = True
-    #                             break
-    #                     else:
-    #                         if (idx + 2 < len(moves) - 1):
-    #                             req_adj = self.get_location(moves[idx + 2][-1])
-    #                         else:
-    #                             req_adj = (x2 + 1, y2)
-    #                         if x2 >= 0 and x2 < len(self.warehouse) and y2 >= 0 and y2 < len(self.warehouse[0])\
-    #                             and self.warehouse[x2][y2] != '#' and self.check_adjacent((x2, y2), req_adj):
-    #                             legal_move_list.append('move {} {}'.format(x2, y2))
-    #                             break
-    #         if 'move' in move:
-    #             curr_loc = (int(move[5]), int(move[7]))
-    #     return legal_move_list
-
     def plan_delivery(self):
         """
         Final Function. Plan the Delivery using functions defined above.
         """
         moves = []
-
-        # initializing the initial coordinates/end coordinates
         dropzone = self.get_location('@')
-        final_location = dropzone
 
-        # while to-do list exists
+        # Initialize first location to the drop zone since this is where we start
+        previous_location = dropzone
+
         while self.todo:
-            next_todo = self.todo[0]
-            print('next to do')
-            print(next_todo)
-            goal = self.get_location(next_todo)
-            self.boxes.remove(next_todo)
+            """
+            At this point, the remaining steps are straightforward.
 
-            # Search Path To the next Goal
-            final_location, next_move = self.search(final_location, goal)
+            If there are boxes remaining in the to-do list:
+
+            1. Find the location of the next box
+            2. Search the path to the next box
+            3. Pick up the box
+            4. Search Path to the Dropzone
+            5. Return Box to the Dropzone
+            6. Remove box from the list of to do's
+            7. Repeat until To do list is empty
+            """
+
+            # 1. Find the location of the next box
+            next_box = self.todo[0]
+            next_box_location = self.get_location(next_box)
+            self.boxes.remove(next_box)
+
+            # 2. Search the path to the next box
+            previous_location, next_move = self.search(previous_location, next_box_location)
             moves += next_move
 
-            # Pick up Box
-            moves += ['lift {}'.format(next_todo)]
+            # 3. Pick up the box
+            moves += ['lift {}'.format(next_box)]
 
-            # Search Path to the Dropzone (which is the end goal)
-            final_location, next_move = self.search(final_location, dropzone)
+            # 4. Search Path to the Dropzone
+            previous_location, next_move = self.search(previous_location, dropzone)
             moves += next_move
 
-            # drop the item
+            # 5. Return Box to the Dropzone
             moves += ['down {} {}'.format(dropzone[0], dropzone[1])]
 
-            # pop the first item from to-do list
-            self.todo = self.todo[1:]
-        # legal_moves = self.handle_illegal(moves)
-        legal_moves = moves
-        print(legal_moves)
-        return legal_moves
+            # 6. Remove box from the list of to do's
+            self.todo.remove(next_box)
+        return moves
