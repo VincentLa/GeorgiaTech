@@ -138,26 +138,20 @@ from robot import truncate_angle
 
 class DeliveryPlanner:
 
-    # delta is a dictionary with keys as moves and values as costs
-    # delta = {(-1, 0): 1,
-    #          (0, -1): 1,
-    #          (1, 0): 1,
-    #          (0, 1): 1,
-    #          }
-
     def __init__(self, warehouse, todo, max_distance, max_steering):
         """Initialize the class"""
         self.warehouse = warehouse
         self.todo = todo
-        self.scale = 8
-        self.max_distance = (max_distance - 0.01) * self.scale
-        self.max_steering = max_steering - 0.01
-        self.scaled_todo_set = set()
-        for item in todo:
-            self.scaled_todo_set.add((int(item[0] * self.scale), int(item[1] * self.scale)))
 
-        # Discretize the warehouse (based on hints in https://piazza.com/class/jh0tfongvk362a?cid=427)
-        self.discretize()
+        # In discretizing the warehouse, scaling each cell by 8x8
+        self.scale = 8
+
+        # Add some fake constants to make it so robot doesn't crash into box.
+        self.max_distance = (max_distance - 0.02) * self.scale
+        self.max_steering = max_steering - 0.02
+
+        # Scale the boxes appropriately as well
+        self.todo_scaled = set([(self.scale * box[0], self.scale * box[1]) for box in self.todo])
 
         # Futhermore, we define a list called "delta" which contains all possible moves.
         # Same as in: https://classroom.udacity.com/courses/cs373/lessons/48646841/concepts/486468390923
@@ -167,25 +161,38 @@ class DeliveryPlanner:
                       (0, 1),  # go right
                      ]
 
+        # Finally, discretize the warehouse (based on hints in https://piazza.com/class/jh0tfongvk362a?cid=427)
+        self.discretize()
+
     def discretize(self):
         """
         Based on hints in https://piazza.com/class/jh0tfongvk362a?cid=427, discretize the Warehouse
         """
-        # scaling
-        self.scaled_todo = [(x[0] * self.scale, x[1] * self.scale) for x in self.todo]
-
+        # In the first step to discrete the warehouse, simply blow up each cell to 8x8 version of it.
         self.discrete_warehouse = []
-        for str_map in self.warehouse:
-            new_str = []
-            for letter in str_map:
-                new_str += [letter for i in range(self.scale)]
-            self.discrete_warehouse += [new_str for j in range(self.scale)]
+        for row in self.warehouse:
+            new_items = []
+            for item in row:
+                new_items += [item for i in range(self.scale)]
+            self.discrete_warehouse += [new_items for j in range(self.scale)]
+
+        print('printing self warehouse')
+        print(self.warehouse)
+
+        print('printing discrete warehouse')
+        print(self.discrete_warehouse)
+        print(len(self.discrete_warehouse))
+
+        discrete_warehouse_cols = len(self.discrete_warehouse[0])
+        discrete_warehouse_rows = len(self.discrete_warehouse)
 
         for k in range(3):
-            real_warehouse = [[ None for i in range(len(self.discrete_warehouse[0]))]for j in range(len(self.discrete_warehouse))]
+            real_warehouse = [[ None for i in range(discrete_warehouse_cols)] for j in range(discrete_warehouse_rows)]
+            discrete_warehouse_cols = len(self.discrete_warehouse[0])
+            discrete_warehouse_rows = len(self.discrete_warehouse)            
             for i in range(len(self.discrete_warehouse)):
-                for j in range(len(self.discrete_warehouse[0])):
-                    if self.discrete_warehouse[min(i + 1, len(self.discrete_warehouse)-1)][j] == '#' or \
+                for j in range(discrete_warehouse_cols):
+                    if self.discrete_warehouse[min(i + 1, discrete_warehouse_rows - 1)][j] == '#' or \
                                     self.discrete_warehouse[max(i - 1, 0)][j] == '#' or \
                                     self.discrete_warehouse[i][min(j + 1, len(self.discrete_warehouse[0])-1)] == '#' or \
                                     self.discrete_warehouse[i][max(j - 1, 0)] == '#' or \
@@ -240,13 +247,20 @@ class DeliveryPlanner:
         heuristic = num_rows_away + num_cols_away
         return heuristic
 
-    def traverse(self, init, goal, cut_last=False):
-        """ 
-        finds the shortest path from the init to the goal and the location of the final spot
+    def search(self, init, goal, cut_last=False):
         """
-        # structure of this code copied from Udacity lecture
-        # https://classroom.udacity.com/courses/cs373/lessons/48646841/concepts/486468390923
+        Use A* to Search the Warehouse and find the path to the goal.
 
+        Note that a lot of the search code comes from the A* Lecture in Udacity.
+        (https://classroom.udacity.com/courses/cs373/lessons/48646841/concepts/487510240923)
+        
+        Keyword Args:
+            init: Initial Location
+            goal: Goal Location
+
+        Returns:
+            search will return the shortest path from init to goal
+        """
         closed = {}
         action = {}
 
@@ -276,35 +290,33 @@ class DeliveryPlanner:
                     found = True
                 else:
                     for move in self.delta:
-                        cost = 1  # Since all the moves are just distance 1
+                        cost = 1
                         x2 = x + move[0]
                         y2 = y + move[1]
-                        #TODO: handle case where you go through box
                         if x2 >= 0 and x2 < len(self.discrete_warehouse[0]) and y2 <= 0 and y2 > -len(self.discrete_warehouse):
-                            if closed.get((x2, y2),0) == 0 and self.discrete_warehouse[-y2][x2] != '#' and \
-                                    (x2, y2) not in self.scaled_todo_set:
+                            if closed.get((x2, y2), 0) == 0 and self.discrete_warehouse[-y2][x2] != '#' and (x2, y2) not in self.todo_scaled:
                                 g2 = g + cost
                                 h2 = self.heuristic((x2, y2), goal)
                                 open.append([g2, h2, x2, y2])
-                                closed[(x2,y2)] = 1
-                                action[(x2,y2)] = move
+                                closed[(x2, y2)] = 1
+                                action[(x2, y2)] = move
 
 
-        x = goal[0] - action[(goal[0],goal[1])][0]
-        y = goal[1] - action[(goal[0],goal[1])][1]
-        last_loc = (x, y)
+        x = goal[0] - action[(goal[0], goal[1])][0]
+        y = goal[1] - action[(goal[0], goal[1])][1]
+        previous_location = (x, y)
 
         moves = []
 
         while x != init[0] or y != init[1]:
-            if not (cut_last and compute_distance((x,y), goal) < 0.3 * self.scale):
+            if not (cut_last and compute_distance((x,y), goal) < .2 * self.scale):
                 moves = [action[(x, y)]] + moves
-            x2 = x - action[(x,y)][0]
-            y2 = y - action[(x,y)][1]
+            x2 = x - action[(x, y)][0]
+            y2 = y - action[(x, y)][1]
             x = x2
             y = y2
 
-        return last_loc, moves  # make sure you return the shortest path
+        return previous_location, moves  # make sure you return the shortest path
 
     def translate_move_list(self, moves, start):
         new_moves = []
@@ -363,38 +375,51 @@ class DeliveryPlanner:
 
     def plan_delivery(self):
         """
-        :returns moves
+        Final Function. Plan the Delivery using functions defined above.
         """
         moves = []
-        # initializing the initial coordinates/end coordinates
-        base_loc = self.get_location('@')
-        last_loc = (base_loc[0], base_loc[1], 0)
+        dropzone = self.get_location('@')
 
-        i = 0
-        # while to-do list exists
+        # Initialize first location to the drop zone since this is where we start
+        previous_location = (dropzone[0], dropzone[1], 0)
+
+        box_index = 0
         while self.todo:
-            next_todo = self.todo[0]
-            goal = (int(round(next_todo[0] * self.scale)), int(round(next_todo[1] * self.scale)))
-            self.scaled_todo_set.remove(goal)
+            """
+            At this point, the remaining steps are straightforward.
 
-            # traverse to the item
-            _, next_move = self.traverse(last_loc, goal, cut_last = True)
-            new_moves, last_loc = self.translate_move_list(self.prune_steps(next_move), last_loc)
+            If there are boxes remaining in the to-do list:
+
+            1. Find the location of the next box
+            2. Search the path to the next box
+            3. Pick up the box
+            4. Search Path to the Dropzone
+            5. Return Box to the Dropzone
+            6. Remove box from the list of to do's
+            7. Repeat until To do list is empty
+            """
+            next_box = self.todo[0]
+            goal = (int(round(next_box[0] * self.scale)), int(round(next_box[1] * self.scale)))
+            self.todo_scaled.remove(goal)
+
+            # 2. Search the path to the next box
+            _, next_move = self.search(previous_location, goal, cut_last = True)
+            new_moves, previous_location = self.translate_move_list(self.prune_steps(next_move), previous_location)
             moves += new_moves
 
-            # pick up the item
-            moves += ['lift {}'.format(i)]
+            # 3. Pick up the box
+            moves += ['lift {}'.format(box_index)]
 
-            # traverse to the base
-            _, next_move = self.traverse(last_loc, base_loc)
-            new_moves, last_loc = self.translate_move_list(self.prune_steps(next_move), last_loc)
+            # 4. Search Path to the Dropzone
+            _, next_move = self.search(previous_location, dropzone)
+            new_moves, previous_location = self.translate_move_list(self.prune_steps(next_move), previous_location)
             moves += new_moves
 
-            # drop the item
-            moves += ['down {base_x} {base_y}'.format(base_x = base_loc[0] / float(self.scale), base_y = base_loc[1] / float(self.scale))]
+            # 5. Return Box to the Dropzone
+            moves += ['down {} {}'.format(dropzone[0] / float(self.scale), dropzone[1] / float(self.scale))]
 
-            # pop the first item from to-do list
+            # 6. Remove box from the list of to do's
             self.todo = self.todo[1:]
-            i += 1
+            box_index = box_index + 1
 
         return moves

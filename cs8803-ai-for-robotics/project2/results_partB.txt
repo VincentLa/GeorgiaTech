@@ -1,7 +1,43 @@
 PART B TEST CASE RESULTS
 -----------
 Test Case 1
-cost: 36.14  (expected min 38.00)
-credit: 1.05
+cost: 587.54  (expected min 38.00)
+credit: 0.06
 -----------
-Total Credit: 1.05
+Test Case 10
+cost: 396.90  (expected min 42.87)
+credit: 0.11
+-----------
+Test Case 2
+cost: 157.06  (expected min 56.00)
+credit: 0.36
+-----------
+Test Case 3
+cost: 224.93  (expected min 43.00)
+credit: 0.19
+-----------
+Test Case 4
+cost: 361.59  (expected min 30.00)
+credit: 0.08
+-----------
+Test Case 5
+cost: 74.22  (expected min 50.00)
+credit: 0.67
+-----------
+Test Case 6
+cost: 205.82  (expected min 61.50)
+credit: 0.30
+-----------
+Test Case 7
+cost: 190.55  (expected min 29.49)
+credit: 0.15
+-----------
+Test Case 8
+cost: 179.15  (expected min 16.00)
+credit: 0.09
+-----------
+Test Case 9
+cost: 2011.08  (expected min 603.43)
+credit: 0.30
+-----------
+Total Credit: 2.32
