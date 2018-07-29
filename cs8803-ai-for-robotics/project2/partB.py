@@ -132,10 +132,30 @@ Author: Vincent La; GTech ID: vla6
 import math
 import operator
 
-from robot import PI
-from robot import compute_distance
-from robot import compute_bearing
-from robot import truncate_angle
+## IMPORTED FROM ROBOT.py
+PI = math.pi
+
+def compute_distance(p, q):
+    x1, y1 = p
+    x2, y2 = q
+
+    dx = x2 - x1
+    dy = y2 - y1
+
+    return math.sqrt(dx**2 + dy**2)
+
+def compute_bearing(p, q):
+    x1, y1 = p
+    x2, y2 = q
+
+    dx = x2 - x1
+    dy = y2 - y1
+
+    return math.atan2(dy, dx)
+
+
+def truncate_angle(t):
+    return ((t+PI) % (2*PI)) - PI
 
 def measure_distance_and_steering_to(start, point, init_bearing):
     """
@@ -246,29 +266,20 @@ class DeliveryPlanner:
         self.discrete_warehouse = [''.join(row) for row in new_warehouse]
         print('printing discrete warehouse')
         print(self.discrete_warehouse)
-        # print(len(self.discrete_warehouse))
 
 
-    # def get_location(self, item):
-    #     """
-    #     Finds the location of the item.
-
-    #     In cases where there are multiple locations. Return the first
-    #     """
-    #     print(self.discrete_warehouse)
-    #     for row in range(0, len(self.discrete_warehouse)):
-    #         for column in range(len(self.discrete_warehouse[0])):
-    #             if self.discrete_warehouse[row][column][0] == item:
-    #                 return (row + self.scale / 2, column - self.scale / 2, 0)
-
-    def get_location(self, symbol):
+    def get_location(self, item):
         """
-        returns the coordinates of either an item or the origin
+        Finds the location of the item.
+
+        In cases where there are multiple locations. Return the first. This is similar
+        to function I wrote in Part A
         """
-        coord = [(sublist.index(symbol), -sub_idx, 0)
-                for sub_idx, sublist
-                in enumerate(self.discrete_warehouse) if symbol in sublist][0]
-        return (coord[0] + self.scale / 2, coord[1] - self.scale / 2, 0)
+        print(self.discrete_warehouse)
+        for row in range(0, len(self.discrete_warehouse)):
+            for column in range(len(self.discrete_warehouse[0])):
+                if self.discrete_warehouse[row][column][0] == item:
+                    return (column + self.scale / 2, -1 * row - self.scale / 2, 0)
 
     def heuristic(self, current_location, goal):
         """
@@ -467,20 +478,15 @@ class DeliveryPlanner:
             # 2. Search the path to the next box
             _, next_move = self.search(previous_location, goal, cut_last=True)
             new_moves, previous_location = self.correct_moves(self.collapse_moves(next_move), previous_location)
-            print('get here')
             # Optional if we don't want to collapse:
             # new_moves, previous_location = self.correct_moves(next_move, previous_location)
             moves += new_moves
 
             # 3. Pick up the box
             moves += ['lift {}'.format(box_index)]
-            print('get to 3')
 
             # 4. Search Path to the Dropzone
-            print('get to 4')
-            print(previous_location)
             _, next_move = self.search(previous_location, dropzone)
-            print('get to 4b')
             new_moves, previous_location = self.correct_moves(self.collapse_moves(next_move), previous_location)
 
             # Optional if we don't want to collapse:
