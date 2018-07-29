@@ -417,6 +417,7 @@ class DeliveryPlanner:
                         cost = 1
                         x2 = x + move[0]
                         y2 = y + move[1]
+                        
                         if x2 >= 0 and x2 < len(self.discrete_warehouse[0]) and y2 <= 0 and y2 > -len(self.discrete_warehouse):
                             if closed.get((x2, y2), 0) == 0 and self.discrete_warehouse[-y2][x2] != '#' and (x2, y2) not in self.todo_scaled:
                                 g2 = g + cost
