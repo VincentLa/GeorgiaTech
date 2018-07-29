@@ -379,7 +379,7 @@ class DeliveryPlanner:
         point = (start[0], start[1])
         bearing = start[2]
         for move in moves:
-            new_point = (point[0] + move[0], point[1] + move[1])
+            new_point = tuple(map(operator.add, point, move))
             dist, steering = measure_distance_and_steering_to(point, new_point, bearing)
             bearing = truncate_angle(bearing + steering)
             point = new_point
