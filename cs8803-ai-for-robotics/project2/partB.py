@@ -180,14 +180,14 @@ class DeliveryPlanner:
         self.todo = todo
 
         # In discretizing the warehouse, scaling each cell by 8x8
-        self.scale = 8
+        self.scale_factor_discretize = 8
 
         # Add some fake constants to make it so robot doesn't crash into box.
-        self.max_distance = (max_distance - 0.02) * self.scale
+        self.max_distance = (max_distance - 0.02) * self.scale_factor_discretize
         self.max_steering = max_steering - 0.02
 
         # Scale the boxes appropriately as well
-        self.boxes_scaled = set([(self.scale * box[0], self.scale * box[1]) for box in self.todo])
+        self.boxes_scaled = set([(self.scale_factor_discretize * box[0], self.scale_factor_discretize * box[1]) for box in self.todo])
 
         # Futhermore, we define a list called "delta" which contains all possible moves.
         # Same as in: https://classroom.udacity.com/courses/cs373/lessons/48646841/concepts/486468390923
@@ -239,8 +239,8 @@ class DeliveryPlanner:
         for row in self.warehouse:
             new_items = []
             for item in row:
-                new_items += [item for i in range(self.scale)]
-            self.discrete_warehouse += [new_items for j in range(self.scale)]
+                new_items += [item for i in range(self.scale_factor_discretize)]
+            self.discrete_warehouse += [new_items for j in range(self.scale_factor_discretize)]
 
         number_of_iterations = 3
         for iteration in range(number_of_iterations):
@@ -273,7 +273,7 @@ class DeliveryPlanner:
         for row in range(0, len(self.discrete_warehouse)):
             for column in range(len(self.discrete_warehouse[0])):
                 if self.discrete_warehouse[row][column][0] == item:
-                    return (column + self.scale / 2, -1 * row - self.scale / 2, 0)
+                    return (column + self.scale_factor_discretize / 2, -1 * row - self.scale_factor_discretize / 2, 0)
 
     def heuristic(self, current_location, goal):
         """
@@ -329,7 +329,7 @@ class DeliveryPlanner:
             if movement_param_label == 'steering':
                 actual_moves.append('move {} {}'.format(max_param if movement_param > 0 else -max_param, 0))
             if movement_param_label == 'distance':
-                actual_moves.append('move {} {}'.format(0, max_param / float(self.scale)))
+                actual_moves.append('move {} {}'.format(0, max_param / float(self.scale_factor_discretize)))
             movement_param -= check_sign(movement_param) * max_param
         return actual_moves, movement_param
 
@@ -364,7 +364,7 @@ class DeliveryPlanner:
             actual_moves += new_actual_moves
 
             # There's one more distance we have to do that is less than max distance
-            actual_moves.append('move {} {}'.format(0, distance_to_new_point / float(self.scale)))
+            actual_moves.append('move {} {}'.format(0, distance_to_new_point / float(self.scale_factor_discretize)))
 
             point = new_point
         return actual_moves, (new_point[0], new_point[1], direction)
@@ -436,7 +436,7 @@ class DeliveryPlanner:
 
         path = []
         while (x, y) != (init[0], init[1]):
-            if compute_distance((x, y), (goal[0], goal[1])) >= .15 * self.scale:
+            if compute_distance((x, y), (goal[0], goal[1])) >= .15 * self.scale_factor_discretize:
                 """
                 If you get within sufficiently close to the goal then stop
 
@@ -478,7 +478,7 @@ class DeliveryPlanner:
             """
             # 1. Find the location of the next box
             next_box = self.todo[0]
-            next_box_location = (int(next_box[0] * self.scale), int(next_box[1] * self.scale))
+            next_box_location = (int(next_box[0] * self.scale_factor_discretize), int(next_box[1] * self.scale_factor_discretize))
             self.boxes_scaled.remove(next_box_location)
 
             # 2. Search the path to the next box
@@ -495,7 +495,7 @@ class DeliveryPlanner:
             moves += new_moves
 
             # 5. Return Box to the Dropzone
-            moves += ['down {} {}'.format(1.0 * dropzone[0] / self.scale, 1.0 * dropzone[1] / self.scale)]
+            moves += ['down {} {}'.format(1.0 * dropzone[0] / self.scale_factor_discretize, 1.0 * dropzone[1] / self.scale_factor_discretize)]
 
             # 6. Remove box from the list of to do's
             self.todo = self.todo[1:]
