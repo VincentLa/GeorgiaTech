@@ -385,7 +385,10 @@ class DeliveryPlanner:
             search will return the shortest path from init to goal
         """
         closed = [[0 for col in range(len(self.discrete_warehouse))] for row in range(len(self.discrete_warehouse[0]))]
-        action = {}
+        action = [[-1 for col in range(len(self.discrete_warehouse))] for row in range(len(self.discrete_warehouse[0]))]
+        
+        # action = {}
+
 
         x = init[0]
         y = init[1]
@@ -424,20 +427,27 @@ class DeliveryPlanner:
                                 h2 = self.heuristic((x2, y2), goal)
                                 open.append([g2, h2, x2, y2])
                                 closed[x2][y2] = 1
-                                action[(x2, y2)] = move
+                                # action[(x2, y2)] = move
+                                action[x2][y2] = move
 
 
-        x = goal[0] - action[(goal[0], goal[1])][0]
-        y = goal[1] - action[(goal[0], goal[1])][1]
-        previous_location = (x, y)
+        # x = goal[0] - action[(goal[0], goal[1])][0]
+        # y = goal[1] - action[(goal[0], goal[1])][1]
+        # previous_location = (x, y)
+        print('getting to printing previous location')
+        print(action[goal[0]][goal[1]])
+        print(goal)
+        previous_location = tuple(map(operator.sub, goal, action[goal[0]][goal[1]]))
+        print(previous_location)
 
         moves = []
 
         while x != init[0] or y != init[1]:
-            if not (cut_last and compute_distance((x,y), goal) < .2 * self.scale):
-                moves = [action[(x, y)]] + moves
-            x2 = x - action[(x, y)][0]
-            y2 = y - action[(x, y)][1]
+            if not (cut_last and compute_distance((x, y), goal) < .2 * self.scale):
+                action_list = [action[x][y]]
+                moves = action_list + moves
+            x2 = x - action[x][y][0]
+            y2 = y - action[x][y][1]
             x = x2
             y = y2
 

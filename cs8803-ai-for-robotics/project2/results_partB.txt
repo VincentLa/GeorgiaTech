@@ -1,43 +1,7 @@
 PART B TEST CASE RESULTS
 -----------
-Test Case 1
-cost: 51.75  (expected min 38.00)
-credit: 0.73
------------
-Test Case 10
-cost: 71.50  (expected min 42.87)
-credit: 0.60
------------
 Test Case 2
-cost: 96.50  (expected min 56.00)
-credit: 0.58
+Failed: TypeError("unsupported operand type(s) for -: 'int' and 'NoneType'",)
+credit: 0
 -----------
-Test Case 3
-cost: 79.75  (expected min 43.00)
-credit: 0.54
------------
-Test Case 4
-cost: 47.75  (expected min 30.00)
-credit: 0.63
------------
-Test Case 5
-cost: 67.75  (expected min 50.00)
-credit: 0.74
------------
-Test Case 6
-cost: 106.75  (expected min 61.50)
-credit: 0.58
------------
-Test Case 7
-cost: 55.00  (expected min 29.49)
-credit: 0.54
------------
-Test Case 8
-cost: 23.25  (expected min 16.00)
-credit: 0.69
------------
-Test Case 9
-cost: 949.75  (expected min 603.43)
-credit: 0.64
------------
-Total Credit: 6.26
+Total Credit: 0.00
