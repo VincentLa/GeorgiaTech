@@ -370,7 +370,7 @@ class DeliveryPlanner:
             point = new_point
         return actual_moves, (new_point[0], new_point[1], direction)
 
-    def search(self, init, goal, cut_last=False):
+    def search(self, init, goal):
         """
         Use A* to Search the Warehouse and find the path to the goal.
 
@@ -385,7 +385,7 @@ class DeliveryPlanner:
             search will return the shortest path from init to goal
         """
         closed = [[0 for col in range(len(self.discrete_warehouse))] for row in range(len(self.discrete_warehouse[0]))]
-        action = {}
+        action = [[-1 for col in range(len(self.discrete_warehouse))] for row in range(len(self.discrete_warehouse[0]))]
 
         x = init[0]
         y = init[1]
@@ -424,24 +424,30 @@ class DeliveryPlanner:
                                 h2 = self.heuristic((x2, y2), goal)
                                 open.append([g2, h2, x2, y2])
                                 closed[x2][y2] = 1
-                                action[(x2, y2)] = move
+                                action[x2][y2] = move
 
+        if len(goal) == 3:
+            action_goal = (action[goal[0]][goal[1]][0], action[goal[0]][goal[1]][1], 0)
+        else:
+            action_goal = (action[goal[0]][goal[1]][0], action[goal[0]][goal[1]][1])
+        final_location = tuple(map(operator.sub, goal, action_goal))
 
-        x = goal[0] - action[(goal[0], goal[1])][0]
-        y = goal[1] - action[(goal[0], goal[1])][1]
-        previous_location = (x, y)
+        path = []
+        while (x, y) != (init[0], init[1]):
+            if compute_distance((x, y), (goal[0], goal[1])) >= .15 * self.scale:
+                """
+                If you get within sufficiently close to the goal then stop
 
-        moves = []
-
-        while x != init[0] or y != init[1]:
-            if not (cut_last and compute_distance((x,y), goal) < .2 * self.scale):
-                moves = [action[(x, y)]] + moves
-            x2 = x - action[(x, y)][0]
-            y2 = y - action[(x, y)][1]
+                We don't want to go all the way to the goal or else you will hit it and crash
+                """
+                action_list = [action[x][y]]
+                path = action_list + path
+            x2 = x - action[x][y][0]
+            y2 = y - action[x][y][1]
             x = x2
             y = y2
 
-        return previous_location, moves
+        return final_location, path
 
     def plan_delivery(self):
         """
@@ -473,7 +479,7 @@ class DeliveryPlanner:
             self.todo_scaled.remove(goal)
 
             # 2. Search the path to the next box
-            _, next_move = self.search(previous_location, goal, cut_last=True)
+            _, next_move = self.search(previous_location, goal)
             new_moves, previous_location = self.correct_moves(self.collapse_moves(next_move), previous_location)
             # Optional if we don't want to collapse:
             # new_moves, previous_location = self.correct_moves(next_move, previous_location)
@@ -487,7 +493,7 @@ class DeliveryPlanner:
             new_moves, previous_location = self.correct_moves(self.collapse_moves(next_move), previous_location)
 
             # Optional if we don't want to collapse:
-            # new_moves, previous_location = self.correct_moves(next_move, previous_location)            
+            # new_moves, previous_location = self.correct_moves(next_move, previous_location)
             moves += new_moves
 
             # 5. Return Box to the Dropzone
