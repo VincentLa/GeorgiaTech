@@ -270,7 +270,6 @@ class DeliveryPlanner:
         In cases where there are multiple locations. Return the first. This is similar
         to function I wrote in Part A
         """
-        print(self.discrete_warehouse)
         for row in range(0, len(self.discrete_warehouse)):
             for column in range(len(self.discrete_warehouse[0])):
                 if self.discrete_warehouse[row][column][0] == item:
@@ -384,13 +383,15 @@ class DeliveryPlanner:
         Returns:
             search will return the shortest path from init to goal
         """
+        ### All this code is from Udacity Lecture essentially to implement A*        
         closed = [[0 for col in range(len(self.discrete_warehouse))] for row in range(len(self.discrete_warehouse[0]))]
         action = [[-1 for col in range(len(self.discrete_warehouse))] for row in range(len(self.discrete_warehouse[0]))]
 
         x = init[0]
         y = init[1]
         g = 0
-        h = self.heuristic((x,y), goal)
+        current_location = (x, y)
+        h = self.heuristic(current_location, goal)
 
         open = [[g, h, x, y]]
 
@@ -421,7 +422,8 @@ class DeliveryPlanner:
                         if x2 >= 0 and x2 < len(self.discrete_warehouse[0]) and y2 <= 0 and y2 > -len(self.discrete_warehouse):
                             if closed[x2][y2] == 0 and self.discrete_warehouse[-y2][x2] != '#' and (x2, y2) not in self.todo_scaled:
                                 g2 = g + cost
-                                h2 = self.heuristic((x2, y2), goal)
+                                expanded_node = (x2, y2)
+                                h2 = self.heuristic(expanded_node, goal)
                                 open.append([g2, h2, x2, y2])
                                 closed[x2][y2] = 1
                                 action[x2][y2] = move
@@ -475,11 +477,11 @@ class DeliveryPlanner:
             7. Repeat until To do list is empty
             """
             next_box = self.todo[0]
-            goal = (int(round(next_box[0] * self.scale)), int(round(next_box[1] * self.scale)))
-            self.todo_scaled.remove(goal)
+            next_box_location = (int(next_box[0] * self.scale), int(next_box[1] * self.scale))
+            self.todo_scaled.remove(next_box_location)
 
             # 2. Search the path to the next box
-            _, next_move = self.search(previous_location, goal)
+            _, next_move = self.search(previous_location, next_box_location)
             new_moves, previous_location = self.correct_moves(self.collapse_moves(next_move), previous_location)
             # Optional if we don't want to collapse:
             # new_moves, previous_location = self.correct_moves(next_move, previous_location)
