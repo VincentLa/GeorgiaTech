@@ -188,21 +188,30 @@ class DeliveryPlanner:
 
         for k in range(3):
             real_warehouse = [[ None for i in range(discrete_warehouse_cols)] for j in range(discrete_warehouse_rows)]
+            print('printing real warehouse')
+            print(real_warehouse)
             discrete_warehouse_cols = len(self.discrete_warehouse[0])
-            discrete_warehouse_rows = len(self.discrete_warehouse)            
-            for i in range(len(self.discrete_warehouse)):
+            discrete_warehouse_rows = len(self.discrete_warehouse)
+            for i in range(discrete_warehouse_rows):
                 for j in range(discrete_warehouse_cols):
-                    if self.discrete_warehouse[min(i + 1, discrete_warehouse_rows - 1)][j] == '#' or \
-                                    self.discrete_warehouse[max(i - 1, 0)][j] == '#' or \
-                                    self.discrete_warehouse[i][min(j + 1, len(self.discrete_warehouse[0])-1)] == '#' or \
-                                    self.discrete_warehouse[i][max(j - 1, 0)] == '#' or \
-                                    self.discrete_warehouse[max(i - 1, 0)][min(j + 1, len(self.discrete_warehouse[0])-1)] == '#' or \
-                                    self.discrete_warehouse[max(i - 1, 0)][max(j - 1, 0)] == '#' or \
-                                    self.discrete_warehouse[min(i + 1, len(self.discrete_warehouse)-1)][min(j + 1, len(self.discrete_warehouse[0])-1)] == '#' or \
-                                    self.discrete_warehouse[min(i + 1, len(self.discrete_warehouse)-1)][max(j - 1, 0)] == '#' or \
-                                    i + 1 > len(self.discrete_warehouse) - 1 or j + 1 > len(self.discrete_warehouse[0]) - 1 or \
-                                    i - 1 < 0 or j - 1 < 0:
-                            real_warehouse[i][j] = '#' if self.discrete_warehouse[i][j] != '@' else '@'
+                    next_row = min(i + 1, discrete_warehouse_rows - 1)
+                    previous_row = max(i - 1, 0)
+                    next_col = min(j + 1, discrete_warehouse_cols - 1)
+                    previous_col = max(j - 1, 0)
+                    if self.discrete_warehouse[next_row][j] == '#' or \
+                        self.discrete_warehouse[previous_row][j] == '#' or \
+                        self.discrete_warehouse[i][next_col] == '#' or \
+                        self.discrete_warehouse[i][previous_col] == '#' or \
+                        self.discrete_warehouse[previous_row][next_col] == '#' or \
+                        self.discrete_warehouse[previous_row][previous_col] == '#' or \
+                        self.discrete_warehouse[next_row][next_col] == '#' or \
+                        self.discrete_warehouse[next_row][previous_col] == '#' or \
+                        i + 1 > discrete_warehouse_rows - 1 or j + 1 > discrete_warehouse_cols - 1 or \
+                        i - 1 < 0 or j - 1 < 0:
+                            if self.discrete_warehouse[i][j] != '@':
+                                real_warehouse[i][j] = '#'
+                            else:
+                                real_warehouse[i][j] = '@'
                     else:
                         real_warehouse[i][j] = self.discrete_warehouse[i][j]
             self.discrete_warehouse = real_warehouse
