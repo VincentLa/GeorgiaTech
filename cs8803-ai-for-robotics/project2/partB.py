@@ -130,6 +130,8 @@ Author: Vincent La; GTech ID: vla6
 #
 
 import math
+import operator
+
 from robot import PI
 from robot import compute_distance
 from robot import compute_bearing
@@ -281,6 +283,28 @@ class DeliveryPlanner:
         heuristic = num_rows_away + num_cols_away
         return heuristic
 
+    def collapse_moves(self, moves):
+        """
+        Define Helper Function.
+
+        Collapse Moves Vector so that if you're always moving in the same direction,
+        collapse into single command
+        """
+        actual_moves_vector = []
+        current_move = moves[0]
+        previous_move = moves[0]
+        actual_move = moves[0]
+        for i in range(1, len(moves) - 1):
+            current_move = moves[i]
+            previous_move = moves[i - 1]
+            if current_move == previous_move:
+                actual_move = tuple(map(operator.add, current_move, actual_move))
+            else:
+                actual_moves_vector.append(actual_move)
+                actual_move = current_move
+        actual_moves_vector.append(actual_move)
+        return actual_moves_vector
+
     def search(self, init, goal, cut_last=False):
         """
         Use A* to Search the Warehouse and find the path to the goal.
@@ -379,21 +403,6 @@ class DeliveryPlanner:
                 dist -= dist_to_move
 
         return new_moves, (point[0], point[1], bearing)
-
-    def collapse_moves(self, moves):
-        pruned_moves = []
-        prev_move = moves[0]
-        new_move = moves[0]
-        for idx, move in enumerate(moves[1:]):
-            if move == prev_move:
-                new_move = (move[0] + new_move[0], move[1] + new_move[1])
-            else:
-                pruned_moves.append(new_move)
-                prev_move = move
-                new_move = move
-            if idx == len(moves) - 2:
-                pruned_moves.append(new_move)
-        return pruned_moves
 
     def plan_delivery(self):
         """
