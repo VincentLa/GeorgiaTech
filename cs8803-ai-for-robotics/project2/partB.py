@@ -187,7 +187,7 @@ class DeliveryPlanner:
         self.max_steering = max_steering - 0.02
 
         # Scale the boxes appropriately as well
-        self.todo_scaled = set([(self.scale * box[0], self.scale * box[1]) for box in self.todo])
+        self.boxes_scaled = set([(self.scale * box[0], self.scale * box[1]) for box in self.todo])
 
         # Futhermore, we define a list called "delta" which contains all possible moves.
         # Same as in: https://classroom.udacity.com/courses/cs373/lessons/48646841/concepts/486468390923
@@ -420,7 +420,7 @@ class DeliveryPlanner:
                         y2 = y + move[1]
 
                         if x2 >= 0 and x2 < len(self.discrete_warehouse[0]) and y2 <= 0 and y2 > -len(self.discrete_warehouse):
-                            if closed[x2][y2] == 0 and self.discrete_warehouse[-y2][x2] != '#' and (x2, y2) not in self.todo_scaled:
+                            if closed[x2][y2] == 0 and self.discrete_warehouse[-y2][x2] != '#' and (x2, y2) not in self.boxes_scaled:
                                 g2 = g + cost
                                 expanded_node = (x2, y2)
                                 h2 = self.heuristic(expanded_node, goal)
@@ -476,26 +476,22 @@ class DeliveryPlanner:
             6. Remove box from the list of to do's
             7. Repeat until To do list is empty
             """
+            # 1. Find the location of the next box
             next_box = self.todo[0]
             next_box_location = (int(next_box[0] * self.scale), int(next_box[1] * self.scale))
-            self.todo_scaled.remove(next_box_location)
+            self.boxes_scaled.remove(next_box_location)
 
             # 2. Search the path to the next box
-            _, next_move = self.search(previous_location, next_box_location)
+            last_location, next_move = self.search(previous_location, next_box_location)
             new_moves, previous_location = self.correct_moves(self.collapse_moves(next_move), previous_location)
-            # Optional if we don't want to collapse:
-            # new_moves, previous_location = self.correct_moves(next_move, previous_location)
             moves += new_moves
 
             # 3. Pick up the box
             moves += ['lift {}'.format(box_index)]
 
             # 4. Search Path to the Dropzone
-            _, next_move = self.search(previous_location, dropzone)
+            last_location, next_move = self.search(previous_location, dropzone)
             new_moves, previous_location = self.correct_moves(self.collapse_moves(next_move), previous_location)
-
-            # Optional if we don't want to collapse:
-            # new_moves, previous_location = self.correct_moves(next_move, previous_location)
             moves += new_moves
 
             # 5. Return Box to the Dropzone

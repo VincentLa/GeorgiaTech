@@ -317,7 +317,6 @@ class DeliveryPlanner:
             6. Remove box from the list of to do's
             7. Repeat until To do list is empty
             """
-
             # 1. Find the location of the next box
             next_box = self.todo[0]
             next_box_location = self.get_location(next_box)
