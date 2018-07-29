@@ -375,16 +375,24 @@ class DeliveryPlanner:
         return previous_location, moves  # make sure you return the shortest path
 
     def correct_moves(self, moves, start):
-        new_moves = []
-        point = (start[0], start[1])
-        bearing = start[2]
+        """
+        Correct Moves returned by Algorithm.
+
+        At this point, we've discretized the warehouse, and we've also implemented A* over this
+        warehouse. The previous functions, search and return to us the correct
+        set of rules assuming our max steering and max distance were infinite. However,
+        we are constrained by max steering and max distance parameters. Thus, we have to
+        implement a correction if we go over the max steering and max distance.
+        """
+        actual_moves = []
+        point, bearing = (start[0], start[1]), start[2]
         for move in moves:
             new_point = tuple(map(operator.add, point, move))
             dist, steering = measure_distance_and_steering_to(point, new_point, bearing)
             bearing = truncate_angle(bearing + steering)
             point = new_point
             while abs(steering) > self.max_steering:
-                new_moves.append('move {} {}'.format(self.max_steering if steering > 0 else -self.max_steering, 0))
+                actual_moves.append('move {} {}'.format(self.max_steering if steering > 0 else -self.max_steering, 0))
                 if steering > 0:
                     steering -= self.max_steering
                 else:
@@ -394,13 +402,13 @@ class DeliveryPlanner:
             while dist > 0:
                 dist_to_move = min(dist, self.max_distance)
                 if need_steering:
-                    new_moves.append('move {} {}'.format(steering, dist_to_move / float(self.scale) + 0.002))
+                    actual_moves.append('move {} {}'.format(steering, dist_to_move / float(self.scale) + 0.002))
                     need_steering = False
                 else:
-                    new_moves.append('move {} {}'.format(0, dist_to_move / float(self.scale) + 0.002))
+                    actual_moves.append('move {} {}'.format(0, dist_to_move / float(self.scale) + 0.002))
                 dist -= dist_to_move
 
-        return new_moves, (point[0], point[1], bearing)
+        return actual_moves, (point[0], point[1], bearing)
 
     def plan_delivery(self):
         """
@@ -433,22 +441,19 @@ class DeliveryPlanner:
 
             # 2. Search the path to the next box
             _, next_move = self.search(previous_location, goal, cut_last=True)
-            print('printing new moves')
-            print(next_move)
-            print('printing pruned moves')
-            print(self.collapse_moves(next_move))
             new_moves, previous_location = self.correct_moves(self.collapse_moves(next_move), previous_location)
-            # new_moves, previous_location = self.collapse_moves(next_move), previous_location         
+            # Optional if we don't want to collapse:
+            # new_moves, previous_location = self.correct_moves(next_move, previous_location)
             moves += new_moves
 
             # 3. Pick up the box
             moves += ['lift {}'.format(box_index)]
 
             # 4. Search Path to the Dropzone
-            print('printing self search')
             _, next_move = self.search(previous_location, dropzone)
-            print('after self search')
             new_moves, previous_location = self.correct_moves(self.collapse_moves(next_move), previous_location)
+            # Optional if we don't want to collapse:
+            # new_moves, previous_location = self.correct_moves(next_move, previous_location)            
             moves += new_moves
 
             # 5. Return Box to the Dropzone
