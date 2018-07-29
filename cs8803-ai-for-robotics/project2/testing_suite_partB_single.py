@@ -811,46 +811,46 @@ class PartBTestCase(unittest.TestCase):
        
         return score
 
-    @timeout(TIME_LIMIT)
-    def test_case1(self):
-        params = {
-            'test_case': 1,
-            'warehouse': ['..#..',
-                          '.....',
-                          '..#..',
-                          '.....',
-                          '....@'],
-            'todo': [(1.5, -0.5),
-                     (4.0, -2.5)],
-            'max_distance': 5.0,
-            'max_steering': PI / 2. + 0.01,
-            'min_cost': 38.
-        }
-        score = self.run_test_with_params(params)
-        print 'credit: {}'.format(score)
+    # @timeout(TIME_LIMIT)
+    # def test_case1(self):
+    #     params = {
+    #         'test_case': 1,
+    #         'warehouse': ['..#..',
+    #                       '.....',
+    #                       '..#..',
+    #                       '.....',
+    #                       '....@'],
+    #         'todo': [(1.5, -0.5),
+    #                  (4.0, -2.5)],
+    #         'max_distance': 5.0,
+    #         'max_steering': PI / 2. + 0.01,
+    #         'min_cost': 38.
+    #     }
+    #     score = self.run_test_with_params(params)
+    #     print 'credit: {}'.format(score)
 
 # Note that we have included several more test cases below
 # after you have your system working with the first test
 # case, you can uncomment one/more of the following as well.
 #
 
-    # @timeout(TIME_LIMIT)
-    # def test_case2(self):
-    #     params = {
-    #         'test_case': 2,
-    #         'warehouse': ['..#..@',
-    #                       '......',
-    #                       '..####',
-    #                       '..#...',
-    #                       '......'],
-    #         'todo': [(3.5, -3.5),
-    #                  (0.5, -1.0)],
-    #         'max_distance': 5.0,
-    #         'max_steering': PI / 2. + 0.01,
-    #         'min_cost': 56.
-    #     }
-    #     score = self.run_test_with_params(params)
-    #     print 'credit: {}'.format(score)
+    @timeout(TIME_LIMIT)
+    def test_case2(self):
+        params = {
+            'test_case': 2,
+            'warehouse': ['..#..@',
+                          '......',
+                          '..####',
+                          '..#...',
+                          '......'],
+            'todo': [(3.5, -3.5),
+                     (0.5, -1.0)],
+            'max_distance': 5.0,
+            'max_steering': PI / 2. + 0.01,
+            'min_cost': 56.
+        }
+        score = self.run_test_with_params(params)
+        print 'credit: {}'.format(score)
 
     # # Test Case 3
     # @timeout(TIME_LIMIT)

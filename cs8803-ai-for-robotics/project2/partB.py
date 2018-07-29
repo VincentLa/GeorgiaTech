@@ -135,6 +135,17 @@ from robot import compute_distance
 from robot import compute_bearing
 from robot import truncate_angle
 
+def measure_distance_and_steering_to(start, point, init_bearing):
+    """
+    measures distance and bearing from one point to another 
+    """
+    distance_to_point = compute_distance(start, point)
+    bearing_to_point = compute_bearing(start, point)
+
+    steering = truncate_angle(bearing_to_point - init_bearing)
+
+    return distance_to_point, steering
+
 
 class DeliveryPlanner:
 
@@ -164,6 +175,36 @@ class DeliveryPlanner:
         # Finally, discretize the warehouse (based on hints in https://piazza.com/class/jh0tfongvk362a?cid=427)
         self.discretize()
 
+    def _check_adjacent_cells(self, warehouse, row, column, value):
+        """
+        Helper Function to check adjacent cells for a wall.
+
+        Keyword Args:
+            warehouse: The warehouse in consideration
+            row: The current row in warehouse to find adjacent cells
+            columns: The current column in warehouse in consideration
+            value: The value to check adjacent cells against. If not None will check if
+                   any adjacent cells contains that value
+        """
+        adjacent_cells = []
+        warehouse_cols = len(warehouse[0])
+        warehouse_rows = len(warehouse)
+        for i in range(-1, 2):
+            for j in range(-1, 2):
+                if (i, j) != (0, 0):
+                    new_row = max(min(row + i, warehouse_rows - 1), 0)
+                    new_col = max(min(column + j, warehouse_cols - 1), 0)
+                    adjacent_cells.append(warehouse[new_row][new_col])
+
+        truths = 0
+        if value:
+            for adjacent_cell in adjacent_cells:
+                if adjacent_cell == value:
+                    return True
+            return False
+        else:
+            return False    
+
     def discretize(self):
         """
         Based on hints in https://piazza.com/class/jh0tfongvk362a?cid=427, discretize the Warehouse
@@ -176,47 +217,31 @@ class DeliveryPlanner:
                 new_items += [item for i in range(self.scale)]
             self.discrete_warehouse += [new_items for j in range(self.scale)]
 
-        print('printing self warehouse')
-        print(self.warehouse)
-
-        print('printing discrete warehouse')
-        print(self.discrete_warehouse)
-        print(len(self.discrete_warehouse))
-
-        discrete_warehouse_cols = len(self.discrete_warehouse[0])
-        discrete_warehouse_rows = len(self.discrete_warehouse)
-
         for k in range(3):
-            real_warehouse = [[ None for i in range(discrete_warehouse_cols)] for j in range(discrete_warehouse_rows)]
-            print('printing real warehouse')
-            print(real_warehouse)
             discrete_warehouse_cols = len(self.discrete_warehouse[0])
             discrete_warehouse_rows = len(self.discrete_warehouse)
+            new_warehouse = [[ None for i in range(discrete_warehouse_cols)] for j in range(discrete_warehouse_rows)]
             for i in range(discrete_warehouse_rows):
                 for j in range(discrete_warehouse_cols):
-                    next_row = min(i + 1, discrete_warehouse_rows - 1)
-                    previous_row = max(i - 1, 0)
-                    next_col = min(j + 1, discrete_warehouse_cols - 1)
-                    previous_col = max(j - 1, 0)
-                    if self.discrete_warehouse[next_row][j] == '#' or \
-                        self.discrete_warehouse[previous_row][j] == '#' or \
-                        self.discrete_warehouse[i][next_col] == '#' or \
-                        self.discrete_warehouse[i][previous_col] == '#' or \
-                        self.discrete_warehouse[previous_row][next_col] == '#' or \
-                        self.discrete_warehouse[previous_row][previous_col] == '#' or \
-                        self.discrete_warehouse[next_row][next_col] == '#' or \
-                        self.discrete_warehouse[next_row][previous_col] == '#' or \
-                        i + 1 > discrete_warehouse_rows - 1 or j + 1 > discrete_warehouse_cols - 1 or \
-                        i - 1 < 0 or j - 1 < 0:
-                            if self.discrete_warehouse[i][j] != '@':
-                                real_warehouse[i][j] = '#'
-                            else:
-                                real_warehouse[i][j] = '@'
+                    if self._check_adjacent_cells(self.discrete_warehouse, i, j, '#'):
+                        """If any adjacent cell is a wall, make this cell also a wall, unless it's a dropzone"""
+                        if self.discrete_warehouse[i][j] != '@':
+                            new_warehouse[i][j] = '#'
+                        else:
+                            new_warehouse[i][j] = '@'
                     else:
-                        real_warehouse[i][j] = self.discrete_warehouse[i][j]
-            self.discrete_warehouse = real_warehouse
+                        """Else; just keep the original value of discrete warehouse"""
+                        new_warehouse[i][j] = self.discrete_warehouse[i][j]
+            self.discrete_warehouse = new_warehouse
 
-        self.discrete_warehouse = [''.join(sublist) for sublist in real_warehouse]
+        # print('printing real warehouse')
+        # print(new_warehouse)
+        # Collapse 2-day array back to single array with each element as a string.
+        self.discrete_warehouse = [''.join(row) for row in new_warehouse]
+        print('printing discrete warehouse')
+        print(self.discrete_warehouse)
+        # print(len(self.discrete_warehouse))
+
 
     # def get_location(self, item):
     #     """
@@ -234,7 +259,7 @@ class DeliveryPlanner:
         """
         returns the coordinates of either an item or the origin
         """
-        coord = [(sublist.index(symbol), -sub_idx,0)
+        coord = [(sublist.index(symbol), -sub_idx, 0)
                 for sub_idx, sublist
                 in enumerate(self.discrete_warehouse) if symbol in sublist][0]
         return (coord[0] + self.scale/2, coord[1] - self.scale/2, 0)
@@ -333,7 +358,7 @@ class DeliveryPlanner:
         bearing = start[2]
         for move in moves:
             new_point = (point[0] + move[0], point[1] + move[1])
-            dist, steering = self.measure_distance_and_steering_to(point, new_point, bearing)
+            dist, steering = measure_distance_and_steering_to(point, new_point, bearing)
             bearing = truncate_angle(bearing + steering)
             point = new_point
             while abs(steering) > self.max_steering:
@@ -370,24 +395,14 @@ class DeliveryPlanner:
                 pruned_moves.append(new_move)
         return pruned_moves
 
-    # copy and edited from robot.py
-    def measure_distance_and_steering_to(self, start, point, init_bearing):
-        """
-        measures distance and bearing from one point to another 
-        """
-        distance_to_point = compute_distance(start, point)
-        bearing_to_point = compute_bearing(start, point)
-
-        steering = truncate_angle(bearing_to_point - init_bearing)
-
-        return distance_to_point, steering
-
     def plan_delivery(self):
         """
         Final Function. Plan the Delivery using functions defined above.
         """
         moves = []
         dropzone = self.get_location('@')
+        print('printing dropzone')
+        print(dropzone)
 
         # Initialize first location to the drop zone since this is where we start
         previous_location = (dropzone[0], dropzone[1], 0)
