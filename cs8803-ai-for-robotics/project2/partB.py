@@ -495,7 +495,7 @@ class DeliveryPlanner:
             moves += new_moves
 
             # 5. Return Box to the Dropzone
-            moves += ['down {} {}'.format(dropzone[0] / float(self.scale), dropzone[1] / float(self.scale))]
+            moves += ['down {} {}'.format(1.0 * dropzone[0] / self.scale, 1.0 * dropzone[1] / self.scale)]
 
             # 6. Remove box from the list of to do's
             self.todo = self.todo[1:]
