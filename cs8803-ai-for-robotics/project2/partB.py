@@ -384,7 +384,7 @@ class DeliveryPlanner:
         Returns:
             search will return the shortest path from init to goal
         """
-        closed = {}
+        closed = [[0 for col in range(len(self.discrete_warehouse))] for row in range(len(self.discrete_warehouse[0]))]
         action = {}
 
         x = init[0]
@@ -417,13 +417,13 @@ class DeliveryPlanner:
                         cost = 1
                         x2 = x + move[0]
                         y2 = y + move[1]
-                        
+
                         if x2 >= 0 and x2 < len(self.discrete_warehouse[0]) and y2 <= 0 and y2 > -len(self.discrete_warehouse):
-                            if closed.get((x2, y2), 0) == 0 and self.discrete_warehouse[-y2][x2] != '#' and (x2, y2) not in self.todo_scaled:
+                            if closed[x2][y2] == 0 and self.discrete_warehouse[-y2][x2] != '#' and (x2, y2) not in self.todo_scaled:
                                 g2 = g + cost
                                 h2 = self.heuristic((x2, y2), goal)
                                 open.append([g2, h2, x2, y2])
-                                closed[(x2, y2)] = 1
+                                closed[x2][y2] = 1
                                 action[(x2, y2)] = move
 
 
