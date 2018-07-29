@@ -291,8 +291,6 @@ class DeliveryPlanner:
         collapse into single command
         """
         actual_moves_vector = []
-        current_move = moves[0]
-        previous_move = moves[0]
         actual_move = moves[0]
         for i in range(1, len(moves) - 1):
             current_move = moves[i]
