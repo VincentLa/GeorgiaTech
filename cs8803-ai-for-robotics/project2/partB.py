@@ -374,7 +374,7 @@ class DeliveryPlanner:
 
         return previous_location, moves  # make sure you return the shortest path
 
-    def translate_move_list(self, moves, start):
+    def correct_moves(self, moves, start):
         new_moves = []
         point = (start[0], start[1])
         bearing = start[2]
@@ -437,7 +437,7 @@ class DeliveryPlanner:
             print(next_move)
             print('printing pruned moves')
             print(self.collapse_moves(next_move))
-            new_moves, previous_location = self.translate_move_list(self.collapse_moves(next_move), previous_location)
+            new_moves, previous_location = self.correct_moves(self.collapse_moves(next_move), previous_location)
             # new_moves, previous_location = self.collapse_moves(next_move), previous_location         
             moves += new_moves
 
@@ -448,7 +448,7 @@ class DeliveryPlanner:
             print('printing self search')
             _, next_move = self.search(previous_location, dropzone)
             print('after self search')
-            new_moves, previous_location = self.translate_move_list(self.collapse_moves(next_move), previous_location)
+            new_moves, previous_location = self.correct_moves(self.collapse_moves(next_move), previous_location)
             moves += new_moves
 
             # 5. Return Box to the Dropzone
