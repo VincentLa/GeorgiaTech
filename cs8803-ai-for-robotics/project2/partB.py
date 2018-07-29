@@ -249,26 +249,18 @@ class DeliveryPlanner:
         # print(len(self.discrete_warehouse))
 
 
-    # def get_location(self, item):
-    #     """
-    #     Finds the location of the item.
-
-    #     In cases where there are multiple locations. Return the first
-    #     """
-    #     print(self.discrete_warehouse)
-    #     for row in range(0, len(self.discrete_warehouse)):
-    #         for column in range(len(self.discrete_warehouse[0])):
-    #             if self.discrete_warehouse[row][column][0] == item:
-    #                 return (row + self.scale / 2, column - self.scale / 2, 0)
-
-    def get_location(self, symbol):
+    def get_location(self, item):
         """
-        returns the coordinates of either an item or the origin
+        Finds the location of the item.
+
+        In cases where there are multiple locations. Return the first. This is similar
+        to function I wrote in Part A
         """
-        coord = [(sublist.index(symbol), -sub_idx, 0)
-                for sub_idx, sublist
-                in enumerate(self.discrete_warehouse) if symbol in sublist][0]
-        return (coord[0] + self.scale / 2, coord[1] - self.scale / 2, 0)
+        print(self.discrete_warehouse)
+        for row in range(0, len(self.discrete_warehouse)):
+            for column in range(len(self.discrete_warehouse[0])):
+                if self.discrete_warehouse[row][column][0] == item:
+                    return (column + self.scale / 2, -1 * row - self.scale / 2, 0)
 
     def heuristic(self, current_location, goal):
         """
@@ -441,6 +433,8 @@ class DeliveryPlanner:
         """
         moves = []
         dropzone = self.get_location('@')
+        print('printing dropzone')
+        print(dropzone)
 
         # Initialize first location to the drop zone since this is where we start
         previous_location = (dropzone[0], dropzone[1], 0)
