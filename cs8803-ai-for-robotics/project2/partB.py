@@ -412,7 +412,8 @@ class DeliveryPlanner:
                 if x == goal[0] and y == goal[1]:
                     found = True
                 else:
-                    for move in self.delta:
+                    for i in range(len(self.delta)):
+                        move = self.delta[i]
                         cost = 1
                         x2 = x + move[0]
                         y2 = y + move[1]
