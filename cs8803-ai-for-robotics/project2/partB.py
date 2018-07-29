@@ -380,7 +380,7 @@ class DeliveryPlanner:
 
         return new_moves, (point[0], point[1], bearing)
 
-    def prune_steps(self, moves):
+    def collapse_moves(self, moves):
         pruned_moves = []
         prev_move = moves[0]
         new_move = moves[0]
@@ -401,8 +401,6 @@ class DeliveryPlanner:
         """
         moves = []
         dropzone = self.get_location('@')
-        print('printing dropzone')
-        print(dropzone)
 
         # Initialize first location to the drop zone since this is where we start
         previous_location = (dropzone[0], dropzone[1], 0)
@@ -427,16 +425,23 @@ class DeliveryPlanner:
             self.todo_scaled.remove(goal)
 
             # 2. Search the path to the next box
-            _, next_move = self.search(previous_location, goal, cut_last = True)
-            new_moves, previous_location = self.translate_move_list(self.prune_steps(next_move), previous_location)
+            _, next_move = self.search(previous_location, goal, cut_last=True)
+            print('printing new moves')
+            print(next_move)
+            print('printing pruned moves')
+            print(self.collapse_moves(next_move))
+            new_moves, previous_location = self.translate_move_list(self.collapse_moves(next_move), previous_location)
+            # new_moves, previous_location = self.collapse_moves(next_move), previous_location         
             moves += new_moves
 
             # 3. Pick up the box
             moves += ['lift {}'.format(box_index)]
 
             # 4. Search Path to the Dropzone
+            print('printing self search')
             _, next_move = self.search(previous_location, dropzone)
-            new_moves, previous_location = self.translate_move_list(self.prune_steps(next_move), previous_location)
+            print('after self search')
+            new_moves, previous_location = self.translate_move_list(self.collapse_moves(next_move), previous_location)
             moves += new_moves
 
             # 5. Return Box to the Dropzone
