@@ -148,6 +148,9 @@ def measure_distance_and_steering_to(start, point, init_bearing):
 
     return distance_to_point, steering
 
+def check_sign(x):
+    """Returns the sign of a number"""
+    return x / abs(x)
 
 class DeliveryPlanner:
 
@@ -175,7 +178,7 @@ class DeliveryPlanner:
                      ]
 
         # Finally, discretize the warehouse (based on hints in https://piazza.com/class/jh0tfongvk362a?cid=427)
-        self.discretize()
+        self.create_discrete_warehouse()
 
     def _check_adjacent_cells(self, warehouse, row, column, value):
         """
@@ -207,7 +210,7 @@ class DeliveryPlanner:
         else:
             return False    
 
-    def discretize(self):
+    def create_discrete_warehouse(self):
         """
         Based on hints in https://piazza.com/class/jh0tfongvk362a?cid=427, discretize the Warehouse
         """
@@ -219,7 +222,8 @@ class DeliveryPlanner:
                 new_items += [item for i in range(self.scale)]
             self.discrete_warehouse += [new_items for j in range(self.scale)]
 
-        for k in range(3):
+        number_of_iterations = 3
+        for iteration in range(number_of_iterations):
             discrete_warehouse_cols = len(self.discrete_warehouse[0])
             discrete_warehouse_rows = len(self.discrete_warehouse)
             new_warehouse = [[ None for i in range(discrete_warehouse_cols)] for j in range(discrete_warehouse_rows)]
@@ -264,7 +268,7 @@ class DeliveryPlanner:
         coord = [(sublist.index(symbol), -sub_idx, 0)
                 for sub_idx, sublist
                 in enumerate(self.discrete_warehouse) if symbol in sublist][0]
-        return (coord[0] + self.scale/2, coord[1] - self.scale/2, 0)
+        return (coord[0] + self.scale / 2, coord[1] - self.scale / 2, 0)
 
     def heuristic(self, current_location, goal):
         """
@@ -302,6 +306,63 @@ class DeliveryPlanner:
                 actual_move = current_move
         actual_moves_vector.append(actual_move)
         return actual_moves_vector
+
+    def _correct_submovement(self, movement_param_label, movement_param, max_param):
+        """
+        Helper Function for correct_moves
+
+        There are limits to how much we can steer and how much we can move per turn.
+        This is a helper function to break down actual moves into legal steps
+
+        Keyword Args:
+            movement_param_label: Either 'distance' or 'steering'
+            movement_param: Either distance or steering value
+            max_param: Either max distance or max steering
+        """
+        actual_moves = []
+        while abs(movement_param) > max_param:
+            if movement_param_label == 'steering':
+                actual_moves.append('move {} {}'.format(max_param if movement_param > 0 else -max_param, 0))
+            if movement_param_label == 'distance':
+                actual_moves.append('move {} {}'.format(0, max_param / float(self.scale)))
+            movement_param -= check_sign(movement_param) * max_param
+        return actual_moves, movement_param
+
+    def correct_moves(self, moves, previous_location):
+        """
+        Correct Moves returned by Algorithm.
+
+        At this point, we've discretized the warehouse, and we've also implemented A* over this
+        warehouse. The previous functions, search and return to us the correct
+        set of rules assuming our max steering and max distance were infinite. However,
+        we are constrained by max steering and max distance parameters. Thus, we have to
+        implement a correction if we go over the max steering and max distance.
+
+        Keyword Args:
+            moves: List of Moves
+            previous_location: Last Previous Location to start from; (x, y, direction)
+        """
+        actual_moves = []
+        point, direction = (previous_location[0], previous_location[1]), previous_location[2]
+        for move in moves:
+            new_point = tuple(map(operator.add, point, move))
+            distance_to_new_point, steering = measure_distance_and_steering_to(point, new_point, direction)
+            direction = truncate_angle(direction + steering)
+
+            new_actual_moves, steering = self._correct_submovement('steering', steering, self.max_steering)
+            actual_moves += new_actual_moves
+
+            # There's one more steering we have to do that is less than max steering
+            actual_moves.append('move {} {}'.format(steering, 0))
+
+            new_actual_moves, distance_to_new_point = self._correct_submovement('distance', distance_to_new_point, self.max_distance)
+            actual_moves += new_actual_moves
+
+            # There's one more distance we have to do that is less than max distance
+            actual_moves.append('move {} {}'.format(0, distance_to_new_point / float(self.scale)))
+
+            point = new_point
+        return actual_moves, (new_point[0], new_point[1], direction)
 
     def search(self, init, goal, cut_last=False):
         """
@@ -374,42 +435,6 @@ class DeliveryPlanner:
 
         return previous_location, moves  # make sure you return the shortest path
 
-    def correct_moves(self, moves, start):
-        """
-        Correct Moves returned by Algorithm.
-
-        At this point, we've discretized the warehouse, and we've also implemented A* over this
-        warehouse. The previous functions, search and return to us the correct
-        set of rules assuming our max steering and max distance were infinite. However,
-        we are constrained by max steering and max distance parameters. Thus, we have to
-        implement a correction if we go over the max steering and max distance.
-        """
-        actual_moves = []
-        point, bearing = (start[0], start[1]), start[2]
-        for move in moves:
-            new_point = tuple(map(operator.add, point, move))
-            dist, steering = measure_distance_and_steering_to(point, new_point, bearing)
-            bearing = truncate_angle(bearing + steering)
-            point = new_point
-            while abs(steering) > self.max_steering:
-                actual_moves.append('move {} {}'.format(self.max_steering if steering > 0 else -self.max_steering, 0))
-                if steering > 0:
-                    steering -= self.max_steering
-                else:
-                    steering += self.max_steering
-
-            need_steering = True
-            while dist > 0:
-                dist_to_move = min(dist, self.max_distance)
-                if need_steering:
-                    actual_moves.append('move {} {}'.format(steering, dist_to_move / float(self.scale) + 0.002))
-                    need_steering = False
-                else:
-                    actual_moves.append('move {} {}'.format(0, dist_to_move / float(self.scale) + 0.002))
-                dist -= dist_to_move
-
-        return actual_moves, (point[0], point[1], bearing)
-
     def plan_delivery(self):
         """
         Final Function. Plan the Delivery using functions defined above.
@@ -442,16 +467,22 @@ class DeliveryPlanner:
             # 2. Search the path to the next box
             _, next_move = self.search(previous_location, goal, cut_last=True)
             new_moves, previous_location = self.correct_moves(self.collapse_moves(next_move), previous_location)
+            print('get here')
             # Optional if we don't want to collapse:
             # new_moves, previous_location = self.correct_moves(next_move, previous_location)
             moves += new_moves
 
             # 3. Pick up the box
             moves += ['lift {}'.format(box_index)]
+            print('get to 3')
 
             # 4. Search Path to the Dropzone
+            print('get to 4')
+            print(previous_location)
             _, next_move = self.search(previous_location, dropzone)
+            print('get to 4b')
             new_moves, previous_location = self.correct_moves(self.collapse_moves(next_move), previous_location)
+
             # Optional if we don't want to collapse:
             # new_moves, previous_location = self.correct_moves(next_move, previous_location)            
             moves += new_moves
