@@ -348,10 +348,12 @@ class DeliveryPlanner:
             previous_location: Last Previous Location to start from; (x, y, direction)
         """
         actual_moves = []
-        point, direction = (previous_location[0], previous_location[1]), previous_location[2]
+        previous_location_coordinates, direction = (previous_location[0],
+                                                    previous_location[1]), previous_location[2]
         for move in moves:
-            new_point = tuple(map(operator.add, point, move))
-            distance_to_new_point, steering = measure_distance_and_steering_to(point, new_point, direction)
+            new_location_coordinates = tuple(map(operator.add, previous_location_coordinates, move))
+            distance_to_new_point, steering = measure_distance_and_steering_to(
+                previous_location_coordinates, new_location_coordinates, direction)
             direction = truncate_angle(direction + steering)
 
             new_actual_moves, steering = self._correct_submovement('steering', steering, self.max_steering)
@@ -366,8 +368,8 @@ class DeliveryPlanner:
             # There's one more distance we have to do that is less than max distance
             actual_moves.append('move {} {}'.format(0, distance_to_new_point / float(self.scale_factor_discretize)))
 
-            point = new_point
-        return actual_moves, (new_point[0], new_point[1], direction)
+            previous_location_coordinates = new_location_coordinates
+        return actual_moves, (new_location_coordinates[0], new_location_coordinates[1], direction)
 
     def search(self, init, goal):
         """
