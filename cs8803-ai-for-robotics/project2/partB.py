@@ -228,7 +228,7 @@ class DeliveryPlanner:
                     return True
             return False
         else:
-            return False    
+            return False
 
     def create_discrete_warehouse(self):
         """
@@ -260,13 +260,8 @@ class DeliveryPlanner:
                         new_warehouse[i][j] = self.discrete_warehouse[i][j]
             self.discrete_warehouse = new_warehouse
 
-        # print('printing real warehouse')
-        # print(new_warehouse)
         # Collapse 2-day array back to single array with each element as a string.
         self.discrete_warehouse = [''.join(row) for row in new_warehouse]
-        print('printing discrete warehouse')
-        print(self.discrete_warehouse)
-
 
     def get_location(self, item):
         """
@@ -284,7 +279,7 @@ class DeliveryPlanner:
     def heuristic(self, current_location, goal):
         """
         Define a Heuristic for the A* Algorithm
-        
+
         The Heuristic needs to be admissable. That is, the estimated cost must always be lower
         than or equal to the actual cost of reaching the goal state. In this case, we simply calculate
         the number of rows and columns that we are currently away from the goal. This is admissable 
@@ -444,7 +439,7 @@ class DeliveryPlanner:
             x = x2
             y = y2
 
-        return previous_location, moves  # make sure you return the shortest path
+        return previous_location, moves
 
     def plan_delivery(self):
         """
