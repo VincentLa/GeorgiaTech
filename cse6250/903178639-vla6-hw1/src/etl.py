@@ -83,7 +83,7 @@ def filter_events(events, indx_date, deliverables_path):
 
     Suggested steps:
     1. Join indx_date with events on patient_id
-    2. Filter events occuring in the observation window(IndexDate-2000 to IndexDate)
+    2. Filter events occurring in the observation window(IndexDate-2000 to IndexDate)
     
     
     IMPORTANT:
@@ -96,8 +96,20 @@ def filter_events(events, indx_date, deliverables_path):
 
     Return filtered_events
     '''
+    # Define beginning and end of observation window and prediction window, respectively
+    indx_date['observation_window_begin'] = indx_date.indx_date - pd.to_timedelta(2000, unit='d')
+    indx_date['prediction_window_end'] = indx_date.indx_date + pd.to_timedelta(30, unit='d')
 
-    filtered_events = ''
+    # Merge
+    filtered_events = events.merge(indx_date, how='left', on='patient_id')
+    filtered_events.timestamp = pd.to_datetime(filtered_events.timestamp)
+
+    filtered_events['keep_event'] = (filtered_events.timestamp >= filtered_events.observation_window_begin) &\
+                                    (filtered_events.timestamp <= filtered_events.prediction_window_end)
+    filtered_events = filtered_events.loc[filtered_events.keep_event]
+    filtered_events = filtered_events[['patient_id', 'event_id', 'value']]
+
+    filtered_events.to_csv(deliverables_path + 'etl_filtered_events.csv', columns=['patient_id', 'event_id', 'value'], index=False)
     return filtered_events
 
 
