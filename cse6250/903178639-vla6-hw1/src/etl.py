@@ -1,3 +1,7 @@
+import os
+
+import pandas as pd
+
 import utils
 
 # PLEASE USE THE GIVEN FUNCTION NAME, DO NOT CHANGE IT
@@ -12,13 +16,13 @@ def read_csv(filepath):
     '''
 
     #Columns in events.csv - patient_id,event_id,event_description,timestamp,value
-    events = ''
+    events = pd.read_csv(os.path.join(filepath, 'events.csv'))
     
-    #Columns in mortality_event.csv - patient_id,timestamp,label
-    mortality = ''
+    #Columns in mortality_events.csv - patient_id,timestamp,label
+    mortality = pd.read_csv(os.path.join(filepath, 'mortality_events.csv'))
 
     #Columns in event_feature_map.csv - idx,event_id
-    feature_map = ''
+    feature_map = pd.read_csv(os.path.join(filepath, 'event_feature_map.csv'))
 
     return events, mortality, feature_map
 
@@ -29,6 +33,9 @@ def calculate_index_date(events, mortality, deliverables_path):
     TODO: This function needs to be completed.
 
     Refer to instructions in Q3 a
+
+    Returns:
+      - indx_date: DataFrame that is unique and the patient_id level with another column for index date
 
     Suggested steps:
     1. Create list of patients alive ( mortality_events.csv only contains information about patients deceased)
@@ -45,8 +52,25 @@ def calculate_index_date(events, mortality, deliverables_path):
 
     Return indx_date
     '''
+    # Aggregate the events DF to get last event date for each patient
+    indx_date = events[['patient_id', 'timestamp']].groupby(['patient_id'])\
+                                                   .agg({'timestamp': 'max'})\
+                                                   .rename(columns={'timestamp': 'last_event_date'})\
+                                                   .reset_index()
 
-    indx_date = ''
+    # Merge in Deceased Status
+    indx_date = indx_date.merge(mortality[['patient_id', 'label', 'timestamp']].rename(columns={'timestamp': 'date_of_death'}), how='left', on='patient_id')
+    indx_date.rename(index=str, columns={'label': 'is_deceased'}, inplace=True)
+    indx_date.is_deceased.fillna(0, inplace=True)
+    indx_date.is_deceased = indx_date.is_deceased.astype(bool)
+    indx_date.last_event_date = pd.to_datetime(indx_date.last_event_date)
+    indx_date.date_of_death = pd.to_datetime(indx_date.date_of_death)
+    indx_date['date_of_death_30_days_prior'] = indx_date.date_of_death - pd.to_timedelta(30, unit='d')
+    indx_date['indx_date'] = indx_date.date_of_death_30_days_prior.combine_first(indx_date.last_event_date)
+    indx_date = indx_date[['patient_id', 'indx_date']]
+
+    # Finally, write required DF to disk
+    indx_date.to_csv(deliverables_path + 'etl_index_dates.csv', columns=['patient_id', 'indx_date'], index=False)
     return indx_date
 
 
@@ -152,7 +176,7 @@ def main():
     train_path = '../data/train/'
     events, mortality, feature_map = read_csv(train_path)
     patient_features, mortality = create_features(events, mortality, feature_map)
-    save_svmlight(patient_features, mortality, '../deliverables/features_svmlight.train', '../deliverables/features.train')
+    # save_svmlight(patient_features, mortality, '../deliverables/features_svmlight.train', '../deliverables/features.train')
 
 if __name__ == "__main__":
     main()
