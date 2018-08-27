@@ -1,3 +1,10 @@
+"""
+Author: Vincent La
+vla6
+
+To test: nosetests tests/test_etl.py
+"""
+
 import os
 
 import numpy as np
@@ -106,7 +113,7 @@ def filter_events(events, indx_date, deliverables_path):
     filtered_events.timestamp = pd.to_datetime(filtered_events.timestamp)
 
     filtered_events['keep_event'] = (filtered_events.timestamp >= filtered_events.observation_window_begin) &\
-                                    (filtered_events.timestamp <= filtered_events.prediction_window_end)
+                                    (filtered_events.timestamp <= filtered_events.indx_date)
     filtered_events = filtered_events.loc[filtered_events.keep_event]
     filtered_events = filtered_events[['patient_id', 'event_id', 'value']]
 
@@ -157,9 +164,9 @@ def aggregate_events(filtered_events_df, mortality_df,feature_map_df, deliverabl
     # reset index
     events_grouped.reset_index(inplace=True)
 
-    events_grouped['value'] = np.where(events_grouped['event_type']=='LAB',
-                                   events_grouped.value_count,
-                                   events_grouped.value_sum)
+    events_grouped['value'] = np.where(events_grouped['event_type'] == 'LAB',
+                                                      events_grouped.value_count,
+                                                      events_grouped.value_sum)
 
     aggregated_events = events_grouped[['patient_id', 'event_id_idx', 'value']]
     aggregated_events = aggregated_events.rename(columns={'event_id_idx': 'feature_id', 'value': 'feature_value'})
@@ -195,8 +202,22 @@ def create_features(events, mortality, feature_map):
     1. patient_features :  Key - patient_id and value is array of tuples(feature_id, feature_value)
     2. mortality : Key - patient_id and value is mortality label
     '''
+    # Starting with mortality
+    mortality_df = events[['patient_id']].drop_duplicates().reset_index(drop=True)
+    mortality_df = mortality_df.merge(mortality[['patient_id', 'label']], how='left', on='patient_id')
+    mortality_df.rename(index=str, columns={'label': 'is_deceased'}, inplace=True)
+    mortality_df.is_deceased.fillna(0, inplace=True)
+    mortality = dict(zip(mortality_df.patient_id, mortality_df.is_deceased))
+
+    # Next, Patient Features
+    aggregated_events.sort_values(['patient_id', 'feature_id'], inplace=True)
     patient_features = {}
-    mortality = {}
+    patients = events.patient_id.drop_duplicates()
+    for p in patients:
+        patient_features[p] = []
+
+    for index, row in aggregated_events.iterrows():
+        patient_features[row.patient_id].append((row.feature_id, row.feature_value))
 
     return patient_features, mortality
 
@@ -206,6 +227,9 @@ def save_svmlight(patient_features, mortality, op_file, op_deliverable):
     TODO: This function needs to be completed
 
     Refer to instructions in Q3 d
+
+    Format:
+    <patient_id> <mortality_value> <feature_id>:<feature_value> <feature_id>:<feature_value>
 
     Create two files:
     1. op_file - which saves the features in svmlight format. (See instructions in Q3d for detailed explanation)
@@ -218,14 +242,27 @@ def save_svmlight(patient_features, mortality, op_file, op_deliverable):
     deliverable1 = open(op_file, 'wb')
     deliverable2 = open(op_deliverable, 'wb')
     
-    deliverable1.write(bytes((""),'UTF-8')); #Use 'UTF-8'
-    deliverable2.write(bytes((""),'UTF-8'));
+    patients = list(patient_features.keys())
+    patients.sort()
+    for patient in patients:
+        deliverable1_text = str(int(mortality[patient])) + ' '
+        deliverable2_text = str(patient) + ' ' + str(int(mortality[patient])) + ' '
+        for features in patient_features[patient]:
+            deliverable1_text += (str(int(features[0])) + ':' + str(features[1]) + ' ')
+            deliverable2_text += (str(int(features[0])) + ':' + str(features[1]) + ' ')
+        deliverable1.write(bytes(deliverable1_text, 'UTF-8'))
+        deliverable1.write(bytes('\n', 'UTF-8'))
+        deliverable2.write(bytes(deliverable2_text, 'UTF-8'))
+        deliverable2.write(bytes('\n', 'UTF-8'))
+    deliverable1.close()
+    deliverable2.close()
+
 
 def main():
     train_path = '../data/train/'
     events, mortality, feature_map = read_csv(train_path)
     patient_features, mortality = create_features(events, mortality, feature_map)
-    # save_svmlight(patient_features, mortality, '../deliverables/features_svmlight.train', '../deliverables/features.train')
+    save_svmlight(patient_features, mortality, '../deliverables/features_svmlight.train', '../deliverables/features.train')
 
 if __name__ == "__main__":
     main()
