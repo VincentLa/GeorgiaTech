@@ -1,5 +1,6 @@
 import os
 
+import numpy as np
 import pandas as pd
 
 import utils
@@ -135,9 +136,45 @@ def aggregate_events(filtered_events_df, mortality_df,feature_map_df, deliverabl
     For example if you are using Pandas, you could write: 
         aggregated_events.to_csv(deliverables_path + 'etl_aggregated_events.csv', columns=['patient_id', 'feature_id', 'feature_value'], index=False)
 
-    Return filtered_events
+    Return aggregated_events
     '''
-    aggregated_events = ''
+    # Need to Remove rows where value is null
+    events_remove_na = filtered_events_df.loc[filtered_events_df.value.isnull() == False]
+
+    events_remove_na = events_remove_na.merge(feature_map_df, how='left', on='event_id')
+    events_remove_na.rename(columns={'idx': 'event_id_idx'}, inplace=True)
+    events_remove_na['event_type'] = events_remove_na.event_id.str.replace('[^a-zA-Z]', '')
+
+    events_grouped = events_remove_na[['patient_id',
+                                       'event_id_idx',
+                                       'event_type',
+                                       'value']].groupby(['patient_id', 'event_id_idx', 'event_type'])\
+                                                .agg({'value': ['count', 'sum']})
+    
+    # Neat trick to collapse the hierarchical columns returned by groupby to single column
+    events_grouped.columns = ['_'.join(col).strip() for col in events_grouped.columns.values]
+
+    # reset index
+    events_grouped.reset_index(inplace=True)
+
+    events_grouped['value'] = np.where(events_grouped['event_type']=='LAB',
+                                   events_grouped.value_count,
+                                   events_grouped.value_sum)
+
+    aggregated_events = events_grouped[['patient_id', 'event_id_idx', 'value']]
+    aggregated_events = aggregated_events.rename(columns={'event_id_idx': 'feature_id', 'value': 'feature_value'})
+    
+    # Min Max Normalization
+    min_value = min(aggregated_events.feature_value)
+    max_value = max(aggregated_events.feature_value)
+
+    aggregated_events['feature_value_normalized'] = (aggregated_events.feature_value - min_value) / (max_value - min_value)
+    aggregated_events = aggregated_events[['patient_id',
+                                           'feature_id',
+                                           'feature_value_normalized']].rename(columns={'feature_value_normalized': 'feature_value'})
+
+    # Write to Disk
+    aggregated_events.to_csv(deliverables_path + 'etl_aggregated_events.csv', columns=['patient_id', 'feature_id', 'feature_value'], index=False)                                       
     return aggregated_events
 
 def create_features(events, mortality, feature_map):
