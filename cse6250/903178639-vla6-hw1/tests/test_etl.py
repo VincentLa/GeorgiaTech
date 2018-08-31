@@ -139,6 +139,8 @@ def test_aggregate_events ():
     for idx,line in enumerate(expected_data):
         first = line.split(',')
         second = actual_data[idx].split(',')
+        print(first)
+        print(second)
         if not (float(first[0])==float(second[0]) and float(first[1]) == float(second[1]) and abs(float(first[2])-float(second[2]))<=0.1):
             res = False
             msg = "Mistmatch on line %d. \n\nExpected: %s  \nActual: %s " %(idx+1, line, actual_data[idx])
@@ -150,5 +152,6 @@ def test_features_order():
     patient_features = {2293.0: [(2741.0, 1.0), (2751.0, 1.0), (2760.0, 1.0), (2841.0, 1.0), (2880.0, 1.0), (2914.0, 1.0), (2948.0, 1.0), (3008.0, 1.0), (3049.0, 1.0), (1193.0, 1.0), (1340.0, 1.0), (1658.0, 1.0), (1723.0, 1.0), (2341.0, 1.0), (2414.0, 1.0)]}
     mortality = {2293.0: 1}
     save_svmlight(patient_features, mortality, VALIDATION_FEATURES, VALIDATION_DELIVERABLE)
+    print(VALIDATION_DELIVERABLE)
     result = filecmp.cmp('tests/expected_features.train', VALIDATION_DELIVERABLE)
     eq_(True, result, "Features are not same")

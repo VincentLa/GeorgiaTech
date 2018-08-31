@@ -170,15 +170,27 @@ def aggregate_events(filtered_events_df, mortality_df,feature_map_df, deliverabl
 
     aggregated_events = events_grouped[['patient_id', 'event_id_idx', 'value']]
     aggregated_events = aggregated_events.rename(columns={'event_id_idx': 'feature_id', 'value': 'feature_value'})
+
+    aggregated_events['patient_id'] = aggregated_events.patient_id.astype(float)
+    aggregated_events['feature_id'] = aggregated_events.feature_id.astype(float)
+    aggregated_events['feature_value'] = aggregated_events.feature_value.astype(float)
     
     # Min Max Normalization
-    min_value = min(aggregated_events.feature_value)
-    max_value = max(aggregated_events.feature_value)
+    feature_min_max = aggregated_events[['feature_id', 'feature_value']].groupby(['feature_id']).agg({'feature_value': ['min', 'max']})
+    feature_min_max.columns = ['_'.join(col).strip() for col in feature_min_max.columns.values]
+    feature_min_max.reset_index(inplace=True)
 
-    aggregated_events['feature_value_normalized'] = (aggregated_events.feature_value - min_value) / (max_value - min_value)
+
+    aggregated_events = aggregated_events.merge(feature_min_max, on=['feature_id'])
+
+    aggregated_events['feature_value_normalized'] = (aggregated_events.feature_value) / (aggregated_events.feature_value_max)
     aggregated_events = aggregated_events[['patient_id',
                                            'feature_id',
                                            'feature_value_normalized']].rename(columns={'feature_value_normalized': 'feature_value'})
+
+    aggregated_events['patient_id'] = aggregated_events.patient_id.astype(float)
+    aggregated_events['feature_id'] = aggregated_events.feature_id.astype(float)
+    aggregated_events['feature_value'] = aggregated_events.feature_value.astype(float)
 
     # Write to Disk
     aggregated_events.to_csv(deliverables_path + 'etl_aggregated_events.csv', columns=['patient_id', 'feature_id', 'feature_value'], index=False)                                       
@@ -202,6 +214,9 @@ def create_features(events, mortality, feature_map):
     1. patient_features :  Key - patient_id and value is array of tuples(feature_id, feature_value)
     2. mortality : Key - patient_id and value is mortality label
     '''
+    
+    events = events.loc[events.value.isnull() == False]
+
     # Starting with mortality
     mortality_df = events[['patient_id']].drop_duplicates().reset_index(drop=True)
     mortality_df = mortality_df.merge(mortality[['patient_id', 'label']], how='left', on='patient_id')
@@ -212,7 +227,7 @@ def create_features(events, mortality, feature_map):
     # Next, Patient Features
     aggregated_events.sort_values(['patient_id', 'feature_id'], inplace=True)
     patient_features = {}
-    patients = events.patient_id.drop_duplicates()
+    patients = aggregated_events.patient_id.drop_duplicates()
     for p in patients:
         patient_features[p] = []
 
@@ -241,15 +256,21 @@ def save_svmlight(patient_features, mortality, op_file, op_deliverable):
     '''
     deliverable1 = open(op_file, 'wb')
     deliverable2 = open(op_deliverable, 'wb')
-    
+
     patients = list(patient_features.keys())
     patients.sort()
+
+    for patient in patients:
+        features = patient_features[patient]
+        features = sorted(features, key=lambda x: x[0])
+        patient_features[patient] = features
+
     for patient in patients:
         deliverable1_text = str(int(mortality[patient])) + ' '
-        deliverable2_text = str(patient) + ' ' + str(int(mortality[patient])) + ' '
+        deliverable2_text = str(int(patient)) + ' ' + str(int(mortality[patient])) + ' '
         for features in patient_features[patient]:
-            deliverable1_text += (str(int(features[0])) + ':' + str(features[1]) + ' ')
-            deliverable2_text += (str(int(features[0])) + ':' + str(features[1]) + ' ')
+            deliverable1_text += (str(int(features[0])) + ':' + str("%.6f" % features[1]) + ' ')
+            deliverable2_text += (str(int(features[0])) + ':' + str("%.6f" % features[1]) + ' ')
         deliverable1.write(bytes(deliverable1_text, 'UTF-8'))
         deliverable1.write(bytes('\n', 'UTF-8'))
         deliverable2.write(bytes(deliverable2_text, 'UTF-8'))
