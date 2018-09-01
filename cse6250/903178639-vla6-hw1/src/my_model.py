@@ -18,7 +18,7 @@ output: X_train,Y_train,X_test
 '''
 def my_features():
 	#TODO: complete this
-	return None,None,None
+	return X_train, Y_train, X_test
 
 
 '''
