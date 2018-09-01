@@ -1,3 +1,4 @@
+import etl
 import utils
 #Note: You can reuse code that you wrote in etl.py and models.py and cross.py over here. It might help.
 # PLEASE USE THE GIVEN FUNCTION NAME, DO NOT CHANGE IT
@@ -17,7 +18,12 @@ input:
 output: X_train,Y_train,X_test
 '''
 def my_features():
-	#TODO: complete this
+	"""
+	Generate own features. As a first pass, just replicate what we've already done in 
+	"""
+
+	X_train, Y_train = utils.get_data_from_svmlight("../deliverables/features_svmlight.train")  # Need to replace this with my own
+	X_test, Y_test = utils.get_data_from_svmlight("../data/features_svmlight.validate")
 	return X_train, Y_train, X_test
 
 
