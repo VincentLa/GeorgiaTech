@@ -174,6 +174,7 @@ def my_features():
     write_features(events, feature_map)
 
     X_train, Y_train = utils.get_data_from_svmlight("../deliverables/features_svmlight.train")
+    # X_val, Y_val = utils.get_data_from_svmlight("../deliverables/features_svmlight.validate")
     X_test, _ = utils.get_data_from_svmlight("../deliverables/test_features.txt")
 
     return X_train, Y_train, X_test
@@ -185,21 +186,46 @@ You can use any model you wish.
 input: X_train, Y_train, X_test
 output: Y_pred
 '''
+def my_model(X_train, Y_train, X_test):
+    """
+    Training Model
+    """
+    clf = RandomForestClassifier(n_estimators=100)
+    clf.fit(X_train, Y_train)
+    return clf
+
 def my_classifier_predictions(X_train, Y_train, X_test):
     """
     As first pass just use Random Forest
     """
-    clf = RandomForestClassifier()
-    clf.fit(X_train, Y_train)
-    y_pred = clf.predict(X_test)
+    model = my_model(X_train, Y_train, X_test)
+    y_pred = model.predict(X_test)
     return y_pred
 
+def my_classifier_predictions_proba(X_train, Y_train, X_test):
+    """
+    As first pass just use Random Forest
+    """
+    model = my_model(X_train, Y_train, X_test)
+    y_pred = model.predict_proba(X_test)[:, 1]
+    return y_pred
+
+def generate_submission_proba(svmlight_with_ids_file, Y_pred):
+    f = open(svmlight_with_ids_file)
+    lines = f.readlines()
+    target = open('../deliverables/my_predictions_proba.csv', 'w')
+    target.write("%s,%s\n" %("patient_id","label"));
+    for i in range(len(lines)):
+        target.write("%s,%s\n" %(str(lines[i].split()[0]),str(Y_pred[i])));
 
 def main():
     X_train, Y_train, X_test = my_features()
     my_classifier_predictions(X_train,Y_train,X_test)
     Y_pred = my_classifier_predictions(X_train,Y_train,X_test)
+    y_pred_proba = my_classifier_predictions_proba(X_train, Y_train, X_test)
     utils.generate_submission("../deliverables/test_features.txt",Y_pred)
+    generate_submission_proba("../deliverables/test_features.txt",y_pred_proba)
+
     #The above function will generate a csv file of (patient_id,predicted label) and will be saved as "my_predictions.csv" in the deliverables folder.
 
 if __name__ == "__main__":
