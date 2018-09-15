@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  bootcamp:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    # bootcamp.local
+    hostname: bootcamp
+    domainname: local
+    restart: "no" # always, on-failure, unless-stopped
+    volumes:
+      - ./homeworks:/homeworks
+      - ./data/logs:/var/log
+      - ./data/host:/mnt/host
+    environment:
+      - CONTAINER=docker
+    networks:
+      - hadoopenv
+    command: [ "/scripts/entrypoint.sh" ]
+    # command: [ "/usr/sbin/sshd", "-D" ]
+    ports:
+      - "2333:22"
+      - "8888:8888" # jupyter
+      - "9530:9530" # zeppelin
+      # - "7077:7077" # spark
+      # - "8983:8983" # solr
+
+networks:
+  hadoopenv:
+
+# list hdfs
+# sudo -u hdfs hdfs dfsadmin -report
+
+# check spark
+# val allExecutors = sc.getExecutorMemoryStatus.map(_._1)
+# val driverHost: String = sc.getConf.get("spark.driver.host")
+# allExecutors.filter(! _.split(":")(0).equals(driverHost)).toList
+
+# list yarn apps
+# yarn application -list

@@ -1,0 +1,11 @@
+_site/
+.sass-cache/
+.jekyll-metadata
+
+# data directory
+/data/*
+!/data/.placeholder
+
+
+
+

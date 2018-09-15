@@ -2,3 +2,19 @@
 
 Course Link: http://www.sunlab.org/teaching/cse6250/fall2018/schedule.html
 Piazza: https://piazza.com/class/jjjilbkqk8m1r4?cid=8
+
+## Useful Links for HW2
+
+https://web.stanford.edu/class/archive/cs/cs109/cs109.1166/pdfs/40%20LogisticRegression.pdf
+http://www.cs.cmu.edu/~wcohen/10-605/sgd-part2.pdf
+
+## Useful Commands
+Runs a docker container with options represent in a YAML config
+```
+docker-compose up
+```
+
+SSH into Docker Container
+```
+ssh -p 2333 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./config/ssh/id_rsa root@127.0.0.1
+```

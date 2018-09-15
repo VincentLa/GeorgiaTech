@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  bootcamp:
+    image: sunlab/bigbox:latest
+    # bootcamp.local
+    hostname: bootcamp
+    domainname: local
+    restart: "no" # always, on-failure, unless-stopped
+    volumes:
+      - ./data/logs:/var/log
+      - ./data/host:/mnt/host
+    environment:
+      - CONTAINER=docker
+    networks:
+      - hadoopenv
+    command: [ "/scripts/entrypoint.sh" ]
+    # command: [ "/usr/sbin/sshd", "-D" ]
+    ports:
+      - "2333:22"
+      - "8888:8888" # jupyter
+      - "9530:9530" # zeppelin
+      # - "7077:7077" # spark
+      # - "8983:8983" # solr
+
+networks:
+  hadoopenv:
+
+
