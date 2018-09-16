@@ -3,6 +3,8 @@
 -- Aggregate events into features of patient and generate training, testing data for mortality prediction.
 -- Steps have been provided to guide you.
 -- You can include as many intermediate steps as required to complete the calculations.
+-- To run pig: pig -x local
+-- Note to cleanup before run; bash tmp/clean_pig.sh
 -- ***************************************************************************
 
 -- ***************************************************************************
@@ -16,13 +18,15 @@
 REGISTER utils.py USING jython AS utils;
 
 -- load events file
-events = LOAD '../../data/events.csv' USING PigStorage(',') AS (patientid:int, eventid:chararray, eventdesc:chararray, timestamp:chararray, value:float);
+-- events = LOAD '../../data/events.csv' USING PigStorage(',') AS (patientid:int, eventid:chararray, eventdesc:chararray, timestamp:chararray, value:float);
+events = LOAD '../sample_test/sample_events.csv' USING PigStorage(',') AS (patientid:int, eventid:chararray, eventdesc:chararray, timestamp:chararray, value:float);
 
 -- select required columns from events
 events = FOREACH events GENERATE patientid, eventid, ToDate(timestamp, 'yyyy-MM-dd') AS etimestamp, value;
 
 -- load mortality file
-mortality = LOAD '../../data/mortality.csv' USING PigStorage(',') as (patientid:int, timestamp:chararray, label:int);
+-- mortality = LOAD '../../data/mortality.csv' USING PigStorage(',') as (patientid:int, timestamp:chararray, label:int);
+mortality = LOAD '../sample_test/sample_mortality.csv' USING PigStorage(',') as (patientid:int, timestamp:chararray, label:int);
 
 mortality = FOREACH mortality GENERATE patientid, ToDate(timestamp, 'yyyy-MM-dd') AS mtimestamp, label;
 
@@ -31,11 +35,29 @@ mortality = FOREACH mortality GENERATE patientid, ToDate(timestamp, 'yyyy-MM-dd'
 -- ***************************************************************************
 -- Compute the index dates for dead and alive patients
 -- ***************************************************************************
-eventswithmort = -- perform join of events and mortality by patientid;
+eventswithmort = JOIN events BY patientid LEFT OUTER, mortality by patientid; -- perform join of events and mortality by patientid;
 
-deadevents = -- detect the events of dead patients and create it of the form (patientid, eventid, value, label, time_difference) where time_difference is the days between index date and each event timestamp
+-- Filter Out Nulls
+-- eventswithmort = FILTER eventswithmort BY events::value is not null;
 
-aliveevents = -- detect the events of alive patients and create it of the form (patientid, eventid, value, label, time_difference) where time_difference is the days between index date and each event timestamp
+-- detect the events of dead patients and create it of the form (patientid, eventid, value, label, time_difference) where time_difference is the days between index date and each event timestamp
+deadevents = FILTER eventswithmort BY label == 1; 
+deadevents = FOREACH deadevents GENERATE events::patientid as patientid, events::eventid as eventid, events::value as value, events::etimestamp as etimestamp, mortality::label as label, SubtractDuration(mortality::mtimestamp, 'P30D') as index_date;
+deadevents = FOREACH deadevents GENERATE patientid, eventid, value, label, DaysBetween(index_date, etimestamp) as time_difference;
+
+-- detect the events of alive patients and create it of the form (patientid, eventid, value, label, time_difference) where time_difference is the days between index date and each event timestamp
+aliveevents = FILTER eventswithmort BY label is null;
+aliveevents = FOREACH aliveevents GENERATE events::patientid as patientid, events::eventid as eventid, events::etimestamp as etimestamp, events::value as value; 
+
+---- Find Last Event Date for each Alive Patient
+ae_patients = GROUP aliveevents by patientid;
+ae_patients_max_date = FOREACH ae_patients GENERATE group as patientid, MAX(aliveevents.etimestamp) as max_event_date;
+  
+---- Join back to get the latest event date for each patient
+aliveevents = JOIN aliveevents BY patientid LEFT OUTER, ae_patients_max_date by patientid;
+aliveevents = FOREACH aliveevents GENERATE aliveevents::patientid as patientid, aliveevents::eventid as eventid, aliveevents::etimestamp as etimestamp, aliveevents::value as value, ae_patients_max_date::max_event_date as index_date; 
+aliveevents = FOREACH aliveevents GENERATE patientid, eventid, value, 0 as label, DaysBetween(index_date, etimestamp) as time_difference;
+
 
 --TEST-1
 deadevents = ORDER deadevents BY patientid, eventid;
@@ -46,12 +68,14 @@ STORE deadevents INTO 'deadevents' USING PigStorage(',');
 -- ***************************************************************************
 -- Filter events within the observation window and remove events with missing values
 -- ***************************************************************************
-filtered = -- contains only events for all patients within the observation window of 2000 days and is of the form (patientid, eventid, value, label, time_difference)
+allevents = union aliveevents, deadevents;
+allevents = FILTER allevents BY value is not null;
+filtered = FILTER allevents by time_difference <= 2000; -- contains only events for all patients within the observation window of 2000 days and is of the form (patientid, eventid, value, label, time_difference)
 
 --TEST-2
 filteredgrpd = GROUP filtered BY 1;
 filtered = FOREACH filteredgrpd GENERATE FLATTEN(filtered);
-filtered = ORDER filtered BY patientid, eventid,time_difference;
+filtered = ORDER filtered BY patientid, eventid, time_difference;
 STORE filtered INTO 'filtered' USING PigStorage(',');
 
 -- ***************************************************************************
