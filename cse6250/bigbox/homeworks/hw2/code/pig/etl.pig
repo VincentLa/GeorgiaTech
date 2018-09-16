@@ -118,11 +118,18 @@ STORE features INTO 'features_map' USING PigStorage(',');
 -- Normalize the values using min-max normalization
 -- Use DOUBLE precision
 -- ***************************************************************************
-maxvalues = -- group events by idx and compute the maximum feature value in each group. I t is of the form (idx, maxvalue)
+by_idx = GROUP features BY idx;
+-- group events by idx and compute the maximum feature value in each group. I t is of the form (idx, maxvalue)
+maxvalues = FOREACH by_idx GENERATE
+  FLATTEN(group) as idx,
+  MAX(features.featurevalue) as maxvalue;
 
-normalized = -- join features and maxvalues by idx
+-- join features and maxvalues by idx
+normalized = JOIN features by idx LEFT OUTER, maxvalues by idx;
+normalized = FOREACH normalized GENERATE features::patientid as patientid, features::idx as idx, features::featurevalue as featurevalue, maxvalues::maxvalue as maxvalue;
 
-features = -- compute the final set of normalized features of the form (patientid, idx, normalizedfeaturevalue)
+-- compute the final set of normalized features of the form (patientid, idx, normalizedfeaturevalue)
+features = FOREACH normalized GENERATE patientid, idx, 1.0 * featurevalue / maxvalue as normalizedfeaturevalue;
 
 --TEST-5
 features = ORDER features BY patientid, idx;
