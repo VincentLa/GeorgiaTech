@@ -37,9 +37,6 @@ mortality = FOREACH mortality GENERATE patientid, ToDate(timestamp, 'yyyy-MM-dd'
 -- ***************************************************************************
 eventswithmort = JOIN events BY patientid LEFT OUTER, mortality by patientid; -- perform join of events and mortality by patientid;
 
--- Filter Out Nulls
--- eventswithmort = FILTER eventswithmort BY events::value is not null;
-
 -- detect the events of dead patients and create it of the form (patientid, eventid, value, label, time_difference) where time_difference is the days between index date and each event timestamp
 deadevents = FILTER eventswithmort BY label == 1; 
 deadevents = FOREACH deadevents GENERATE events::patientid as patientid, events::eventid as eventid, events::value as value, events::etimestamp as etimestamp, mortality::label as label, SubtractDuration(mortality::mtimestamp, 'P30D') as index_date;
@@ -81,7 +78,12 @@ STORE filtered INTO 'filtered' USING PigStorage(',');
 -- ***************************************************************************
 -- Aggregate events to create features
 -- ***************************************************************************
-featureswithid = -- for group of (patientid, eventid), count the number of  events occurred for the patient and create relation of the form (patientid, eventid, featurevalue)
+by_patients_eventid = GROUP filtered BY (patientid, eventid);
+
+-- for group of (patientid, eventid), count the number of  events occurred for the patient and create relation of the form (patientid, eventid, featurevalue)
+featureswithid = FOREACH by_patients_eventid GENERATE
+  FLATTEN(group) as (patientid, eventid),
+  COUNT(filtered) as featurevalue;
 
 --TEST-3
 featureswithid = ORDER featureswithid BY patientid, eventid;
@@ -90,12 +92,23 @@ STORE featureswithid INTO 'features_aggregate' USING PigStorage(',');
 -- ***************************************************************************
 -- Generate feature mapping
 -- ***************************************************************************
-all_features = -- compute the set of distinct eventids obtained from previous step, sort them by eventid and then rank these features by eventid to create (idx, eventid). Rank should start from 0.
+by_events = GROUP featureswithid BY eventid; 
+distinct_events = FOREACH by_events GENERATE
+  FLATTEN(group) as eventid,
+  COUNT(featureswithid) as temp_count;
+distinct_events = FOREACH distinct_events GENERATE eventid;
+distinct_events = ORDER distinct_events BY eventid;
+ranked_events = rank distinct_events by eventid asc;
+
+-- compute the set of distinct eventids obtained from previous step, sort them by eventid and then rank these features by eventid to create (idx, eventid). Rank should start from 0.
+all_features = FOREACH ranked_events GENERATE rank_distinct_events - 1 as idx, eventid;
 
 -- store the features as an output file
 STORE all_features INTO 'features' using PigStorage(' ');
 
-features = -- perform join of featureswithid and all_features by eventid and replace eventid with idx. It is of the form (patientid, idx, featurevalue)
+-- perform join of featureswithid and all_features by eventid and replace eventid with idx. It is of the form (patientid, idx, featurevalue)
+features = JOIN featureswithid BY eventid LEFT OUTER, all_features by eventid;
+features = FOREACH features GENERATE featureswithid::patientid as patientid, all_features::idx as idx, featureswithid::featurevalue as featurevalue;
 
 --TEST-4
 features = ORDER features BY patientid, idx;
