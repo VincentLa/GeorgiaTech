@@ -6,4 +6,7 @@ rm -Rf ./features/
 rm -Rf ./features_aggregate/
 rm -Rf ./features_map/
 rm -Rf ./features_normalized/
+rm -Rf ./samples/
+rm -Rf ./testing/
+rm -Rf ./training/
 rm -f ./*.log

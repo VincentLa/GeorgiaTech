@@ -1,5 +1,7 @@
 # Do not use anything outside of the standard distribution of python
 # when implementing this class
+# Note that number of features should be 3618: https://piazza.com/class/jjjilbkqk8m1r4?cid=444
+# To run: cat ../pig/training/part-r-00000 | python train.py -f 3618
 import math 
 
 class LogisticRegressionSGD:
@@ -12,19 +14,38 @@ class LogisticRegressionSGD:
         Initialization of model parameters
         """
         self.eta = eta
+        self.mu = mu
         self.weight = [0.0] * n_feature
+
+    def find_feature(self, X, j):
+        """
+        Find feature j within X (single training point)
+
+        Since X is Sparse there is high likelihood that the single training point does not have non-zero value for feature j.
+        In this case return 0 
+        """
+        feature = [x_j for x_j in X if x_j[0] == j]
+        if len(feature) > 0:
+            return feature[0][1]
+        else:
+            return 0
 
     def fit(self, X, y):
         """
         Update model using a pair of training sample
+
+        Basically, just take the equation in 1.2.e to update the next weight.
         """
-        pass
+        for j in range(len(self.weight)):
+            w = self.weight[j]
+            x_j = self.find_feature(X, j)
+            self.weight[j] = w + self.eta * ((y - self.predict_prob(X)) * x_j - (2 * self.mu * w))
 
     def predict(self, X):
         """
         Predict 0 or 1 given X and the current weights in the model
         """
-        return 1 if predict_prob(X) > 0.5 else 0
+        return 1 if self.predict_prob(X) > 0.5 else 0
 
     def predict_prob(self, X):
         """

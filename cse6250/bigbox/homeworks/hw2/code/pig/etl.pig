@@ -4,6 +4,7 @@
 -- Steps have been provided to guide you.
 -- You can include as many intermediate steps as required to complete the calculations.
 -- To run pig: pig -x local
+-- To run the entire file: sudo pig -x local etl.pig
 -- Note to cleanup before run; bash tmp/clean_pig.sh
 -- ***************************************************************************
 
@@ -18,15 +19,15 @@
 REGISTER utils.py USING jython AS utils;
 
 -- load events file
--- events = LOAD '../../data/events.csv' USING PigStorage(',') AS (patientid:int, eventid:chararray, eventdesc:chararray, timestamp:chararray, value:float);
-events = LOAD '../sample_test/sample_events.csv' USING PigStorage(',') AS (patientid:int, eventid:chararray, eventdesc:chararray, timestamp:chararray, value:float);
+events = LOAD '../../data/events.csv' USING PigStorage(',') AS (patientid:int, eventid:chararray, eventdesc:chararray, timestamp:chararray, value:float);
+-- events = LOAD '../sample_test/sample_events.csv' USING PigStorage(',') AS (patientid:int, eventid:chararray, eventdesc:chararray, timestamp:chararray, value:float);
 
 -- select required columns from events
 events = FOREACH events GENERATE patientid, eventid, ToDate(timestamp, 'yyyy-MM-dd') AS etimestamp, value;
 
 -- load mortality file
--- mortality = LOAD '../../data/mortality.csv' USING PigStorage(',') as (patientid:int, timestamp:chararray, label:int);
-mortality = LOAD '../sample_test/sample_mortality.csv' USING PigStorage(',') as (patientid:int, timestamp:chararray, label:int);
+mortality = LOAD '../../data/mortality.csv' USING PigStorage(',') as (patientid:int, timestamp:chararray, label:int);
+-- mortality = LOAD '../sample_test/sample_mortality.csv' USING PigStorage(',') as (patientid:int, timestamp:chararray, label:int);
 
 mortality = FOREACH mortality GENERATE patientid, ToDate(timestamp, 'yyyy-MM-dd') AS mtimestamp, label;
 
@@ -67,7 +68,7 @@ STORE deadevents INTO 'deadevents' USING PigStorage(',');
 -- ***************************************************************************
 allevents = union aliveevents, deadevents;
 allevents = FILTER allevents BY value is not null;
-filtered = FILTER allevents by time_difference <= 2000; -- contains only events for all patients within the observation window of 2000 days and is of the form (patientid, eventid, value, label, time_difference)
+filtered = FILTER allevents by time_difference <= 2000 and time_difference >= 0; -- contains only events for all patients within the observation window of 2000 days and is of the form (patientid, eventid, value, label, time_difference)
 
 --TEST-2
 filteredgrpd = GROUP filtered BY 1;
@@ -159,8 +160,18 @@ features = FOREACH grpd_order
 --	2,0
 --      3,1
 -- ***************************************************************************
+by_dead_patient = GROUP deadevents by patientid;
+distinct_dead_patients = FOREACH by_dead_patient GENERATE
+  FLATTEN(group) as patientid,
+  1 as label;
 
-labels = -- create it of the form (patientid, label) for dead and alive patients
+by_alive_patient = GROUP aliveevents by patientid;
+distinct_alive_patients = FOREACH by_alive_patient GENERATE
+  FLATTEN(group) as patientid,
+  0 as label;
+
+-- create it of the form (patientid, label) for dead and alive patients
+labels = union distinct_dead_patients, distinct_alive_patients;
 
 --Generate sparsefeature vector relation
 samples = JOIN features BY patientid, labels BY patientid;
