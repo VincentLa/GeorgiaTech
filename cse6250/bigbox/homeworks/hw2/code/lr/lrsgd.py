@@ -24,11 +24,8 @@ class LogisticRegressionSGD:
         Since X is Sparse there is high likelihood that the single training point does not have non-zero value for feature j.
         In this case return 0 
         """
-        feature = [x_j for x_j in X if x_j[0] == j]
-        if len(feature) > 0:
-            return feature[0][1]
-        else:
-            return 0
+        X_dict = dict(X)
+        return X_dict.get(j, 0)
 
     def fit(self, X, y):
         """
