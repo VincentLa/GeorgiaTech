@@ -63,6 +63,8 @@ FROM events
   LEFT JOIN mortality
     ON events.patient_id = mortality.patient_id
 where mortality.patient_id is NULL
+  AND events.time IS NOT NULL
+  AND events.event_id IS NOT NULL
 ;
 
 
@@ -79,6 +81,8 @@ FROM events
   LEFT JOIN mortality
     on events.patient_id = mortality.patient_id
 where mortality.patient_id is not NULL
+  AND events.time IS NOT NULL
+  AND events.event_id IS NOT NULL
 ;
 
 
