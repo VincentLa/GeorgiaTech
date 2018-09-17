@@ -17,26 +17,18 @@ class LogisticRegressionSGD:
         self.mu = mu
         self.weight = [0.0] * n_feature
 
-    def find_feature(self, X, j):
-        """
-        Find feature j within X (single training point)
-
-        Since X is Sparse there is high likelihood that the single training point does not have non-zero value for feature j.
-        In this case return 0 
-        """
-        X_dict = dict(X)
-        return X_dict.get(j, 0)
-
     def fit(self, X, y):
         """
         Update model using a pair of training sample
 
         Basically, just take the equation in 1.2.e to update the next weight.
         """
+        yhat = self.predict_prob(X)
+        X_dict = dict(X)
         for j in range(len(self.weight)):
             w = self.weight[j]
-            x_j = self.find_feature(X, j)
-            self.weight[j] = w + self.eta * ((y - self.predict_prob(X)) * x_j - (2 * self.mu * w))
+            x_j = X_dict.get(j, 0)
+            self.weight[j] = w + self.eta * ((y - yhat) * x_j - (2 * self.mu * w))
 
     def predict(self, X):
         """
