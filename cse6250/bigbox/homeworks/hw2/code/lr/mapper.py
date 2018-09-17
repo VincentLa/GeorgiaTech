@@ -10,7 +10,10 @@ Before you can run this need to run the following in terminal
    (Note that I am in the code directory when I do this)
 
 To actually run do:
-hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar -D mapreduce.job.reduces=5 -files lr -mapper "python lr/mapper.py -n 5 -r 0.4 " -reducer "python lr/reducer.py -f 3618" -input /hw2/training -output /hw2/models
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar -D mapreduce.job.reduces=5 -files lr -mapper "python lr/mapper.py -n 5 -r 0.4" -reducer "python lr/reducer.py -f 3618" -input /hw2/training -output /hw2/models
+
+Also, before each next run, need to remove the output directory:
+hadoop fs -rm -r /hw2/models
 """
 import sys
 import random
@@ -28,20 +31,8 @@ options, args = parser.parse_args(sys.argv)
 random.seed(6505)
 
 for line in sys.stdin:
-    #print line
     value = line.strip()
     for i in range(options.n_model):
-        i += 1
-        key = random.random()
-        if options.ratio > key:
-            print "%d\t%s" % (i, value)
-
-# for line in sys.stdin:
-#     # TODO
-#     # Note: The following lines are only there to help 
-#     #       you get started (and to have a 'runnable' program). 
-#     #       You may need to change some or all of the lines below.
-#     #       Follow the pseudocode given in the PDF.
-#     key = random.randint(0, options.n_model - 1)
-#     value = line.strip()
-#     print("%d\t%s" % (key, value))
+        m = random.random()
+        if m < options.ratio:
+            print("{}\t{}".format(i, value))

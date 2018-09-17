@@ -1,4 +1,10 @@
 #!/usr/bin/env python
+"""
+Author: Vincent La
+
+To run:
+cat pig/testing/* | python lr/testensemble.py -m models/models
+"""
 
 import sys
 import os
@@ -34,13 +40,11 @@ def predict_prob(classifiers, X):
     predict the probability of positive label.
     (Return the average obtained from all the classifiers)
     """
-    average = []
+    yhats = []
     for classifier in classifiers:
-        Y = classifier.predict_prob(X)
-        print Y
-
-        average.append(Y)
-    avg = sum(average) / float(len(average))
+        yhat = classifier.predict_prob(X)
+        yhats.append(yhat)
+    avg = sum(yhats) / float(len(yhats))
     return avg
 
 
