@@ -1,0 +1,16 @@
+# ABNORMAL LAB VALUES: CONTROLS
+'HbA1c' >=6.0%
+OR
+'Hemoglobin A1c' >= 6.0%
+OR
+'Fasting Glucose' >= 110 mg/dL
+OR
+'Fasting blood glucose' >= 110 mg/dL
+OR
+'fasting plasma glucose' >= 110 mg/dL
+OR
+'Glucose' > 110 mg/dL
+OR
+'glucose' > 110 mg/dL
+OR
+'Glucose, Serum' > 110 mg/dL

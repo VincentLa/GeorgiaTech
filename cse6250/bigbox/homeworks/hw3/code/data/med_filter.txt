@@ -1,0 +1,41 @@
+lantus
+insulin glargine
+insulin aspart
+insulin detemir
+insulin lente
+insulin nph
+insulin reg
+insulin,ultralente
+chlorpropamide
+diabinese
+diabanase
+diabinase
+glipizide
+glucotrol
+glucotrol XL
+glucatrol 
+glyburide
+micronase
+glynase
+diabetamide
+diabeta
+glimepiride
+amaryl
+repaglinide
+prandin
+nateglinide
+metformin
+rosiglitazone
+pioglitazone
+acarbose
+miglitol
+sitagliptin
+exenatide
+tolazamide
+acetohexamide
+troglitazone
+tolbutamide
+avandia
+actos
+ACTOS
+glipizide

@@ -1,0 +1,301 @@
+\documentclass[12pt]{article}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{bm}
+\RequirePackage[colorlinks]{hyperref}
+\usepackage[lined,boxed,linesnumbered,commentsnumbered]{algorithm2e}
+\newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+\SetCommentSty{mycommfont}
+\usepackage{xcolor}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily,
+  showstringspaces=false,
+  commentstyle=\color{red},
+  keywordstyle=\color{blue}
+}
+\usepackage{float}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+\linespread{1.1}
+
+\newcommand{\ecedit}[1]{\textcolor{magenta}{\emph{[EC: #1]}}}
+\newcommand{\hsedit}[1]{\textcolor{olive}{\emph{[HS: #1]}}}
+\newcommand{\saedit}[1]{\textcolor{blue}{\emph{[SA: #1]}}}
+\newcommand{\sxedit}[1]{\textcolor{red}{\emph{[SX: #1]}}}
+\newcommand{\prpedit}[1]{\textcolor{gray}{\emph{[PRP: #1]}}}
+
+% Commands
+\newenvironment{solution}
+  {\begin{proof}[Solution]}
+  {\end{proof}}
+
+\title{CSE6250: Big Data Analytics in Healthcare \\ Homework 3}
+\author{Jimeng Sun}
+\date{Deadline: Sep 30, 2018, 11:55 PM AoE}
+
+\begin{document}
+
+\maketitle
+\begin{itemize}
+\item Discussion is encouraged, but each student must write his/her own answers and explicitly mention any collaborators.
+\item Each student is expected to respect and follow the \href{http://osi.gatech.edu/content/honor-code}{ GT Honor Code}.
+\item Please type the submission with \LaTeX\ or Microsoft Word. We \textbf{will not} accept hand written submissions.
+\item Please \textbf{do not} change the filenames and function definitions in the skeleton code provided, as this will cause the test scripts to fail and subsequently no points will be awarded. 
+\end{itemize}
+
+
+\section*{Overview}
+Accurate knowledge of a patient's disease state is crucial to proper treatment, and we must understand a patient's phenotypes (based on their health records) to predict their disease state. There are several strategies for phenotyping including supervised rule-based methods and unsupervised methods. In this homework, you will implement both type of phenotyping algorithms using Spark.
+
+\section*{Prerequisites [0 points]}
+This homework is primarily about using Spark with Scala. We strongly recommend using our \href{http://www.sunlab.org/teaching/cse6250/fall2018/env}{bootcamp virtual environment setup} to prevent compatibility issues.
+
+However, since we use the \href{http://www.scala-sbt.org/}{Scala Build Tool (SBT)} as integrate tool, and use JVM as the runtime environment, you should be fine running it on your local machine.
+
+Please see the build.sbt file for the full list of dependencies and versions.
+
+Begin the homework by downloading the hw3.tar.gz from Canvas, which includes the skeleton code and test cases. 
+
+You should be able to immediately begin compiling and running the code with the following command (from the $code/$ folder):
+\begin{lstlisting}[frame=single,language=bash]
+sbt compile run
+\end{lstlisting}
+
+And you can run the test cases with this command:
+\begin{lstlisting}[frame=single,language=bash]
+sbt compile test
+\end{lstlisting}
+
+
+\section{Programming: Rule based phenotyping [35 points]}
+Phenotyping can be done using a rule-based method. The \href{https://phekb.org}{Phenotype Knowledge Base (PheKB)} provides a set of rule-based methods (typically in the form of decision trees) for determining whether or not a patient fits a particular phenotype. \\
+
+In this assignment, you will implement a phenotyping algorithm for type-2 diabetes based on the flowcharts below. The algorithm should:
+
+\begin{itemize}
+\item Take as input event data for diagnoses, medications, and lab results.
+\item Return an RDD of patients with labels (\textit{label}=1 if the patient is case, \textit{label}=2 if the patient is control, \textit{label}=3 otherwise). 
+\end{itemize}
+
+You will implement the \textit{Diabetes Mellitus Type 2} algorithms from PheKB. We have reduced the rules for simplicity, which you can find in the images below. However, you can refer to \href{http://jamia.oxfordjournals.org/content/19/2/219.long}{the full description} for more details if desired. \\
+
+The following files in \textit{code/data/} folder will be used as inputs:
+\begin{itemize}
+\item \textbf{encounter\textunderscore INPUT.csv}: Each line represents an encounter and contains a unique encounter ID, the patient ID (Member\_ID), and many other details about the counter. \textit{Hint: sql join}
+\item \textbf{encounter\textunderscore dx\textunderscore INPUT.csv}: Each line represents an encounter and contains any resulting diagnoses including a description and ICD9 code.
+\item \textbf{medication\textunderscore orders\textunderscore INPUT.csv}: Each line represents a medication order including the name of the medication.
+\item \textbf{lab\textunderscore results\textunderscore INPUT.csv}: Each line represents a lab result including the name of the lab (Result\_Name), the units of the lab output, and lab output value.
+\end{itemize}
+For your project, you will load input CSV files from the $code/data/$ folder. You are responsible for transforming the .csv's from this folder into RDDs.
+
+The simplified rules which you should follow for phenotyping of Diabetes Mellitus Type 2 are shown below. These rules are based off of the criteria from the PheKB phenotypes, which have been placed in the $phenotyping\_resources/$ folder.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{rule_case}
+  \caption{Determination of cases}
+  \label{fig:rule_case}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Requirements for Case patients}: Figure \ref{fig:rule_case} details the rules for determining whether a patient is case. Certain parts of the flowchart involve criteria that you will find in the $phekb\_criteria/$ folder as outlined below:
+
+\begin{itemize}
+\item \textbf{T1DM\_DX.csv}: Any ICD9 codes present in this file will be sufficient to result in \texttt{YES} for the \textit{Type 1 DM diagnosis} criteria.
+\item \textbf{T1DM\_MED.csv}: Any medications present in this file will be sufficient to result in \texttt{YES} for the \textit{Order for Type 1 DM medication} criteria. Please also use this list for the \textit{Type 2 DM medication preceeds Type 1 DM medication} criteria.
+\item \textbf{T2DM\_DX.csv}: Any of the ICD9 codes present in this file will be sufficient to result in \texttt{YES} for the \textit{Type 2 DM diagnosis} criteria.
+\item \textbf{T2DM\_MED.csv}: Any of the medications present in this file will be sufficient to result in \texttt{YES} for the \textit{Order for Type 2 DM medication} criteria. Please also use this list for the \textit{Type 2 DM medication preceeds Type 1 DM medication} criteria.
+\end{itemize}
+\end{itemize}
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{rule_control}
+  \caption{Determination of controls}
+  \label{fig:rule_control}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Requirements for Control patients}: Figure \ref{fig:rule_control} details the rules for determining whether a patient is control. Certain parts of the flowchart involve criteria that you will find in the $phekb\_criteria/$ folder as outlined below:
+
+\begin{itemize}
+\item \textbf{ABNORMAL\_LAB\_VALUES\_CONTROL.csv}: Any values described in this file should be considered abnormal for the \textit{Abnormal Lab Value} criteria. 
+\item \textbf{DM\_RELATED\_DX.csv}: Any ICD9 codes present in this file will be sufficient to result in \texttt{YES} for the \textit{Diabetes Mellitus related diagnosis} criteria.
+\end{itemize}
+\end{itemize}
+In order to help you verify your steps, expected counts along the different steps have been provided in:
+\begin{itemize}
+\item \texttt{phenotyping\_resources/expected\_count\_case.png}
+\item \texttt{phenotyping\_resources/expected\_count\_control.png}
+\end{itemize}
+
+Any patients not found to be in the \textbf{control} or \textbf{case} category should be placed in the \textbf{unknown} category. Additional hints and notes are provided directly in the code comments, so please read these carefully. \\
+
+\textbf{a.} Implement \textit{edu.gatech.cse6250.main.Main.loadRddRawData} to load the input .csv files in the data folder as structured RDDs. [5 points]
+\newline
+
+\textbf{b.}  Implement \textit{edu.gatech.cse6250.phenotyping.T2dmPhenotype} to:
+
+ - Correctly identify case patients [10 points]
+ 
+ - Correctly identify control patients [10 points]
+ 
+ - Correctly identify unknown patients [10 points]
+
+\section{Programming: Unsupervised Phenotyping via Clustering [60 points]}
+At this point you have implemented a supervised, rule-based phenotyping algorithm. This type of method is great for picking out specific diseases, in our case diabetes, but they are not good for discovering new, complex phenotypes. Such phenotypes can be disease subtypes (i.e. severe hypertension, moderate hypertension, mild hypertension) or they can reflect combinations of diseases that patients may present with (e.g. a patient with hypertension and renal failure). This is where unsupervised learning comes in.
+
+\subsection{Feature Construction [18 points]}
+You will need to start by constructing features out of the raw data to feed into the clustering algorithms. You will need to implement ETL using Spark with similar functionality as what you did in last homework using Pig. Since you know the diagnoses (in the form of ICD9 codes) each patient exhibits and the medications they took, you can aggregate this information to create features. Using the RDDs that you created in \textit{edu.gatech.cse6250.main.Main.loadRddRawData}, you will construct features for the COUNT of medications, COUNT of diagnoses, and AVERAGE lab test value. \\
+
+\textbf{a.} Implement the feature construction code in \textit{edu.gatech.cse6250.features.FeatureConstruction} to create two types of features: one using all the available ICD9 codes, labs, and medications, and another using only features related to the phenotype. See the comments of the source code for details.
+
+\subsection{Evaluation Metric [8 points]}
+Purity is a metrics to measure the quality of clustering, it's defined as
+$$
+purity(\Omega, C) = \frac{1}{N}\sum_k \max_j |w_k \cap c_j|
+$$
+ where $N$ is the number of samples, $k$ is index of clusters and $j$ is index of class. $w_k$ denotes the set of samples in $k$-th cluster and $c_j$ denotes set of samples of class $j$. \\
+ 
+\textbf{a.} Implement the $purity$ function in \textit{edu.gatech.cse6250.clustering.Metrics}
+
+\subsection{K-Means Clustering [8 points] } 
+Now you will perform clustering using Spark's MLLib, which contains an implementation of the k-means clustering algorithm as well as the Gaussian Mixture Model algorithm.
+
+From the clustering, we can discover groups of patients with similar characteristics. You will cluster the patients based upon diagnoses, labs, and medications. If there are \textit{d} distinct diagnoses, \textit{l} distinct medications and \textit{m} medications, then there should be \textit{d + l + m} distinct features.
+
+\textbf{a.} Implement $k$-means clustering for $k=3$. Follow the hints provided in the skeleton code in \textit{edu.gatech.cse6250.main.Main.scala:testClustering}.
+
+\textbf{b.} Compare clustering for the $k=3$ case with the ground truth phenotypes that you computed for the rule-based PheKB algorithms. Specifically, for each of \textit{case}, \textit{control} and \textit{unknown}, report the percentage distribution in the three clusters for the two feature construction strategies. Report the numbers in the format shown in Table ~\ref{tbl:kmeansall} and Table ~\ref{tbl:kmeansfil}. \\
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ c | c | c | c }
+  \hline
+  Percentage Cluster & Case & Control & Unknown\\
+  \hline                       
+  Cluster 1 & x\% & y\% & z\% \\
+  Cluster 2 & xx\% & yy\% & zz\% \\
+  Cluster 3 & xxx\% & yyy\% & zzz\% \\
+  \hline  
+   & \bf{100\%} & \bf{100\%} & \bf{100\%} \\
+  \hline  
+\end{tabular}
+\caption{Clustering with 3 centers using all features}
+\label{tbl:kmeansall}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ c | c | c | c }
+  \hline
+  Percentage Cluster & Case & Control & Unknown\\
+  \hline                       
+  Cluster 1 & x\% & y\% & z\% \\
+  Cluster 2 & xx\% & yy\% & zz\% \\
+  Cluster 3 & xxx\% & yyy\% & zzz\% \\
+  \hline  
+   & \bf{100\%} & \bf{100\%} & \bf{100\%} \\
+  \hline  
+\end{tabular}
+\caption{Clustering with 3 centers using filtered features}
+\label{tbl:kmeansfil}
+\end{table}
+
+\subsection{Clustering with Gaussian Mixture Model (GMM) [8 points]}
+
+\textbf{a.} Implement GaussianMixture for $k=3$. Follow the hints provided in the skeleton code in \textit{edu.gatech.cse6250.main.Main.scala:testClustering}.
+
+\textbf{b.} Compare clustering for the $k=3$ case with the ground truth phenotypes that you computed for the rule-based PheKB algorithms. Specifically, for each of \textit{case}, \textit{control} and \textit{unknown}, report the percentage distribution in the three clusters for the two feature construction strategies. Report the numbers in the format shown in Table ~\ref{tbl:kmeansall} and Table ~\ref{tbl:kmeansfil}. \\
+
+\subsection{Clustering with Streaming K-Means  [8 points]}
+When data arrive in a stream, we may want to estimate clusters dynamically and update them as new data arrives. Spark's MLLib provides support for the streaming k-means clustering algorithm that uses a generalization of the mini-batch k-means algorithm with \textbf{forgetfulness}.
+
+\textbf{a.} Show why we can use streaming K-Means by deriving its update rule and then describe how it works, the pros and cons of the algorithm, and how the forgetfulness value balances the relative importance of new data versus past history.
+
+\textbf{b.} Implement StreamingKMeans algorithm  for $k=3$. Follow the hints provided in the skeleton code in \textit{edu.gatech.cse6250.main.Main.scala:testClustering}.
+
+\textbf{c.} Compare clustering for the $k=3$ case with the ground truth phenotypes that you computed for the rule-based PheKB algorithms. Specifically, for each of \textit{case}, \textit{control} and \textit{unknown}, report the percentage distribution in the three clusters for the two feature construction strategies. Report the numbers in the format shown in Table ~\ref{tbl:kmeansall} and Table ~\ref{tbl:kmeansfil}. 
+
+\subsection{Discussion on K-means and GMM [8 points]}
+
+We'll now summarize what we've observed in the preceeding sections:
+
+\textbf{a.} Briefly discuss and compare what you observed in 2.3b using the k-means algorithm and 2.4b using the GMM algorithm.
+
+\textbf{b.} Re-run k-means and GMM from the previous two sections for different $k$ (you may run it each time with different $k$). Report the purity values for all features and the filtered features for each $k$ by filling in Table ~\ref{tbl:kpurity}. Discuss any patterns you observed, if any. \\
+
+\textbf{NOTE:} Please change $k$ back to 3 in your final code deliverable!
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ c | c | c | c | c}
+  \hline
+   & K-Means & K-Means & GMM & GMM\\
+  k & All features & Filtered features & All Features & Filtered features \\
+  \hline
+  2 &   &  &  & \\
+  5 &   &  &  & \\
+  10 &   &  &  & \\
+  15 &   &  &  & \\
+  \hline  
+\end{tabular}
+\caption{Purity values for different number of clusters}
+\label{tbl:kpurity}
+\end{table}
+
+\section{Submission [5 points]}
+The folder structure of your submission should be as below or your code will not be graded. Please \textbf{discard} all other \textbf{unrelated} files following the below structure. You can display fold structure using \textit{tree} command. You may add additional methods, additional dependencies, but make sure  existing methods signature doesn't change. It's your duty to make sure your code can be compiled with the provided SBT. \textcolor{red}{Be aware that writeup is within code root.} \\
+
+\begin{lstlisting}[language=bash,frame=single]
+<your gtid>-<your gt account>-hw3
+|-- homework3_answer.pdf
+|-- build.sbt
+|-- project
+|   |-- build.properties
+|   \-- plugins.sbt
+|-- sbt
+|   \-- sbt
+\-- src
+    \-- main
+        |-- java(optional)
+        |-- resources(optional)
+        \-- scala
+            \-- edu
+                \-- gatech
+                    \-- cse6250
+                        |-- clustering
+                        |   |-- Metrics.scala
+                        |   \-- package.scala
+                        |-- features
+                        |   \-- FeatureConstruction.scala
+                        |-- helper
+                        |   \-- CSVHelper.scala
+                        |   \-- SparkHelper.scala
+                        |-- main
+                        |   \-- Main.scala
+                        |-- model
+                        |   \-- models.scala
+                        \-- phenotyping
+                            \-- T2dmPhenotype.scala
+   
+\end{lstlisting}
+Create a tar archive of the folder above with the following command and submit the tar file.
+\begin{lstlisting}[language=bash,frame=single]
+tar -czvf <your gtid>-<your gt account>-hw3.tar.gz \
+  <your gtid>-<your gt account>-hw3
+\end{lstlisting}
+
+\end{document}
+
+
