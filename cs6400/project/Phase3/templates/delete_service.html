@@ -1,0 +1,16 @@
+$var pagename : Delete Service
+
+<div class="css-content">
+<h2 class="w3-text-teal">Delete Service</h2>
+<form action="/services/delete/" method="post">
+  $if session.get('serviceToDelete'):
+      $code:
+          svc_name = session.get('serviceToDelete')['name']
+          svc_type = session.get('serviceToDelete')['type']
+      <p>Delete service $svc_name?</p>
+      <input type="Submit" value="Confirm" name="$svc_type"/>
+  $else:
+      <p>No services specified.</p>
+</form>
+</div>
+

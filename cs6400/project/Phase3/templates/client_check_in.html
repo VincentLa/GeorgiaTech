@@ -1,0 +1,92 @@
+$var pagename : Check in Client
+
+<div class="css-content">
+<h1 class="w3-text-teal">Check In Client</h1>
+$if session.get('siteName'):
+    <h2>$session.get('siteName')</h2>
+
+<form action="/services/" method="post">
+$if session.get('currentServices')['fpID'] is not None:
+    <h3>Food Pantry</h3>
+    <table>
+    <tbody>
+      <tr>
+        <td>Name</td>
+        <td><input id="fpName" type="text" size="80" name="fpName" value="$session.get('currentServices')['fpName']" /></td>
+      </tr>
+      <tr>
+        <td>Address</td>
+        <td><input id="fpAddress" type="text" size="80" name="fpAddress" value="$session.get('currentServices')['fpAddress']" /></td>
+      </tr>
+      <tr>
+        <td>Hours of Operation</td>
+        <td><input id="fpHours" type="text" size="80" name="fpHours" value="$session.get('currentServices')['fpHours']" /></td>
+      </tr>
+      <tr>
+        <td>Conditions for Use</td>
+        <td><input id="fpConditions" type="text" size="80" name="fpConditions" value="$session.get('currentServices')['fpConditions']" /></td>
+      </tr>
+      <tr>
+        <td colspan=2>
+          <input id="addServiceLog" type="Reset" value="Add Service Log" onClick="location.href='/services/servicelog/'" />&nbsp;
+        </td>
+       </tr>
+    </tbody>
+    </table>
+$if session.get('currentServices')['skID']:
+    <h3>Soup Kitchen</h3>
+    <table>
+    <tbody>
+      <tr>
+        <td>Name</td>
+        <td><input id="skName" type="text" size="80" name="skName" value="$session.get('currentServices')['skName']" /></td>
+      </tr>
+      <tr>
+        <td>Address</td>
+        <td><input id="skAddress" type="text" size="80" name="skAddress" value="$session.get('currentServices')['skAddress']" /></td>
+      </tr>
+      <tr>
+        <td>Hours of Operation</td>
+        <td><input id="skHours" type="text" size="80" name="skHours" value="$session.get('currentServices')['skHours']" /></td>
+      </tr>
+      <tr>
+        <td>Conditions for Use</td>
+        <td><input id="skConditions" type="text" size="80" name="skConditions" value="$session.get('currentServices')['skConditions']" /></td>
+      </tr>
+      <tr>
+        <td colspan=2>
+          <input id="addServiceLog" type="Reset" value="Add Service Log" onClick="location.href='/services/servicelog/'" />&nbsp;
+        </td>
+       </tr>
+    </tbody>
+    </table>
+$if session.get('currentServices')['shID'] is not None:
+    <h3>Shelter</h3>
+    <table>
+    <tbody>
+      <tr>
+        <td>Name</td>
+        <td><input id="shName" type="text" size="80" name="shName" value="$session.get('currentServices')['shName']" /></td>
+      </tr>
+      <tr>
+        <td>Address</td>
+        <td><input id="shAddress" type="text" size="80" name="shAddress" value="$session.get('currentServices')['shAddress']" /></td>
+      </tr>
+      <tr>
+        <td>Hours of Operation</td>
+        <td><input id="shHours" type="text" size="80" name="shHours" value="$session.get('currentServices')['shHours']" /></td>
+      </tr>
+      <tr>
+        <td>Conditions for Use</td>
+        <td><input id="shConditions" type="text" size="80" name="shConditions" value="$session.get('currentServices')['shConditions']" /></td>
+      </tr>
+      <tr>
+        <td colspan=2>
+          <input id="checkIntoRoom" type="Reset" value="Check Into Room" onClick="location.href='/services/checkavailablerooms/'" />&nbsp;
+          <input id="addServiceLog" type="Reset" value="Add Service Log" onClick="location.href='/services/servicelog/'" />&nbsp;
+        </td>
+       </tr>
+    </tbody>
+    </table>
+</form>
+</div>

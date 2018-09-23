@@ -1,0 +1,17 @@
+$var pagename : Add New Bunk Rooms
+
+<div class="css-content">
+<h2 class="w3-text-teal">Add New Bunk Room</h2>
+<form action="/services/addbunkroom/" method="post">
+  Room Number:<br>
+  <input type="text" name="RoomNumber"><br>
+  Bunks Available:<br>
+  <input type="text" name="BunksAvailable"><br>
+  Bunks Capacity:<br>
+  <input type="text" name="BunkCapacity"><br>
+  <input type="radio" name="bunktype" value="Male" checked> Male<br>
+  <input type="radio" name="bunktype" value="Female"> Female<br>
+  <input type="radio" name="bunktype" value="Mix"> Mix<br>
+  <input type="submit" value="Submit" onClick="location.href='/services/'"/>&nbsp;&nbsp;
+</form>
+</div>

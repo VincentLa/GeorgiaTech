@@ -1,0 +1,35 @@
+$var pagename : Beds Report
+
+<div class="w3-twothird w3-container">
+<h1 class="w3-text-teal">Current Bunks and Family Rooms Available</h1>
+$if session.get('bedsInfo'):
+    <table id="results" border=1>
+        <tr>
+          <th>Shelter Name</th>
+          <th>Site Name</th>
+          <th>Address</th>
+          <th>Primary Phone</th>
+          <th>Hours of Operation</th>
+          <th>Conditions for Use</th>
+          <th>Rooms Available</th>
+          <th>Male Bunks Available</th>
+          <th>Female Bunks Available</th>
+          <th>Mixed Bunks Available</th>
+        </tr>
+        $for shelter in session.get('bedsInfo'):
+        <tr>
+          <td align="center">$shelter['Name']</td>
+          <td align="center">$shelter['SiteName']</td>
+          <td align="center">$shelter['Address']</td>
+          <td align="center">$shelter['PrimaryPhone']</td>
+          <td align="center">$shelter['HoursOfOperation']</td>
+          <td align="center">$shelter['ConditionsForUse']</td>
+          <td align="center">$shelter['RoomsAvailable']</td>
+          <td align="center">$shelter['MaleBunks']</td>
+          <td align="center">$shelter['FemaleBunks']</td>
+          <td align="center">$shelter['MixedBunks']</td>
+        </tr>
+    </table>
+$else:
+  <p>Sorry, all shelters are currently at maximum capacity.</p>
+</div>

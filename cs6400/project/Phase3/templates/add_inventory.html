@@ -1,0 +1,84 @@
+$def with (items)
+$ pageTitle = 'Add Inventory'
+$var pagename : $pageTitle
+
+<div class="css-content">
+<h1 class="w3-text-teal">$pageTitle</h1>
+<h4>Add inventory to your food bank:</h4>
+
+<form action="/inventory/addInventory/" method="post" id="formAddInventory">
+    <table border="0" cellpadding="2" cellspacing="0" id="tbAddInventory">
+        <tbody>
+            <tr>
+                <td id="col1">Item Name:</td>
+                <td id="col2">
+                    <input id="Name" name="Name" type="text" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td id="col1">Number of Unit:</td>
+                <td id="col2">
+                  <input id="NumberOfUnit" name="NumberOfUnit" type="number" min="1" value="" />
+                </td>
+            </tr>
+            <tr>
+                <td id="col1">Expiration Date:</td>
+                <td id="col2"><input id="ExpirationDate" type="date" name="ExpirationDate" placeholder="ex: 01/01/2017" /></td>
+            </tr>
+            <tr>
+                <td id="col1">Item Type:</td>
+                <td id="col2">
+                  <select id="ItemType" type="text" name="ItemType">
+                    $for i in ['-----', 'Food', 'Supplies']:
+                      <option value="$i">$i</option>
+                  </select>
+                </td>
+            </tr>
+            <tr>
+                <td id="col1">Item Sub Type:</td>
+                <td id="col2">
+                  <select id="ItemSubType" type="text" name="ItemSubType">
+                    $for i in ['-----', 'Vegetables', 'Nuts/Grains/Beans', 'Meat/Seafood', 'Dairy/Eggs', 'Sauce/Condiment/Seasoning', 'Juice/Drink', 'Personal Hygiene', 'Clothing', 'Shelter', 'Other']:
+                      <option value="$i">$i</option>
+                  </select>
+                </td>
+            </tr>
+            <tr>
+                <td id="col1">Unit Type:</td>
+                <td id="col2">
+                  <select id="UnitType" type="text" name="UnitType">
+                    $for i in ['-----', 'Bag', 'Box', 'Carton', 'Others']:
+                      <option value="$i">$i</option>
+                  </select>
+                </td>
+            </tr>
+            <tr>
+                <td id="col1">Storage Type:</td>
+                <td id="col2">
+                  <select id="StorageType" type="text" name="StorageType">
+                    $for i in ['-----', 'Dry Good', 'Refrigerated', 'Frozen']:
+                      <option value="$i">$i</option>
+                  </select>
+                </td>
+            </tr>
+            <tr>
+                <td id="col1">&nbsp;</td>
+                <td id="inputButtons">
+                    <input id="reset" name="reset" type="reset" value="Reset" />
+                    &nbsp;
+                    <input type="submit" value="Add To Inventory" />
+                </td>
+            </tr>
+            <tr>
+              <td colspan="2" align="left">
+                <b>
+                $if items:
+                  $for i in items['msg']:
+                    <p>$i</p>
+                </b>
+              </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+</div>

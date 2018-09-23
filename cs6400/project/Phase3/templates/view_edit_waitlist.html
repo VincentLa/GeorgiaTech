@@ -1,0 +1,48 @@
+$var pagename : View and Edit Wait List
+
+<div class="css-content">
+<h2>Wait List for Family Rooms</h2>
+
+<form action="/services/waitlist/" method="post">
+$if session.get('waitlistInfo'):
+  $code:
+      waitlistInfo = session.get('waitlistInfo')
+      waitlist = waitlistInfo['waitlist']
+  $if len(waitlist) > 0:
+      <input type="hidden" name="serviceID" value="$waitlistInfo['serviceID']">
+      <p>
+        <table border=1>
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>Wait List Position</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            $for client in waitlist:
+              <tr>
+                <td align="center"><input type="radio" name="clientSelect" value=$client['ClientID']></td>
+                <td align="center">$client['WaitListPosition']</td>
+                <td align="center">$client['FirstName'] $client['LastName']</td>
+              </tr>
+          </tbody>
+        </table>
+      </p>
+      <p>
+      <input type="submit" name="add" value="Add Client">&nbsp;
+      <input type="submit" name="delete" value="Remove From Wait List">&nbsp;
+      <input type="submit" name="up" value="Move Up">&nbsp;
+      <input type="submit" name="down" value="Move Down">
+      </p>
+  $else:
+     <p>Wait list is empty.</p>
+     <p>
+       <input type="submit" name="add" value="Add Client">&nbsp;
+     </p>
+  $if session.get('waitlistErrorMsg'):
+     <p>ERROR: $session.get('waitlistErrorMsg')</p>
+$else:
+   <p>No wait list available.</p>
+</form>
+</div>

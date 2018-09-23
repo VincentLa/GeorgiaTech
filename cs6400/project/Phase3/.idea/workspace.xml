@@ -1,0 +1,1204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3fec5ad4-ceb6-42b5-af79-4a506d641466" name="Default" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/Phase3$code.coverage" NAME="code Coverage Results" MODIFIED="1491283680460" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_TABLE_DETAILS" value="true" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+<<<<<<< HEAD
+      <file leaf-file-name="code.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/code.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="549">
+              <caret line="44" column="29" lean-forward="false" selection-start-line="44" selection-start-column="29" selection-end-line="44" selection-end-column="29" />
+=======
+      <file leaf-file-name="code.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/code.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" column="8" lean-forward="true" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
+>>>>>>> master
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="db.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/db.py">
+          <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+            <state relative-caret-position="367">
+              <caret line="471" column="0" lean-forward="true" selection-start-line="471" selection-start-column="0" selection-end-line="471" selection-end-column="0" />
+              <folding>
+                <marker date="1491736282000" expanded="true" signature="391:469" ph="SELECT UserN... User" />
+                <marker date="1491736282000" expanded="true" signature="816:935" ph="SELECT s.Sit... User" />
+                <marker date="1491736282000" expanded="true" signature="1220:2319" ph="SELECT DISTI... User" />
+                <marker date="1491736282000" expanded="true" signature="2604:2766" ph="UPDATE SoupK... " />
+                <marker date="1491736282000" expanded="true" signature="3077:3238" ph="UPDATE FoodP... " />
+                <marker date="1491736282000" expanded="true" signature="3543:3701" ph="UPDATE Shelt... " />
+                <marker date="1491736282000" expanded="true" signature="3967:4013" ph="DELETE FROM " />
+                <marker date="1491736282000" expanded="true" signature="4143:4186" ph="DELETE FROM " />
+                <marker date="1491736282000" expanded="true" signature="4318:4363" ph="DELETE FROM " />
+                <marker date="1491736282000" expanded="true" signature="4492:4534" ph="DELETE FROM " />
+                <marker date="1491736282000" expanded="true" signature="4716:4764" ph="SELECT * FRO... SoupKitchen" />
+                <marker date="1491736282000" expanded="true" signature="4960:5176" ph="INSERT INTO SoupKitchen... " />
+                <marker date="1491736282000" expanded="true" signature="5563:5610" ph="SELECT * FRO... FoodPantry" />
+                <marker date="1491736282000" expanded="true" signature="5806:5967" ph="INSERT INTO FoodPantry... " />
+                <marker date="1491736282000" expanded="true" signature="6295:6339" ph="SELECT * FRO... Shelter" />
+                <marker date="1491736282000" expanded="true" signature="6535:6720" ph="INSERT INTO Shelter... " />
+                <marker date="1491736282000" expanded="true" signature="7037:7082" ph="SELECT * FRO... FoodBank" />
+                <marker date="1491736282000" expanded="true" signature="7278:7324" ph="INSERT INTO FoodBank... " />
+                <marker date="1491736282000" expanded="true" signature="7513:7632" ph="SELECT Servi... SoupKitchen" />
+                <marker date="1491736282000" expanded="true" signature="7865:7976" ph="SELECT Servi... Shelter" />
+                <marker date="1491736282000" expanded="true" signature="8395:8504" ph="SELECT * FRO... Client" />
+                <marker date="1491736282000" expanded="true" signature="8939:9099" ph="INSERT INTO Client... " />
+                <marker date="1491736282000" expanded="true" signature="9590:9950" ph="SELECT First... Client" />
+                <marker date="1491736282000" expanded="true" signature="10443:10572" ph="SELECT First... Client" />
+                <marker date="1491736282000" expanded="true" signature="10617:10768" ph="SELECT Clien... Log" />
+                <marker date="1491736282000" expanded="true" signature="10810:11004" ph="SELECT Shelt... WaitList" />
+                <marker date="1491736282000" expanded="true" signature="11518:11763" ph="UPDATE CLIEN... " />
+                <marker date="1491736282000" expanded="true" signature="12168:12420" ph="INSERT INTO LOG... " />
+                <marker date="1491736282000" expanded="true" signature="12192:12420" ph="SELECT $clie... " />
+                <marker date="1491736282000" expanded="true" signature="12864:12931" ph="SELECT seats... SoupKitchen" />
+                <marker date="1491736282000" expanded="true" signature="13352:13431" ph="UPDATE SoupK... " />
+                <marker date="1491736282000" expanded="true" signature="13720:13821" ph="SELECT Bunks... BunkRoom" />
+                <marker date="1491736282000" expanded="true" signature="14103:14223" ph="UPDATE BunkR... " />
+                <marker date="1491736282000" expanded="true" signature="14626:14711" ph="SELECT Rooms... Shelter" />
+                <marker date="1491736282000" expanded="true" signature="14869:14975" ph="SELECT f.Roo... FamilyRoom" />
+                <marker date="1491736282000" expanded="true" signature="15365:15488" ph="UPDATE Famil... " />
+                <marker date="1491736282000" expanded="true" signature="15541:15640" ph="UPDATE Famil... " />
+                <marker date="1491736282000" expanded="true" signature="15862:16074" ph="UPDATE Shelt... " />
+                <marker date="1491736282000" expanded="true" signature="15919:16036" ph="SELECT COUNT... FamilyRoom" />
+                <marker date="1491736282000" expanded="true" signature="16425:16492" ph="SELECT * FRO... FamilyRoom" />
+                <marker date="1491736282000" expanded="true" signature="16681:16928" ph="SELECT C.Cli... WaitList" />
+                <marker date="1491736282000" expanded="true" signature="17333:17415" ph="SELECT COUNT... WaitList" />
+                <marker date="1491736282000" expanded="true" signature="17611:17714" ph="SELECT WaitL... WaitList" />
+                <marker date="1491736282000" expanded="true" signature="18973:19150" ph="UPDATE WaitL... " />
+                <marker date="1491736282000" expanded="true" signature="19242:19367" ph="UPDATE WaitL... " />
+                <marker date="1491736282000" expanded="true" signature="19799:19976" ph="UPDATE WaitL... " />
+                <marker date="1491736282000" expanded="true" signature="20070:20195" ph="UPDATE WaitL... " />
+                <marker date="1491736282000" expanded="true" signature="20309:20938" ph="SELECT H.Nam... Shelter" />
+                <marker date="1491736282000" expanded="true" signature="21128:22213" ph="SELECT Meal.... SUM" />
+                <marker date="1491736282000" expanded="true" signature="21177:21607" ph="SELECT SUM(N... ExpirationDate" />
+                <marker date="1491736282000" expanded="true" signature="21257:21516" ph="SELECT Expir... Item" />
+                <marker date="1491736282000" expanded="true" signature="21642:21877" ph="SELECT SUM(N... Item" />
+                <marker date="1491736282000" expanded="true" signature="21912:22154" ph="SELECT SUM(N... Item" />
+                <marker date="1491736282000" expanded="true" signature="22373:22489" ph="SELECT Site.... Site" />
+                <marker date="1491736282000" expanded="true" signature="22659:22710" ph="SELECT Name Item" />
+                <marker date="1491736282000" expanded="true" signature="22887:23493" ph="SELECT s.Nam... Item" />
+                <marker date="1491736282000" expanded="true" signature="24672:24809" ph="SELECT * FRO... User" />
+                <marker date="1491736282000" expanded="true" signature="25096:25693" ph="SELECT s.Nam... User" />
+                <marker date="1491736282000" expanded="true" signature="28616:28727" ph="INSERT INTO Requests... " />
+                <marker date="1491736282000" expanded="true" signature="29814:30020" ph="UPDATE Reque... " />
+                <marker date="1491736282000" expanded="true" signature="30383:30543" ph="UPDATE Reque... " />
+                <marker date="1491736282000" expanded="true" signature="30706:30795" ph="UPDATE Reque... " />
+                <marker date="1491736282000" expanded="true" signature="30940:31072" ph="UPDATE Reque... " />
+                <marker date="1491736282000" expanded="true" signature="31248:31314" ph="SELECT i.Nam... Item" />
+=======
+            <state relative-caret-position="380">
+              <caret line="191" column="6" lean-forward="false" selection-start-line="191" selection-start-column="6" selection-end-line="191" selection-end-column="6" />
+              <folding>
+                <marker date="1491736519000" expanded="true" signature="391:469" ph="SELECT UserN... User" />
+                <marker date="1491736519000" expanded="true" signature="816:935" ph="SELECT s.Sit... User" />
+                <marker date="1491736519000" expanded="true" signature="1219:2318" ph="SELECT DISTI... User" />
+                <marker date="1491736519000" expanded="true" signature="2582:2701" ph="SELECT Servi... SoupKitchen" />
+                <marker date="1491736519000" expanded="true" signature="2934:3045" ph="SELECT Servi... Shelter" />
+                <marker date="1491736519000" expanded="true" signature="3464:3573" ph="SELECT * FRO... Client" />
+                <marker date="1491736519000" expanded="true" signature="4008:4168" ph="INSERT INTO Client... " />
+                <marker date="1491736519000" expanded="true" signature="4659:5019" ph="SELECT First... Client" />
+                <marker date="1491736519000" expanded="true" signature="5512:5641" ph="SELECT First... Client" />
+                <marker date="1491736519000" expanded="true" signature="5686:5837" ph="SELECT Clien... Log" />
+                <marker date="1491736519000" expanded="true" signature="5879:6073" ph="SELECT Shelt... WaitList" />
+                <marker date="1491736519000" expanded="true" signature="6587:6832" ph="UPDATE CLIEN... " />
+                <marker date="1491736519000" expanded="true" signature="7237:7489" ph="INSERT INTO LOG... " />
+                <marker date="1491736519000" expanded="true" signature="7261:7489" ph="SELECT $clie... " />
+                <marker date="1491736519000" expanded="true" signature="7933:8000" ph="SELECT seats... SoupKitchen" />
+                <marker date="1491736519000" expanded="true" signature="8331:8410" ph="UPDATE SoupK... " />
+                <marker date="1491736519000" expanded="true" signature="8698:8799" ph="SELECT Bunks... BunkRoom" />
+                <marker date="1491736519000" expanded="true" signature="9081:9201" ph="UPDATE BunkR... " />
+                <marker date="1491736519000" expanded="true" signature="9604:9689" ph="SELECT Rooms... Shelter" />
+                <marker date="1491736519000" expanded="true" signature="9847:9953" ph="SELECT f.Roo... FamilyRoom" />
+                <marker date="1491736519000" expanded="true" signature="10519:10618" ph="UPDATE Famil... " />
+                <marker date="1491736519000" expanded="true" signature="10840:11052" ph="UPDATE Shelt... " />
+                <marker date="1491736519000" expanded="true" signature="10897:11014" ph="SELECT COUNT... FamilyRoom" />
+                <marker date="1491736519000" expanded="true" signature="11403:11470" ph="SELECT * FRO... FamilyRoom" />
+                <marker date="1491736519000" expanded="true" signature="11659:11906" ph="SELECT C.Cli... WaitList" />
+                <marker date="1491736519000" expanded="true" signature="12311:12393" ph="SELECT COUNT... WaitList" />
+                <marker date="1491736519000" expanded="true" signature="12589:12692" ph="SELECT WaitL... WaitList" />
+                <marker date="1491736519000" expanded="true" signature="13185:13263" ph="DELETE FROM " />
+                <marker date="1491736519000" expanded="true" signature="13353:13526" ph="UPDATE WaitL... " />
+                <marker date="1491736519000" expanded="true" signature="13951:14128" ph="UPDATE WaitL... " />
+                <marker date="1491736519000" expanded="true" signature="14220:14345" ph="UPDATE WaitL... " />
+                <marker date="1491736519000" expanded="true" signature="14777:14954" ph="UPDATE WaitL... " />
+                <marker date="1491736519000" expanded="true" signature="15048:15173" ph="UPDATE WaitL... " />
+                <marker date="1491736519000" expanded="true" signature="15287:15916" ph="SELECT H.Nam... Shelter" />
+                <marker date="1491736519000" expanded="true" signature="16106:17191" ph="SELECT Meal.... SUM" />
+                <marker date="1491736519000" expanded="true" signature="16155:16585" ph="SELECT SUM(N... ExpirationDate" />
+                <marker date="1491736519000" expanded="true" signature="16235:16494" ph="SELECT Expir... Item" />
+                <marker date="1491736519000" expanded="true" signature="16620:16855" ph="SELECT SUM(N... Item" />
+                <marker date="1491736519000" expanded="true" signature="16890:17132" ph="SELECT SUM(N... Item" />
+                <marker date="1491736519000" expanded="true" signature="17351:17467" ph="SELECT Site.... Site" />
+                <marker date="1491736519000" expanded="true" signature="17637:17688" ph="SELECT Name Item" />
+                <marker date="1491736519000" expanded="true" signature="17865:18471" ph="SELECT s.Nam... Item" />
+                <marker date="1491736519000" expanded="true" signature="19650:19787" ph="SELECT * FRO... User" />
+                <marker date="1491736519000" expanded="true" signature="20074:20671" ph="SELECT s.Nam... User" />
+                <marker date="1491736519000" expanded="true" signature="20881:21935" ph="SELECT u.Use... User" />
+                <marker date="1491736519000" expanded="true" signature="23594:23705" ph="INSERT INTO Requests... " />
+                <marker date="1491736519000" expanded="true" signature="24792:24998" ph="UPDATE Reque... " />
+                <marker date="1491736519000" expanded="true" signature="25097:25205" ph="UPDATE Item " />
+                <marker date="1491736519000" expanded="true" signature="25361:25521" ph="UPDATE Reque... " />
+                <marker date="1491736519000" expanded="true" signature="25684:25773" ph="UPDATE Reque... " />
+                <marker date="1491736519000" expanded="true" signature="25918:26050" ph="UPDATE Reque... " />
+                <marker date="1491736519000" expanded="true" signature="26226:26292" ph="SELECT i.Nam... Item" />
+>>>>>>> master
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+<<<<<<< HEAD
+=======
+      <file leaf-file-name="modify_seats.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/modify_seats.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+>>>>>>> master
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>modify_rooms</find>
+      <find>modifyrooms</find>
+      <find>services/modifybunks</find>
+      <find>modifybunks</find>
+      <find>modifyseats</find>
+      <find>seatsinfo</find>
+      <find>roomsInfo</find>
+      <find>32d2</find>
+    </findStrings>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/templates/services.html" />
+        <option value="$PROJECT_DIR$/templates/modify_seats.html" />
+        <option value="$PROJECT_DIR$/db.py" />
+<<<<<<< HEAD
+=======
+        <option value="$PROJECT_DIR$/templates/modify_seats.html" />
+>>>>>>> master
+        <option value="$PROJECT_DIR$/code.py" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1440" />
+    <option name="height" value="873" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+<<<<<<< HEAD
+      <pane id="Scope" />
+=======
+      <pane id="Scratches" />
+>>>>>>> master
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Phase3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Phase3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Phase3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Phase3" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+<<<<<<< HEAD
+      <pane id="Scratches" />
+=======
+      <pane id="Scope" />
+>>>>>>> master
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/templates" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.code">
+    <configuration default="false" name="code" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Phase3" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/code.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Phase3" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="TARGET" value="" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Phase3" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PyLettuceRunConfigurationType" factoryName="Lettuce">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Phase3" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Phase3" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <module name="Phase3" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Phase3" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Phase3" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;.&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method />
+    </configuration>
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="Python.code" />
+    </list>
+    <recent_temporary>
+      <list size="1">
+        <item index="0" class="java.lang.String" itemvalue="Python.code" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3fec5ad4-ceb6-42b5-af79-4a506d641466" name="Default" comment="" />
+      <created>1491190228258</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1491190228258</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="23" width="1440" height="873" extended-state="6" />
+    <editor active="true" />
+    <layout>
+<<<<<<< HEAD
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11444921" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297568" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2368758" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25224072" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+=======
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14878398" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297568" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2535211" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2368758" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+>>>>>>> master
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.0" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="processedProjectFiles" value="true" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/code.py">
+<<<<<<< HEAD
+=======
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2865">
+          <caret line="191" column="34" lean-forward="true" selection-start-line="191" selection-start-column="34" selection-end-line="191" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2865">
+          <caret line="191" column="6" lean-forward="true" selection-start-line="191" selection-start-column="6" selection-end-line="191" selection-end-column="6" />
+          <folding>
+            <marker date="1491736519000" expanded="true" signature="391:469" ph="SELECT UserN... User" />
+            <marker date="1491736519000" expanded="true" signature="816:935" ph="SELECT s.Sit... User" />
+            <marker date="1491736519000" expanded="true" signature="1219:2318" ph="SELECT DISTI... User" />
+            <marker date="1491736519000" expanded="true" signature="2582:2701" ph="SELECT Servi... SoupKitchen" />
+            <marker date="1491736519000" expanded="true" signature="2934:3045" ph="SELECT Servi... Shelter" />
+            <marker date="1491736519000" expanded="true" signature="3464:3573" ph="SELECT * FRO... Client" />
+            <marker date="1491736519000" expanded="true" signature="4008:4168" ph="INSERT INTO Client... " />
+            <marker date="1491736519000" expanded="true" signature="4659:5019" ph="SELECT First... Client" />
+            <marker date="1491736519000" expanded="true" signature="5512:5641" ph="SELECT First... Client" />
+            <marker date="1491736519000" expanded="true" signature="5686:5837" ph="SELECT Clien... Log" />
+            <marker date="1491736519000" expanded="true" signature="5879:6073" ph="SELECT Shelt... WaitList" />
+            <marker date="1491736519000" expanded="true" signature="6587:6832" ph="UPDATE CLIEN... " />
+            <marker date="1491736519000" expanded="true" signature="7237:7489" ph="INSERT INTO LOG... " />
+            <marker date="1491736519000" expanded="true" signature="7261:7489" ph="SELECT $clie... " />
+            <marker date="1491736519000" expanded="true" signature="7933:8000" ph="SELECT seats... SoupKitchen" />
+            <marker date="1491736519000" expanded="true" signature="8331:8410" ph="UPDATE SoupK... " />
+            <marker date="1491736519000" expanded="true" signature="8698:8799" ph="SELECT Bunks... BunkRoom" />
+            <marker date="1491736519000" expanded="true" signature="9081:9201" ph="UPDATE BunkR... " />
+            <marker date="1491736519000" expanded="true" signature="9604:9689" ph="SELECT Rooms... Shelter" />
+            <marker date="1491736519000" expanded="true" signature="9847:9953" ph="SELECT f.Roo... FamilyRoom" />
+            <marker date="1491736519000" expanded="true" signature="10519:10618" ph="UPDATE Famil... " />
+            <marker date="1491736519000" expanded="true" signature="10840:11052" ph="UPDATE Shelt... " />
+            <marker date="1491736519000" expanded="true" signature="10897:11014" ph="SELECT COUNT... FamilyRoom" />
+            <marker date="1491736519000" expanded="true" signature="11403:11470" ph="SELECT * FRO... FamilyRoom" />
+            <marker date="1491736519000" expanded="true" signature="11659:11906" ph="SELECT C.Cli... WaitList" />
+            <marker date="1491736519000" expanded="true" signature="12311:12393" ph="SELECT COUNT... WaitList" />
+            <marker date="1491736519000" expanded="true" signature="12589:12692" ph="SELECT WaitL... WaitList" />
+            <marker date="1491736519000" expanded="true" signature="13185:13263" ph="DELETE FROM " />
+            <marker date="1491736519000" expanded="true" signature="13353:13526" ph="UPDATE WaitL... " />
+            <marker date="1491736519000" expanded="true" signature="13951:14128" ph="UPDATE WaitL... " />
+            <marker date="1491736519000" expanded="true" signature="14220:14345" ph="UPDATE WaitL... " />
+            <marker date="1491736519000" expanded="true" signature="14777:14954" ph="UPDATE WaitL... " />
+            <marker date="1491736519000" expanded="true" signature="15048:15173" ph="UPDATE WaitL... " />
+            <marker date="1491736519000" expanded="true" signature="15287:15916" ph="SELECT H.Nam... Shelter" />
+            <marker date="1491736519000" expanded="true" signature="16106:17191" ph="SELECT Meal.... SUM" />
+            <marker date="1491736519000" expanded="true" signature="16155:16585" ph="SELECT SUM(N... ExpirationDate" />
+            <marker date="1491736519000" expanded="true" signature="16235:16494" ph="SELECT Expir... Item" />
+            <marker date="1491736519000" expanded="true" signature="16620:16855" ph="SELECT SUM(N... Item" />
+            <marker date="1491736519000" expanded="true" signature="16890:17132" ph="SELECT SUM(N... Item" />
+            <marker date="1491736519000" expanded="true" signature="17351:17467" ph="SELECT Site.... Site" />
+            <marker date="1491736519000" expanded="true" signature="17637:17688" ph="SELECT Name Item" />
+            <marker date="1491736519000" expanded="true" signature="17865:18471" ph="SELECT s.Nam... Item" />
+            <marker date="1491736519000" expanded="true" signature="19650:19787" ph="SELECT * FRO... User" />
+            <marker date="1491736519000" expanded="true" signature="20074:20671" ph="SELECT s.Nam... User" />
+            <marker date="1491736519000" expanded="true" signature="20881:21935" ph="SELECT u.Use... User" />
+            <marker date="1491736519000" expanded="true" signature="23594:23705" ph="INSERT INTO Requests... " />
+            <marker date="1491736519000" expanded="true" signature="24792:24998" ph="UPDATE Reque... " />
+            <marker date="1491736519000" expanded="true" signature="25097:25205" ph="UPDATE Item " />
+            <marker date="1491736519000" expanded="true" signature="25361:25521" ph="UPDATE Reque... " />
+            <marker date="1491736519000" expanded="true" signature="25684:25773" ph="UPDATE Reque... " />
+            <marker date="1491736519000" expanded="true" signature="25918:26050" ph="UPDATE Reque... " />
+            <marker date="1491736519000" expanded="true" signature="26226:26292" ph="SELECT i.Nam... Item" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/modify_seats.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/base.html">
+>>>>>>> master
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5670">
+          <caret line="378" column="18" lean-forward="false" selection-start-line="378" selection-start-column="18" selection-end-line="378" selection-end-column="28" />
+          <folding>
+            <marker date="1491736282000" expanded="true" signature="391:469" ph="SELECT UserN... User" />
+            <marker date="1491736282000" expanded="true" signature="816:935" ph="SELECT s.Sit... User" />
+            <marker date="1491736282000" expanded="true" signature="1220:2319" ph="SELECT DISTI... User" />
+            <marker date="1491736282000" expanded="true" signature="2604:2766" ph="UPDATE SoupK... " />
+            <marker date="1491736282000" expanded="true" signature="3077:3238" ph="UPDATE FoodP... " />
+            <marker date="1491736282000" expanded="true" signature="3543:3701" ph="UPDATE Shelt... " />
+            <marker date="1491736282000" expanded="true" signature="3967:4013" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4143:4186" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4318:4363" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4492:4534" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4716:4764" ph="SELECT * FRO... SoupKitchen" />
+            <marker date="1491736282000" expanded="true" signature="4960:5176" ph="INSERT INTO SoupKitchen... " />
+            <marker date="1491736282000" expanded="true" signature="5563:5610" ph="SELECT * FRO... FoodPantry" />
+            <marker date="1491736282000" expanded="true" signature="5806:5967" ph="INSERT INTO FoodPantry... " />
+            <marker date="1491736282000" expanded="true" signature="6295:6339" ph="SELECT * FRO... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="6535:6720" ph="INSERT INTO Shelter... " />
+            <marker date="1491736282000" expanded="true" signature="7037:7082" ph="SELECT * FRO... FoodBank" />
+            <marker date="1491736282000" expanded="true" signature="7278:7324" ph="INSERT INTO FoodBank... " />
+            <marker date="1491736282000" expanded="true" signature="7513:7632" ph="SELECT Servi... SoupKitchen" />
+            <marker date="1491736282000" expanded="true" signature="7865:7976" ph="SELECT Servi... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="8395:8504" ph="SELECT * FRO... Client" />
+            <marker date="1491736282000" expanded="true" signature="8939:9099" ph="INSERT INTO Client... " />
+            <marker date="1491736282000" expanded="true" signature="9590:9950" ph="SELECT First... Client" />
+            <marker date="1491736282000" expanded="true" signature="10443:10572" ph="SELECT First... Client" />
+            <marker date="1491736282000" expanded="true" signature="10617:10768" ph="SELECT Clien... Log" />
+            <marker date="1491736282000" expanded="true" signature="10810:11004" ph="SELECT Shelt... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="11518:11763" ph="UPDATE CLIEN... " />
+            <marker date="1491736282000" expanded="true" signature="12168:12420" ph="INSERT INTO LOG... " />
+            <marker date="1491736282000" expanded="true" signature="12192:12420" ph="SELECT $clie... " />
+            <marker date="1491736282000" expanded="true" signature="12864:12931" ph="SELECT seats... SoupKitchen" />
+            <marker date="1491736282000" expanded="true" signature="13352:13431" ph="UPDATE SoupK... " />
+            <marker date="1491736282000" expanded="true" signature="13720:13821" ph="SELECT Bunks... BunkRoom" />
+            <marker date="1491736282000" expanded="true" signature="14103:14223" ph="UPDATE BunkR... " />
+            <marker date="1491736282000" expanded="true" signature="14626:14711" ph="SELECT Rooms... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="14869:14975" ph="SELECT f.Roo... FamilyRoom" />
+            <marker date="1491736282000" expanded="true" signature="15365:15488" ph="UPDATE Famil... " />
+            <marker date="1491736282000" expanded="true" signature="15541:15640" ph="UPDATE Famil... " />
+            <marker date="1491736282000" expanded="true" signature="15862:16074" ph="UPDATE Shelt... " />
+            <marker date="1491736282000" expanded="true" signature="15919:16036" ph="SELECT COUNT... FamilyRoom" />
+            <marker date="1491736282000" expanded="true" signature="16425:16492" ph="SELECT * FRO... FamilyRoom" />
+            <marker date="1491736282000" expanded="true" signature="16681:16928" ph="SELECT C.Cli... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="17333:17415" ph="SELECT COUNT... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="17611:17714" ph="SELECT WaitL... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="18973:19150" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="19242:19367" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="19799:19976" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="20070:20195" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="20309:20938" ph="SELECT H.Nam... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="21128:22213" ph="SELECT Meal.... SUM" />
+            <marker date="1491736282000" expanded="true" signature="21177:21607" ph="SELECT SUM(N... ExpirationDate" />
+            <marker date="1491736282000" expanded="true" signature="21257:21516" ph="SELECT Expir... Item" />
+            <marker date="1491736282000" expanded="true" signature="21642:21877" ph="SELECT SUM(N... Item" />
+            <marker date="1491736282000" expanded="true" signature="21912:22154" ph="SELECT SUM(N... Item" />
+            <marker date="1491736282000" expanded="true" signature="22373:22489" ph="SELECT Site.... Site" />
+            <marker date="1491736282000" expanded="true" signature="22659:22710" ph="SELECT Name Item" />
+            <marker date="1491736282000" expanded="true" signature="22887:23493" ph="SELECT s.Nam... Item" />
+            <marker date="1491736282000" expanded="true" signature="24672:24809" ph="SELECT * FRO... User" />
+            <marker date="1491736282000" expanded="true" signature="25096:25693" ph="SELECT s.Nam... User" />
+            <marker date="1491736282000" expanded="true" signature="28616:28727" ph="INSERT INTO Requests... " />
+            <marker date="1491736282000" expanded="true" signature="29814:30020" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="30383:30543" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="30706:30795" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="30940:31072" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="31248:31314" ph="SELECT i.Nam... Item" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/services.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1365">
+          <caret line="91" column="11" lean-forward="false" selection-start-line="91" selection-start-column="11" selection-end-line="91" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5670">
+          <caret line="378" column="18" lean-forward="false" selection-start-line="378" selection-start-column="18" selection-end-line="378" selection-end-column="28" />
+          <folding>
+            <marker date="1491736282000" expanded="true" signature="391:469" ph="SELECT UserN... User" />
+            <marker date="1491736282000" expanded="true" signature="816:935" ph="SELECT s.Sit... User" />
+            <marker date="1491736282000" expanded="true" signature="1220:2319" ph="SELECT DISTI... User" />
+            <marker date="1491736282000" expanded="true" signature="2604:2766" ph="UPDATE SoupK... " />
+            <marker date="1491736282000" expanded="true" signature="3077:3238" ph="UPDATE FoodP... " />
+            <marker date="1491736282000" expanded="true" signature="3543:3701" ph="UPDATE Shelt... " />
+            <marker date="1491736282000" expanded="true" signature="3967:4013" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4143:4186" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4318:4363" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4492:4534" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4716:4764" ph="SELECT * FRO... SoupKitchen" />
+            <marker date="1491736282000" expanded="true" signature="4960:5176" ph="INSERT INTO SoupKitchen... " />
+            <marker date="1491736282000" expanded="true" signature="5563:5610" ph="SELECT * FRO... FoodPantry" />
+            <marker date="1491736282000" expanded="true" signature="5806:5967" ph="INSERT INTO FoodPantry... " />
+            <marker date="1491736282000" expanded="true" signature="6295:6339" ph="SELECT * FRO... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="6535:6720" ph="INSERT INTO Shelter... " />
+            <marker date="1491736282000" expanded="true" signature="7037:7082" ph="SELECT * FRO... FoodBank" />
+            <marker date="1491736282000" expanded="true" signature="7278:7324" ph="INSERT INTO FoodBank... " />
+            <marker date="1491736282000" expanded="true" signature="7513:7632" ph="SELECT Servi... SoupKitchen" />
+            <marker date="1491736282000" expanded="true" signature="7865:7976" ph="SELECT Servi... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="8395:8504" ph="SELECT * FRO... Client" />
+            <marker date="1491736282000" expanded="true" signature="8939:9099" ph="INSERT INTO Client... " />
+            <marker date="1491736282000" expanded="true" signature="9590:9950" ph="SELECT First... Client" />
+            <marker date="1491736282000" expanded="true" signature="10443:10572" ph="SELECT First... Client" />
+            <marker date="1491736282000" expanded="true" signature="10617:10768" ph="SELECT Clien... Log" />
+            <marker date="1491736282000" expanded="true" signature="10810:11004" ph="SELECT Shelt... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="11518:11763" ph="UPDATE CLIEN... " />
+            <marker date="1491736282000" expanded="true" signature="12168:12420" ph="INSERT INTO LOG... " />
+            <marker date="1491736282000" expanded="true" signature="12192:12420" ph="SELECT $clie... " />
+            <marker date="1491736282000" expanded="true" signature="12864:12931" ph="SELECT seats... SoupKitchen" />
+            <marker date="1491736282000" expanded="true" signature="13352:13431" ph="UPDATE SoupK... " />
+            <marker date="1491736282000" expanded="true" signature="13720:13821" ph="SELECT Bunks... BunkRoom" />
+            <marker date="1491736282000" expanded="true" signature="14103:14223" ph="UPDATE BunkR... " />
+            <marker date="1491736282000" expanded="true" signature="14626:14711" ph="SELECT Rooms... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="14869:14975" ph="SELECT f.Roo... FamilyRoom" />
+            <marker date="1491736282000" expanded="true" signature="15365:15488" ph="UPDATE Famil... " />
+            <marker date="1491736282000" expanded="true" signature="15541:15640" ph="UPDATE Famil... " />
+            <marker date="1491736282000" expanded="true" signature="15862:16074" ph="UPDATE Shelt... " />
+            <marker date="1491736282000" expanded="true" signature="15919:16036" ph="SELECT COUNT... FamilyRoom" />
+            <marker date="1491736282000" expanded="true" signature="16425:16492" ph="SELECT * FRO... FamilyRoom" />
+            <marker date="1491736282000" expanded="true" signature="16681:16928" ph="SELECT C.Cli... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="17333:17415" ph="SELECT COUNT... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="17611:17714" ph="SELECT WaitL... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="18973:19150" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="19242:19367" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="19799:19976" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="20070:20195" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="20309:20938" ph="SELECT H.Nam... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="21128:22213" ph="SELECT Meal.... SUM" />
+            <marker date="1491736282000" expanded="true" signature="21177:21607" ph="SELECT SUM(N... ExpirationDate" />
+            <marker date="1491736282000" expanded="true" signature="21257:21516" ph="SELECT Expir... Item" />
+            <marker date="1491736282000" expanded="true" signature="21642:21877" ph="SELECT SUM(N... Item" />
+            <marker date="1491736282000" expanded="true" signature="21912:22154" ph="SELECT SUM(N... Item" />
+            <marker date="1491736282000" expanded="true" signature="22373:22489" ph="SELECT Site.... Site" />
+            <marker date="1491736282000" expanded="true" signature="22659:22710" ph="SELECT Name Item" />
+            <marker date="1491736282000" expanded="true" signature="22887:23493" ph="SELECT s.Nam... Item" />
+            <marker date="1491736282000" expanded="true" signature="24672:24809" ph="SELECT * FRO... User" />
+            <marker date="1491736282000" expanded="true" signature="25096:25693" ph="SELECT s.Nam... User" />
+            <marker date="1491736282000" expanded="true" signature="28616:28727" ph="INSERT INTO Requests... " />
+            <marker date="1491736282000" expanded="true" signature="29814:30020" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="30383:30543" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="30706:30795" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="30940:31072" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="31248:31314" ph="SELECT i.Nam... Item" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/services.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1365">
+          <caret line="91" column="11" lean-forward="false" selection-start-line="91" selection-start-column="11" selection-end-line="91" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/code.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5670">
+          <caret line="378" column="18" lean-forward="false" selection-start-line="378" selection-start-column="18" selection-end-line="378" selection-end-column="28" />
+          <folding>
+            <marker date="1491736282000" expanded="true" signature="391:469" ph="SELECT UserN... User" />
+            <marker date="1491736282000" expanded="true" signature="816:935" ph="SELECT s.Sit... User" />
+            <marker date="1491736282000" expanded="true" signature="1220:2319" ph="SELECT DISTI... User" />
+            <marker date="1491736282000" expanded="true" signature="2604:2766" ph="UPDATE SoupK... " />
+            <marker date="1491736282000" expanded="true" signature="3077:3238" ph="UPDATE FoodP... " />
+            <marker date="1491736282000" expanded="true" signature="3543:3701" ph="UPDATE Shelt... " />
+            <marker date="1491736282000" expanded="true" signature="3967:4013" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4143:4186" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4318:4363" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4492:4534" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4716:4764" ph="SELECT * FRO... SoupKitchen" />
+            <marker date="1491736282000" expanded="true" signature="4960:5176" ph="INSERT INTO SoupKitchen... " />
+            <marker date="1491736282000" expanded="true" signature="5563:5610" ph="SELECT * FRO... FoodPantry" />
+            <marker date="1491736282000" expanded="true" signature="5806:5967" ph="INSERT INTO FoodPantry... " />
+            <marker date="1491736282000" expanded="true" signature="6295:6339" ph="SELECT * FRO... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="6535:6720" ph="INSERT INTO Shelter... " />
+            <marker date="1491736282000" expanded="true" signature="7037:7082" ph="SELECT * FRO... FoodBank" />
+            <marker date="1491736282000" expanded="true" signature="7278:7324" ph="INSERT INTO FoodBank... " />
+            <marker date="1491736282000" expanded="true" signature="7513:7632" ph="SELECT Servi... SoupKitchen" />
+            <marker date="1491736282000" expanded="true" signature="7865:7976" ph="SELECT Servi... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="8395:8504" ph="SELECT * FRO... Client" />
+            <marker date="1491736282000" expanded="true" signature="8939:9099" ph="INSERT INTO Client... " />
+            <marker date="1491736282000" expanded="true" signature="9590:9950" ph="SELECT First... Client" />
+            <marker date="1491736282000" expanded="true" signature="10443:10572" ph="SELECT First... Client" />
+            <marker date="1491736282000" expanded="true" signature="10617:10768" ph="SELECT Clien... Log" />
+            <marker date="1491736282000" expanded="true" signature="10810:11004" ph="SELECT Shelt... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="11518:11763" ph="UPDATE CLIEN... " />
+            <marker date="1491736282000" expanded="true" signature="12168:12420" ph="INSERT INTO LOG... " />
+            <marker date="1491736282000" expanded="true" signature="12192:12420" ph="SELECT $clie... " />
+            <marker date="1491736282000" expanded="true" signature="12864:12931" ph="SELECT seats... SoupKitchen" />
+            <marker date="1491736282000" expanded="true" signature="13352:13431" ph="UPDATE SoupK... " />
+            <marker date="1491736282000" expanded="true" signature="13720:13821" ph="SELECT Bunks... BunkRoom" />
+            <marker date="1491736282000" expanded="true" signature="14103:14223" ph="UPDATE BunkR... " />
+            <marker date="1491736282000" expanded="true" signature="14626:14711" ph="SELECT Rooms... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="14869:14975" ph="SELECT f.Roo... FamilyRoom" />
+            <marker date="1491736282000" expanded="true" signature="15365:15488" ph="UPDATE Famil... " />
+            <marker date="1491736282000" expanded="true" signature="15541:15640" ph="UPDATE Famil... " />
+            <marker date="1491736282000" expanded="true" signature="15862:16074" ph="UPDATE Shelt... " />
+            <marker date="1491736282000" expanded="true" signature="15919:16036" ph="SELECT COUNT... FamilyRoom" />
+            <marker date="1491736282000" expanded="true" signature="16425:16492" ph="SELECT * FRO... FamilyRoom" />
+            <marker date="1491736282000" expanded="true" signature="16681:16928" ph="SELECT C.Cli... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="17333:17415" ph="SELECT COUNT... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="17611:17714" ph="SELECT WaitL... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="18973:19150" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="19242:19367" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="19799:19976" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="20070:20195" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="20309:20938" ph="SELECT H.Nam... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="21128:22213" ph="SELECT Meal.... SUM" />
+            <marker date="1491736282000" expanded="true" signature="21177:21607" ph="SELECT SUM(N... ExpirationDate" />
+            <marker date="1491736282000" expanded="true" signature="21257:21516" ph="SELECT Expir... Item" />
+            <marker date="1491736282000" expanded="true" signature="21642:21877" ph="SELECT SUM(N... Item" />
+            <marker date="1491736282000" expanded="true" signature="21912:22154" ph="SELECT SUM(N... Item" />
+            <marker date="1491736282000" expanded="true" signature="22373:22489" ph="SELECT Site.... Site" />
+            <marker date="1491736282000" expanded="true" signature="22659:22710" ph="SELECT Name Item" />
+            <marker date="1491736282000" expanded="true" signature="22887:23493" ph="SELECT s.Nam... Item" />
+            <marker date="1491736282000" expanded="true" signature="24672:24809" ph="SELECT * FRO... User" />
+            <marker date="1491736282000" expanded="true" signature="25096:25693" ph="SELECT s.Nam... User" />
+            <marker date="1491736282000" expanded="true" signature="28616:28727" ph="INSERT INTO Requests... " />
+            <marker date="1491736282000" expanded="true" signature="29814:30020" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="30383:30543" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="30706:30795" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="30940:31072" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="31248:31314" ph="SELECT i.Nam... Item" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+=======
+    <entry file="file://$PROJECT_DIR$/templates/modify_seats_origin.html" />
+>>>>>>> master
+    <entry file="file://$PROJECT_DIR$/templates/services.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1365">
+          <caret line="91" column="11" lean-forward="true" selection-start-line="91" selection-start-column="11" selection-end-line="91" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-261">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/pycharm.jar!/resources/html5-schema/html5/web-forms.rnc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="18" lean-forward="false" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/modify_seats_origin.html" />
+    <entry file="file://$PROJECT_DIR$/templates/requests.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/public_reports.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/modify_rooms.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="99">
+          <caret line="8" column="34" lean-forward="false" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+=======
+>>>>>>> master
+    <entry file="file://$PROJECT_DIR$/templates/modify_bunks.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+<<<<<<< HEAD
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/beds_report.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/client.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/client_check_in.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/client_search.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/client_view_edit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/inventory.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/meals_report.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/modify_seats.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+=======
+>>>>>>> master
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/client_add.html">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="315">
+          <caret line="21" column="6" lean-forward="true" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
+=======
+        <state relative-caret-position="255">
+          <caret line="17" column="37" lean-forward="false" selection-start-line="17" selection-start-column="37" selection-end-line="17" selection-end-column="37" />
+>>>>>>> master
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/modify_rooms.html">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="549">
+          <caret line="44" column="29" lean-forward="false" selection-start-line="44" selection-start-column="29" selection-end-line="44" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/services.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+=======
+        <state relative-caret-position="150">
+          <caret line="10" column="44" lean-forward="true" selection-start-line="10" selection-start-column="44" selection-end-line="10" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="191" column="6" lean-forward="false" selection-start-line="191" selection-start-column="6" selection-end-line="191" selection-end-column="6" />
+          <folding>
+            <marker date="1491736519000" expanded="true" signature="391:469" ph="SELECT UserN... User" />
+            <marker date="1491736519000" expanded="true" signature="816:935" ph="SELECT s.Sit... User" />
+            <marker date="1491736519000" expanded="true" signature="1219:2318" ph="SELECT DISTI... User" />
+            <marker date="1491736519000" expanded="true" signature="2582:2701" ph="SELECT Servi... SoupKitchen" />
+            <marker date="1491736519000" expanded="true" signature="2934:3045" ph="SELECT Servi... Shelter" />
+            <marker date="1491736519000" expanded="true" signature="3464:3573" ph="SELECT * FRO... Client" />
+            <marker date="1491736519000" expanded="true" signature="4008:4168" ph="INSERT INTO Client... " />
+            <marker date="1491736519000" expanded="true" signature="4659:5019" ph="SELECT First... Client" />
+            <marker date="1491736519000" expanded="true" signature="5512:5641" ph="SELECT First... Client" />
+            <marker date="1491736519000" expanded="true" signature="5686:5837" ph="SELECT Clien... Log" />
+            <marker date="1491736519000" expanded="true" signature="5879:6073" ph="SELECT Shelt... WaitList" />
+            <marker date="1491736519000" expanded="true" signature="6587:6832" ph="UPDATE CLIEN... " />
+            <marker date="1491736519000" expanded="true" signature="7237:7489" ph="INSERT INTO LOG... " />
+            <marker date="1491736519000" expanded="true" signature="7261:7489" ph="SELECT $clie... " />
+            <marker date="1491736519000" expanded="true" signature="7933:8000" ph="SELECT seats... SoupKitchen" />
+            <marker date="1491736519000" expanded="true" signature="8331:8410" ph="UPDATE SoupK... " />
+            <marker date="1491736519000" expanded="true" signature="8698:8799" ph="SELECT Bunks... BunkRoom" />
+            <marker date="1491736519000" expanded="true" signature="9081:9201" ph="UPDATE BunkR... " />
+            <marker date="1491736519000" expanded="true" signature="9604:9689" ph="SELECT Rooms... Shelter" />
+            <marker date="1491736519000" expanded="true" signature="9847:9953" ph="SELECT f.Roo... FamilyRoom" />
+            <marker date="1491736519000" expanded="true" signature="10519:10618" ph="UPDATE Famil... " />
+            <marker date="1491736519000" expanded="true" signature="10840:11052" ph="UPDATE Shelt... " />
+            <marker date="1491736519000" expanded="true" signature="10897:11014" ph="SELECT COUNT... FamilyRoom" />
+            <marker date="1491736519000" expanded="true" signature="11403:11470" ph="SELECT * FRO... FamilyRoom" />
+            <marker date="1491736519000" expanded="true" signature="11659:11906" ph="SELECT C.Cli... WaitList" />
+            <marker date="1491736519000" expanded="true" signature="12311:12393" ph="SELECT COUNT... WaitList" />
+            <marker date="1491736519000" expanded="true" signature="12589:12692" ph="SELECT WaitL... WaitList" />
+            <marker date="1491736519000" expanded="true" signature="13185:13263" ph="DELETE FROM " />
+            <marker date="1491736519000" expanded="true" signature="13353:13526" ph="UPDATE WaitL... " />
+            <marker date="1491736519000" expanded="true" signature="13951:14128" ph="UPDATE WaitL... " />
+            <marker date="1491736519000" expanded="true" signature="14220:14345" ph="UPDATE WaitL... " />
+            <marker date="1491736519000" expanded="true" signature="14777:14954" ph="UPDATE WaitL... " />
+            <marker date="1491736519000" expanded="true" signature="15048:15173" ph="UPDATE WaitL... " />
+            <marker date="1491736519000" expanded="true" signature="15287:15916" ph="SELECT H.Nam... Shelter" />
+            <marker date="1491736519000" expanded="true" signature="16106:17191" ph="SELECT Meal.... SUM" />
+            <marker date="1491736519000" expanded="true" signature="16155:16585" ph="SELECT SUM(N... ExpirationDate" />
+            <marker date="1491736519000" expanded="true" signature="16235:16494" ph="SELECT Expir... Item" />
+            <marker date="1491736519000" expanded="true" signature="16620:16855" ph="SELECT SUM(N... Item" />
+            <marker date="1491736519000" expanded="true" signature="16890:17132" ph="SELECT SUM(N... Item" />
+            <marker date="1491736519000" expanded="true" signature="17351:17467" ph="SELECT Site.... Site" />
+            <marker date="1491736519000" expanded="true" signature="17637:17688" ph="SELECT Name Item" />
+            <marker date="1491736519000" expanded="true" signature="17865:18471" ph="SELECT s.Nam... Item" />
+            <marker date="1491736519000" expanded="true" signature="19650:19787" ph="SELECT * FRO... User" />
+            <marker date="1491736519000" expanded="true" signature="20074:20671" ph="SELECT s.Nam... User" />
+            <marker date="1491736519000" expanded="true" signature="20881:21935" ph="SELECT u.Use... User" />
+            <marker date="1491736519000" expanded="true" signature="23594:23705" ph="INSERT INTO Requests... " />
+            <marker date="1491736519000" expanded="true" signature="24792:24998" ph="UPDATE Reque... " />
+            <marker date="1491736519000" expanded="true" signature="25097:25205" ph="UPDATE Item " />
+            <marker date="1491736519000" expanded="true" signature="25361:25521" ph="UPDATE Reque... " />
+            <marker date="1491736519000" expanded="true" signature="25684:25773" ph="UPDATE Reque... " />
+            <marker date="1491736519000" expanded="true" signature="25918:26050" ph="UPDATE Reque... " />
+            <marker date="1491736519000" expanded="true" signature="26226:26292" ph="SELECT i.Nam... Item" />
+          </folding>
+>>>>>>> master
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="367">
+          <caret line="471" column="0" lean-forward="true" selection-start-line="471" selection-start-column="0" selection-end-line="471" selection-end-column="0" />
+          <folding>
+            <marker date="1491736282000" expanded="true" signature="391:469" ph="SELECT UserN... User" />
+            <marker date="1491736282000" expanded="true" signature="816:935" ph="SELECT s.Sit... User" />
+            <marker date="1491736282000" expanded="true" signature="1220:2319" ph="SELECT DISTI... User" />
+            <marker date="1491736282000" expanded="true" signature="2604:2766" ph="UPDATE SoupK... " />
+            <marker date="1491736282000" expanded="true" signature="3077:3238" ph="UPDATE FoodP... " />
+            <marker date="1491736282000" expanded="true" signature="3543:3701" ph="UPDATE Shelt... " />
+            <marker date="1491736282000" expanded="true" signature="3967:4013" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4143:4186" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4318:4363" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4492:4534" ph="DELETE FROM " />
+            <marker date="1491736282000" expanded="true" signature="4716:4764" ph="SELECT * FRO... SoupKitchen" />
+            <marker date="1491736282000" expanded="true" signature="4960:5176" ph="INSERT INTO SoupKitchen... " />
+            <marker date="1491736282000" expanded="true" signature="5563:5610" ph="SELECT * FRO... FoodPantry" />
+            <marker date="1491736282000" expanded="true" signature="5806:5967" ph="INSERT INTO FoodPantry... " />
+            <marker date="1491736282000" expanded="true" signature="6295:6339" ph="SELECT * FRO... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="6535:6720" ph="INSERT INTO Shelter... " />
+            <marker date="1491736282000" expanded="true" signature="7037:7082" ph="SELECT * FRO... FoodBank" />
+            <marker date="1491736282000" expanded="true" signature="7278:7324" ph="INSERT INTO FoodBank... " />
+            <marker date="1491736282000" expanded="true" signature="7513:7632" ph="SELECT Servi... SoupKitchen" />
+            <marker date="1491736282000" expanded="true" signature="7865:7976" ph="SELECT Servi... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="8395:8504" ph="SELECT * FRO... Client" />
+            <marker date="1491736282000" expanded="true" signature="8939:9099" ph="INSERT INTO Client... " />
+            <marker date="1491736282000" expanded="true" signature="9590:9950" ph="SELECT First... Client" />
+            <marker date="1491736282000" expanded="true" signature="10443:10572" ph="SELECT First... Client" />
+            <marker date="1491736282000" expanded="true" signature="10617:10768" ph="SELECT Clien... Log" />
+            <marker date="1491736282000" expanded="true" signature="10810:11004" ph="SELECT Shelt... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="11518:11763" ph="UPDATE CLIEN... " />
+            <marker date="1491736282000" expanded="true" signature="12168:12420" ph="INSERT INTO LOG... " />
+            <marker date="1491736282000" expanded="true" signature="12192:12420" ph="SELECT $clie... " />
+            <marker date="1491736282000" expanded="true" signature="12864:12931" ph="SELECT seats... SoupKitchen" />
+            <marker date="1491736282000" expanded="true" signature="13352:13431" ph="UPDATE SoupK... " />
+            <marker date="1491736282000" expanded="true" signature="13720:13821" ph="SELECT Bunks... BunkRoom" />
+            <marker date="1491736282000" expanded="true" signature="14103:14223" ph="UPDATE BunkR... " />
+            <marker date="1491736282000" expanded="true" signature="14626:14711" ph="SELECT Rooms... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="14869:14975" ph="SELECT f.Roo... FamilyRoom" />
+            <marker date="1491736282000" expanded="true" signature="15365:15488" ph="UPDATE Famil... " />
+            <marker date="1491736282000" expanded="true" signature="15541:15640" ph="UPDATE Famil... " />
+            <marker date="1491736282000" expanded="true" signature="15862:16074" ph="UPDATE Shelt... " />
+            <marker date="1491736282000" expanded="true" signature="15919:16036" ph="SELECT COUNT... FamilyRoom" />
+            <marker date="1491736282000" expanded="true" signature="16425:16492" ph="SELECT * FRO... FamilyRoom" />
+            <marker date="1491736282000" expanded="true" signature="16681:16928" ph="SELECT C.Cli... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="17333:17415" ph="SELECT COUNT... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="17611:17714" ph="SELECT WaitL... WaitList" />
+            <marker date="1491736282000" expanded="true" signature="18973:19150" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="19242:19367" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="19799:19976" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="20070:20195" ph="UPDATE WaitL... " />
+            <marker date="1491736282000" expanded="true" signature="20309:20938" ph="SELECT H.Nam... Shelter" />
+            <marker date="1491736282000" expanded="true" signature="21128:22213" ph="SELECT Meal.... SUM" />
+            <marker date="1491736282000" expanded="true" signature="21177:21607" ph="SELECT SUM(N... ExpirationDate" />
+            <marker date="1491736282000" expanded="true" signature="21257:21516" ph="SELECT Expir... Item" />
+            <marker date="1491736282000" expanded="true" signature="21642:21877" ph="SELECT SUM(N... Item" />
+            <marker date="1491736282000" expanded="true" signature="21912:22154" ph="SELECT SUM(N... Item" />
+            <marker date="1491736282000" expanded="true" signature="22373:22489" ph="SELECT Site.... Site" />
+            <marker date="1491736282000" expanded="true" signature="22659:22710" ph="SELECT Name Item" />
+            <marker date="1491736282000" expanded="true" signature="22887:23493" ph="SELECT s.Nam... Item" />
+            <marker date="1491736282000" expanded="true" signature="24672:24809" ph="SELECT * FRO... User" />
+            <marker date="1491736282000" expanded="true" signature="25096:25693" ph="SELECT s.Nam... User" />
+            <marker date="1491736282000" expanded="true" signature="28616:28727" ph="INSERT INTO Requests... " />
+            <marker date="1491736282000" expanded="true" signature="29814:30020" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="30383:30543" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="30706:30795" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="30940:31072" ph="UPDATE Reque... " />
+            <marker date="1491736282000" expanded="true" signature="31248:31314" ph="SELECT i.Nam... Item" />
+          </folding>
+=======
+        <state relative-caret-position="180">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/code.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="8" lean-forward="true" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
+          <folding />
+>>>>>>> master
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

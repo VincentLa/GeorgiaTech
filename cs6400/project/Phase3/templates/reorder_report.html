@@ -1,0 +1,22 @@
+$var pagename : Reorder Report
+
+<div class="w3-twothird w3-container">
+<h1 class="w3-text-teal">Reorder Report</h1>
+$if session.get('reorderInfo'):
+    <p>The following donation items are currently or soon to be out of stock.</p>
+    <table id="results" border=1>
+        <tr>
+          <th>Item Name</th>
+          <th>Item Type</th>
+          <th>Item Sub Type</th>
+        </tr>
+        $for item in session.get('reorderInfo'):
+        <tr>
+          <td align="center">$item['Name']</td>
+          <td align="center">$item['ItemType']</td>
+          <td align="center">$item['ItemSubType']</td>
+        </tr>
+    </table>
+$else:
+  <p>All donation items are currently available.  Thank you!</p>
+</div>

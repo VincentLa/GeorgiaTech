@@ -1,0 +1,19 @@
+Name: Vincent La
+Email: vincela14@gmail.com
+Phone: 917-280-8341
+Timezone: Pacific Time (US)
+
+Name: Ye Wang
+Email: wangyepku@gmail.com
+Phone: 352-213-5286
+Timezone: Pacific Time (US)
+
+Name: Khanh Nguyen
+Email: khanhnguyen321@gmail.com
+Phone: 408-564-9742
+Timezone: Pacific Time (US)
+
+Name: Melanie Clarke
+Email: mclarke32@gatech.edu
+Phone: 808-339-1923
+Timezone: Pacific Time (US)

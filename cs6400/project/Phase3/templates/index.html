@@ -1,0 +1,39 @@
+$var pagename : Login
+
+<div class="w3-twothird w3-container">
+<h1 class="w3-text-teal">ASACS Reports</h1>
+<p><a href="/reports/beds/">Current Bunks and Family Rooms Available</a></p>
+<p><a href="/reports/meals/">Current Meals Remaining</a></p>
+<p><a href="/reports/reorder/">Items for Reorder</a></p>
+
+<h1 class="w3-text-teal">User Sign In</h1>
+<form action="/login/" method="post">
+    <table border="0" cellpadding="10" cellspacing="1" style="margin-top:-40;margin-right:0;margin-left:0;width:200px;">
+        <tbody>
+            <tr>
+                <td><strong>Username:</strong></td>
+                <td><input id="username" type="text" name="username" size="25" value="emp1" /></td>
+            </tr>
+            <tr>
+                <td><strong>Password:</strong></td>
+                <td><input id="password" type="password" name="password" size="25" value="gatech123" /></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right">
+                    <input id="reset" type="reset" value ="Reset" onClick="resetLogin();"/>&nbsp;<input type="Submit" value ="Log In" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right">
+                  <p id="loginMessage">
+                    $if session.get('loginMessage'):
+                      $session.get('loginMessage')
+                    $else:
+                      ${None}
+                  </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+</div>

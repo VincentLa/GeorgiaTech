@@ -1,0 +1,24 @@
+$var pagename : Check Into Room
+
+<div class="css-content">
+<h1 class="w3-text-teal">Check Into Room</h1>
+$code:
+    svcs = session.get('currentServices')
+$if svcs is not None:
+    <p>Conditions for use for site $session.get('siteName'):</p>
+    $if svcs['shID'] is not None:
+        <p>Shelter $svcs['shName']: $svcs['shConditions']</p>
+
+    <form action="/services/checkintoroom/" method="post">
+      Date/Timestamp:<br>
+      <input type="text" name="date_timestamp" value=$session.get('current_datetime')><br>
+      Site:<br>
+      <input type="text" name="site" value=$session.get('siteName')><br>
+      Description of Services:<br>
+      <input type="text" name="description"><br>
+      Extra Notes:<br>
+      <input type="text" name="notes"><br>
+      <input type="submit" value="Submit">
+    </form>
+</div>
+

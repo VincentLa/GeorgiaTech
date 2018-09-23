@@ -1,0 +1,1 @@
+[24-Nov-2016 10:49:46 America/Los_Angeles] PHP Warning:  mysqli_error() expects exactly 1 parameter, 0 given in C:\Bitnami\wampstack-7.0.11-0\apache2\htdocs\gt_online_php_v7.1\login.php 

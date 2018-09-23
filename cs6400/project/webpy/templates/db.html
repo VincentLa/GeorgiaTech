@@ -1,0 +1,26 @@
+$def with (results)
+$# The above line (which needs to be the first line) is used to accept the 'results' argument from function render.db(results) in code.py
+
+Logged in as '$session.username'
+<br/><br/>
+
+This is the 'db' page.
+<br/><br/>
+
+You probably will need to update the data in your database for this to work.
+<br/><br/>
+
+$# 'results' is a DICTIONARY
+$for r in results:
+  $r<br/>
+
+<br/><br/>
+Put HTML code anywhere.
+
+<br/><br/>
+<a href="/">Home</a><br/>
+<a href="/db/">DB</a><br/>
+<a href="/page/">Page</a><br/>
+<a href="/page/1">Page 1</a><br/>
+<a href="/page/2">Page 2</a><br/><br/>
+<a href="/session_end/">Log Out</a><br/>

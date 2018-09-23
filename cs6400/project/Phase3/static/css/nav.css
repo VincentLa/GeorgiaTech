@@ -1,0 +1,108 @@
+html, body, h1, h2, h3, h4, h5, h6 { font-family: "Roboto", sans-serif }
+.w3-sidenav a, .w3-sidenav h4 { padding: 12px; }
+.w3-navbar a { padding-top: 12px !important; padding-bottom: 12px !important; }
+
+#copyright { float: right; font-size: .75em;}
+
+#results {
+  display: table;
+  /*border-collapse: collapse;*/
+  /*border-spacing: 2px;*/
+  border-color: gray;
+  width: 100%;
+}
+
+#results td, th {
+  border: 1px solid #dddddd;
+  padding: 8px;
+}
+
+#results tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+#submitRow {
+  background-color: #ffffff;
+}
+
+#center {
+  text-align: center;
+  align: center;
+}
+
+#colInputNum {
+  width: 15px;
+  text-align: center;
+  align: center;
+}
+
+div .css-content {
+  width: 90%;
+  margin: 10px;
+}
+
+#navBarRight { float: right; }
+
+/*#tbExpirationDate {
+  width: 25%;
+}*/
+
+#tbSearchItem, #tbAddInventory {
+  width: 50%;
+}
+
+select {
+  width: 100%;
+  align: left;
+}
+
+#col1 {
+  width: 20%;
+  align: left;
+}
+
+#col2 {
+  width: 80%;
+  align: left;
+}
+
+#inputButtons {
+  width: 50%;
+  text-align: right;
+}
+
+#btnLink {
+  width: 300px;
+  background-color: #999999;
+  border: 1px solid black;
+  color: white;
+  font-weight: bold;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+#btnLink:hover {
+  width: 300px;
+  background-color: #4d4d4d;
+  border: 1px solid black;
+  color: white;
+  font-weight: bold;
+  padding: 12px 24px;
+  border-radius: 8px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  text-decoration: none;
+}
+
+input[type=number] {
+    width: 75px;
+}
+
+input[readonly] {
+    background-color: #666666;
+}
+
+#redInput {
+    background-color: red;
+}

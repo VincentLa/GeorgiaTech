@@ -1,0 +1,20 @@
+$def with (services)
+$ pageTitle = 'Inventory Management'
+$var pagename : $pageTitle
+
+<div class="css-content">
+<h1 class="w3-text-teal">$pageTitle</h1>
+<h4>Please select an action:</h4>
+
+
+$if services['FoodBank']:
+  <p><input id="btnLink" type="button" value="Add Inventory" onClick="location.href='/inventory/addInventory/'"></p>
+
+<p><input id="btnLink" type="button" value="Search / Request Item" onClick="location.href='/inventory/searchItem/'"></p>
+
+$if services['Shelter'] or services['FoodPantry'] or services['SoupKitchen']:
+  <p><input id="btnLink" type="button" value="View / Edit Request" onClick="location.href='/inventory/viewRequest/'"></p>
+
+$if services['FoodBank']:
+  <p><input id="btnLink" type="button" value="Request Fulfillment" onClick="location.href='/inventory/requests/'"></p>
+</div>

@@ -1,0 +1,23 @@
+$def with (pid)
+
+Logged in as '$session.username'
+<br/><br/>
+This is the 'page.html' page!
+<br/><br/>
+
+$if pid:
+  Page # = $pid
+$else:
+  Page # is empty!
+
+<br/><br/>
+
+Put HTML code anywhere.
+
+<br/><br/>
+<a href="/">Home</a><br/>
+<a href="/db/">DB</a><br/>
+<a href="/page/">Page</a><br/>
+<a href="/page/1">Page 1</a><br/>
+<a href="/page/2">Page 2</a><br/><br/>
+<a href="/session_end/">Log Out</a><br/>

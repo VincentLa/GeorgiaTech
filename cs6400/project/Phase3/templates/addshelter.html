@@ -1,0 +1,21 @@
+$var pagename : Add Shelter
+
+<div class="css-content">
+<h2 class="w3-text-teal">Add Shelter</h2>
+<form action="/services/addshelter/" method="post">
+  Name:<br>
+  <input type="text" name="Name"><br>
+  Address:<br>
+  <input type="text" name="Address"><br>
+  Hours:<br>
+  <input type="text" name="Hours"><br>
+  Conditions:<br>
+  <input type="text" name="Conditions"><br>
+  Rooms Available:<br>
+  <input type="text" name="Number"><br><br>
+  <input type="submit" value="Submit" onClick="location.href='/services/'"/>&nbsp;&nbsp;
+  $if session.get('addShelterMsg'):
+      <p>ERROR: $session.get('addShelterMsg')</p>
+</form>
+</div>
+

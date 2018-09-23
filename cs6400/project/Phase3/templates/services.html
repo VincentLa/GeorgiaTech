@@ -1,0 +1,133 @@
+$var pagename : Service Management
+
+<div class="css-content">
+<h1 class="w3-text-teal">Service Management Page</h1>
+
+$if session.get('siteName'):
+    <h2>$session.get('siteName')</h2>
+<form action="/services/" method="post">
+$code:
+    nsvc = 0
+    for svc in ['fpID', 'skID', 'shID', 'fbID']:
+        if session.get('currentServices')[svc] is not None:
+            nsvc += 1
+  
+$if session.get('currentServices')['fpID'] is not None:
+    <h3>Food Pantry</h3>
+    <table>
+    <tbody>
+      <tr>
+        <td>Name</td>
+        <td><input id="fpName" type="text" size="80" name="fpName" value="$session.get('currentServices')['fpName']" /></td>
+      </tr>
+      <tr>
+        <td>Address</td>
+        <td><input id="fpAddress" type="text" size="80" name="fpAddress" value="$session.get('currentServices')['fpAddress']" /></td>
+      </tr>
+      <tr>
+        <td>Hours of Operation</td>
+        <td><input id="fpHours" type="text" size="80" name="fpHours" value="$session.get('currentServices')['fpHours']" /></td>
+      </tr>
+      <tr>
+        <td>Conditions for Use</td>
+        <td><input id="fpConditions" type="text" size="80" name="fpConditions" value="$session.get('currentServices')['fpConditions']" /></td>
+      </tr>
+      <tr>
+        <td colspan=2>
+          <input id="fpupdate" type="Submit" value="Update This Service" name = "fpupdate"/>
+          $if nsvc > 1:
+              <input id="fpDelete" type="Submit" value="Delete This Service" name = "fpDelete"/>&nbsp;
+        </td>
+        </tr>
+    </tbody>
+    </table>
+$if session.get('currentServices')['skID']:
+    <h3>Soup Kitchen</h3>
+    <table>
+    <tbody>
+      <tr>
+        <td>Name</td>
+        <td><input id="skName" type="text" size="80" name="skName" value="$session.get('currentServices')['skName']" /></td>
+      </tr>
+      <tr>
+        <td>Address</td>
+        <td><input id="skAddress" type="text" size="80" name="skAddress" value="$session.get('currentServices')['skAddress']" /></td>
+      </tr>
+      <tr>
+        <td>Hours of Operation</td>
+        <td><input id="skHours" type="text" size="80" name="skHours" value="$session.get('currentServices')['skHours']" /></td>
+      </tr>
+      <tr>
+        <td>Conditions for Use</td>
+        <td><input id="skConditions" type="text" size="80" name="skConditions" value="$session.get('currentServices')['skConditions']" /></td>
+      </tr>
+      <tr>
+        <td colspan=2>
+          <input id="modifySeats" type="Reset" value="Modify Seats Available" onClick="location.href='/services/modifyseats/'" />&nbsp;
+          <input id="skupdate" type="Submit" value="Update This Service" name = "skupdate"/>
+          $if nsvc > 1:
+              <input id="skDelete" type="Submit" value="Delete This Service" name = "skDelete"/>&nbsp;
+        </td>
+        </tr>
+    </tbody>
+    </table>
+$if session.get('currentServices')['shID'] is not None:
+    <h3>Shelter</h3>
+    <table>
+    <tbody>
+      <tr>
+        <td>Name</td>
+        <td><input id="shName" type="text" size="80" name="shName" value="$session.get('currentServices')['shName']" /></td>
+      </tr>
+      <tr>
+        <td>Address</td>
+        <td><input id="shAddress" type="text" size="80" name="shAddress" value="$session.get('currentServices')['shAddress']" /></td>
+      </tr>
+      <tr>
+        <td>Hours of Operation</td>
+        <td><input id="shHours" type="text" size="80" name="shHours" value="$session.get('currentServices')['shHours']" /></td>
+      </tr>
+      <tr>
+        <td>Conditions for Use</td>
+        <td><input id="shConditions" type="text" size="80" name="shConditions" value="$session.get('currentServices')['shConditions']" /></td>
+      </tr>
+      <tr>
+        <td colspan=2>
+          <input id="addbunkroom" type="Reset" value="Add New Bunk Room" onClick="location.href='/services/addbunkroom/'"/>
+          <input id="addfamilyroom" type="Reset" value="Add New Family Room" onClick="location.href='/services/addfamilyroom/'"/>
+          <input id="modifyBunks" type="Reset" value="Modify Bunks Available" onClick="location.href='/services/modifybunks/'" />&nbsp;
+          <input id="modifyRooms" type="Reset" value="Modify Rooms Available" onClick="location.href='/services/modifyrooms/'" />&nbsp;
+          <input id="waitlist" type="Reset" value="View/Edit Waitlist" onClick="location.href='/services/waitlist/'" />&nbsp;
+          <input id="shupdate" type="Submit" value="Update This Service" name = "shupdate"/>
+          $if nsvc > 1:
+              <input id="shDelete" type="Submit" value="Delete This Service" name = "shDelete"/>&nbsp;
+        </td>
+        </tr>
+    </tbody>
+    </table>
+$if session.get('currentServices')['fbID'] is not None:
+    <h3>Food Bank</h3>
+    <table>
+    <tbody>
+      <tr>
+        <td>
+          $if nsvc > 1:
+              <input id="fbDelete" type="Submit" value="Delete This Service" name = "fbDelete"/>&nbsp;
+        </td>
+    </tbody>
+    </table>
+
+<hr>
+      <input id="reset" type="Reset" value="Reset All Fields" name = "reset" onClick="resetServices();" />&nbsp;
+    $if session.get('currentServices')['skID'] is None:
+      <input id="addsoupkitchen" type="Reset" value="Add New Soup Kitchen" onClick="location.href='/services/addsoupkitchen/'"/>&nbsp;
+    $if session.get('currentServices')['shID'] is None:
+      <input id="addshelter" type="Reset" value="Add New Shelter" onClick="location.href='/services/addshelter/'"/>&nbsp;&nbsp;
+    $if session.get('currentServices')['fbID'] is None:
+      <input id="addfoodbank" type="Reset" value="Add New Food Bank" onClick="location.href='/services/addfoodbank/'"/>&nbsp;&nbsp;
+    $if session.get('currentServices')['fpID'] is None:
+      <input id="addfoodpantry" type="Reset" value="Add New Food Pantry" onClick="location.href='/services/addfoodpantry/'"/>&nbsp;&nbsp;
+
+
+</form>
+</div>

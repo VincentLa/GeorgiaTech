@@ -1,0 +1,30 @@
+$var pagename : Client Search
+
+<div class="css-content">
+<h1 class="w3-text-teal">Client Search Page</h1>
+<table border=1>
+  <thead>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>ID Number</th>
+      <th>Description</th>
+      <th>View Report</th>
+  </thead>
+  <tbody>
+    $for client in session.get('clients'):
+    <tr>
+      <td align="center">$client['FirstName']</td>
+      <td align="center">$client['LastName']</td>
+      <td align="center">$client['IDNumber']</td>
+      <td align="center">$client['IDDescription']</td>
+      <td align='center'>
+		<form action="/client/viewedit/" method="post">
+		<button name="ClientID" type="submit" value=$client['ClientID']>View/Edit Or Check In Client Information</button>
+		</form>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</div>

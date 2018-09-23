@@ -1,0 +1,99 @@
+$def with (requests, itemsUpdated, highRequests)
+$ pageTitle = 'View / Edit Requests'
+$var pagename : $pageTitle
+
+<div class="css-content">
+<h1 class="w3-text-teal">$pageTitle</h1>
+
+$if itemsUpdated and (len(itemsUpdated['new']) > 0 or len(itemsUpdated['deleted']) > 0 or len(itemsUpdated['updated']) > 0):
+  <h3 id="itemHeaderMsg">Requests updated:</h3>
+  <ul>
+  $if len(itemsUpdated['new']) > 0:
+    <li>New requests added:
+      <ul>
+      $for k,v in itemsUpdated['new'].items():
+        <li>$k => inserted with count $v</li>
+      </ul>
+  </li>
+
+  $if len(itemsUpdated['updated']) > 0:
+    <li>Updated requests:
+      <ul>
+      $for k,v in itemsUpdated['updated'].items():
+        <li>$k => updated count from $itemsUpdated['old'][k] to $v</li>
+      </ul>
+    </li>
+
+  $if len(itemsUpdated['deleted']) > 0:
+    <li>Deleted requests:
+      <ul>
+      $for k,v in itemsUpdated['deleted'].items():
+        <li>$k requested on $v['RequestDateTime'] with count $v['CountRequested'] is deleted</li>
+      </ul>
+  </li>
+  </ul>
+
+$elif itemsUpdated:
+  <h3 id="itemHeaderMsg">No new requests were made!</h3>
+
+$if highRequests:
+  <b><h4>Notice: You have request(s) higher than availability highlighted in red below!!!</h4></b>
+
+$if requests:
+  <h3 id="itemHeaderMsg">Your requested items:</h3>
+  <form action="/inventory/viewRequest/" method="post" id="formSearchItem">
+  <table id="results">
+    <tr><th>#</th>
+    $ orderedHeader = ['ItemName', 'ItemType', 'ItemSubType', 'StorageType', 'ExpirationDate', 'AvailableCount', 'CountRequested', 'CountProvided', 'Status']
+
+    $for header in orderedHeader:
+      <th>$header</th>
+    <th>Delete ?</th>
+    </tr>
+
+    $ rowCount = 0
+
+    $for record in requests:
+      $ rowCount = rowCount + 1
+
+      <tr><td width="5">$rowCount</td>
+
+      $for header in orderedHeader:
+        $if header == 'CountRequested':
+          <td id="colInputNum">
+            <input name="RequestDateTime" type="hidden" value="$record['RequestDateTime']" />
+            <input name="ItemID" type="hidden" value="$record['ItemID']" />
+            <input name="OldCountRequested" type="hidden" value="$record[header]" />
+            $ redID = ''
+            $ readonly = ''
+
+            $if highRequests and record['ItemID'] in highRequests:
+              $ redID = 'redInput'
+            $else:
+              $ redID = 'CountRequested'
+
+            $if record['Status'] != 'Pending':
+              $ readonly = ' readonly'
+
+            <input id="$redID" name="CountRequested" type="number" size="4" min="0" value="$record[header]"$readonly />
+          </td>
+        $else:
+          <td>$record[header]</td>
+      $ readonly = ''
+      $if record['Status'] != 'Pending':
+        $ readonly = ' disabled readonly'
+      <td id="center"><input type="checkbox" name="delRequest" value="$record['RequestDateTime']|$record['ItemID']"$readonly></td>
+      </tr>
+    <tr id="submitRow">
+        $ colCount = len(orderedHeader) + 2 # 1 for rowCount, 1 for Delete
+        <td id="inputButtons" colspan="$colCount">
+            <input id="reset" name="reset" type="reset" value="Reset">&nbsp;<input type="submit" value="Update Request" />
+        </td>
+    </tr>
+  </table>
+  </form>
+
+$else:
+  <h3 id="itemHeaderMsg">No requests found!</h3>
+
+</div>

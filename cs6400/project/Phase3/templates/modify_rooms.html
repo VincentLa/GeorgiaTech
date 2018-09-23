@@ -1,0 +1,44 @@
+$var pagename : Modify Rooms Available
+
+<div class="css-content">
+<h2>Modify Family Rooms Available</h2>
+
+<form action="/services/modifyrooms/" method="post">
+$if session.get('roomsInfo'):
+  $code:
+      roomsInfo = session.get('roomsInfo')
+      roomsAvail = roomsInfo['roomsAvailable']
+      familyRooms = roomsInfo['familyRooms']
+  $if len(roomsInfo['familyRooms']) > 0:
+      <input type="hidden" name="serviceID" value="$roomsInfo['serviceID']"/>
+      <p>
+        Family Room Status:
+        <table border=1>
+          <thead>
+            <tr>
+              <th>Room Number</th>
+              <th>Occupied?</th>
+            </tr>
+          </thead>
+          <tbody>
+            $for froom in familyRooms:
+              <tr>
+                <td align="center">$froom['RoomNumber']</td>
+                $if froom['OccupationStatus']==1:
+                  <td align="center"><input type="checkbox" name="$froom['RoomNumber']" checked="checked"/><br></td>
+                $else:
+                  <td align="center"><input type="checkbox" name="$froom['RoomNumber']"/><br></td>
+              </tr>
+          </tbody>
+        </table>
+      </p>
+      <p>
+        Number of Rooms Available: $roomsAvail
+      </p>
+      <input type="submit" value="Update"/>
+  $else:
+     <p>No family rooms available.</p>
+$else:
+   <p>No family rooms available.</p>
+</form>
+</div>

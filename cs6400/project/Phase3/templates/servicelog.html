@@ -1,0 +1,28 @@
+$var pagename : Add Service Log
+
+<div class="css-content">
+<h1 class="w3-text-teal">Add Service Log</h1>
+$code:
+    svcs = session.get('currentServices')
+$if svcs is not None:
+    <p>Conditions for use for site $session.get('siteName'):</p>
+    $if svcs['fpID'] is not None:
+        <p>Food Pantry $svcs['fpName']: $svcs['fpConditions']</p>
+    $if svcs['shID'] is not None:
+        <p>Shelter $svcs['shName']: $svcs['shConditions']</p>
+    $if svcs['skID'] is not None:
+        <p>Soup Kitchen $svcs['skName']: $svcs['skConditions']</p>
+
+    <form action="/services/servicelog/" method="post">
+    Date/Timestamp:<br>
+    <input type="text" name="date_timestamp" value="$session.get('current_datetime')" /><br>
+    Site:<br>
+    <input type="text" name="site" value="$session.get('siteName')" /><br>
+    Description of Services:<br>
+    <input type="text" name="description"><br>
+    Extra Notes:<br>
+    <input type="text" name="notes"><br>
+    <input type="submit" value="Submit">
+    </form>
+</div>
+

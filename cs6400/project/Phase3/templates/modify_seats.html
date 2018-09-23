@@ -1,0 +1,34 @@
+$var pagename : Modify Seats
+
+<div class="css-content">
+<h2>Modify Seats</h2>
+
+<form action="/services/modifyseats/" method="post">
+$if session.get('seatsInfo'):
+  $code:
+      seatsInfo = session.get('seatsInfo')
+  <input type="hidden" name="serviceID" value="$seatsInfo['serviceID']">
+  <table>
+    <tbody>
+      <tr>
+        <td width=120>Seats Available:</td>
+        <td><input type="text" name="seatsnum" value="$seatsInfo['seatsAvailable']"></td>
+      </tr>
+      <tr>
+        <td width=120>Seat Capacity:</td>
+        <td>$seatsInfo['seatCapacity']</td>
+      </tr>
+    </tbody>
+  </table>
+  <input type="submit" value="Update">
+  $if session.get('modifySeatsMsg'):
+      <p>ERROR: $session.get('modifySeatsMsg')</p>
+$else:
+    <p>Sorry. No seats info available.</p>
+</form>
+
+</div>
+
+
+
+

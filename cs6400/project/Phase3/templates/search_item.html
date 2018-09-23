@@ -1,0 +1,198 @@
+$def with (foodBanks, items, inputData, searchedItems, services, siteID, itemsUpdated)
+$ pageTitle = 'Search Item'
+$var pagename : $pageTitle
+
+<div class="css-content">
+<h1 class="w3-text-teal">$pageTitle</h1>
+
+$if itemsUpdated and (len(itemsUpdated['new']) > 0 or len(itemsUpdated['deleted']) > 0 or len(itemsUpdated['updated']) > 0):
+  <h3 id="itemHeaderMsg">Requests updated:</h3>
+  <ul>
+  $if len(itemsUpdated['new']) > 0:
+    <li>New requests added:
+      <ul>
+      $for k,v in itemsUpdated['new'].items():
+        <li>$k => inserted with count $v</li>
+      </ul>
+  </li>
+
+  $if len(itemsUpdated['updated']) > 0:
+    <li>Updated requests:
+      <ul>
+      $for k,v in itemsUpdated['updated'].items():
+        <li>$k => updated count from $itemsUpdated['old'][k] to $v</li>
+      </ul>
+    </li>
+
+  $if len(itemsUpdated['deleted']) > 0:
+    <li>Deleted requests:
+      <ul>
+      $for k,v in itemsUpdated['deleted'].items():
+        <li>$k requested on $v['RequestDateTime'] with count $v['CountRequested'] is deleted</li>
+      </ul>
+  </li>
+  </ul>
+
+  <p><a href="/inventory/viewRequest/"><<< Click here to View/Edit your requests >>></a></p>
+
+$elif itemsUpdated:
+  <h3 id="itemHeaderMsg">No new requests were made!</h3>
+
+<form action="/inventory/searchItem/" method="post" id="formSearchItem">
+    <table border="0" cellpadding="2" cellspacing="0" id="tbSearchItem">
+        <tbody>
+            <tr>
+                <td id="col1">Food Bank:</td>
+                <td id="col2">
+                  <select id="tbFoodBank" type="text" name="tbFoodBank">
+                    $ selectState = ''
+                    <option value="All">All</option>
+                    $for i in foodBanks:
+                      $if inputData:
+                        $if i['Name'] == inputData['tbFoodBank']:
+                          $ selectState = ' selected'
+                      <option value="$i['Name']"$selectState>$i['Name']</option>
+                      $ selectState = ''
+                  </select>
+                </td>
+            </tr>
+            <tr>
+                <td id="col1">Item Type:</td>
+                <td id="col2">
+                  <select id="tbItemType" type="text" name="tbItemType">
+                    $for i in ['All', 'Food', 'Supplies']:
+                      $if inputData:
+                        $if i == inputData['tbItemType']:
+                          $ selectState = ' selected'
+                      <option value="$i"$selectState>$i</option>
+                      $ selectState = ''
+                  </select>
+                </td>
+            </tr>
+            <tr>
+                <td id="col1">Storage Type:</td>
+                <td id="col2">
+                  <select id="tbStorageType" type="text" name="tbStorageType">
+                    $for i in ['All', 'Dry Good', 'Refrigerated', 'Frozen']:
+                      $if inputData:
+                        $if i == inputData['tbStorageType']:
+                          $ selectState = ' selected'
+                      <option value="$i"$selectState>$i</option>
+                      $ selectState = ''
+                  </select>
+                </td>
+            </tr>
+            <tr>
+                <td id="col1">Item Sub Type:</td>
+                <td id="col2">
+                  <select id="tbItemSubType" type="text" name="tbItemSubType">
+                    $for i in ['All', 'Vegetables', 'Nuts/Grains/Beans', 'Meat/Seafood', 'Dairy/Eggs', 'Sauce/Condiment/Seasoning', 'Juice/Drink', 'Personal Hygiene', 'Clothing', 'Shelter', 'Other']:
+                      $if inputData:
+                        $if i == inputData['tbItemSubType']:
+                          $ selectState = ' selected'
+                      <option value="$i"$selectState>$i</option>
+                      $ selectState = ''
+                  </select>
+                </td>
+            </tr>
+            <tr>
+                <td id="col1">Item Name:</td>
+                <td id="col2">
+                  $code:
+                    nameVal = ''
+
+                    if inputData and inputData['tbItemName']:
+                      nameVal = inputData['tbItemName']
+
+                  <input id="tbItemName" name="tbItemName" type="text" value="$nameVal" />
+                </td>
+            </tr>
+            <tr>
+                $code:
+                  dateVal = ''
+
+                  if inputData and inputData['tbExpirationDate']:
+                      dateVal = inputData['tbExpirationDate']
+
+                <td id="col1">Max Expiration Date:</td>
+                <td id="col2"><input id="tbExpirationDate" type="date" name="tbExpirationDate" placeholder="i.e. 01/01/2017" value="$dateVal" /></td>
+            </tr>
+            <tr>
+                <td id="col1">&nbsp;</td>
+                <td id="inputButtons">
+                    <input id="reset" name="reset" type="button" value="Reset" onClick="location.href='/inventory/searchItem/'">
+                    <!-- <input id="reset" name="reset" type="reset" value="Reset"> -->
+                    &nbsp;
+                    <input type="submit" value="Search" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+$if inputData and searchedItems:
+  $ orderedHeader = ['SiteName', 'ItemType', 'ItemSubType', 'ItemName', 'AvailableCount', 'UnitType', 'ExpirationDate', 'StorageType']
+
+  <h3 id="itemHeaderMsg">Items found:</h3>
+  <form action="/inventory/addRequest/" method="post" id="formSearchItem">
+    <table id="results">
+      <tr><th>#</th>
+      $for header in orderedHeader:
+        <th>$header</th>
+      <th>Count Request</th>
+      </tr>
+
+      $ rowCount = 0
+
+      $for record in searchedItems:
+        $ rowCount = rowCount + 1
+
+        <tr><td width="5">$rowCount</td>
+
+        $for header in orderedHeader:
+          $if header == 'AvailableCount':
+            $if record['SiteID'] == siteID:
+              $ readonly = ''
+            $else:
+              $ readonly = ' readonly'
+            <td id="colInputNum">
+              <input name="OldCount" type="hidden" value="$record[header]" />
+              <input name="AvailableCount" type="number" min="0" value="$record[header]"$readonly />
+            </td>
+          $else:
+            <td>$record[header]</td>
+        <td id="colInputNum">
+          <input name="ItemID" type="hidden" value="$record['ItemID']" />
+          $if (record['ItemType'] == 'Supplies' and services['Shelter']) or (record['ItemType'] == 'Food' and (services['FoodPantry'] or services['SoupKitchen'])):
+            $ readonly = ''
+
+            $if record['SiteID'] == siteID:
+              $ readonly = ' readonly'
+          $else:
+            $ readonly = ' readonly'
+
+          <input id="CountRequested" name="CountRequested" type="number" size="3" min="0" max="$record['AvailableCount']" value=""$readonly />
+        </td>
+        </tr>
+      <tr id="submitRow">
+          $ colCount = len(orderedHeader) + 2 # 1 for rowCount, 1 for CountRequested
+          <td id="inputButtons" colspan="$colCount">
+              <input id="reset" name="reset" type="reset" value="Reset">&nbsp;<input type="submit" value="Update Request" />
+          </td>
+      </tr>
+    </table>
+  </form>
+  <table>
+    <tr>
+      <td>
+        <h3 id="addRequestMsg">
+          $if session.get('addRequestMsg'):
+            session.get('addRequestMsg')
+        </h3>
+      </td>
+    </tr>
+  </table>
+
+$elif inputData and not searchedItems:
+  <h3 id="itemHeaderMsg">No records found!</h3>
+</div>

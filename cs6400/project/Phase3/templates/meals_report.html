@@ -1,0 +1,13 @@
+$var pagename : Meals Report
+
+<div class="w3-twothird w3-container">
+<h1 class="w3-text-teal">Current Meals Remaining</h1>
+<p>A meal is defined to be a combination of an item from each of three categories: Vegetables, Nuts/Grains/Beans, and Meat/Seafood or Dairy/Eggs.</p>
+$if session.get('mealsInfo'):
+  <p>
+    <h3>Number of meals currently available: $session.get('mealsInfo')['Counts']</h3>
+    <h3>Most needed donation category: $session.get('mealsInfo')['Category']</h3>
+  </p>  
+$else:
+  <p>Sorry, no meals remaining in system.</p>
+</div>

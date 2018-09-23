@@ -1,0 +1,5 @@
+The SQL schema and seed data script are in
+Phase3/sql/team010_p3_complete_v7.sql.
+
+SQL queries are all located in Phase3/db.py, in a string variable
+called 'sql', for each function that accesses the database.

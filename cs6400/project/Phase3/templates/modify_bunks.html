@@ -1,0 +1,42 @@
+$var pagename : Modify Bunks
+
+<div class="css-content">
+<h2>Modify Bunks</h2>
+
+<form action="/services/modifybunks/" method="post">
+  $if session.get('bunksInfo'):
+  $code:
+      bunksInfo = session.get('bunksInfo')
+      BunkRooms = bunksInfo['BunkRooms']
+  <input type="hidden" name="serviceID" value=$bunksInfo['serviceID']>
+    <p>Please modify bunks availability in the bunk available column.</p>
+         <p>
+        Bunk Room Status:
+        <table border=1>
+          <thead>
+            <tr>
+              <th>Room Number</th>
+              <th>Bunk Room Type</th>
+              <th>Bunk Capacity</th>
+              <th>Bunk Available</th>
+            </tr>
+          </thead>
+          <tbody>
+            $for froom in BunkRooms:
+              <tr>
+                <td align="center">$froom['RoomNumber']</td>
+                <td align="center">$froom['BunkType']</td>
+                <td align="center">$froom['BunkCapacity']</td>
+                <td align="center"><input type="text" value=$froom['BunksAvailable'] name=$froom['RoomNumber']><br></td>
+              </tr>
+          </tbody>
+        </table>
+    </p>
+
+  <input type="submit" value="Update">
+
+$else:
+   <p>No bunk rooms available.</p>
+</form>
+
+</div>

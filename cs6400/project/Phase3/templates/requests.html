@@ -1,0 +1,101 @@
+$def with (requests, msg, highRequests)
+$ pageTitle = 'Request Fulfillment'
+$var pagename : $pageTitle
+
+<div class="css-content">
+<h1 class="w3-text-teal">$pageTitle</h1>
+
+$if msg:
+  <h3 id="itemHeaderMsg">Requests updated:</h3>
+  <p>Requested number is too high!</p>
+  $msg
+
+$if highRequests:
+  <b><h4>Notice: You have shortfall(s) in availability highlighted in red below!!!</h4></b>
+
+$if requests:
+  <h3 id="itemHeaderMsg">Pending requests from other sites:</h3>
+  <form action="/inventory/fulfillRequest/" method="post" id="formSearchItem">
+  <table id="results">
+    <tr><th>#</th>
+    $code:
+      selectState = ''
+      statuses = ['Filled', 'Partially Filled', 'Unable to be Filled', 'Pending']
+
+      orderedHeader = [
+        'Requestor', 'Requestor Site', 'Request DateTime', 'Item Name', 'Item Type', 'Sub Type', 'Storage Type',
+        'Expiration Date', 'Available Count', 'Count Requested', 'Count To Provide', 'Status'
+      ]
+
+      sortLinks = {
+        'Requestor':'ureq.UserName',
+        'Request DateTime':'r.RequestDateTime',
+        'Requestor Site':'sreq.Name',
+        'Item Name':'i.Name',
+        'Item Type':'i.ItemType',
+        'Sub Type':'i.ItemSubType',
+        'Storage Type':'i.StorageType',
+        'Expiration Date':'i.ExpirationDate',
+        'Available Count':'i.NumberOfUnit',
+        'Count Requested':'r.CountRequested',
+        'Count Provided':'r.CountProvided',
+        'Status':'r.Status'
+      }
+
+    $for header in orderedHeader:
+      $if header not in ['Status', 'Count To Provide']:
+        <th><a href="/inventory/requests/$sortLinks[header]">$header</a></th>
+      $else:
+        <th>$header</th>
+    </tr>
+
+    $ rowCount = 0
+
+    $for record in requests:
+      $ rowCount = rowCount + 1
+
+      <tr><td width="5">$rowCount</td>
+
+      $for header in orderedHeader:
+        $if header == 'Count To Provide':
+          <td id="colInputNum">
+            <input name="Requestor" type="hidden" value="$record['Requestor']" />
+            <input name="RequestDateTime" type="hidden" value="$record['Request DateTime']" />
+            <input name="ItemID" type="hidden" value="$record['ItemID']" />
+
+            $ maxVal = record['Count Requested'] - (0 if record['Count Provided'] is None else record['Count Provided'])
+            <input name="CountToProvide" type="number" size="4" min="0" max="$maxVal" value="0" /> <!-- $record['Count Provided'] -->
+          </td>
+        $elif header in ['Available Count', 'Count Requested']:
+          $ redInput = 'noname'
+
+          $if highRequests and record['ItemID'] in highRequests:
+            $ redInput = 'redInput'
+          <td id='$redInput'>$record[header]</td>
+        $elif header == 'Status':
+          <td>
+            <select id="Status" type="text" name="Status">
+              <!-- <option value="All">All</option> -->
+              $for i in statuses:
+                $if i == record['Status']:
+                  $ selectState = ' selected'
+                <option value="$i"$selectState>$i</option>
+                $ selectState = ''
+            </select>
+          </td>
+        $else:
+          <td>$record[header]</td>
+      </tr>
+    <tr id="submitRow">
+        $ colCount = len(orderedHeader) + 2 # 1 for rowCount, 1 for CountToProvide
+        <td id="inputButtons" colspan="$colCount">
+            <input id="reset" name="reset" type="reset" value="Reset">&nbsp;<input type="submit" value="Approve Request" />
+        </td>
+    </tr>
+  </table>
+  </form>
+
+$else:
+  <h3 id="itemHeaderMsg">No requests found!</h3>
+
+</div>

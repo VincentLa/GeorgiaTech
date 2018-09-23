@@ -1,0 +1,86 @@
+$var pagename : View/Edit Client Information
+
+<div class="css-content">
+<h1 class="w3-text-teal">View/Edit Client Information</h1>
+<table border=1>
+  <caption>Client Information</caption>
+  <thead>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>ID Number</th>
+      <th>Description</th>
+      <th>Phone Number</th>
+      <th>Edit Information</th>
+  </thead>
+  <tbody>
+    $for c in session.get('client'):
+	    <tr>
+	      <td align="center">$c['FirstName']</td>
+	      <td align="center">$c['LastName']</td>
+	      <td align="center">$c['IDNumber']</td>
+	      <td align="center">$c['IDDescription']</td>
+	      <td align="center">$c['PhoneNumber']</td>
+	      <td align='center'>
+			<form action="/client/edit/">
+			<button type="submit">Edit Client Information</button>
+			</form>
+	      </td>
+	    </tr>
+  </tbody>
+</table>
+<br>
+
+<table border=1>
+  <caption>Log of Services</caption>
+  <thead>
+    <tr>
+      <th>Date/Time</th>
+      <th>Site Name</th>
+      <th>Service Description</th>
+      <th>Notes</th>
+  </thead>
+  <tbody>
+    $for l in session.get('log_services'):
+	    <tr>
+	      <td align="center">$l['LogDateTime']</td>
+	      <td align="center">$l['SiteName']</td>
+	      <td align="center">$l['ServiceDescription']</td>
+	      <td align="center">$l['Notes']</td>
+	    </tr> 
+    $for c in session.get('client'):
+	    <tr>
+	      <td align="center">
+			<form action="/client/checkin/" method="post">
+			<button name="ClientID" type="submit" value=$c['ClientID']>Check in client for new service</button>
+			</form>
+	      </td>
+	    </tr>
+  </tbody>
+</table>
+<br>
+
+<table border=1>
+  <caption>Shelter Room Waitlist</caption>
+  <thead>
+    <tr>
+      <th>Shelter Name</th>
+      <th>Wait List Position</th>
+  </thead>
+  <tbody>
+    $for c in session.get('client_waitlist'):
+	    <tr>
+	      <td align="center">$c['Name']</td>
+	      <td align="center">$c['WaitListPosition']</td>
+	    </tr>
+    <tr>
+      <td align="center">
+		<form action="/client/addwaitlist/" method="post">
+		  <input type="submit" value="Add Client to Room Waitlist">
+		</form>
+	  </td>
+    </tr>
+  </tbody>
+</table>
+
+</div>

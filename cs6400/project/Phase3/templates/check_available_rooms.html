@@ -1,0 +1,48 @@
+$var pagename : Check Available Rooms
+
+<div class="css-content">
+<h2>Check Available Rooms</h2>
+
+<form action="/services/checkavailablerooms/" method="post">
+  $if session.get('bunksInfo'):
+  $code:
+      bunksInfo = session.get('bunksInfo')
+      BunkRooms = bunksInfo['BunkRooms']
+  <input type="hidden" name="serviceID" value=$bunksInfo['serviceID']>
+    <p>Please check that there are available rooms that are a fit for this user. Then, modify bunks availability in the bunk available column.</p>
+         <p>
+        Bunk Room Status:
+        <table border=1>
+          <thead>
+            <tr>
+              <th>Room Number</th>
+              <th>Bunk Room Type</th>
+              <th>Bunk Capacity</th>
+              <th>Bunk Available</th>
+            </tr>
+          </thead>
+          <tbody>
+            $for froom in BunkRooms:
+              <tr>
+                <td align="center">$froom['RoomNumber']</td>
+                <td align="center">$froom['BunkType']</td>
+                <td align="center">$froom['BunkCapacity']</td>
+                <td align="center"><input type="text" value=$froom['BunksAvailable'] name=$froom['RoomNumber']><br></td>
+              </tr>
+          </tbody>
+        </table>
+    </p>
+
+  <form action="/services/checkintoroom/" method="post">
+  <button name="CheckIntoBunk" type="submit">Update and Check Client into Room</button>
+  </form>
+  $for c in session.get('client'):
+      <form action="/client/viewedit/" method="post">
+      <button name="ClientID" type="submit" value=$c['ClientID']>No rooms available for this type of Client.</button>
+      </form>
+
+$else:
+   <p>No bunk rooms available.</p>
+</form>
+
+</div>

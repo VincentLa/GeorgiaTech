@@ -1,0 +1,25 @@
+$var pagename : Edit Client Information
+
+<div class="css-content">
+<h1 class="w3-text-teal">Edit Client Information Page</h1>
+
+$for c in session.get('client'):
+  <form action="/client/edit/" method="post">
+    Date/Timestamp:<br>
+    <input type="text" name="date_timestamp" value="$session.get('current_datetime')" /><br>
+    First name:<br>
+    <input type="text" name="first_name" value="$c['FirstName']" /><br>
+    Last name:<br>
+    <input type="text" name="last_name" value="$c['LastName']" /><br>
+    ID Number:<br>
+    <input type="text" name="id_number" value="$c['IDNumber']" /><br>
+    Phone Number:<br>
+    <input type="text" name="phone_number" value="$c['PhoneNumber']" /><br>
+    Description:<br>
+    <input type="text" name="description" value="$c['IDDescription']" /><br><br>
+    <input type="submit" value="Submit">
+  </form>
+
+<p>Add sub-pages if needed.</p>
+</div>
+
