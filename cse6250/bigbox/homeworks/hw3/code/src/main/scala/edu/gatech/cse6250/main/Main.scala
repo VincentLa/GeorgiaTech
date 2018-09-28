@@ -132,7 +132,6 @@ object Main {
      */
     val streamKmeansPurity = 0.0
 
-
     (kMeansPurity, gaussianMixturePurity, streamKmeansPurity)
   }
 
@@ -180,9 +179,25 @@ object Main {
      * TODO: implement your own code here and remove
      * existing placeholder code below
      */
-    val medication: RDD[Medication] = spark.sparkContext.emptyRDD
-    val labResult: RDD[LabResult] = spark.sparkContext.emptyRDD
-    val diagnostic: RDD[Diagnostic] = spark.sparkContext.emptyRDD
+    // val medication: RDD[Medication] = spark.sparkContext.emptyRDD
+    // val labResult: RDD[LabResult] = spark.sparkContext.emptyRDD
+    // val diagnostic: RDD[Diagnostic] = spark.sparkContext.emptyRDD
+    val dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
+    val medicationdata = CSVHelper.loadCSVAsTable(spark, "data/medication_orders_INPUT.csv", "MedicationTable")
+    val labResultdata = CSVHelper.loadCSVAsTable(spark, "data/lab_results_INPUT.csv", "LabTable")
+    val IDdata = CSVHelper.loadCSVAsTable(spark, "data/encounter_INPUT.csv", "IDTable")
+    val diagnosedata = CSVHelper.loadCSVAsTable(spark, "data/encounter_dx_INPUT.csv", "DiagTable")
+
+    /**
+     * load data using Spark SQL into three RDDs and return them
+     */
+
+    val RDDrowmed = sqlContext.sql("SELECT Member_ID AS patientID, Order_Date AS date, Drug_Name AS medicine  FROM MedicationTable")
+    val RDDrowdiag = sqlContext.sql("SELECT IDTable.Member_ID AS patientID, IDTable.Encounter_DateTime AS date, DiagTable.code AS code  FROM IDTable INNER JOIN DiagTable ON IDTable.Encounter_ID= DiagTable.Encounter_ID")
+    val RDDrowlab = sqlContext.sql("SELECT Member_ID AS patientID, Date_Resulted AS date, Result_Name AS testName, Numeric_Result as value  FROM LabTable WHERE Numeric_Result!=''")
+    val medication: RDD[Medication] = RDDrowmed.rdd.map(p => Medication(p(0).asInstanceOf[String], sqlDateParser(p(1).asInstanceOf[String]), p(2).asInstanceOf[String].toLowerCase))
+    val labResult: RDD[LabResult] = RDDrowlab.rdd.map(p => LabResult(p(0).asInstanceOf[String], sqlDateParser(p(1).asInstanceOf[String]), p(2).asInstanceOf[String].toLowerCase, p(3).asInstanceOf[String].filterNot(",".toSet).toDouble))
+    val diagnostic: RDD[Diagnostic] = RDDrowdiag.rdd.map(p => Diagnostic(p(0).asInstanceOf[String], sqlDateParser(p(1).asInstanceOf[String]), p(2).asInstanceOf[String].toLowerCase))
 
     (medication, labResult, diagnostic)
   }
