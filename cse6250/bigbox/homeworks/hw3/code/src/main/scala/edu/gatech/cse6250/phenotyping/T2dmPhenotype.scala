@@ -3,11 +3,17 @@ package edu.gatech.cse6250.phenotyping
 import edu.gatech.cse6250.model.{ Diagnostic, LabResult, Medication }
 import org.apache.spark.rdd.RDD
 
+import java.sql.Date
+
 /**
  * @author Hang Su <hangsu@gatech.edu>,
  * @author Sungtae An <stan84@gatech.edu>,
  */
 object T2dmPhenotype {
+
+  implicit val sqlDateOrdering = new Ordering[Date] {
+    def compare(x: Date, y: Date): Int = x compareTo y
+  }
 
   /** Hard code the criteria */
   val T1DM_DX = Set("250.01", "250.03", "250.11", "250.13", "250.21", "250.23", "250.31", "250.33", "250.41", "250.43",
@@ -73,6 +79,9 @@ object T2dmPhenotype {
     val patient_with_out_dm1 = dxpath.subtract(alltype1dm.map(f => f.patientID))
     val alltype2n1dm = medication.filter(f => type2_dm_med.contains(f.medicine)).cache()
     val patient_with_dm1_ndm2 = alltype1dm.map(f => f.patientID).intersection(dxpath).subtract(alltype2n1dm.map(f => f.patientID))
+
+    // This may help for the implicit order problem
+    // https://piazza.com/class/jjjilbkqk8m1r4?cid=620
     val earlytype1 = alltype1dm.groupBy(f => f.patientID).map(f => (f._1, f._2.minBy(x => x.date).date))
     val earlytype2 = alltype2n1dm.groupBy(f => f.patientID).map(f => (f._1, f._2.minBy(x => x.date).date))
     val patient_with_both = earlytype2.join(earlytype1).filter(f => f._2._1.before(f._2._2)).map(f => f._1)
