@@ -1,8 +1,12 @@
+// Note this test file is a bit borked as per discussion in https://piazza.com/class/jjjilbkqk8m1r4?cid=597
+
 package edu.gatech.cse6250.main
 
 import edu.gatech.cse6250.util.LocalClusterSparkContext
 import org.apache.spark.SparkContext
-import org.apache.spark.mllib.linalg.{ Vector, Vectors }
+import org.apache.spark.mllib.linalg.{ Vector, Vectors, Matrices, DenseMatrix }
+import org.apache.spark.mllib.clustering.{ GaussianMixture, KMeans, StreamingKMeans }
+import org.apache.spark.mllib.feature.{ StandardScaler, StandardScalerModel }
 import org.apache.spark.rdd.RDD
 import org.scalatest.FunSuite
 import org.scalatest.concurrent.TimeLimitedTests
@@ -22,7 +26,7 @@ class ClusteringTest extends FunSuite with LocalClusterSparkContext with TimeLim
       (split(0), split(1).toInt)
     })
     val featureTuples = sc.textFile("data/featureTuples/part-*")
-      .filter(_.substring(0,9).toInt % 17 == 0) // Downsample
+      .filter(_.substring(0, 9).toInt % 17 == 0) // Downsample
       .map(x => {
         val split = x.split("\t")
         ((split(0), split(1)), split(2).toDouble).asInstanceOf[FeatureTuple]
@@ -40,7 +44,7 @@ class ClusteringTest extends FunSuite with LocalClusterSparkContext with TimeLim
     import org.apache.spark.mllib.linalg.distributed.RowMatrix
 
     val scaler = new StandardScaler(withMean = true, withStd = true).fit(rawFeatures.map(_._2))
-    val features = rawFeatures.map({ case (patientID, featureVector) => (patientID, scaler.transform(Vectors.dense(featureVector.toArray)))})
+    val features = rawFeatures.map({ case (patientID, featureVector) => (patientID, scaler.transform(Vectors.dense(featureVector.toArray))) })
     val rawFeatureVectors = features.map(_._2).cache()
     // reduce dimension
     val mat: RowMatrix = new RowMatrix(rawFeatureVectors)
@@ -55,25 +59,25 @@ class ClusteringTest extends FunSuite with LocalClusterSparkContext with TimeLim
     }
 
     // let's train a k-means model from mllib
-    val kMeansModel = KMeans.train(featureVectors,3,20,1,"k-means||",8803L)
-    val kMeansClusterAssignmentAndLabel = features.join(phenotypeLabel).map({ case (patientID, (feature, realClass)) => (kMeansModel.predict(transform(feature)), realClass)})
+    val kMeansModel = KMeans.train(featureVectors, 3, 20, "k-means||", 6250L)
+    val kMeansClusterAssignmentAndLabel = rawFeatures.join(phenotypeLabel).map({ case (patientID, (feature, realClass)) => (kMeansModel.predict(transform(feature)), realClass) })
     val kMeansPurity = purity(kMeansClusterAssignmentAndLabel)
     // let's train a gmm model from mllib
-    val gaussianMixtureModel = new GaussianMixture().setK(3).setSeed(8803L).run(featureVectors)
-    val rddOfVectors = features.join(phenotypeLabel).map({ case (patientID, (feature, realClass)) => transform(feature)})
-    val labels = features.join(phenotypeLabel).map({ case (patientID, (feature, realClass)) => realClass})
+    val gaussianMixtureModel = new GaussianMixture().setK(3).setSeed(6250L).run(featureVectors)
+    val rddOfVectors = rawFeatures.join(phenotypeLabel).map({ case (patientID, (feature, realClass)) => transform(feature) })
+    val labels = rawFeatures.join(phenotypeLabel).map({ case (patientID, (feature, realClass)) => realClass })
     val gaussianMixtureClusterAssignmentAndLabel = gaussianMixtureModel.predict(rddOfVectors).zip(labels)
     //val gaussianMixtureClusterAssignmentAndLabel = features.join(phenotypeLabel).map({ case (patientID, (feature, realClass)) => (gaussianMixtureModel.predict(feature), realClass)})
     val gaussianMixturePurity = purity(gaussianMixtureClusterAssignmentAndLabel)
     //let's train a streamingKmeans model from mllib
-    val streamingKmeansModel = new StreamingKMeans().setK(3).setDecayFactor(1.0).setRandomCenters(10,0.5,8803L).latestModel().update(featureVectors,1.0,"points")
-    val streamingClusterAssignmentAndLabel = features.join(phenotypeLabel).map({case (patientID, (feature, realClass)) => (streamingKmeansModel.predict(transform(feature)), realClass)})
-    val streamingPurity = purity(streamingClusterAssignmentAndLabel)
+    // val streamingKmeansModel = new StreamingKMeans().setK(3).setDecayFactor(1.0).setRandomCenters(10, 0.5, 8803L).latestModel().update(featureVectors, 1.0, "points")
+    // val streamingClusterAssignmentAndLabel = features.join(phenotypeLabel).map({ case (patientID, (feature, realClass)) => (streamingKmeansModel.predict(transform(feature)), realClass) })
+    // val streamingPurity = purity(streamingClusterAssignmentAndLabel)
     // ==========================================================================
 
     println(s"kMeansPurity: $kMeansPurity")
     println(s"gaussianMixturePurity: $gaussianMixturePurity")
-    println(s"streamingPurity: $streamingPurity")
+    // println(s"streamingPurity: $streamingPurity")
 
     // Grade student clustering
     val scoreKmm = 3
@@ -82,9 +86,9 @@ class ClusteringTest extends FunSuite with LocalClusterSparkContext with TimeLim
 
     println(s"FOR_PARSE Q23\t$scoreKmm\tTest Data Purity: $kMeansPurity")
     println(s"FOR_PARSE Q24\t$scoreGmm\tTest Data Purity: $gaussianMixturePurity")
-    println(s"FOR_PARSE Q25\t$scoreStreaming\tTest Data Purity: $streamingPurity")
-  }
-  */
+    // println(s"FOR_PARSE Q25\t$scoreStreaming\tTest Data Purity: $streamingPurity")
+
+  }*/
 
   def construct(sc: SparkContext, feature: RDD[FeatureTuple]): RDD[(String, Vector)] = {
     // save for later usage

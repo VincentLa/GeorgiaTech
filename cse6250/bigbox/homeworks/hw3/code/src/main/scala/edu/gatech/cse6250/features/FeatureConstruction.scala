@@ -22,11 +22,10 @@ object FeatureConstruction {
    * @return RDD of feature tuples
    */
   def constructDiagnosticFeatureTuple(diagnostic: RDD[Diagnostic]): RDD[FeatureTuple] = {
-    /**
-     * TODO implement your own code here and remove existing
-     * placeholder code
-     */
-    diagnostic.sparkContext.parallelize(List((("patient", "diagnostics"), 1.0)))
+    diagnostic.map(f => ((f.patientID, f.code), 1.0))
+      .keyBy(f => f._1)
+      .reduceByKey((x, y) => (x._1, x._2 + y._2))
+      .map(f => f._2)
   }
 
   /**
@@ -36,11 +35,10 @@ object FeatureConstruction {
    * @return RDD of feature tuples
    */
   def constructMedicationFeatureTuple(medication: RDD[Medication]): RDD[FeatureTuple] = {
-    /**
-     * TODO implement your own code here and remove existing
-     * placeholder code
-     */
-    medication.sparkContext.parallelize(List((("patient", "med"), 1.0)))
+    medication.map(f => ((f.patientID, f.medicine), 1.0))
+      .keyBy(f => f._1)
+      .reduceByKey((x, y) => (x._1, x._2 + y._2))
+      .map(f => f._2)
   }
 
   /**
@@ -50,11 +48,10 @@ object FeatureConstruction {
    * @return RDD of feature tuples
    */
   def constructLabFeatureTuple(labResult: RDD[LabResult]): RDD[FeatureTuple] = {
-    /**
-     * TODO implement your own code here and remove existing
-     * placeholder code
-     */
-    labResult.sparkContext.parallelize(List((("patient", "lab"), 1.0)))
+    labResult.map(f => ((f.patientID, f.testName), f.value, 1))
+      .keyBy(_._1)
+      .reduceByKey((x, y) => (x._1, x._2 + y._2, x._3 + y._3))
+      .map(f => (f._1, f._2._2 / f._2._3))
   }
 
   /**
@@ -70,7 +67,7 @@ object FeatureConstruction {
      * TODO implement your own code here and remove existing
      * placeholder code
      */
-    diagnostic.sparkContext.parallelize(List((("patient", "diagnostics"), 1.0)))
+    constructDiagnosticFeatureTuple(diagnostic.filter(f => candiateCode.contains(f.code.toLowerCase)))
   }
 
   /**
@@ -86,7 +83,7 @@ object FeatureConstruction {
      * TODO implement your own code here and remove existing
      * placeholder code
      */
-    medication.sparkContext.parallelize(List((("patient", "med"), 1.0)))
+    constructMedicationFeatureTuple(medication.filter(f => candidateMedication.contains(f.medicine.toLowerCase)))
   }
 
   /**
@@ -102,7 +99,7 @@ object FeatureConstruction {
      * TODO implement your own code here and remove existing
      * placeholder code
      */
-    labResult.sparkContext.parallelize(List((("patient", "lab"), 1.0)))
+    constructLabFeatureTuple(labResult.filter(f => candidateLab.contains(f.testName.toLowerCase)))
   }
 
   /**
@@ -120,6 +117,8 @@ object FeatureConstruction {
     feature.cache()
 
     /** create a feature name to id map */
+    val idmap = sc.broadcast(feature.map(f => f._1._2).distinct().zipWithIndex().collectAsMap())
+    val idnum = idmap.value.size
 
     /** transform input feature */
 
@@ -133,17 +132,11 @@ object FeatureConstruction {
      * TODO implement your own code here and remove existing
      * placeholder code
      */
-    val result = sc.parallelize(Seq(
-      ("Patient-NO-1", Vectors.dense(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0)),
-      ("Patient-NO-2", Vectors.dense(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0)),
-      ("Patient-NO-3", Vectors.dense(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0)),
-      ("Patient-NO-4", Vectors.dense(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0)),
-      ("Patient-NO-5", Vectors.dense(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0)),
-      ("Patient-NO-6", Vectors.dense(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0)),
-      ("Patient-NO-7", Vectors.dense(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0)),
-      ("Patient-NO-8", Vectors.dense(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0)),
-      ("Patient-NO-9", Vectors.dense(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0)),
-      ("Patient-NO-10", Vectors.dense(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0))))
+    val result = feature.map(f => (f._1._1, idmap.value(f._1._2), f._2)).groupBy(_._1).map(f => {
+      val featurelist = f._2.toList.map(x => (x._2.toInt, x._3))
+      (f._1, Vectors.sparse(idnum, featurelist))
+    })
+
     result
 
     /** The feature vectors returned can be sparse or dense. It is advisable to use sparse */

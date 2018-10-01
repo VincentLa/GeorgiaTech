@@ -1,3 +1,8 @@
+/*
+To all the code, run: sbt compile run
+Discussion of Purity Results: https://piazza.com/class/jjjilbkqk8m1r4?cid=626
+*/
+
 package edu.gatech.cse6250.main
 
 import java.text.SimpleDateFormat
@@ -97,6 +102,9 @@ object Main {
       Vectors.dense(Matrices.dense(1, scaled.size, scaled.toArray).multiply(densePc).toArray)
     }
 
+    // Setting value of K
+    val k = 5;
+
     /**
      * TODO: K Means Clustering using spark mllib
      * Train a k means model using the variabe featureVectors as input
@@ -106,7 +114,54 @@ object Main {
      * Find Purity using that RDD as an input to Metrics.purity
      * Remove the placeholder below after your implementation
      */
-    val kMeansPurity = 0.0
+
+    val labels = phenotypeLabel
+      .map(_._2)
+      .zipWithIndex
+      .map(x => (x._2, x._1))
+      .cache()
+
+    val kmeans = new KMeans()
+      .setK(k)
+      .setMaxIterations(20)
+      .setSeed(6250L)
+
+    val k_model = kmeans.run(featureVectors)
+    val k_clusters = k_model.predict(featureVectors)
+      .zipWithIndex
+      .map(x => (x._2, x._1))
+
+    // Join Labels
+    val toPurity = labels.join(k_clusters).map(_._2)
+    //
+
+    /*
+    This section is only for printing results for 2.3.b
+
+    Can comment out if not needed to run.
+    */
+    // var kTable = toPurity
+    //   .filter(x => x._2 == 0)
+    //   .map(x => x._1)
+    //   .countByValue()
+
+    // println("KMeans Table Printed Below:")
+    // println(kTable.toString)
+
+    // kTable = toPurity
+    //   .filter(x => x._2 == 1)
+    //   .map(x => x._1)
+    //   .countByValue()
+    // println(kTable.toString)
+
+    // kTable = toPurity
+    //   .filter(x => x._2 == 2)
+    //   .map(x => x._1)
+    //   .countByValue()
+    // println(kTable.toString)
+    /* End section for printing results for 2.3.b*/
+
+    val kMeansPurity = Metrics.purity(toPurity)
 
     /**
      * TODO: GMMM Clustering using spark mllib
@@ -117,7 +172,47 @@ object Main {
      * Find Purity using that RDD as an input to Metrics.purity
      * Remove the placeholder below after your implementation
      */
-    val gaussianMixturePurity = 0.0
+
+    val gmm = new GaussianMixture()
+      .setK(k)
+      .setMaxIterations(20)
+      .setSeed(6250L)
+
+    val gmm_model = gmm.run(featureVectors)
+    val g_clusters = gmm_model.predict(featureVectors)
+      .zipWithIndex
+      .map(x => (x._2, x._1))
+
+    // Join Labels
+    val toPurityG = labels.join(g_clusters).map(_._2)
+
+    /*
+    This section is only for printing results for 2.4.b
+
+    Can comment out if not needed to run.
+    */
+    // var gTable = toPurityG
+    //   .filter(x => x._2 == 0)
+    //   .map(x => x._1)
+    //   .countByValue()
+
+    // println("GMM Table Printed Below:")
+    // println(gTable.toString)
+
+    // gTable = toPurityG
+    //   .filter(x => x._2 == 1)
+    //   .map(x => x._1)
+    //   .countByValue()
+    // println(gTable.toString)
+
+    // gTable = toPurityG
+    //   .filter(x => x._2 == 2)
+    //   .map(x => x._1)
+    //   .countByValue()
+    // println(gTable.toString)
+    /* End section to print results for 2.4.b*/
+
+    val gaussianMixturePurity = Metrics.purity(toPurityG)
 
     /**
      * TODO: StreamingKMeans Clustering using spark mllib
