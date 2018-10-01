@@ -115,24 +115,14 @@ object Main {
      * Remove the placeholder below after your implementation
      */
 
-    val labels = phenotypeLabel
-      .map(_._2)
-      .zipWithIndex
-      .map(x => (x._2, x._1))
-      .cache()
-
-    val kmeans = new KMeans()
-      .setK(k)
-      .setMaxIterations(20)
-      .setSeed(6250L)
-
-    val k_model = kmeans.run(featureVectors)
-    val k_clusters = k_model.predict(featureVectors)
+    val phenotype_labels = phenotypeLabel.map(_._2).zipWithIndex.map(x => (x._2, x._1)).cache()
+    
+    val k_clusters = KMeans.train(featureVectors, k, 20, "k-means||", 6250L).predict(featureVectors)
       .zipWithIndex
       .map(x => (x._2, x._1))
 
-    // Join Labels
-    val toPurity = labels.join(k_clusters).map(_._2)
+    // Join phenotype_labels
+    val toPurity = phenotype_labels.join(k_clusters).map(_._2)
     //
 
     /*
@@ -172,19 +162,17 @@ object Main {
      * Find Purity using that RDD as an input to Metrics.purity
      * Remove the placeholder below after your implementation
      */
-
-    val gmm = new GaussianMixture()
+    val g_clusters = new GaussianMixture()
       .setK(k)
       .setMaxIterations(20)
       .setSeed(6250L)
-
-    val gmm_model = gmm.run(featureVectors)
-    val g_clusters = gmm_model.predict(featureVectors)
+      .run(featureVectors)
+      .predict(featureVectors)
       .zipWithIndex
       .map(x => (x._2, x._1))
 
-    // Join Labels
-    val toPurityG = labels.join(g_clusters).map(_._2)
+    // Join phenotype_labels
+    val toPurityG = phenotype_labels.join(g_clusters).map(_._2)
 
     /*
     This section is only for printing results for 2.4.b
