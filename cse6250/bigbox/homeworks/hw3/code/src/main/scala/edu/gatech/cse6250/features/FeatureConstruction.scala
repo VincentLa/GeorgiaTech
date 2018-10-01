@@ -22,10 +22,11 @@ object FeatureConstruction {
    * @return RDD of feature tuples
    */
   def constructDiagnosticFeatureTuple(diagnostic: RDD[Diagnostic]): RDD[FeatureTuple] = {
-    diagnostic.map(f => ((f.patientID, f.code), 1.0))
-      .keyBy(f => f._1)
-      .reduceByKey((x, y) => (x._1, x._2 + y._2))
-      .map(f => f._2)
+    // Taken basically from documentation: https://spark.apache.org/docs/latest/rdd-programming-guide.html
+    // The reduceByKey operation on key-value pairs can be used to count
+    // For the reduceByKey(_+_) syntax see:
+    // https://stackoverflow.com/questions/36965338/spark-scala-understanding-reducebykey
+    diagnostic.map(f => ((f.patientID, f.code), 1.0)).reduceByKey(_ + _)
   }
 
   /**
@@ -35,10 +36,8 @@ object FeatureConstruction {
    * @return RDD of feature tuples
    */
   def constructMedicationFeatureTuple(medication: RDD[Medication]): RDD[FeatureTuple] = {
-    medication.map(f => ((f.patientID, f.medicine), 1.0))
-      .keyBy(f => f._1)
-      .reduceByKey((x, y) => (x._1, x._2 + y._2))
-      .map(f => f._2)
+    // Similar comments as in constructDiagnosticFeatureTuple above
+    medication.map(f => ((f.patientID, f.medicine), 1.0)).reduceByKey(_ + _)
   }
 
   /**
@@ -117,8 +116,7 @@ object FeatureConstruction {
     feature.cache()
 
     /** create a feature name to id map */
-    val idmap = sc.broadcast(feature.map(f => f._1._2).distinct().zipWithIndex().collectAsMap())
-    val idnum = idmap.value.size
+    val feature_name_to_id_map = sc.broadcast(feature.map(f => f._1._2).distinct().zipWithIndex().collectAsMap())
 
     /** transform input feature */
 
@@ -128,14 +126,11 @@ object FeatureConstruction {
      * groupByKey
      */
 
-    /**
-     * TODO implement your own code here and remove existing
-     * placeholder code
-     */
-    val result = feature.map(f => (f._1._1, idmap.value(f._1._2), f._2)).groupBy(_._1).map(f => {
-      val featurelist = f._2.toList.map(x => (x._2.toInt, x._3))
-      (f._1, Vectors.sparse(idnum, featurelist))
-    })
+    val result = feature.map(f => (f._1._1, feature_name_to_id_map.value(f._1._2), f._2)).groupBy(_._1).map(f =>
+      {
+        val featurelist = f._2.toList.map(x => (x._2.toInt, x._3))
+        (f._1, Vectors.sparse(feature_name_to_id_map.value.size, featurelist))
+      })
 
     result
 
