@@ -11,6 +11,8 @@ import java.sql.Date
  */
 object T2dmPhenotype {
 
+  // Adding this in, otherwise I get an implicit order problem working with dates.
+  // https://piazza.com/class/jjjilbkqk8m1r4?cid=620
   implicit val sqlDateOrdering = new Ordering[Date] {
     def compare(x: Date, y: Date): Int = x compareTo y
   }
@@ -38,7 +40,9 @@ object T2dmPhenotype {
    * @param diagnostic diagnostic code RDD
    * @return tuple in the format of (patient-ID, label). label = 1 if the patient is case, label = 2 if control, 3 otherwise
    */
-  def abnormal(item: LabResult): Boolean = {
+
+  // First, define a helper function to catch abnormal values
+  def is_lab_value_abnormal(item: LabResult): Boolean = {
     item.testName match {
       case "hba1c"                  => item.value >= 6
       case "hemoglobin a1c"         => item.value >= 6
@@ -46,6 +50,7 @@ object T2dmPhenotype {
       case "fasting blood glucose"  => item.value >= 110
       case "fasting plasma glucose" => item.value >= 110
       case "glucose"                => item.value > 110
+      case "Glucose"                => item.value > 110
       case "glucose, serum"         => item.value > 110
       case _                        => false
     }
@@ -67,21 +72,25 @@ object T2dmPhenotype {
     val sc = medication.sparkContext
 
     /** Hard code the criteria */
-    val type1_dm_dx = Set("code1", "250.03", "250.01", "250.11", "250.13", "250.21", "250.23", "250.31", "250.33", "250.41", "250.43", "250.51", "250.53", "250.61", "250.63", "250.71", "250.73", "250.81", "250.83", "250.91", "250.93")
-    val type1_dm_med = Set("med1", "insulin nph", "lantus", "insulin glargine", "insulin aspart", "insulin detemir", "insulin lente", "insulin reg", "insulin,ultralente")
-    val type2_dm_dx = Set("250.3", "250.32", "250.2", "250.22", "250.9", "250.92", "250.8", "250.82", "250.7", "250.72", "250.6", "250.62", "250.5", "250.52", "250.4", "250.42", "250.00", "250.02")
-    val type2_dm_med = Set("chlorpropamide", "diabinese", "diabanase", "diabinase", "glipizide", "glucotrol", "glucotrol xl", "glucatrol ", "glyburide", "micronase", "glynase", "diabetamide", "diabeta", "glimepiride", "amaryl", "repaglinide", "prandin", "nateglinide", "metformin", "rosiglitazone", "pioglitazone", "acarbose", "miglitol", "sitagliptin", "exenatide", "tolazamide", "acetohexamide", "troglitazone", "tolbutamide", "avandia", "actos", "ACTOS", "glipizide")
+    val diabetes_type_1_diagnosis_codes = Set("code1", "250.03", "250.01", "250.11", "250.13", "250.21", "250.23", "250.31", "250.33", "250.41", "250.43", "250.51", "250.53", "250.61", "250.63", "250.71", "250.73", "250.81", "250.83", "250.91", "250.93")
+    val diabetes_type_1_medications = Set("med1", "insulin nph", "lantus", "insulin glargine", "insulin aspart", "insulin detemir", "insulin lente", "insulin reg", "insulin,ultralente")
+    val diabetes_type_2_diagnosis_codes = Set("250.3", "250.32", "250.2", "250.22", "250.9", "250.92", "250.8", "250.82", "250.7", "250.72", "250.6", "250.62", "250.5", "250.52", "250.4", "250.42", "250.00", "250.02")
+    val diabetes_type_2_medications = Set("chlorpropamide", "diabinese", "diabanase", "diabinase", "glipizide", "glucotrol", "glucotrol xl", "glucatrol ", "glyburide", "micronase", "glynase", "diabetamide", "diabeta", "glimepiride", "amaryl", "repaglinide", "prandin", "nateglinide", "metformin", "rosiglitazone", "pioglitazone", "acarbose", "miglitol", "sitagliptin", "exenatide", "tolazamide", "acetohexamide", "troglitazone", "tolbutamide", "avandia", "actos", "ACTOS", "glipizide")
+
+    // Get all Patient IDs
+    val all_patient_ids = medication.map(f => f.patientID).union(diagnostic.map(f => f.patientID)).union(labResult.map(f => f.patientID)).distinct()
 
     /** Find CASE Patients */
-    val totalPatient = medication.map(f => f.patientID).union(diagnostic.map(f => f.patientID)).union(labResult.map(f => f.patientID)).distinct()
-    val dxpath = diagnostic.filter(f => !type1_dm_dx.contains(f.code) && type2_dm_dx.contains(f.code)).map(f => f.patientID).distinct()
-    val alltype1dm = medication.filter(f => type1_dm_med.contains(f.medicine)).cache()
+    // Implement Case Logic
+    
+
+    // Working Solution
+    val dxpath = diagnostic.filter(f => !diabetes_type_1_diagnosis_codes.contains(f.code) && diabetes_type_2_diagnosis_codes.contains(f.code)).map(f => f.patientID).distinct()
+    val alltype1dm = medication.filter(f => diabetes_type_1_medications.contains(f.medicine)).cache()
     val patient_with_out_dm1 = dxpath.subtract(alltype1dm.map(f => f.patientID))
-    val alltype2n1dm = medication.filter(f => type2_dm_med.contains(f.medicine)).cache()
+    val alltype2n1dm = medication.filter(f => diabetes_type_2_medications.contains(f.medicine)).cache()
     val patient_with_dm1_ndm2 = alltype1dm.map(f => f.patientID).intersection(dxpath).subtract(alltype2n1dm.map(f => f.patientID))
 
-    // This may help for the implicit order problem
-    // https://piazza.com/class/jjjilbkqk8m1r4?cid=620
     val earlytype1 = alltype1dm.groupBy(f => f.patientID).map(f => (f._1, f._2.minBy(x => x.date).date))
     val earlytype2 = alltype2n1dm.groupBy(f => f.patientID).map(f => (f._1, f._2.minBy(x => x.date).date))
     val patient_with_both = earlytype2.join(earlytype1).filter(f => f._2._1.before(f._2._2)).map(f => f._1)
@@ -90,7 +99,7 @@ object T2dmPhenotype {
 
     /** Find CONTROL Patients */
     val glucosePatients = labResult.filter(f => f.testName.contains("glucose")).map(f => f.patientID)
-    val abnormalPatients = labResult.filter(f => abnormal(f)).map(f => f.patientID)
+    val abnormalPatients = labResult.filter(f => is_lab_value_abnormal(f)).map(f => f.patientID)
     val unabnomalPatients = glucosePatients.subtract(abnormalPatients)
     val dm_related_dx = Set("790.21", "790.22", "790.2", "790.29", "648.81", "648.82", "648.83", "648.84", "648.0", "648.00", "648.01", "648.02", "648.03", "648.04", "791.5", "277.7", "V77.1", "256.4")
     val mellitusPatients = diagnostic.filter(f => dm_related_dx.contains(f.code) || f.code.contains("250.")).map(f => f.patientID)
@@ -98,7 +107,7 @@ object T2dmPhenotype {
     val controlPatients = unmellitusPatients.map(f => (f, 2))
 
     /** Find OTHER Patients */
-    val others = totalPatient.subtract(casePatients.map(f => f._1)).subtract(controlPatients.map(f => f._1)).map(f => (f, 3))
+    val others = all_patient_ids.subtract(casePatients.map(f => f._1)).subtract(controlPatients.map(f => f._1)).map(f => (f, 3))
     //println(others.count())
     val phenotypeLabel = sc.union(casePatients, controlPatients, others)
 

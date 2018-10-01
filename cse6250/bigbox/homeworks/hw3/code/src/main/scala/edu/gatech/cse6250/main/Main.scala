@@ -269,27 +269,18 @@ object Main {
      * For dates, use Date_Resulted for labResults and Order_Date for medication.
      *
      */
-
-    /**
-     * TODO: implement your own code here and remove
-     * existing placeholder code below
-     */
-    // val medication: RDD[Medication] = spark.sparkContext.emptyRDD
-    // val labResult: RDD[LabResult] = spark.sparkContext.emptyRDD
-    // val diagnostic: RDD[Diagnostic] = spark.sparkContext.emptyRDD
-    val dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
-    val medicationdata = CSVHelper.loadCSVAsTable(spark, "data/medication_orders_INPUT.csv", "MedicationTable")
-    val labResultdata = CSVHelper.loadCSVAsTable(spark, "data/lab_results_INPUT.csv", "LabTable")
-    val IDdata = CSVHelper.loadCSVAsTable(spark, "data/encounter_INPUT.csv", "IDTable")
-    val diagnosedata = CSVHelper.loadCSVAsTable(spark, "data/encounter_dx_INPUT.csv", "DiagTable")
+    val medication_data = CSVHelper.loadCSVAsTable(spark, "data/medication_orders_INPUT.csv", "medicationdata")
+    val lab_result_data = CSVHelper.loadCSVAsTable(spark, "data/lab_results_INPUT.csv", "labresultdata")
+    val id_data = CSVHelper.loadCSVAsTable(spark, "data/encounter_INPUT.csv", "iddata")
+    val diagnosesdata = CSVHelper.loadCSVAsTable(spark, "data/encounter_dx_INPUT.csv", "diagnosesdata")
 
     /**
      * load data using Spark SQL into three RDDs and return them
      */
 
-    val RDDrowmed = sqlContext.sql("SELECT Member_ID AS patientID, Order_Date AS date, Drug_Name AS medicine  FROM MedicationTable").orderBy("date")
-    val RDDrowdiag = sqlContext.sql("SELECT IDTable.Member_ID AS patientID, IDTable.Encounter_DateTime AS date, DiagTable.code AS code  FROM IDTable INNER JOIN DiagTable ON IDTable.Encounter_ID= DiagTable.Encounter_ID").orderBy("date")
-    val RDDrowlab = sqlContext.sql("SELECT Member_ID AS patientID, Date_Resulted AS date, Result_Name AS testName, Numeric_Result as value  FROM LabTable WHERE Numeric_Result!=''").orderBy("date")
+    val RDDrowmed = sqlContext.sql("SELECT Member_ID AS patientID, Order_Date AS date, Drug_Name AS medicine  FROM medicationdata").orderBy("date")
+    val RDDrowdiag = sqlContext.sql("SELECT iddata.Member_ID AS patientID, iddata.Encounter_DateTime AS date, diagnosesdata.code AS code  FROM iddata INNER JOIN diagnosesdata ON iddata.Encounter_ID= diagnosesdata.Encounter_ID").orderBy("date")
+    val RDDrowlab = sqlContext.sql("SELECT Member_ID AS patientID, Date_Resulted AS date, Result_Name AS testName, Numeric_Result as value  FROM labresultdata WHERE Numeric_Result!=''").orderBy("date")
     val medication: RDD[Medication] = RDDrowmed.rdd.map(p => Medication(p(0).asInstanceOf[String], sqlDateParser(p(1).asInstanceOf[String]), p(2).asInstanceOf[String].toLowerCase))
     val labResult: RDD[LabResult] = RDDrowlab.rdd.map(p => LabResult(p(0).asInstanceOf[String], sqlDateParser(p(1).asInstanceOf[String]), p(2).asInstanceOf[String].toLowerCase, p(3).asInstanceOf[String].filterNot(",".toSet).toDouble))
     val diagnostic: RDD[Diagnostic] = RDDrowdiag.rdd.map(p => Diagnostic(p(0).asInstanceOf[String], sqlDateParser(p(1).asInstanceOf[String]), p(2).asInstanceOf[String].toLowerCase))
