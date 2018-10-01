@@ -80,35 +80,57 @@ object T2dmPhenotype {
     // Get all Patient IDs
     val all_patient_ids = medication.map(f => f.patientID).union(diagnostic.map(f => f.patientID)).union(labResult.map(f => f.patientID)).distinct()
 
-    /** Find CASE Patients */
+/*********************************************************
+    Step 1: Find Case Patients
+    **********************************************************/
     // Implement Case Logic
-    
+    val patients_without_dm1_dx = diagnostic.filter(d => !diabetes_type_1_diagnosis_codes.contains(d.code)).map(x => x.patientID).distinct()
+    val patients_with_dm2_dx = diagnostic.filter(d => diabetes_type_2_diagnosis_codes.contains(d.code)).map(x => x.patientID).distinct()
 
-    // Working Solution
-    val dxpath = diagnostic.filter(f => !diabetes_type_1_diagnosis_codes.contains(f.code) && diabetes_type_2_diagnosis_codes.contains(f.code)).map(f => f.patientID).distinct()
-    val alltype1dm = medication.filter(f => diabetes_type_1_medications.contains(f.medicine)).cache()
-    val patient_with_out_dm1 = dxpath.subtract(alltype1dm.map(f => f.patientID))
-    val alltype2n1dm = medication.filter(f => diabetes_type_2_medications.contains(f.medicine)).cache()
-    val patient_with_dm1_ndm2 = alltype1dm.map(f => f.patientID).intersection(dxpath).subtract(alltype2n1dm.map(f => f.patientID))
+    // Filter to all patients without Diabetes 1 Dx, but has Diabetes 2 DX
+    // If patient has Type 1 DM Diagnosis then for sure we know not Case
+    val patient_without_dm1_with_dm2_dx = patients_without_dm1_dx.intersection(patients_with_dm2_dx).cache()
 
-    val earlytype1 = alltype1dm.groupBy(f => f.patientID).map(f => (f._1, f._2.minBy(x => x.date).date))
-    val earlytype2 = alltype2n1dm.groupBy(f => f.patientID).map(f => (f._1, f._2.minBy(x => x.date).date))
-    val patient_with_both = earlytype2.join(earlytype1).filter(f => f._2._1.before(f._2._2)).map(f => f._1)
+    // First, we need to see if the patient has Type 1 DM Medication. If no, then case.
+    val all_dm1_meds = medication.filter(f => diabetes_type_1_medications.contains(f.medicine)).cache()
+    val patient_with_out_dm1_med = patient_without_dm1_with_dm2_dx.subtract(all_dm1_meds.map(f => f.patientID))
 
-    val casePatients = patient_with_out_dm1.union(patient_with_dm1_ndm2).union(patient_with_both).distinct().map(f => (f, 1))
+    // Second, in the case where patient has Type 1 DM Medication,
+    // we need to see if they also have Type 2 DM Medication. If no then Case
+    val all_dm2_meds = medication.filter(f => diabetes_type_2_medications.contains(f.medicine)).cache()
+    val patient_with_dm1_without_dm2_med = all_dm1_meds.map(f => f.patientID).intersection(patient_without_dm1_with_dm2_dx).subtract(all_dm2_meds.map(f => f.patientID))
 
-    /** Find CONTROL Patients */
-    val glucosePatients = labResult.filter(f => f.testName.contains("glucose")).map(f => f.patientID)
-    val abnormalPatients = labResult.filter(f => is_lab_value_abnormal(f)).map(f => f.patientID)
-    val unabnomalPatients = glucosePatients.subtract(abnormalPatients)
+    // Third, in the case where the patient has both Type 1 and Type 2 DM Medication
+    // we need to check whether the Type 2 DM Medication Precedes Type 1 DM Medication
+    // If yes, then Case, if not then not case.
+    val patient_earliest_dm1_med_date = all_dm1_meds.groupBy(f => f.patientID).map(f => (f._1, f._2.minBy(x => x.date).date))
+    val patient_earliest_dm2_med_date = all_dm2_meds.groupBy(f => f.patientID).map(f => (f._1, f._2.minBy(x => x.date).date))
+    val patient_with_dm2_med_earlier_than_dm1 = patient_earliest_dm2_med_date.join(patient_earliest_dm1_med_date).filter(f => f._2._1.before(f._2._2)).map(f => f._1)
+
+    // Case is defined as the union of the three possibilities outlined above
+    val casePatients = patient_with_out_dm1_med.union(patient_with_dm1_without_dm2_med).union(patient_with_dm2_med_earlier_than_dm1).distinct().map(f => (f, 1))
+
+/*********************************************************
+    Step 2: Find Control Patients
+    **********************************************************/
+    // First, is there any Glucose Measure
+    val patients_with_any_glucose_measure = labResult.filter(f => f.testName.contains("glucose")).map(f => f.patientID)
+
+    // Next, does the patient have abnormal Lab Result
+    val patients_with_abnormal_lab_result = labResult.filter(f => is_lab_value_abnormal(f)).map(f => f.patientID)
+    val patients_without_abnormal_lab_result = patients_with_any_glucose_measure.subtract(patients_with_abnormal_lab_result)
+
+    // If Patient does not have abnormal lab result and does not have DM related diagnosis than Control
+    // Hard code DM Related DX from DM Related DX.csv, except for 250.* which we will filter using a contains later
     val dm_related_dx = Set("790.21", "790.22", "790.2", "790.29", "648.81", "648.82", "648.83", "648.84", "648.0", "648.00", "648.01", "648.02", "648.03", "648.04", "791.5", "277.7", "V77.1", "256.4")
-    val mellitusPatients = diagnostic.filter(f => dm_related_dx.contains(f.code) || f.code.contains("250.")).map(f => f.patientID)
-    val unmellitusPatients = unabnomalPatients.subtract(mellitusPatients).distinct()
-    val controlPatients = unmellitusPatients.map(f => (f, 2))
+    val patients_with_dm_related_dx = diagnostic.filter(f => dm_related_dx.contains(f.code) || f.code.contains("250.")).map(f => f.patientID)
+    val patients_without_dm_related_dx = patients_without_abnormal_lab_result.subtract(patients_with_dm_related_dx).distinct()
+    val controlPatients = patients_without_dm_related_dx.map(f => (f, 2))
 
-    /** Find OTHER Patients */
+/*********************************************************
+    Step 3: Find Other Patients
+    **********************************************************/
     val others = all_patient_ids.subtract(casePatients.map(f => f._1)).subtract(controlPatients.map(f => f._1)).map(f => (f, 3))
-    //println(others.count())
     val phenotypeLabel = sc.union(casePatients, controlPatients, others)
 
     /** Return */
