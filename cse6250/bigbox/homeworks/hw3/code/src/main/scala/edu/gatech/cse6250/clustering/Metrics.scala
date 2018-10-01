@@ -21,23 +21,19 @@ object Metrics {
    * @return
    */
   def purity(clusterAssignmentAndLabel: RDD[(Int, Int)]): Double = {
-    val numSamples = clusterAssignmentAndLabel.count().toDouble
+    // Count the number of samples. This is the denominator.
+    val number_of_samples = clusterAssignmentAndLabel.count()
 
-    def singleCluster(group: (Int, Iterable[(Int, Int)])): Double = {
-      val output = group._2
-        .groupBy(x => x._2) //group by class
-        .map(x => x._2.map(z => 1.0).reduce(_ + _))
-        .reduce((x, y) => x max y)
-
+    // Define the term inside the summation which is the max over all classes of the size of the intersection
+    // of wk and cj
+    def inside_summation(group: (Int, Iterable[(Int, Int)])): Double = {
+      val output = group._2.groupBy(f => f._2).map(f => f._2.map(z => 1.0).reduce(_ + _)).reduce((x, y) => x max y)
       output
     }
 
-    val summation = clusterAssignmentAndLabel
-      .map(x => (x._1, (x._1, x._2)))
-      .groupByKey()
-      .map(singleCluster)
-      .reduce(_ + _)
+    // Now do the outer_summation to calculate purity
+    val purity_numerator = clusterAssignmentAndLabel.map(x => (x._1, (x._1, x._2))).groupByKey().map(inside_summation).reduce(_ + _)
 
-    return summation / numSamples
+    return 1.0 * purity_numerator / number_of_samples
   }
 }
