@@ -8,6 +8,9 @@ Piazza: https://piazza.com/class/jjjilbkqk8m1r4?cid=8
 https://web.stanford.edu/class/archive/cs/cs109/cs109.1166/pdfs/40%20LogisticRegression.pdf
 http://www.cs.cmu.edu/~wcohen/10-605/sgd-part2.pdf
 
+## Useful Links for Project
+https://github.com/bryantravissmith/In-Hospital-Mortality-Predictions-With-Scala-on-MIMIC-III/blob/master/paper/mortality_predictions.pdf
+
 ## Useful Commands
 Runs a docker container with options represent in a YAML config
 ```
