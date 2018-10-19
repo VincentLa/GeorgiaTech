@@ -1,0 +1,91 @@
+\documentclass[12pt]{article}
+\usepackage{enumitem}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{amsmath, amsthm}
+\usepackage{booktabs}
+\RequirePackage[colorlinks]{hyperref}
+\usepackage[lined,boxed,linesnumbered,commentsnumbered]{algorithm2e}
+\usepackage{xcolor}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily,
+  showstringspaces=false,
+  commentstyle=\color{red},
+  keywordstyle=\color{blue}
+}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+\linespread{1.1}
+
+% Commands
+\newenvironment{solution}
+  {\begin{proof}[Solution]}
+  {\end{proof}}
+
+\title{CSE6250: Big Data Analytics in Healthcare \\ Homework 5}
+\author{YOUR NAME (GTID: XXXXXXXXX)}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Epileptic Seizure Classification}
+
+\subsection*{1.2 Multi-layer Perceptron}
+~
+
+\textbf{b.} Calculate the number of "trainable" parameters in the model with providing the calculation details. How many floating-point computation will occur when a new single data point comes in to the model? [5 points]
+
+\bigskip
+
+\textbf{c.} Attach the learning curves for your MLP model in your report. [2 points]
+
+\bigskip
+
+\textbf{d.} Attach the confusion matrix for your MLP model in your report. [2 points]
+
+\bigskip
+\textbf{e.} Explain your architecture and techniques used. Briefly discuss about the result with plots. [3 points]
+
+\subsection*{1.3 Convolutional Neural Network (CNN)}
+~
+
+\textbf{b.} Calculate the number of "trainable" parameters in the model with providing the calculation details. How many floating-point computation will occur when a new single data point comes in to the model? [5 points]
+
+\bigskip
+
+\textbf{c.} Plot and attach the learning curves and the confusion matrix for your CNN model in your report. [2 points]
+
+\bigskip
+\textbf{d.} Explain your architecture and techniques used. Briefly discuss about the result with plots. [3 points]
+
+\subsection*{1.4 Recurrent Neural Network (RNN)}
+~
+\textbf{b.} Calculate the number of "trainable" parameters in the model with providing the calculation details. How many floating-point computation will occur when a new single data point comes in to the model? [5 points]
+
+\bigskip
+
+\textbf{c.} Plot and attach the learning curves and the confusion matrix for your RNN model in your report. [2 points]
+
+\bigskip
+
+\textbf{d.} Explain your architecture and techniques used. Briefly discuss about the result with plots. [3 points]
+
+\section{Mortality Prediction with RNN}
+
+\subsection*{2.3 Building Model}
+~
+
+\textbf{b.} Explain your architecture and techniques used. Briefly discuss about the result with plots. [5 points]
+
+
+\end{document}

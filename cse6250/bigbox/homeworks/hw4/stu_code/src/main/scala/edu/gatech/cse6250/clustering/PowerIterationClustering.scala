@@ -28,9 +28,12 @@ object PowerIterationClustering {
   def runPIC(similarities: RDD[(Long, Long, Double)]): RDD[(Long, Int)] = {
     val sc = similarities.sparkContext
 
-    /** Remove placeholder code below and run Spark's PIC implementation */
-    val clusteringResult = sc.parallelize(Seq((123L, 1), (456L, 2), (789L, 3)))
+    val sanity = similarities.map(_._3)
 
-    clusteringResult
+    // According to Instructions in HW we use 3 Clusters and 100 for Max Iterations
+    // See http://spark.apache.org/docs/1.3.1/mllib-clustering.html#power-iteration-clustering-pic for instructions
+    val power_iteration_clustering = new PIC().setK(3).setMaxIterations(100)
+    val model = power_iteration_clustering.run(similarities)
+    model.assignments.map(f => (f.id, f.cluster))
   }
 }

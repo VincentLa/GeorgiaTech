@@ -19,7 +19,15 @@ object Jaccard {
      */
 
     /** Remove this placeholder and implement your code */
-    List(1, 2, 3, 4, 5)
+    val neighborEvents = graph.collectNeighborIds(EdgeDirection.Out)
+
+    val allpatientneighbor = neighborEvents.filter(f => f._1.toLong <= 1000 & f._1.toLong != patientID)
+
+    val thispatientneighborset = neighborEvents.filter(f => f._1.toLong == patientID).map(f => f._2).flatMap(f => f).collect().toSet
+
+    val patientscore = allpatientneighbor.map(f => (f._1, jaccard(thispatientneighborset, f._2.toSet)))
+
+    patientscore.takeOrdered(10)(Ordering[Double].reverse.on(x => x._2)).map(_._1.toLong).toList
   }
 
   def jaccardSimilarityAllPatients(graph: Graph[VertexProperty, EdgeProperty]): RDD[(Long, Long, Double)] = {
@@ -31,7 +39,11 @@ object Jaccard {
 
     /** Remove this placeholder and implement your code */
     val sc = graph.edges.sparkContext
-    sc.parallelize(Seq((1L, 2L, 0.5d), (1L, 3L, 0.4d)))
+    val neighborEvents = graph.collectNeighborIds(EdgeDirection.Out)
+
+    val allpatientneighbor = neighborEvents.filter(f => f._1.toLong <= 1000)
+    val cartesianneighbor = allpatientneighbor.cartesian(allpatientneighbor).filter(f => f._1._1 < f._2._1)
+    cartesianneighbor.map(f => (f._1._1, f._2._1, jaccard(f._1._2.toSet, f._2._2.toSet)))
   }
 
   def jaccard[A](a: Set[A], b: Set[A]): Double = {
@@ -43,6 +55,7 @@ object Jaccard {
      */
 
     /** Remove this placeholder and implement your code */
-    0.0
+    if (a.isEmpty || b.isEmpty) { return 0.0 }
+    a.intersect(b).size / a.union(b).size.toDouble
   }
 }

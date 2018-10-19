@@ -1,3 +1,7 @@
+// To test: sbt "test:testOnly *LoadRddRawDataTest"
+// https://piazza.com/class/jjjilbkqk8m1r4?cid=544
+// Just run sbt in terminal to get a scala console
+
 package edu.gatech.cse6250.graphconstruct
 
 import org.apache.spark.SparkConf
