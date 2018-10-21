@@ -11,8 +11,6 @@ object RandomWalk {
      * Return a List of patient IDs ordered by the highest to the lowest similarity.
      * For ties, random order is okay
      */
-
-    /** Remove this placeholder and implement your code */
     val personalized = patientID
     val src: VertexId = patientID
 
