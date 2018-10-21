@@ -21,3 +21,8 @@ SSH into Docker Container
 ```
 ssh -p 2333 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./config/ssh/id_rsa root@127.0.0.1
 ```
+
+Tar directory
+```
+tar -czvf 903178639-vla6-hw4.tar.gz 903178639-vla6-hw4
+```
