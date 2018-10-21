@@ -1,4 +1,4 @@
-// To test: sbt "test:testOnly *LoadRddRawDataTest"
+// To test: sbt "test:testOnly *GraphLoaderTest" from stu_code directory
 // https://piazza.com/class/jjjilbkqk8m1r4?cid=544
 // Just run sbt in terminal to get a scala console
 
