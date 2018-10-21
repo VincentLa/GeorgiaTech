@@ -6,7 +6,7 @@ import org.apache.spark.sql.{ SQLContext, SparkSession }
 import org.apache.spark.{ SparkConf, SparkContext }
 
 /**
- * @author Yu Jing <yujing@gatech.edu>,
+ * @author Vincent La <vla6@gatech.edu>.
  */
 object SparkHelper {
   lazy val sparkMasterURL = "local[*]"

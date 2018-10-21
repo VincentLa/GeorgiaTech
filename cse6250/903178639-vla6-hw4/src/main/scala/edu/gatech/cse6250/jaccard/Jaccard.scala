@@ -1,6 +1,5 @@
 /**
- *
- * students: please put your implementation in this file!
+ * @author Vincent La <vla6@gatech.edu>.
  */
 package edu.gatech.cse6250.jaccard
 

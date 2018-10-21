@@ -1,5 +1,5 @@
 /**
- * @author Hang Su <hangsu@gatech.edu>.
+ * @author Vincent La <vla6@gatech.edu>.
  */
 
 // Resouce: https://stanford.edu/~rezab/nips2014workshop/slides/ankur.pdf

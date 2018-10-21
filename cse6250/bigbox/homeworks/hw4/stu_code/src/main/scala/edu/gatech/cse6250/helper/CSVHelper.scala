@@ -3,8 +3,7 @@ package edu.gatech.cse6250.helper
 import org.apache.spark.sql.{ DataFrame, SparkSession }
 
 /**
- * @author Hang Su <hangsu@gatech.edu>,
- * @author Yu Jing <yujing@gatech.edu>,
+ * @author Vincent La <vla6@gatech.edu>.
  */
 object CSVHelper {
   def loadCSVAsTable(spark: SparkSession, path: String, tableName: String): DataFrame = {

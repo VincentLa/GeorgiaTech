@@ -1,5 +1,5 @@
 /**
- * @author Sungtae An <stan84@gatech.edu>.
+ * @author Vincent La <vla6@gatech.edu>.
  */
 
 package edu.gatech.cse6250.clustering

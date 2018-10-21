@@ -1,5 +1,5 @@
 /**
- * @author Hang Su <hangsu@gatech.edu>.
+ * @author Vincent La <vla6@gatech.edu>.
  */
 
 package edu.gatech.cse6250.model
