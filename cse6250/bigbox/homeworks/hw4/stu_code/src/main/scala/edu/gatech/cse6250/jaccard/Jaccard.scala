@@ -17,17 +17,15 @@ object Jaccard {
      * Return a List of top 10 patient IDs ordered by the highest to the lowest similarity.
      * For ties, random order is okay. The given patientID should be excluded from the result.
      */
+    val neighbors = graph.collectNeighborIds(EdgeDirection.Out)
+    val all_neighbors = neighbors.filter(f => f._1.toLong != patientID)
+    val current_patient_neighbors = neighbors.filter(f => f._1.toLong == patientID).map(f => f._2).flatMap(f => f).collect().toSet
 
-    /** Remove this placeholder and implement your code */
-    val neighborEvents = graph.collectNeighborIds(EdgeDirection.Out)
+    // Use Jaccard helper function to compute jaccard scores for patientid with all their neighbors
+    val patient_jaccard_scores = all_neighbors.map(f => (f._1, jaccard(current_patient_neighbors, f._2.toSet)))
 
-    val allpatientneighbor = neighborEvents.filter(f => f._1.toLong <= 1000 & f._1.toLong != patientID)
-
-    val thispatientneighborset = neighborEvents.filter(f => f._1.toLong == patientID).map(f => f._2).flatMap(f => f).collect().toSet
-
-    val patientscore = allpatientneighbor.map(f => (f._1, jaccard(thispatientneighborset, f._2.toSet)))
-
-    patientscore.takeOrdered(10)(Ordering[Double].reverse.on(x => x._2)).map(_._1.toLong).toList
+    // Return Top 10 Patient Ids using tadeOrdered Function
+    patient_jaccard_scores.takeOrdered(10)(Ordering[Double].reverse.on(x => x._2)).map(_._1.toLong).toList
   }
 
   def jaccardSimilarityAllPatients(graph: Graph[VertexProperty, EdgeProperty]): RDD[(Long, Long, Double)] = {
@@ -36,14 +34,9 @@ object Jaccard {
      * patients. Return a RDD of (patient-1-id, patient-2-id, similarity) where
      * patient-1-id < patient-2-id to avoid duplications
      */
-
-    /** Remove this placeholder and implement your code */
-    val sc = graph.edges.sparkContext
-    val neighborEvents = graph.collectNeighborIds(EdgeDirection.Out)
-
-    val allpatientneighbor = neighborEvents.filter(f => f._1.toLong <= 1000)
-    val cartesianneighbor = allpatientneighbor.cartesian(allpatientneighbor).filter(f => f._1._1 < f._2._1)
-    cartesianneighbor.map(f => (f._1._1, f._2._1, jaccard(f._1._2.toSet, f._2._2.toSet)))
+    val neighbors = graph.collectNeighborIds(EdgeDirection.Out)
+    val all_pairwise_neighbors = neighbors.cartesian(neighbors).filter(f => f._1._1 != f._2._1)
+    all_pairwise_neighbors.map(f => (f._1._1, f._2._1, jaccard(f._1._2.toSet, f._2._2.toSet)))
   }
 
   def jaccard[A](a: Set[A], b: Set[A]): Double = {
