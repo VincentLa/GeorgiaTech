@@ -18,16 +18,32 @@ class MyMLP(nn.Module):
         """
         super(MyMLP, self).__init__()
         self.hidden1 = nn.Linear(in_features=179, out_features=16)
+
+        #### Adding more Hidden Layers for 1.2.e, to restore defaults comment out this section
+        self.hidden2 = nn.Linear(in_features=16, out_features=16)
+        ####
+
         self.out = nn.Linear(in_features=16, out_features=5)
 
     def forward(self, x):
         """Use Sigmoid Activation Function as denoted in HW"""
         x = torch.sigmoid(self.hidden1(x))
+
+        #### Adding more Hidden Layers for 1.2.e, to restore defaults comment out this section
+        x = torch.sigmoid(self.hidden2(x))
+        ####
+
         x = self.out(x)
         return x
 
 
 class MyCNN(nn.Module):
+    """
+    Define Convoluted Neural Network Class
+
+    Note that examples taken from: http://www.sunlab.org/teaching/cse6250/fall2018/dl/dl-cnn.html#convolution
+    https://github.com/ast0414/CSE6250BDH-LAB-DL/blob/master/2_CNN.ipynb
+    """
     def __init__(self):
         super(MyCNN, self).__init__()
 

@@ -28,7 +28,7 @@ PATH_OUTPUT = "../output/seizure/"
 os.makedirs(PATH_OUTPUT, exist_ok=True)
 
 # Some parameters
-MODEL_TYPE = 'MLP'  # TODO: Change this to 'MLP', 'CNN', or 'RNN' according to your task
+MODEL_TYPE = 'CNN'  # TODO: Change this to 'MLP', 'CNN', or 'RNN' according to your task
 NUM_EPOCHS = 3
 BATCH_SIZE = 32
 USE_CUDA = False  # Set 'True' if you want to use GPU
@@ -85,8 +85,8 @@ plot_learning_curves(train_losses, valid_losses, train_accuracies, valid_accurac
 best_model = torch.load(os.path.join(PATH_OUTPUT, save_file))
 test_loss, test_accuracy, test_results = evaluate(best_model, device, test_loader, criterion)
 
-print('printing trainable parameters')
-print(sum(p.numel() for p in best_model.parameters() if p.requires_grad))
+# print('printing trainable parameters')
+# print(sum(p.numel() for p in best_model.parameters() if p.requires_grad))
 
 class_names = ['Seizure', 'TumorArea', 'HealthyArea', 'EyesClosed', 'EyesOpen']
 plot_confusion_matrix(test_results, class_names)

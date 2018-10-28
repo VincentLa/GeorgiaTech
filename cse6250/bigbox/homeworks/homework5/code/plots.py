@@ -75,8 +75,8 @@ def plot_confusion_matrix(results, class_names):
     y_pred = pd.Series([y[1] for y in results], name='Predicted')
     df_confusion = pd.crosstab(y_true, y_pred)
     df_conf_norm = df_confusion / df_confusion.sum(axis=1)
-    print(df_confusion)
-    print(df_conf_norm)
+    # print(df_confusion)
+    # print(df_conf_norm)
 
     # Now Plot the Confusion Matrix
     plt.figure(figsize=(30,10))
