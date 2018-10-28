@@ -1,3 +1,7 @@
+"""
+To run: python train_seizure.py
+"""
+
 import os
 import sys
 import torch
@@ -38,7 +42,6 @@ train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=BATCH_SIZE,
 valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS)
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS)
 
-
 if MODEL_TYPE == 'MLP':
 	model = MyMLP()
 	save_file = 'MyMLP.pth'
@@ -74,12 +77,16 @@ for epoch in range(NUM_EPOCHS):
 
 	is_best = valid_accuracy > best_val_acc  # let's keep the model that has the best accuracy, but you can also use another metric.
 	if is_best:
+		best_val_acc = valid_accuracy
 		torch.save(model, os.path.join(PATH_OUTPUT, save_file))
 
 plot_learning_curves(train_losses, valid_losses, train_accuracies, valid_accuracies)
 
 best_model = torch.load(os.path.join(PATH_OUTPUT, save_file))
 test_loss, test_accuracy, test_results = evaluate(best_model, device, test_loader, criterion)
+
+print('printing trainable parameters')
+print(sum(p.numel() for p in best_model.parameters() if p.requires_grad))
 
 class_names = ['Seizure', 'TumorArea', 'HealthyArea', 'EyesClosed', 'EyesOpen']
 plot_confusion_matrix(test_results, class_names)

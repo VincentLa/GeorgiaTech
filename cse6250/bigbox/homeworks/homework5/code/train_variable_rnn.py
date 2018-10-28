@@ -75,6 +75,7 @@ for epoch in range(NUM_EPOCHS):
 
 	is_best = valid_accuracy > best_val_acc  # let's keep the model that has the best accuracy, but you can also use another metric.
 	if is_best:
+		best_val_acc = valid_accuracy
 		torch.save(model, os.path.join(PATH_OUTPUT, "MyVariableRNN.pth"))
 
 best_model = torch.load(os.path.join(PATH_OUTPUT, "MyVariableRNN.pth"))

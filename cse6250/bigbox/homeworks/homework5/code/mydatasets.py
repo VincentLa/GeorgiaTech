@@ -16,10 +16,18 @@ def load_seizure_dataset(path, model_type):
 	# TODO: Remove the header of CSV file of course.
 	# TODO: Do Not change the order of rows.
 	# TODO: You can use Pandas if you want to.
+	df = pd.read_csv(path)
+	df['y'] -= 1
 
 	if model_type == 'MLP':
-		data = torch.zeros((2, 2))
-		target = torch.zeros(2)
+		# Multi Layer Perceptron Lab: https://github.com/ast0414/CSE6250BDH-LAB-DL/blob/master/1_FeedforwardNet.ipynb
+		# Data Construction do I need to add 1's: https://piazza.com/class/jjjilbkqk8m1r4?cid=998
+		df_mlp = df.copy()
+		df_mlp['X0'] = 1
+		X = df_mlp.drop('y', axis=1).values
+		y = df_mlp.y.values		
+		data = torch.from_numpy(X.astype(np.float32))
+		target = torch.from_numpy(y.astype(np.int))
 		dataset = TensorDataset(data, target)
 	elif model_type == 'CNN':
 		data = torch.zeros((2, 2))
