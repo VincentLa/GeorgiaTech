@@ -22,7 +22,7 @@ class MyMLP(nn.Module):
 
     def forward(self, x):
         """Use Sigmoid Activation Function as denoted in HW"""
-        x = nn.functional.sigmoid(self.hidden1(x))
+        x = torch.sigmoid(self.hidden1(x))
         x = self.out(x)
         return x
 
