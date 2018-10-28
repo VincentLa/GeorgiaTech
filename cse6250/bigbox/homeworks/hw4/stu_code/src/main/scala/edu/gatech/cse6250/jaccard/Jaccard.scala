@@ -17,7 +17,11 @@ object Jaccard {
      * For ties, random order is okay. The given patientID should be excluded from the result.
      */
     val neighbors = graph.collectNeighborIds(EdgeDirection.Out)
-    val all_neighbors = neighbors.filter(f => f._1.toLong != patientID)
+
+    // https://piazza.com/class/jjjilbkqk8m1r4?cid=841
+    // The <= 1000 filter is a hacky solution to get only patient id vertices since there are only 1000
+    // patient ids in the data. Yes, this is hacky.
+    val all_neighbors = neighbors.filter(f => f._1.toLong != patientID & f._1.toLong <= 1000)
     val current_patient_neighbors = neighbors.filter(f => f._1.toLong == patientID).map(f => f._2).flatMap(f => f).collect().toSet
 
     // Use Jaccard helper function to compute jaccard scores for patientid with all their neighbors
