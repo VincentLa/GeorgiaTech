@@ -43,11 +43,25 @@ class MyCNN(nn.Module):
 
     Note that examples taken from: http://www.sunlab.org/teaching/cse6250/fall2018/dl/dl-cnn.html#convolution
     https://github.com/ast0414/CSE6250BDH-LAB-DL/blob/master/2_CNN.ipynb
+
+    If Getting RuntimeError: Expected 3-dimensional input for 3-dimensional weight, see: https://piazza.com/class/jjjilbkqk8m1r4?cid=974
     """
     def __init__(self):
         super(MyCNN, self).__init__()
+        self.conv1 = nn.Conv1d(in_channels=1, out_channels=6, kernel_size=5)
+        self.pool = nn.MaxPool1d(kernel_size=2)
+        self.conv2 = nn.Conv1d(in_channels=6, out_channels=16, kernel_size=5)
+        self.fc1 = nn.Linear(in_features=16 * 41, out_features=128)
+        self.fc2 = nn.Linear(128, 64)
+        self.fc3 = nn.Linear(64, 5)
 
     def forward(self, x):
+        x = self.pool(nn.functional.relu(self.conv1(x)))
+        x = self.pool(nn.functional.relu(self.conv2(x)))
+        x = x.view(-1, 16 * 41)
+        x = nn.functional.relu(self.fc1(x))
+        x = nn.functional.relu(self.fc2(x))
+        x = self.fc3(x)
         return x
 
 

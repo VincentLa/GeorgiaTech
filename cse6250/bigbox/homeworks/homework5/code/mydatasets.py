@@ -30,9 +30,15 @@ def load_seizure_dataset(path, model_type):
 		target = torch.from_numpy(y.astype(np.int))
 		dataset = TensorDataset(data, target)
 	elif model_type == 'CNN':
-		data = torch.zeros((2, 2))
-		target = torch.zeros(2)
+		# CNN Lab: https://github.com/ast0414/CSE6250BDH-LAB-DL/blob/master/2_CNN.ipynb
+		# Data Construction: See "1. Loading Datasets" section of above.
+		df_cnn = df.copy()
+		X = df_cnn.drop('y', axis=1).values
+		y = df_cnn.y.values
+		data = torch.from_numpy(X.astype(np.float32)).unsqueeze(1)
+		target = torch.from_numpy(y.astype(np.int))
 		dataset = TensorDataset(data, target)
+
 	elif model_type == 'RNN':
 		data = torch.zeros((2, 2))
 		target = torch.zeros(2)
