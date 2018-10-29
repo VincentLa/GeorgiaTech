@@ -51,7 +51,7 @@ def plot_learning_curves(train_losses, valid_losses, train_accuracies, valid_acc
     plt.xlabel('epoch')
     plt.ylabel('Accuracy')
     plt.title('Accuracy Curve')
-    plt.legend(loc="upper right")
+    plt.legend(loc="upper left")
     plt.savefig('MLP Accuracy Curve')
 
 

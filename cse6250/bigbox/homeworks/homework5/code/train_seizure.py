@@ -85,8 +85,8 @@ plot_learning_curves(train_losses, valid_losses, train_accuracies, valid_accurac
 best_model = torch.load(os.path.join(PATH_OUTPUT, save_file))
 test_loss, test_accuracy, test_results = evaluate(best_model, device, test_loader, criterion)
 
-# print('printing trainable parameters')
-# print(sum(p.numel() for p in best_model.parameters() if p.requires_grad))
+print('printing trainable parameters')
+print(sum(p.numel() for p in best_model.parameters() if p.requires_grad))
 
 class_names = ['Seizure', 'TumorArea', 'HealthyArea', 'EyesClosed', 'EyesOpen']
 plot_confusion_matrix(test_results, class_names)

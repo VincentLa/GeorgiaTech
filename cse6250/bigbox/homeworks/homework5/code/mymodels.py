@@ -48,6 +48,14 @@ class MyCNN(nn.Module):
     """
     def __init__(self):
         super(MyCNN, self).__init__()
+        ## Part 1: Default what HW Asks for
+        # self.conv1 = nn.Conv1d(in_channels=1, out_channels=6, kernel_size=5)
+        # self.pool = nn.MaxPool1d(kernel_size=2)
+        # self.conv2 = nn.Conv1d(in_channels=6, out_channels=16, kernel_size=5)
+        # self.fc1 = nn.Linear(16 * 41, 128)
+        # self.fc2 = nn.Linear(128, 5)
+
+        ## 1.3.d (1) Improving CNN
         self.conv1 = nn.Conv1d(in_channels=1, out_channels=6, kernel_size=5)
         self.pool = nn.MaxPool1d(kernel_size=2)
         self.conv2 = nn.Conv1d(in_channels=6, out_channels=16, kernel_size=5)
@@ -56,6 +64,14 @@ class MyCNN(nn.Module):
         self.fc3 = nn.Linear(64, 5)
 
     def forward(self, x):
+        ## Part 1: Default what HW Asks for
+        # x = self.pool(nn.functional.relu(self.conv1(x)))
+        # x = self.pool(nn.functional.relu(self.conv2(x)))
+        # x = x.view(-1, 16 * 41)
+        # x = nn.functional.relu(self.fc1(x))
+        # x = self.fc2(x)
+
+        ## 1.3.d (1) Improving CNN
         x = self.pool(nn.functional.relu(self.conv1(x)))
         x = self.pool(nn.functional.relu(self.conv2(x)))
         x = x.view(-1, 16 * 41)
