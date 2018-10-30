@@ -63,6 +63,15 @@ class MyCNN(nn.Module):
         self.fc2 = nn.Linear(128, 64)
         self.fc3 = nn.Linear(64, 5)
 
+        ## 1.3.d (2) Improving CNN
+        # self.conv1 = nn.Conv1d(in_channels=1, out_channels=6, kernel_size=5)
+        # self.pool = nn.MaxPool1d(kernel_size=2)
+        # self.conv2 = nn.Conv1d(in_channels=6, out_channels=16, kernel_size=5)
+        # self.conv3 = nn.Conv1d(in_channels=16, out_channels=16, kernel_size=5)
+        # self.fc1 = nn.Linear(in_features=16 * 41, out_features=128)
+        # self.fc2 = nn.Linear(128, 64)
+        # self.fc3 = nn.Linear(64, 5)
+
     def forward(self, x):
         ## Part 1: Default what HW Asks for
         # x = self.pool(nn.functional.relu(self.conv1(x)))
@@ -78,6 +87,15 @@ class MyCNN(nn.Module):
         x = nn.functional.relu(self.fc1(x))
         x = nn.functional.relu(self.fc2(x))
         x = self.fc3(x)
+
+        ## 1.3.d (2) Improving CNN
+        # x = self.pool(nn.functional.relu(self.conv1(x)))
+        # x = self.pool(nn.functional.relu(self.conv2(x)))
+        # x = self.pool(nn.functional.relu(self.conv3(x)))
+        # x = x.view(-1, 9216)
+        # x = nn.functional.relu(self.fc1(x))
+        # x = nn.functional.relu(self.fc2(x))
+        # x = self.fc3(x)
         return x
 
 
