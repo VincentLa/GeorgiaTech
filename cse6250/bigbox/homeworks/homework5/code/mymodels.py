@@ -100,10 +100,23 @@ class MyCNN(nn.Module):
 
 
 class MyRNN(nn.Module):
+    """
+    Define Recurrent Neural Networks
+
+    Note that a lot of code is taken from examples here: https://github.com/ast0414/CSE6250BDH-LAB-DL/blob/master/3_RNN.ipynb
+    """
     def __init__(self):
         super(MyRNN, self).__init__()
+        # self.rnn = nn.GRU(input_size=1, hidden_size=16, num_layers=1, batch_first=True, dropout=0.5)
+        
+        # 1.4.d (1)
+        self.rnn = nn.GRU(input_size=1, hidden_size=16, num_layers=5, batch_first=True, dropout=0.5)
+        self.fc = nn.Linear(in_features=16, out_features=5)
 
     def forward(self, x):
+        x, _ = self.rnn(x)
+        x = torch.tanh(x[:, -1, :])
+        x = self.fc(x)
         return x
 
 

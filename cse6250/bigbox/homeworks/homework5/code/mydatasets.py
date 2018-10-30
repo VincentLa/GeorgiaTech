@@ -40,8 +40,12 @@ def load_seizure_dataset(path, model_type):
 		dataset = TensorDataset(data, target)
 
 	elif model_type == 'RNN':
-		data = torch.zeros((2, 2))
-		target = torch.zeros(2)
+		# RNN Lab: https://github.com/ast0414/CSE6250BDH-LAB-DL/blob/master/3_RNN.ipynb
+		df_rnn = df.copy()
+		X = df_rnn.drop('y', axis=1).values
+		y = df_rnn.y.values		
+		data = torch.from_numpy(X.astype(np.float32)).unsqueeze(2)
+		target = torch.from_numpy(y.astype(np.int))
 		dataset = TensorDataset(data, target)
 	else:
 		raise AssertionError("Wrong Model Type!")
