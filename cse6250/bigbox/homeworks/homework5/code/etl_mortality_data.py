@@ -11,13 +11,22 @@ PATH_OUTPUT = "../data/mortality/processed/"
 
 def convert_icd9(icd9_object):
 	"""
-	:param icd9_object: ICD-9 code (Pandas/Numpy object).
+	:param icd9_object: ICD-9 code (Pandas/Numpy object) (e.g. Pandas Series).
 	:return: extracted main digits of ICD-9 code
 	"""
 	icd9_str = str(icd9_object)
 	# TODO: Extract the the first 3 or 4 alphanumeric digits prior to the decimal point from a given ICD-9 code.
 	# TODO: Read the homework description carefully.
-	converted = icd9_str
+	first_char = icd9_str[0]
+	extract_num_chars = 3
+	if first_char.isdigit():
+		extract_num_chars = 3
+	if first_char == 'V':
+		extract_num_chars = 3
+	if first_char == 'E':
+		extract_num_chars = 4
+
+	converted = icd9_str[:extract_num_chars]
 
 	return converted
 
@@ -29,8 +38,18 @@ def build_codemap():
 	# TODO: We build a code map using ONLY train data. Think about how to construct validation/test sets using this.
 	df_icd9 = pd.read_csv(os.path.join(PATH_TRAIN, "DIAGNOSES_ICD.csv"), usecols=["ICD9_CODE"])
 	df_digits = df_icd9['ICD9_CODE'].apply(convert_icd9)
-
-	codemap = {123: 0, 456: 1}
+	df_digits.sort_values(inplace=True)
+	
+	# Printing for Checking conver_icd9 function
+	# print('hello')
+	# print(df_icd9['ICD9_CODE'].head())
+	# print(df_digits.head())
+	codemap = {}
+	feature_id = 1
+	for digit in df_digits:
+		if digit not in codemap:
+			codemap[digit] = int(feature_id)
+			feature_id += 1
 	return codemap
 
 
@@ -43,11 +62,26 @@ def create_dataset(path, codemap):
 	# TODO: 1. Load data from the three csv files
 	# TODO: Loading the mortality file is shown as an example below. Load two other files also.
 	df_mortality = pd.read_csv(os.path.join(path, "MORTALITY.csv"))
+	df_admissions = pd.read_csv(os.path.join(path, "ADMISSIONS.csv"))
+	df_diagnoses = pd.read_csv(os.path.join(path, "DIAGNOSES_ICD.csv"))
 
 	# TODO: 2. Convert diagnosis code in to unique feature ID.
 	# TODO: HINT - use 'convert_icd9' you implemented and 'codemap'.
+	codemap = build_codemap()
+	df_diagnoses['df_digits'] = df_diagnoses['ICD9_CODE'].apply(convert_icd9)
+	df_diagnoses['icd9_feature_id'] = df_diagnoses.df_digits.map(codemap)
+	
+	# Dropping cases where we did not see ICD9 code in training, since if we didn't see it in
+	# training the model won't know what to do with it.
+	df_diagnoses.dropna(subset=['ICD9_CODE', 'icd9_feature_id'], inplace=True)
+	df_diagnoses['icd9_feature_id'] = df_diagnoses.icd9_feature_id.astype(int)
+
+	print('hello')
+	print(codemap['410'])
+	print(df_diagnoses.head())
 
 	# TODO: 3. Group the diagnosis codes for the same visit.
+	
 
 	# TODO: 4. Group the visits for the same patient.
 
