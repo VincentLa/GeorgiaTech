@@ -76,23 +76,32 @@ def create_dataset(path, codemap):
 	df_diagnoses.dropna(subset=['ICD9_CODE', 'icd9_feature_id'], inplace=True)
 	df_diagnoses['icd9_feature_id'] = df_diagnoses.icd9_feature_id.astype(int)
 
-	print('hello')
-	print(codemap['410'])
-	print(df_diagnoses.head())
-
 	# TODO: 3. Group the diagnosis codes for the same visit.
-	
+	admissions_merged = df_admissions[['SUBJECT_ID', 'HADM_ID', 'ADMITTIME']].merge(df_diagnoses[['HADM_ID', 'icd9_feature_id']], on=['HADM_ID'])
+	admissions_merged.sort_values(by=['SUBJECT_ID', 'ADMITTIME', 'icd9_feature_id'], inplace=True)
+
+	mortality_map = df_mortality.set_index('SUBJECT_ID').T.to_dict('records')[0]
+	admissions_merged['mortality_label'] = admissions_merged.SUBJECT_ID.map(mortality_map)
 
 	# TODO: 4. Group the visits for the same patient.
+	grouped = admissions_merged.groupby(['SUBJECT_ID', 'ADMITTIME'])
+	admissions_merged_grouped = grouped.aggregate(lambda x: tuple(x))
+	admissions_merged_grouped['icd9_feature_id'] = admissions_merged_grouped['icd9_feature_id'].apply(lambda x: list(x))
+	admissions_merged_grouped.reset_index(inplace=True)
+	# print(admissions_merged_grouped[['SUBJECT_ID', 'icd9_feature_id']].head())
+
+	seq_data = admissions_merged_grouped.groupby('SUBJECT_ID')['icd9_feature_id'].apply(list)
 
 	# TODO: 5. Make a visit sequence dataset as a List of patient Lists of visit Lists
 	# TODO: Visits for each patient must be sorted in chronological order.
 
 	# TODO: 6. Make patient-id List and label List also.
 	# TODO: The order of patients in the three List output must be consistent.
-	patient_ids = [0, 1, 2]
-	labels = [1, 0, 1]
-	seq_data = [[[0, 1], [2]], [[1, 3, 4], [2, 5]], [[3], [5]]]
+	patient_ids_labels = admissions_merged[['SUBJECT_ID', 'mortality_label']].drop_duplicates()
+
+	patient_ids = patient_ids_labels.SUBJECT_ID.tolist()
+	labels = patient_ids_labels.mortality_label.tolist()
+	seq_data = [s for s in seq_data]
 	return patient_ids, labels, seq_data
 
 
