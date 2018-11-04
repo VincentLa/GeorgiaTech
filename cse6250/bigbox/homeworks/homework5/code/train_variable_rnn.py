@@ -41,11 +41,22 @@ test_labels = pickle.load(open(PATH_TEST_LABELS, 'rb'))
 
 # TODO: Calculate the number of features (diagnoses codes in train set)
 # TODO: You must not use a hard-coded value as the grading script may use a different dataset.
-num_features = 1
+# print('hello')
+# print(type(train_seqs))
+# print(train_seqs[:5])
+flat_list = [item for sublist in train_seqs for item in sublist]
+flatter_list = [item for sublist in flat_list for item in sublist]
+distinct_diagnoses = list(set(flatter_list))
+num_features = len(distinct_diagnoses)
 
 train_dataset = VisitSequenceWithLabelDataset(train_seqs, train_labels, num_features)
 valid_dataset = VisitSequenceWithLabelDataset(valid_seqs, valid_labels, num_features)
 test_dataset = VisitSequenceWithLabelDataset(test_seqs, test_labels, num_features)
+
+## JUST FOR DEBUGGING REMOVE LATER
+visit_collate_fn([train_dataset[i] for i in [0,1,2,3,4,5,6]])
+##
+
 
 train_loader = DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True, collate_fn=visit_collate_fn, num_workers=NUM_WORKERS)
 valid_loader = DataLoader(dataset=valid_dataset, batch_size=BATCH_SIZE, shuffle=False, collate_fn=visit_collate_fn, num_workers=NUM_WORKERS)

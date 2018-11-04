@@ -70,7 +70,24 @@ class VisitSequenceWithLabelDataset(Dataset):
 		# TODO: Complete this constructor to make self.seqs as a List of which each element represent visits of a patient
 		# TODO: by Numpy matrix where i-th row represents i-th visit and j-th column represent the feature ID j.
 		# TODO: You can use Sparse matrix type for memory efficiency if you want.
+		
+		# Initialize self.seqs with values from labels. Doesn't really matter just create
+		# a list of size of length labels
 		self.seqs = [i for i in range(len(labels))]  # replace this with your implementation.
+
+		# Loop through all patients
+		for i in range(len(seqs)):
+			single_patient_seq = seqs[i]
+			rows = len(single_patient_seq)	
+			new_matrix = np.zeros(shape=(rows, num_features))
+			for a in range(len(single_patient_seq)):
+				admission = single_patient_seq[a]
+				admission = np.array(admission)
+				# Doing this somewhat hackily, since if there are 901 features, that means the indices are 0,...,900
+				admission = admission - 1
+				# This is basically setting the columns (represented by diagnoses that are elements in admission) to 1
+				new_matrix[a, admission] = 1
+			self.seqs[i] = new_matrix
 
 	def __len__(self):
 		return len(self.labels)
@@ -95,9 +112,37 @@ def visit_collate_fn(batch):
 	# TODO: Return the following two things
 	# TODO: 1. a tuple of (Tensor contains the sequence data , Tensor contains the length of each sequence),
 	# TODO: 2. Tensor contains the label of each sequence
+	# print('printing from visit collate fn')
+	# print(type(batch))
+	# print(len(batch[0]))
+	# print(batch[0])
 
-	seqs_tensor = torch.FloatTensor()
-	lengths_tensor = torch.LongTensor()
-	labels_tensor = torch.LongTensor()
+	seqs = [b[0] for b in batch]
+	seqs_num_rows = [b[0].shape[0] for b in batch]
+	labels = [b[1] for b in batch]
+
+	# Sorting: https://stackoverflow.com/questions/2732994/python-sort-a-list-and-change-another-one-consequently
+	sorted_index = np.argsort(-1 * np.array(seqs_num_rows))
+	seqs_sorted = [seqs[i] for i in sorted_index]
+	labels_sorted = np.array([labels[i] for i in sorted_index])
+	lengths_sorted = np.array([seqs_num_rows[i] for i in sorted_index])
+
+	# Now need to pad rows of shorter matrices with 0's
+	max_rows = seqs_sorted[0].shape[0]
+	for i in range(len(seqs_sorted)):
+		num_rows_sequence = seqs_sorted[i].shape[0]
+		row_diff = max_rows - num_rows_sequence
+		if row_diff > 0:
+			# See https://stackoverflow.com/questions/38191855/zero-pad-numpy-array/38192105
+			seqs_sorted[i] = np.pad(seqs_sorted[i], ((0, row_diff), (0, 0)), 'constant')
+
+	# I think to create seqs_tensor from a list of numpy arrays need to do something like:
+	# https://stackoverflow.com/questions/44429199/how-to-load-a-list-of-numpy-arrays-to-pytorch-dataset-loader
+	seqs_tensor = torch.stack([torch.Tensor(i) for i in seqs_sorted])
+	
+	# I think because lengths and labels is 1D this should be easier
+	# see https://stackoverflow.com/questions/42894882/how-to-convert-a-list-or-numpy-array-to-a-1d-torch-tensor for example
+	lengths_tensor = torch.from_numpy(lengths_sorted.astype(np.int))
+	labels_tensor = torch.from_numpy(labels_sorted.astype(np.int))
 
 	return (seqs_tensor, lengths_tensor), labels_tensor
