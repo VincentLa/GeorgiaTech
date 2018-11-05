@@ -115,20 +115,51 @@ class MyRNN(nn.Module):
 
     def forward(self, x):
         x, _ = self.rnn(x)
+        # https://piazza.com/class/jjjilbkqk8m1r4?cid=963
         x = torch.tanh(x[:, -1, :])
+        # x = x[:, -1, :]
         x = self.fc(x)
         return x
 
 
 class MyVariableRNN(nn.Module):
+    """
+    Define Own Recurrent Neural Networks
+
+    Note that a lot of code is taken from examples here: https://github.com/ast0414/CSE6250BDH-LAB-DL/blob/master/3_RNN.ipynb
+    """
     def __init__(self, dim_input):
         super(MyVariableRNN, self).__init__()
         # You may use the input argument 'dim_input', which is basically the number of features
+        # self.fc1 = nn.Linear(in_features=dim_input, out_features=32)
+        # self.rnn = nn.GRU(input_size=32, hidden_size=16, num_layers=5, batch_first=True, dropout=0.5)
+        self.rnn = nn.GRU(input_size=dim_input, hidden_size=16, num_layers=5, batch_first=True, dropout=0.5)
+        self.fc2 = nn.Linear(in_features=16, out_features=2)
 
     def forward(self, input_tuple):
         # HINT: Following two methods might be useful
         # 'pack_padded_sequence' and 'pad_packed_sequence' from torch.nn.utils.rnn
 
-        seqs, lengths = input_tuple
+        # pack
+        packed_input = pack_padded_sequence(input_tuple[0], input_tuple[1], batch_first=True)
+        # print('printing packed input')
+        # print(packed_input)
 
-        return seqs
+        # print('trying to run rnn')
+        x, _ = self.rnn(packed_input)
+        x, unpacked_len = pad_packed_sequence(x, batch_first=True)
+        x = x[:, -1, :]
+        x = self.fc2(x)
+        # print('printing x at the end')
+        # print(x.shape)
+        return x
+
+        # seqs, lengths = input_tuple
+
+        # return seqs
+
+        ## TESTING ONLY
+        # x, _ = self.rnn(input_tuple)
+        # x = torch.tanh(x[:, -1, :])
+        # x = self.fc(x)
+        # return x
