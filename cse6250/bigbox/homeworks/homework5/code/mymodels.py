@@ -153,13 +153,3 @@ class MyVariableRNN(nn.Module):
         # print('printing x at the end')
         # print(x.shape)
         return x
-
-        # seqs, lengths = input_tuple
-
-        # return seqs
-
-        ## TESTING ONLY
-        # x, _ = self.rnn(input_tuple)
-        # x = torch.tanh(x[:, -1, :])
-        # x = self.fc(x)
-        # return x

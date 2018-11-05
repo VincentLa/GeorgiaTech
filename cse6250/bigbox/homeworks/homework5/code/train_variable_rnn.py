@@ -13,7 +13,7 @@ from mymodels import MyVariableRNN
 
 torch.manual_seed(0)
 if torch.cuda.is_available():
-	torch.cuda.manual_seed(0)
+    torch.cuda.manual_seed(0)
 
 # Set a correct path to the data files that you preprocessed
 PATH_TRAIN_SEQS = "../data/mortality/processed/mortality.seqs.train"
@@ -75,19 +75,19 @@ best_val_acc = 0.0
 train_losses, train_accuracies = [], []
 valid_losses, valid_accuracies = [], []
 for epoch in range(NUM_EPOCHS):
-	train_loss, train_accuracy = train(model, device, train_loader, criterion, optimizer, epoch)
-	valid_loss, valid_accuracy, valid_results = evaluate(model, device, valid_loader, criterion)
+    train_loss, train_accuracy = train(model, device, train_loader, criterion, optimizer, epoch)
+    valid_loss, valid_accuracy, valid_results = evaluate(model, device, valid_loader, criterion)
 
-	train_losses.append(train_loss)
-	valid_losses.append(valid_loss)
+    train_losses.append(train_loss)
+    valid_losses.append(valid_loss)
 
-	train_accuracies.append(train_accuracy)
-	valid_accuracies.append(valid_accuracy)
+    train_accuracies.append(train_accuracy)
+    valid_accuracies.append(valid_accuracy)
 
-	is_best = valid_accuracy > best_val_acc  # let's keep the model that has the best accuracy, but you can also use another metric.
-	if is_best:
-		best_val_acc = valid_accuracy
-		torch.save(model, os.path.join(PATH_OUTPUT, "MyVariableRNN.pth"))
+    is_best = valid_accuracy > best_val_acc  # let's keep the model that has the best accuracy, but you can also use another metric.
+    if is_best:
+        best_val_acc = valid_accuracy
+        torch.save(model, os.path.join(PATH_OUTPUT, "MyVariableRNN.pth"))
 
 best_model = torch.load(os.path.join(PATH_OUTPUT, "MyVariableRNN.pth"))
 # TODO: For your report, try to make plots similar to those in the previous task.
@@ -96,11 +96,30 @@ best_model = torch.load(os.path.join(PATH_OUTPUT, "MyVariableRNN.pth"))
 
 # TODO: Complete predict_mortality
 def predict_mortality(model, device, data_loader):
-	model.eval()
-	# TODO: Evaluate the data (from data_loader) using model,
-	# TODO: return a List of probabilities
-	probas = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
-	return probas
+    model.eval()
+    # TODO: Evaluate the data (from data_loader) using model,
+    # TODO: return a List of probabilities
+    results = []
+    # https://piazza.com/class/jjjilbkqk8m1r4?cid=1103
+    with torch.no_grad():
+        for i, (input, target) in enumerate(data_loader):
+
+            if isinstance(input, tuple):
+                input = tuple([e.to(device) if type(e) == torch.Tensor else e for e in input])
+            else:
+                input = input.to(device)
+            target = target.to(device)
+            output = model(input)
+            softmax = nn.Softmax()
+            y_pred = softmax(output)  
+            ypred_list = y_pred.numpy()
+            # print(type(ypred_list))
+            # print(ypred_list.shape)
+            # print(ypred_list[0, 1])
+            results.append(ypred_list[0, 1])
+    # print(results)
+    probas = results
+    return probas
 
 
 test_prob = predict_mortality(best_model, device, test_loader)
