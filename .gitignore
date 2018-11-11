@@ -2,6 +2,7 @@
 vla6_exam*
 .DS_Store
 *.pyc
+*.csv.gz
 
 roadNet-CA.txt.gz
 roadNet-CA.txt

@@ -1,0 +1,6 @@
+# robots.txt for http://www.physionet.org/
+User-agent: *
+Disallow: /cgi-bin/
+
+User-agent: Linbot
+Allow: /
