@@ -44,7 +44,29 @@ Accurate knowledge of patient's clinical state is critical in a clinical setting
 
 \section{Background and Literature Review}
 \label{Background and Lit Review}
-Siontis et. al (2011) provide an empirical review of methodologies around mortality models. In this paper, the authors use Medline to identify studies published in 2009 that assessed AUC of predicting all cause mortality. What they find is that most studies at the time predicted mortality with modest accuracy, with large variability across populations, which makes sense since for since very high risk populations it may be easier to predict mortality, but for lower risk general populations, the class imbalance is very high with relatively few patients actually dying. A full list of the studies that the authors review and the approaches they use are documented in the paper (linked above). However, we also copy a portion of that table below as an illustrative example:
+Siontis et. al (2011) \cite{Siontis} provide an empirical review of methodologies around mortality models. In this paper, the authors use Medline to identify studies published in 2009 that assessed AUC of predicting all cause mortality. What they find is that most studies at the time predicted mortality with modest accuracy, with large variability across populations, which makes sense since for since very high risk populations it may be easier to predict mortality, but for lower risk general populations, the class imbalance is very high with relatively few patients actually dying. A full list of the studies that the authors review and the approaches they use are documented in the paper (linked above). However, we also copy a portion of that table in Table \ref{Literature Review} as an illustrative example.
+\\
+\\
+Taking a step back, we note that there have been many attempts to predict mortality, with some models being quite complicated 
+
+\begin{table}[H]
+\footnotesize
+\newcolumntype{C}{>{\centering\arraybackslash}X}% centering
+\caption{Literature Review}
+\label{Literature Review}
+\centering
+\begin{tabularx}{\textwidth}{l C C}\hline
+Disease Clinical Condition & Predictive Model & Variables Used \\ \hline
+ &  &   \\
+Cardiovascular Disease & Acute Kidney Injury Network (AKIN) & serum creatinine criteria or urine output criteria \\\
+\\\
+Critical Illness & Acute Myocardial Infarction in Switzerland (AMIS) model & age, Killip class, systolic blood pressure, heart rate, prehospital cardiopulmonary resuscitation, history of heart failure, history of cardiovascular disease \\\
+\\\
+Critical illness Gastroenterology-related & Acute Physiology And Chronic Health Evaluation (APACHE) II & temperature, mean arterial pressure, heart rate, respiratory rate, oxygenation or PaO2 , arterial pH, serum sodium, serum potassium, serum creatinine, hematocrit, white blood cell (WBC) count, Clasgow Coma Score\\\
+\end{tabularx}
+\end{table}
+
+Next, there are a few papers that actually use the MIMIC III data for mortality prediction using ICU data. In Unfolding Physiological State: Mortality Model in Intensive Care Units, Ghassemi et. al (2014)\cite{Ghassemi}, the authors use Latent Variables Models to decompose free-text hospital notes into meaningful features to predict patient mortality. For the actual prediction, they use linear SVM in various setting (e.g. patient first arrives at hospital, In hospital mortality, 30 day mortality, etc.) and they largely find that using hospital notes improved AUCs.
 
 \section{Methodology}
 \label{Methodology}
@@ -53,9 +75,6 @@ What we will do in this project is to try to reproduce and improve models motiva
 \\
 \\
 To be more specific, we will use the same dataset as indicated in the Project guidelines, MIMIC III. This data set has ~45,000 patients, ~60,000 Hospital Admissions, ~200,000 Clinical notes, and ~6000 mortality events. We will then divide into 80\% training, 20\% test set. Similar to what is presented in the paper, we will first extract clinical baseline features, including age, sex, and SAPS-II score, from the database for every patient. We will then perform topic modeling, perhaps LDA, to do natural language processing on the notes to extract meaningful features. In terms of evaluating our model, we will predict on multiple iterations of the outcome variable, just as the paper does. For example, to evaluate 24 hour mortality predictions, in the training set, we will create a 24 hour prediction window and using the data that is transformed into features, we will measure AUC of mortality where outcome variable is mortality within 24 hours. We will then test on held-out test data set to report final test AUC.
-
-\section{Experimental Results}
-\label{Experimental Results}
 
 \subsection{Data Exploration}
 The dataset contains 58,976 distinct hospital admissions with 46,520 distinct patients. Thus, most people in this dataset were admitted once, which makes sense, but there is also a long tail of readmissions.
@@ -114,6 +133,29 @@ Given this, it very likely means that mortalities recorded before the discharge 
 \subsection{Feature Extraction}
 Now that we have done some data exploration, this next section will discuss feature extraction and what features we actually used in our model to predict mortality.
 
+\begin{table}[H]
+\footnotesize
+\newcolumntype{C}{>{\centering\arraybackslash}X}% centering
+\caption{Features}
+\label{Features}
+\centering
+\begin{tabularx}{\textwidth}{l C C}\hline
+ & (1) & (2) \\\
+Categories & Features & Extracted \\ \hline
+ &  &   \\
+Demographic and Static Features & Age, Gender, Ethnicity, Admission Type, Insurance Type &  \\\
+\\\
+Vital Signs & Heart Rate & Min, Max \\\
+\end{tabularx}
+\end{table}
+
+\subsection{Model Architecture}
+\label{Model Architecture}
+
+
+\section{Experimental Results}
+\label{Experimental Results}
+
 \section{Discussion}
 \label{Discussion}
 
@@ -122,8 +164,14 @@ Now that we have done some data exploration, this next section will discuss feat
 Filler
 
   \begin{thebibliography}{1}
+    \bibitem{Afessa} Afessa B, Keegan MT. Predicting mortality in intensive care unit survivors using a subjective scoring system. Crit Care. 2007;11(1):109.   
+    \bibitem{DeSalvo} DeSalvo KB, Fan VS, McDonell MB, Fihn SD. Predicting mortality and healthcare utilization with a single question. Health Serv Res. 2005;40(4):1234-46. 
     \bibitem{Ghassemi} Ghassemi M, Naumann T, Doshi-Velez F, et al. Unfolding Physiological State: Mortality Modelling in Intensive Care Units. KDD. 2014;2014:75-84.
+    \bibitem{Johnson} Johnson AEW, Mark RG. Real-time mortality prediction in the Intensive Care Unit. AMIA Annu Symp Proc. 2018;2017:994-1003. Published 2018 Apr 16.
+    \bibitem{Lipshutz} Lipshutz Angela KM, Feiner John R, Grimes Barbara, Gropper Michael A. Predicting mortality in the intensive care unit: a comparison of the University Health Consortium expected probability of mortality and the Mortality Prediction Model III. Journal of Intensive Care. 2016
+    \bibitem{Silva} Silva I, Moody G, Scott DJ, Celi LA, Mark RG. Predicting In-Hospital Mortality of ICU Patients: The PhysioNet/Computing in Cardiology Challenge 2012. Comput Cardiol (2010). 2012;39:245-248.
 	\bibitem{Siontis} Siontis GCM, Tzoulaki I, Ioannidis JPA. Predicting Death: An Empirical Evaluation of Predictive Tools for Mortality. Arch Intern Med. 2011;171(19):1721–1726. doi:10.1001/archinternmed.2011.334
+	\bibitem{Teasdale} Teasdale Graham, Stocchetti Nino, Mass Andrew, Murray Gordon. Predicting Mortality in Critically Ill Patients. Critical Care Medicine. (2015). 2015;43:471-472
   
   \end{thebibliography}
 \end{document}

@@ -46,61 +46,67 @@
 --  Load Data for Table CPTEVENTS
 --------------------------------------------------------
 
-\copy CPTEVENTS from PROGRAM 'gzip -dc CPTEVENTS.csv.gz' delimiter ',' csv header NULL ''
+-- \copy CPTEVENTS from PROGRAM 'gzip -dc CPTEVENTS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table DATETIMEEVENTS
 --------------------------------------------------------
 
-\copy DATETIMEEVENTS from PROGRAM 'gzip -dc DATETIMEEVENTS.csv.gz' delimiter ',' csv header NULL ''
+-- \copy DATETIMEEVENTS from PROGRAM 'gzip -dc DATETIMEEVENTS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table DIAGNOSES_ICD
 --------------------------------------------------------
 
-\copy DIAGNOSES_ICD from PROGRAM 'gzip -dc DIAGNOSES_ICD.csv.gz' delimiter ',' csv header NULL ''
+-- \copy DIAGNOSES_ICD from PROGRAM 'gzip -dc DIAGNOSES_ICD.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table DRGCODES
 --------------------------------------------------------
 
-\copy DRGCODES from PROGRAM 'gzip -dc DRGCODES.csv.gz' delimiter ',' csv header NULL ''
+-- \copy DRGCODES from PROGRAM 'gzip -dc DRGCODES.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table D_CPT
 --------------------------------------------------------
 
-\copy D_CPT from PROGRAM 'gzip -dc D_CPT.csv.gz' delimiter ',' csv header NULL ''
+-- \copy D_CPT from PROGRAM 'gzip -dc D_CPT.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table D_ICD_DIAGNOSES
 --------------------------------------------------------
 
-\copy D_ICD_DIAGNOSES from PROGRAM 'gzip -dc D_ICD_DIAGNOSES.csv.gz' delimiter ',' csv header NULL ''
+-- \copy D_ICD_DIAGNOSES from PROGRAM 'gzip -dc D_ICD_DIAGNOSES.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table D_ICD_PROCEDURES
 --------------------------------------------------------
 
-\copy D_ICD_PROCEDURES from PROGRAM 'gzip -dc D_ICD_PROCEDURES.csv.gz' delimiter ',' csv header NULL ''
+-- \copy D_ICD_PROCEDURES from PROGRAM 'gzip -dc D_ICD_PROCEDURES.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table D_ITEMS
 --------------------------------------------------------
 
-\copy D_ITEMS from PROGRAM 'gzip -dc D_ITEMS.csv.gz' delimiter ',' csv header NULL ''
+-- \copy D_ITEMS from PROGRAM 'gzip -dc D_ITEMS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table D_LABITEMS
 --------------------------------------------------------
 
-\copy D_LABITEMS from PROGRAM 'gzip -dc D_LABITEMS.csv.gz' delimiter ',' csv header NULL ''
+-- \copy D_LABITEMS from PROGRAM 'gzip -dc D_LABITEMS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table ICUSTAYS
 --------------------------------------------------------
 
-\copy ICUSTAYS from PROGRAM 'gzip -dc ICUSTAYS.csv.gz' delimiter ',' csv header NULL ''
+-- \copy ICUSTAYS from PROGRAM 'gzip -dc ICUSTAYS.csv.gz' delimiter ',' csv header NULL ''
+
+--------------------------------------------------------
+--  Load Data for Table PATIENTS
+--------------------------------------------------------
+
+-- \copy PATIENTS from PROGRAM 'gzip -dc PATIENTS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table INPUTEVENTS_CV
@@ -137,12 +143,6 @@
 --------------------------------------------------------
 
 \copy OUTPUTEVENTS from PROGRAM 'gzip -dc OUTPUTEVENTS.csv.gz' delimiter ',' csv header NULL ''
-
---------------------------------------------------------
---  Load Data for Table PATIENTS
---------------------------------------------------------
-
-\copy PATIENTS from PROGRAM 'gzip -dc PATIENTS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table PRESCRIPTIONS
