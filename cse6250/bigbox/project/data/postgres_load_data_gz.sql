@@ -28,25 +28,19 @@
 --  Load Data for Table ADMISSIONS
 --------------------------------------------------------
 
-\copy ADMISSIONS FROM PROGRAM 'gzip -dc ADMISSIONS.csv.gz' DELIMITER ',' CSV HEADER NULL ''
+-- \copy ADMISSIONS FROM PROGRAM 'gzip -dc ADMISSIONS.csv.gz' DELIMITER ',' CSV HEADER NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table CALLOUT
 --------------------------------------------------------
 
-\copy CALLOUT from PROGRAM 'gzip -dc CALLOUT.csv.gz' delimiter ',' csv header NULL ''
+-- \copy CALLOUT from PROGRAM 'gzip -dc CALLOUT.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table CAREGIVERS
 --------------------------------------------------------
 
-\copy CAREGIVERS from PROGRAM 'gzip -dc CAREGIVERS.csv.gz' delimiter ',' csv header NULL ''
-
---------------------------------------------------------
---  Load Data for Table CHARTEVENTS
---------------------------------------------------------
-
-\copy CHARTEVENTS from PROGRAM 'gzip -dc CHARTEVENTS.csv.gz' delimiter ',' csv header NULL ''
+-- \copy CAREGIVERS from PROGRAM 'gzip -dc CAREGIVERS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table CPTEVENTS
@@ -179,3 +173,9 @@
 --------------------------------------------------------
 
 \copy TRANSFERS from PROGRAM 'gzip -dc TRANSFERS.csv.gz' delimiter ',' csv header NULL ''
+
+--------------------------------------------------------
+--  Load Data for Table CHARTEVENTS
+--------------------------------------------------------
+
+\copy CHARTEVENTS from PROGRAM 'gzip -dc CHARTEVENTS.csv.gz' delimiter ',' csv header NULL ''

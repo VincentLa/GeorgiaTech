@@ -2,5 +2,7 @@
 \BOOKMARK [1][-]{section.2}{Background and Literature Review}{}% 2
 \BOOKMARK [1][-]{section.3}{Methodology}{}% 3
 \BOOKMARK [1][-]{section.4}{Experimental Results}{}% 4
-\BOOKMARK [1][-]{section.5}{Discussion}{}% 5
-\BOOKMARK [1][-]{section.6}{Conclusion}{}% 6
+\BOOKMARK [2][-]{subsection.4.1}{Data Exploration}{section.4}% 5
+\BOOKMARK [2][-]{subsection.4.2}{Feature Extraction}{section.4}% 6
+\BOOKMARK [1][-]{section.5}{Discussion}{}% 7
+\BOOKMARK [1][-]{section.6}{Conclusion}{}% 8

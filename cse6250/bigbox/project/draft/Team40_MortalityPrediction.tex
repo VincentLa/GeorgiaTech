@@ -50,12 +50,69 @@ Siontis et. al (2011) provide an empirical review of methodologies around mortal
 \label{Methodology}
 
 What we will do in this project is to try to reproduce and improve models motivated by Unfolding Physiological State: Mortality Model in Intensive Care Units (Ghassemi et. al). In particular, what we find interesting is the use of free-text hospital notes to better predict mortality. This is because in many cases, there are already many mortality models, built both on Business Rules, and machine learning to predict mortality. Perhaps the biggest methodology to improve on existing mortality models is to use unstructured data, to see if there is any additional signal from notes and other text that we don't already get from structured data using EHRs.
-
+\\
+\\
 To be more specific, we will use the same dataset as indicated in the Project guidelines, MIMIC III. This data set has ~45,000 patients, ~60,000 Hospital Admissions, ~200,000 Clinical notes, and ~6000 mortality events. We will then divide into 80\% training, 20\% test set. Similar to what is presented in the paper, we will first extract clinical baseline features, including age, sex, and SAPS-II score, from the database for every patient. We will then perform topic modeling, perhaps LDA, to do natural language processing on the notes to extract meaningful features. In terms of evaluating our model, we will predict on multiple iterations of the outcome variable, just as the paper does. For example, to evaluate 24 hour mortality predictions, in the training set, we will create a 24 hour prediction window and using the data that is transformed into features, we will measure AUC of mortality where outcome variable is mortality within 24 hours. We will then test on held-out test data set to report final test AUC.
 
 \section{Experimental Results}
 \label{Experimental Results}
-FILLER
+
+\subsection{Data Exploration}
+The dataset contains 58,976 distinct hospital admissions with 46,520 distinct patients. Thus, most people in this dataset were admitted once, which makes sense, but there is also a long tail of readmissions.
+
+\begin{figure}[H]
+\centering
+\caption{Admissions Distribution}
+\label{AdmissionsDistribution}
+\includegraphics[page = {1}, scale = 0.4]{./images/admissions-distribution.png}
+\end{figure}
+
+About 39,000 patients were admitted once, with 5,160 admitted twice. However, there s a long tail of about 2,000 remaining patients who have been admitted more than twice in this time period, with the maximum being 42 admissions over this time period.
+\\
+\\
+Furthermore, we note that admission lengths on average are about 10 days, but the median length of stay is closer to 6.5 days. This makes sense as again, the distribution is likely right skewed. There are patients with very long outlier lengths of stays dragging mean up, but the median, which is less sensitive to outliers is lower.
+
+\begin{figure}[H]
+\centering
+\caption{Admissions Lengths (In Days)}
+\label{AdmissionsLengths}
+\includegraphics[page = {1}, scale = 0.4]{./images/admissions-lengths.png}
+\end{figure}
+
+Note that there are a few patients with negative lengths of stays. This is likely bad data. The longest a patient was in the hospital is about 290 days which is almost 10 months.
+\\
+\\
+Next, we look at the breakdown of admissions by patients' insurance. This is interesting because the type of insurance a patient has is likely to be very correlated with patient characteristics. For example, Medicare patients will likely be older and have more acute risk. Medicaid is likely correlated with meaningful socioeconomic characteristics. As expected, many of the patients are Medicare patients, at about 48\% of the total population. This makes sense as Medicare patients are older and higher risk, so will comprise more of the admissions.
+
+\begin{figure}[H]
+\centering
+\caption{Admissions by Patients' Insurance}
+\label{AdmissionsByInsurance}
+\includegraphics[page = {1}, scale = 0.4]{./images/admissions-insurance-summary.png}
+\end{figure}
+
+In addition, we note that about 5,800 patients are recorded as having died at some point after the admission.
+
+\begin{figure}[H]
+\centering
+\caption{Admissions Deaths}
+\label{AdmissionsDeaths}
+\includegraphics[page = {1}, scale = 0.4]{./images/admissions-deaths.png}
+\end{figure}
+
+In fact, if we look at the distribution of times to death, we see that the vast majority of deaths are recorded at the same time as the discharge time.
+
+\begin{figure}[H]
+\centering
+\caption{Admissions Deaths Time Period}
+\label{AdmissionsDeathsTimePeriod}
+\includegraphics[page = {1}, scale = 0.4]{./images/admissions-deaths-time-period.png}
+\end{figure}
+
+Given this, it very likely means that mortalities recorded before the discharge time are due to clerical error. It's also possible that mortalities recorded after the discharge time are also a result of clerical error; although it is possible that the study followed up with the patient post-discharge.
+
+\subsection{Feature Extraction}
+Now that we have done some data exploration, this next section will discuss feature extraction and what features we actually used in our model to predict mortality.
 
 \section{Discussion}
 \label{Discussion}
@@ -65,7 +122,8 @@ FILLER
 Filler
 
   \begin{thebibliography}{1}
-	\bibitem{Angrist} Angrist, J. D., Cohodes, S. C., Dynarski, S. M., Pathak, P. A., and Walters, C.R. (2013). Stand and Deliver: Effects of Boston's Charter High Schools on College Preparation, Entry, and Choice. {\em NBER Working Paper,} No. 19275. 
+    \bibitem{Ghassemi} Ghassemi M, Naumann T, Doshi-Velez F, et al. Unfolding Physiological State: Mortality Modelling in Intensive Care Units. KDD. 2014;2014:75-84.
+	\bibitem{Siontis} Siontis GCM, Tzoulaki I, Ioannidis JPA. Predicting Death: An Empirical Evaluation of Predictive Tools for Mortality. Arch Intern Med. 2011;171(19):1721–1726. doi:10.1001/archinternmed.2011.334
   
   \end{thebibliography}
 \end{document}
