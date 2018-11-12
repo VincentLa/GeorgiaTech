@@ -15,6 +15,8 @@
 \usepackage{pdfpages}
 \usepackage{standalone}
 \usepackage{hyperref}
+\usepackage{subfigure}
+\usepackage{graphicx}
 \hypersetup{colorlinks = true, urlcolor = blue, filecolor = blue, linkcolor = blue}
 \floatstyle{plaintop}
 \restylefloat{table}
@@ -47,7 +49,7 @@ Accurate knowledge of patient's clinical state is critical in a clinical setting
 Siontis et. al (2011) \cite{Siontis} provide an empirical review of methodologies around mortality models. In this paper, the authors use Medline to identify studies published in 2009 that assessed AUC of predicting all cause mortality. What they find is that most studies at the time predicted mortality with modest accuracy, with large variability across populations, which makes sense since for since very high risk populations it may be easier to predict mortality, but for lower risk general populations, the class imbalance is very high with relatively few patients actually dying. A full list of the studies that the authors review and the approaches they use are documented in the paper (linked above). However, we also copy a portion of that table in Table \ref{Literature Review} as an illustrative example.
 \\
 \\
-Taking a step back, we note that there have been many attempts to predict mortality, with some models being quite complicated 
+Taking a step back, we note that there have been many attempts to predict mortality, with some models being quite complicated. However, there have also been more technically simple models that attempt to predict mortality. For example, in DeSalvo et. al (2005) \cite{DeSalvo}, the authors attempt to predict mortality using a single question: ``In general, would you say your health is ... Excellent, Very Good, Good, Fair, or Poor". Similarly, we will provide a baseline model that only uses demographics and static variables (see Table \ref{Features} for the specific variables used) as features to predict mortality. While we know that we can do better using a richer feature set, doing a simple model with demographics and static variables provides us with a baseline to benchmark against.
 
 \begin{table}[H]
 \footnotesize
@@ -77,6 +79,7 @@ What we will do in this project is to try to reproduce and improve models motiva
 To be more specific, we will use the same dataset as indicated in the Project guidelines, MIMIC III. This data set has ~45,000 patients, ~60,000 Hospital Admissions, ~200,000 Clinical notes, and ~6000 mortality events. We will then divide into 80\% training, 20\% test set. Similar to what is presented in the paper, we will first extract clinical baseline features, including age, sex, and SAPS-II score, from the database for every patient. We will then perform topic modeling, perhaps LDA, to do natural language processing on the notes to extract meaningful features. In terms of evaluating our model, we will predict on multiple iterations of the outcome variable, just as the paper does. For example, to evaluate 24 hour mortality predictions, in the training set, we will create a 24 hour prediction window and using the data that is transformed into features, we will measure AUC of mortality where outcome variable is mortality within 24 hours. We will then test on held-out test data set to report final test AUC.
 
 \subsection{Data Exploration}
+\label{Data Exploration}
 The dataset contains 58,976 distinct hospital admissions with 46,520 distinct patients. Thus, most people in this dataset were admitted once, which makes sense, but there is also a long tail of readmissions.
 
 \begin{figure}[H]
@@ -152,9 +155,24 @@ Vital Signs & Heart Rate & Min, Max \\\
 \subsection{Model Architecture}
 \label{Model Architecture}
 
+\subsubsection{Baseline Model}
+We first provide a baseline model that is a Random Forest model that only uses the Demographic and Static Features as described in Table \ref{Features}. The purpose of this is to provide a simple model that can serve as a baseline.
 
 \section{Experimental Results}
 \label{Experimental Results}
+
+\subsubsection{Baseline Model}
+We first show results of the baseline Random Forest model that only uses the Demographic and Static Features as described in Table \ref{Features}.
+
+\begin{figure}[H]
+\centering     %%% not \center
+\subfigure[ROC]{\label{fig:a}\includegraphics[width=70mm]{./images/modelperformance-baseline-roc}}
+\subfigure[Precision Recall]{\label{fig:b}\includegraphics[width=70mm]{./images/modelperformance-baseline-pr}}
+\caption{Baseline Model Performance}
+\label{BaselineModelPerformance}
+\end{figure}
+
+As Figure \ref{BaselineModelPerformance} shows, even with just basic Demographic and Static Features, the model does OK. Average AUROC is about 0.70, and precision recall curve is about 0.1809 (with baseline mortality rate of about 9\% as we saw in Section \ref{Data Exploration}.
 
 \section{Discussion}
 \label{Discussion}
