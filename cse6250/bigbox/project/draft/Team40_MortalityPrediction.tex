@@ -34,7 +34,7 @@
 \maketitle
 
 \begin{abstract}
-FILLER
+Medical data capturing and electronic health records are now improving to the point where we are rapidly improving the amount and quality of data we get about a patient. Socioeconomic data is often captured such as race, marital status, and even insurance type (e.g. Medicaid or Medicare). Electronic Health Record (EHR) systems often track key clinical values like certain labs, prescription history, and acute diagnoses. We also have access to real-time vital signs that becomes available in intensive care unit (ICU) settings. However, the challenge comes in modeling this data due to the high density and heterogeneous data types. Furthermore, because any modeling will ultimately support human decision making (doctors and other clinical staff), interpretability comes at a premium. Because of this, using natural language processing tools to decompose free-text clinical notes into meaningful features is very attractive and valuable since it offers a potentially richer set of meaningful features that are hard to capture in structured form. In this project, we fit three models: a baseline model composing purely of static and demographic features, a model with structured clinical data, and a model that does Natural Language Processing over free-text clinical notes. The baseline model achieves an AUROC of about 70\%. [PLACEHOLDER FOR PERFORMANCE OF MORE ADVANCED MODELS]
 \end{abstract} 
 
 \newpage
@@ -76,7 +76,7 @@ Next, there are a few papers that actually use the MIMIC III data for mortality 
 What we will do in this project is to try to reproduce and improve models motivated by Unfolding Physiological State: Mortality Model in Intensive Care Units (Ghassemi et. al). In particular, what we find interesting is the use of free-text hospital notes to better predict mortality. This is because in many cases, there are already many mortality models, built both on Business Rules, and machine learning to predict mortality. Perhaps the biggest methodology to improve on existing mortality models is to use unstructured data, to see if there is any additional signal from notes and other text that we don't already get from structured data using EHRs.
 \\
 \\
-To be more specific, we will use the same dataset as indicated in the Project guidelines, MIMIC III. This data set has ~45,000 patients, ~60,000 Hospital Admissions, ~200,000 Clinical notes, and ~6000 mortality events. We will then divide into 80\% training, 20\% test set. Similar to what is presented in the paper, we will first extract clinical baseline features, including age, sex, and SAPS-II score, from the database for every patient. We will then perform topic modeling, perhaps LDA, to do natural language processing on the notes to extract meaningful features. In terms of evaluating our model, we will predict on multiple iterations of the outcome variable, just as the paper does. For example, to evaluate 24 hour mortality predictions, in the training set, we will create a 24 hour prediction window and using the data that is transformed into features, we will measure AUC of mortality where outcome variable is mortality within 24 hours. We will then test on held-out test data set to report final test AUC.
+To be more specific, we will use the same dataset as indicated in the Project guidelines, MIMIC III. This data set has 46,520 patients, ~58,976 Hospital Admissions, about 200,000 Clinical notes, and about 6,000 mortality events. We will then divide into 70\% training and validation, 30\% test set. Similar to what is presented in the paper, we will first extract clinical baseline features, including age, sex, and SAPS-II score, from the database for every patient. We will then perform topic modeling, perhaps LDA, to do natural language processing on the notes to extract meaningful features. In terms of evaluating our model, we will predict on multiple iterations of the outcome variable, just as the paper does. For example, to evaluate 24 hour mortality predictions, in the training set, we will create a 24 hour prediction window and using the data that is transformed into features, we will measure AUC of mortality where outcome variable is mortality within 24 hours. We will then test on held-out test data set to report final test AUC.
 
 \subsection{Data Exploration}
 \label{Data Exploration}
@@ -156,7 +156,11 @@ Vital Signs & Heart Rate & Min, Max \\\
 \label{Model Architecture}
 
 \subsubsection{Baseline Model}
-We first provide a baseline model that is a Random Forest model that only uses the Demographic and Static Features as described in Table \ref{Features}. The purpose of this is to provide a simple model that can serve as a baseline.
+We first provide a baseline model that is a Random Forest model that only uses the Demographic and Static Features as described in Table \ref{Features}. The purpose of this is to provide a simple model that can serve as a baseline. We then split the data into 70\% Training and 30\% Test, so the Training dataset had 41,283 rows and the Test data set contained 17,693 rows. We then use Stratified K-Fold Validation with $n_splits = 6$. For features, we one-hot encoded $admission_type$, $insurance$, $language$, $marital_status$, and $ethnicity$. In the end, this yielded a total of 137 features, one for each value, including when the value is null.
+
+\subsubsection{Improved Model: With Structured Clinical Data}
+
+\subsubsection{Best Model: Using LDA}
 
 \section{Experimental Results}
 \label{Experimental Results}
@@ -173,6 +177,10 @@ We first show results of the baseline Random Forest model that only uses the Dem
 \end{figure}
 
 As Figure \ref{BaselineModelPerformance} shows, even with just basic Demographic and Static Features, the model does OK. Average AUROC is about 0.70, and precision recall curve is about 0.1809 (with baseline mortality rate of about 9\% as we saw in Section \ref{Data Exploration}.
+
+\subsubsection{Improved Model: With Structured Clinical Data}
+
+\subsubsection{Best Model: Using LDA}
 
 \section{Discussion}
 \label{Discussion}

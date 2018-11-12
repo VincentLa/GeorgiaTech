@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  11 NOV 2018 17:10
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  12 NOV 2018 07:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -786,7 +786,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 76--80
 
  []
 
-[3] <./images/admissions-distribution.png, id=78, 1003.75pt x 493.845pt>
+[3] <./images/admissions-distribution.png, id=94, 1003.75pt x 493.845pt>
 File: ./images/admissions-distribution.png Graphic file (type png)
 
 <use ./images/admissions-distribution.png>
@@ -798,7 +798,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 92--96
 
  []
 
-<./images/admissions-lengths.png, id=80, 1153.30875pt x 102.3825pt>
+<./images/admissions-lengths.png, id=96, 1153.30875pt x 102.3825pt>
 File: ./images/admissions-lengths.png Graphic file (type png)
 
 <use ./images/admissions-lengths.png>
@@ -811,7 +811,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 104--108
  []
 
 [4 <./images/admissions-distribution.png> <./images/admissions-lengths.png>]
-<./images/admissions-insurance-summary.png, id=89, 733.74126pt x 166.6225pt>
+<./images/admissions-insurance-summary.png, id=105, 733.74126pt x 166.6225pt>
 File: ./images/admissions-insurance-summary.png Graphic file (type png)
 
 <use ./images/admissions-insurance-summary.png>
@@ -819,7 +819,7 @@ Package pdftex.def Info: ./images/admissions-insurance-summary.png used on inpu
 t line 113.
 (pdftex.def)             Requested size: 293.4913pt x 66.64781pt.
 
-<./images/admissions-deaths.png, id=90, 596.2275pt x 88.33pt>
+<./images/admissions-deaths.png, id=106, 596.2275pt x 88.33pt>
 File: ./images/admissions-deaths.png Graphic file (type png)
 
 <use ./images/admissions-deaths.png>
@@ -827,9 +827,10 @@ Package pdftex.def Info: ./images/admissions-deaths.png used on input line 122.
 
 (pdftex.def)             Requested size: 238.48677pt x 35.33136pt.
 
-<./images/admissions-deaths-time-period.png, id=91, 1155.31625pt x 155.58125pt>
+<./images/admissions-deaths-time-period.png, id=107, 1155.31625pt x 155.58125pt
+>
 File: ./images/admissions-deaths-time-period.png Graphic file (type png)
-<use ./images/admissions-deaths-time-period.png>
+ <use ./images/admissions-deaths-time-period.png>
 Package pdftex.def Info: ./images/admissions-deaths-time-period.png used on inp
 ut line 131.
 (pdftex.def)             Requested size: 462.11832pt x 62.23138pt.
@@ -837,73 +838,60 @@ ut line 131.
 > <./images/admissions-deaths-time-period.png>]
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 164.
+(hyperref)                than one, level fixed on input line 168.
 
-<./images/modelperformance-baseline-roc.png, id=104, 441.65pt x 308.15125pt>
+<./images/modelperformance-baseline-roc.png, id=120, 441.65pt x 308.15125pt>
 File: ./images/modelperformance-baseline-roc.png Graphic file (type png)
 
 <use ./images/modelperformance-baseline-roc.png>
 Package pdftex.def Info: ./images/modelperformance-baseline-roc.png used on inp
-ut line 169.
+ut line 173.
 (pdftex.def)             Requested size: 199.16928pt x 138.9677pt.
 
-<./images/modelperformance-baseline-pr.png, id=105, 420.57124pt x 291.0875pt>
+<./images/modelperformance-baseline-pr.png, id=121, 420.57124pt x 291.0875pt>
 File: ./images/modelperformance-baseline-pr.png Graphic file (type png)
 
 <use ./images/modelperformance-baseline-pr.png>
 Package pdftex.def Info: ./images/modelperformance-baseline-pr.png used on inpu
-t line 170.
+t line 174.
 (pdftex.def)             Requested size: 199.16928pt x 137.85048pt.
-
-
-LaTeX Warning: Reference `BaselineModelPerformance' on page 6 undefined on inpu
-t line 175.
-
-
-LaTeX Warning: Reference `Data Exploration' on page 6 undefined on input line 1
-75.
-
-[6 <./images/modelperformance-baseline-roc.png> <./images/modelperformance-base
-line-pr.png>]
+ [6 <./images/modelperformance-baseline-roc.png> <./images/modelperformance-bas
+eline-pr.png>]
 Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no “ in font cmr12!
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 195.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 203.
  [7]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 195.
- (./Team40_MortalityPrediction.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 195.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 195.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 203.
+
+(./Team40_MortalityPrediction.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 203.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 203.
 Package rerunfilecheck Info: File `Team40_MortalityPrediction.out' has not chan
 ged.
-(rerunfilecheck)             Checksum: A8914757B54B54211351EB3F706D9A54;647.
-
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
+(rerunfilecheck)             Checksum: E630D531B03BAFAABC99447D864B6F33;1029.
  ) 
 Here is how much of TeX's memory you used:
- 12298 strings out of 493089
- 185161 string characters out of 6134842
- 329914 words of memory out of 5000000
- 15476 multiletter control sequences out of 15000+600000
- 9309 words of font info for 36 fonts, out of 8000000 for 9000
+ 12330 strings out of 493089
+ 185577 string characters out of 6134842
+ 330017 words of memory out of 5000000
+ 15497 multiletter control sequences out of 15000+600000
+ 13656 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 53i,11n,92p,1056b,411s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 53i,11n,92p,1415b,411s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></
-usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
-r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/
-local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/l
-ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on Team40_MortalityPrediction.pdf (7 pages, 483394 bytes).
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><
+/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></u
+sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
+/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/l
+ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/loc
+al/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/loca
+l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
+Output written on Team40_MortalityPrediction.pdf (7 pages, 507031 bytes).
 PDF statistics:
- 163 PDF objects out of 1000 (max. 8388607)
- 131 compressed objects within 2 object streams
- 38 named destinations out of 1000 (max. 500000)
- 124 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 189 PDF objects out of 1000 (max. 8388607)
+ 155 compressed objects within 2 object streams
+ 42 named destinations out of 1000 (max. 500000)
+ 156 words of extra memory for PDF output out of 10000 (max. 10000000)
 
