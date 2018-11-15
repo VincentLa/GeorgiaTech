@@ -109,6 +109,18 @@
 -- \copy PATIENTS from PROGRAM 'gzip -dc PATIENTS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
+--  Load Data for Table NOTEEVENTS
+--------------------------------------------------------
+
+\copy NOTEEVENTS from PROGRAM 'gzip -dc NOTEEVENTS.csv.gz' delimiter ',' csv header NULL ''
+
+--------------------------------------------------------
+--  Load Data for Table CHARTEVENTS
+--------------------------------------------------------
+
+\copy CHARTEVENTS from PROGRAM 'gzip -dc CHARTEVENTS.csv.gz' delimiter ',' csv header NULL ''
+
+--------------------------------------------------------
 --  Load Data for Table INPUTEVENTS_CV
 --------------------------------------------------------
 
@@ -173,9 +185,3 @@
 --------------------------------------------------------
 
 \copy TRANSFERS from PROGRAM 'gzip -dc TRANSFERS.csv.gz' delimiter ',' csv header NULL ''
-
---------------------------------------------------------
---  Load Data for Table CHARTEVENTS
---------------------------------------------------------
-
-\copy CHARTEVENTS from PROGRAM 'gzip -dc CHARTEVENTS.csv.gz' delimiter ',' csv header NULL ''
