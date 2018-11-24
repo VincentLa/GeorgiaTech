@@ -112,25 +112,37 @@
 --  Load Data for Table NOTEEVENTS
 --------------------------------------------------------
 
-\copy NOTEEVENTS from PROGRAM 'gzip -dc NOTEEVENTS.csv.gz' delimiter ',' csv header NULL ''
+-- \copy NOTEEVENTS from PROGRAM 'gzip -dc NOTEEVENTS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
---  Load Data for Table CHARTEVENTS
+--  Load Data for Table PRESCRIPTIONS
 --------------------------------------------------------
 
-\copy CHARTEVENTS from PROGRAM 'gzip -dc CHARTEVENTS.csv.gz' delimiter ',' csv header NULL ''
+-- \copy PRESCRIPTIONS from PROGRAM 'gzip -dc PRESCRIPTIONS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
---  Load Data for Table INPUTEVENTS_CV
+--  Load Data for Table PROCEDUREEVENTS_MV
 --------------------------------------------------------
 
-\copy INPUTEVENTS_CV from PROGRAM 'gzip -dc INPUTEVENTS_CV.csv.gz' delimiter ',' csv header NULL ''
+-- \copy PROCEDUREEVENTS_MV from PROGRAM 'gzip -dc PROCEDUREEVENTS_MV.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
---  Load Data for Table INPUTEVENTS_MV
+--  Load Data for Table PROCEDURES_ICD
 --------------------------------------------------------
 
-\copy INPUTEVENTS_MV from PROGRAM 'gzip -dc INPUTEVENTS_MV.csv.gz' delimiter ',' csv header NULL ''
+-- \copy PROCEDURES_ICD from PROGRAM 'gzip -dc PROCEDURES_ICD.csv.gz' delimiter ',' csv header NULL ''
+
+--------------------------------------------------------
+--  Load Data for Table SERVICES
+--------------------------------------------------------
+
+-- \copy SERVICES from PROGRAM 'gzip -dc SERVICES.csv.gz' delimiter ',' csv header NULL ''
+
+--------------------------------------------------------
+--  Load Data for Table TRANSFERS
+--------------------------------------------------------
+
+-- \copy TRANSFERS from PROGRAM 'gzip -dc TRANSFERS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table LABEVENTS
@@ -145,43 +157,25 @@
 \copy MICROBIOLOGYEVENTS from PROGRAM 'gzip -dc MICROBIOLOGYEVENTS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
---  Load Data for Table NOTEEVENTS
---------------------------------------------------------
-
-\copy NOTEEVENTS from PROGRAM 'gzip -dc NOTEEVENTS.csv.gz' delimiter ',' csv header NULL ''
-
---------------------------------------------------------
 --  Load Data for Table OUTPUTEVENTS
 --------------------------------------------------------
 
 \copy OUTPUTEVENTS from PROGRAM 'gzip -dc OUTPUTEVENTS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
---  Load Data for Table PRESCRIPTIONS
+--  Load Data for Table INPUTEVENTS_CV
 --------------------------------------------------------
 
-\copy PRESCRIPTIONS from PROGRAM 'gzip -dc PRESCRIPTIONS.csv.gz' delimiter ',' csv header NULL ''
+\copy INPUTEVENTS_CV from PROGRAM 'gzip -dc INPUTEVENTS_CV.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
---  Load Data for Table PROCEDUREEVENTS_MV
+--  Load Data for Table INPUTEVENTS_MV
 --------------------------------------------------------
 
-\copy PROCEDUREEVENTS_MV from PROGRAM 'gzip -dc PROCEDUREEVENTS_MV.csv.gz' delimiter ',' csv header NULL ''
+\copy INPUTEVENTS_MV from PROGRAM 'gzip -dc INPUTEVENTS_MV.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
---  Load Data for Table PROCEDURES_ICD
+--  Load Data for Table CHARTEVENTS
 --------------------------------------------------------
 
-\copy PROCEDURES_ICD from PROGRAM 'gzip -dc PROCEDURES_ICD.csv.gz' delimiter ',' csv header NULL ''
-
---------------------------------------------------------
---  Load Data for Table SERVICES
---------------------------------------------------------
-
-\copy SERVICES from PROGRAM 'gzip -dc SERVICES.csv.gz' delimiter ',' csv header NULL ''
-
---------------------------------------------------------
---  Load Data for Table TRANSFERS
---------------------------------------------------------
-
-\copy TRANSFERS from PROGRAM 'gzip -dc TRANSFERS.csv.gz' delimiter ',' csv header NULL ''
+\copy CHARTEVENTS from PROGRAM 'gzip -dc CHARTEVENTS.csv.gz' delimiter ',' csv header NULL ''

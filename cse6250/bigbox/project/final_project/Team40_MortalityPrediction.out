@@ -1,0 +1,16 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Background and Literature Review}{}% 2
+\BOOKMARK [1][-]{section.3}{Methodology}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Data Exploration}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Feature Extraction}{section.3}% 5
+\BOOKMARK [3][-]{subsubsection.3.2.1}{Topic Modeling: LDA}{subsection.3.2}% 6
+\BOOKMARK [2][-]{subsection.3.3}{Model Architecture}{section.3}% 7
+\BOOKMARK [3][-]{subsubsection.3.3.1}{Baseline Model}{subsection.3.3}% 8
+\BOOKMARK [3][-]{subsubsection.3.3.2}{Improved Model: With Structured Clinical Data}{subsection.3.3}% 9
+\BOOKMARK [3][-]{subsubsection.3.3.3}{Best Model: Using LDA}{subsection.3.3}% 10
+\BOOKMARK [1][-]{section.4}{Experimental Results}{}% 11
+\BOOKMARK [2][-]{subsubsection.4.0.1}{Baseline Model}{section.4}% 12
+\BOOKMARK [3][-]{subsubsection.4.0.2}{Improved Model: With Structured Clinical Data}{subsubsection.4.0.1}% 13
+\BOOKMARK [3][-]{subsubsection.4.0.3}{Best Model: Using LDA}{subsubsection.4.0.1}% 14
+\BOOKMARK [1][-]{section.5}{Discussion}{}% 15
+\BOOKMARK [1][-]{section.6}{Conclusion}{}% 16
