@@ -4,6 +4,7 @@ Load CCS Map for Diagnosis Codes
 Source of data: https://www.hcup-us.ahrq.gov/toolssoftware/ccs/ccs.jsp
 """
 import argparse
+import csv
 import glob
 import os
 
@@ -47,8 +48,9 @@ def load_datasets(dbm, direc):
     dfs = []
     for f in dx_file:
         print('Reading file {} into pandas.'.format(f))
-        df = pd.read_csv(os.path.join(direc, f))
+        df = pd.read_csv(os.path.join(direc, f), quotechar="'")
         df.rename(index=str, columns=column_map, inplace=True)
+        df['icd9cm_code'] = df.icd9cm_code.str.strip()
         dfs.append(df)
 
     print('Writing DX files into database.')
@@ -62,8 +64,9 @@ def load_datasets(dbm, direc):
     dfs = []
     for f in proc_file:
         print('Reading file {} into pandas.'.format(f))
-        df = pd.read_csv(os.path.join(direc, f))
+        df = pd.read_csv(os.path.join(direc, f), quotechar="'")
         df.rename(index=str, columns=column_map, inplace=True)
+        df['icd9cm_code'] = df.icd9cm_code.str.strip()
         dfs.append(df)
 
     print('Writing other files into database.')

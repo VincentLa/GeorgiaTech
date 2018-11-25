@@ -9,7 +9,7 @@ To add additional files to run, add the file name to the appropriate list object
 To run the pipeline, you need to have the connection string stored as an environment variable. You will also need to have Python3 installed as well as necessary dependencies specified in `environment.yml`. 
 
 ## Running the Pipeline Runner
-To actually run `pipeline_runner.py` you need to first be in the root folder of the repository. `cd` into that.
+To actually run `pipeline_runner.py` you need to first be in the `code` folder of the repository. `cd` into that.
 
 In addition (especially if you are running the pipeline end-to-end including parsing the raw CSV/Excel files to load into the Database), you will need to have the data in the proper location: `./data`. 
 

@@ -3,6 +3,7 @@ dependencies:
   - cycler=0.10.0=py36_0
   - freetype=2.8
   - gensim=3.6.0
+  - gitpython=2.1.11
   - ipykernel==5.1.0
   - libpng=1.6.34
   - matplotlib=2.2.2

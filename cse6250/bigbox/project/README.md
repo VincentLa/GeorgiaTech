@@ -63,5 +63,12 @@ OR
 psql 'dbname=mimic host=c4sf-sba.postgres.database.azure.com user=mimicuser@c4sf-sba password=PASSWORD port=5432 options=--search_path=mimiciii' -f postgres_add_indexes
 ```
 
+## Libraries and Useful Functions Used
+
+### scikit-learn
+
+#### One Hot Encoder
+[Documentation for One Hot Encoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html)
+
 ## Examples of Projects
 1. https://github.com/sukilau/mimiciii-project/blob/master/paper.pdf

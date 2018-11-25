@@ -148,31 +148,31 @@
 --  Load Data for Table LABEVENTS
 --------------------------------------------------------
 
-\copy LABEVENTS from PROGRAM 'gzip -dc LABEVENTS.csv.gz' delimiter ',' csv header NULL ''
+-- \copy LABEVENTS from PROGRAM 'gzip -dc LABEVENTS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table MICROBIOLOGYEVENTS
 --------------------------------------------------------
 
-\copy MICROBIOLOGYEVENTS from PROGRAM 'gzip -dc MICROBIOLOGYEVENTS.csv.gz' delimiter ',' csv header NULL ''
+-- \copy MICROBIOLOGYEVENTS from PROGRAM 'gzip -dc MICROBIOLOGYEVENTS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table OUTPUTEVENTS
 --------------------------------------------------------
 
-\copy OUTPUTEVENTS from PROGRAM 'gzip -dc OUTPUTEVENTS.csv.gz' delimiter ',' csv header NULL ''
+-- \copy OUTPUTEVENTS from PROGRAM 'gzip -dc OUTPUTEVENTS.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table INPUTEVENTS_CV
 --------------------------------------------------------
 
-\copy INPUTEVENTS_CV from PROGRAM 'gzip -dc INPUTEVENTS_CV.csv.gz' delimiter ',' csv header NULL ''
+-- \copy INPUTEVENTS_CV from PROGRAM 'gzip -dc INPUTEVENTS_CV.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table INPUTEVENTS_MV
 --------------------------------------------------------
 
-\copy INPUTEVENTS_MV from PROGRAM 'gzip -dc INPUTEVENTS_MV.csv.gz' delimiter ',' csv header NULL ''
+-- \copy INPUTEVENTS_MV from PROGRAM 'gzip -dc INPUTEVENTS_MV.csv.gz' delimiter ',' csv header NULL ''
 
 --------------------------------------------------------
 --  Load Data for Table CHARTEVENTS
