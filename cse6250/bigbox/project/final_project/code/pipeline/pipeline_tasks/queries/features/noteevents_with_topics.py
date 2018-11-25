@@ -147,6 +147,16 @@ def main():
     print('Using LDA Model Objects to Label Notes!')
     df_topic_score = label_charts_with_topics(df, dictionary, lda_model, lda_model_tfidf)
 
+    print('Done Labeling Notes! Now writing to DB')
+    dbm.write_df_table(
+        df_topic_score,
+        table_name='noteevents_with_topics',
+        schema='features',
+        if_exists='replace',
+        use_fast=True)
+
+    print('Done Writing to DB!')
+
 
 if __name__ == '__main__':
     """
