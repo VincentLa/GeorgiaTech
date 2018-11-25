@@ -60,7 +60,7 @@ psql 'dbname=mimic user=mimicuser options=--search_path=mimiciii' -f postgres_ad
 
 OR
 
-psql 'dbname=mimic host=c4sf-sba.postgres.database.azure.com user=mimicuser@c4sf-sba password=PASSWORD port=5432 options=--search_path=mimiciii' -f postgres_add_indexes
+psql 'dbname=mimic host=c4sf-sba.postgres.database.azure.com user=mimicuser@c4sf-sba password=PASSWORD port=5432 options=--search_path=mimiciii' -f postgres_add_indexes.sql
 ```
 
 ## Libraries and Useful Functions Used

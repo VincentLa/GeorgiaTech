@@ -106,7 +106,9 @@ def main():
     tasks = [
         # 'queries/datasets/create_schema',
         # 'queries/datasets/admissions_diagnoses_icd_ccs_mapping',
-        'queries.datasets.admissions_ccs_ohe.py',
+        # 'queries.datasets.admissions_ccs_ohe.py',
+        'queries/datasets/model_demog',
+        'queries/datasets/model_demog_dx',
     ]
 
     if args.run_parse:

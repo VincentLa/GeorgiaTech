@@ -19,3 +19,4 @@ from mimiciii.diagnoses_icd as dx
   left join ontologies.ccs_icd9cm_map as map
     on dx.icd9_code = map.icd9cm_code
 )
+;
