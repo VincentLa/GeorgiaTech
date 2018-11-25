@@ -104,11 +104,14 @@ def main():
 
     # Define list of files you want to run
     tasks = [
+        # 'queries/features/create_schema',
         # 'queries/datasets/create_schema',
+        # 'queries.features.noteevents_lda_models.py',
+        'queries.features.noteevents_with_topics.py',
         # 'queries/datasets/admissions_diagnoses_icd_ccs_mapping',
         # 'queries.datasets.admissions_ccs_ohe.py',
-        'queries/datasets/model_demog',
-        'queries/datasets/model_demog_dx',
+        # 'queries/datasets/model_demog',
+        # 'queries/datasets/model_demog_dx',
     ]
 
     if args.run_parse:
