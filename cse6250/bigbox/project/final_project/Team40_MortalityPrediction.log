@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  24 NOV 2018 14:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  25 NOV 2018 13:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -666,7 +666,20 @@ Package: subfigure 2002/03/15 v2.1.5 subfigure package
 Package hyperref Info: Option `colorlinks' set `true' on input line 20.
 \@float@every@table=\toks59
 
-(./Team40_MortalityPrediction.aux)
+(./Team40_MortalityPrediction.aux
+
+LaTeX Warning: Label `fig:a' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:a' multiply defined.
+
+
+LaTeX Warning: Label `fig:b' multiply defined.
+
+
+LaTeX Warning: Label `sub@fig:b' multiply defined.
+
+)
 \openout1 = `Team40_MortalityPrediction.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
@@ -796,7 +809,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 67--71
 
  []
 
-<./images/admissions-deaths.png, id=93, 596.2275pt x 88.33pt>
+<./images/admissions-deaths.png, id=97, 596.2275pt x 88.33pt>
 File: ./images/admissions-deaths.png Graphic file (type png)
 
 <use ./images/admissions-deaths.png>
@@ -806,51 +819,72 @@ Package pdftex.def Info: ./images/admissions-deaths.png used on input line 76.
 [4]
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 136.
+(hyperref)                than one, level fixed on input line 139.
 
-<./images/modelperformance-baseline-roc.png, id=110, 441.65pt x 308.15125pt>
+<./images/modelperformance-baseline-roc.png, id=115, 441.65pt x 308.15125pt>
 File: ./images/modelperformance-baseline-roc.png Graphic file (type png)
 
 <use ./images/modelperformance-baseline-roc.png>
 Package pdftex.def Info: ./images/modelperformance-baseline-roc.png used on inp
-ut line 141.
+ut line 144.
 (pdftex.def)             Requested size: 199.16928pt x 138.9677pt.
 
-<./images/modelperformance-baseline-pr.png, id=111, 420.57124pt x 291.0875pt>
+<./images/modelperformance-baseline-pr.png, id=116, 420.57124pt x 291.0875pt>
 File: ./images/modelperformance-baseline-pr.png Graphic file (type png)
 
 <use ./images/modelperformance-baseline-pr.png>
 Package pdftex.def Info: ./images/modelperformance-baseline-pr.png used on inpu
-t line 142.
+t line 145.
 (pdftex.def)             Requested size: 199.16928pt x 137.85048pt.
+ [5 <./images/modelperformance-baseline-roc.png> <./images/modelperformance-bas
+eline-pr.png>]
+<./images/modelperformance-improved-roc.png, id=129, 396.48125pt x 273.02pt>
+File: ./images/modelperformance-improved-roc.png Graphic file (type png)
 
-Underfull \hbox (badness 10000) in paragraph at lines 157--161
+<use ./images/modelperformance-improved-roc.png>
+Package pdftex.def Info: ./images/modelperformance-improved-roc.png used on inp
+ut line 157.
+(pdftex.def)             Requested size: 199.16928pt x 137.15121pt.
+
+<./images/modelperformance-improved-pr.png, id=130, 396.48125pt x 276.03125pt>
+File: ./images/modelperformance-improved-pr.png Graphic file (type png)
+
+<use ./images/modelperformance-improved-pr.png>
+Package pdftex.def Info: ./images/modelperformance-improved-pr.png used on inpu
+t line 158.
+(pdftex.def)             Requested size: 199.16928pt x 138.66391pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 170--174
 
  []
 
-[5 <./images/modelperformance-baseline-roc.png> <./images/modelperformance-base
-line-pr.png>]
+[6 <./images/modelperformance-improved-roc.png> <./images/modelperformance-impr
+oved-pr.png>]
 Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no “ in font cmr12!
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 177.
- [6]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 177.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 190.
+ [7]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 190.
  (./Team40_MortalityPrediction.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 177.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 177.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 190.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 190.
 Package rerunfilecheck Info: File `Team40_MortalityPrediction.out' has not chan
 ged.
-(rerunfilecheck)             Checksum: 47C69271023133B4BC8860950A36E510;1108.
+(rerunfilecheck)             Checksum: 3482AEE04CCC53C1FEE5CBA713BE03DC;1186.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
  ) 
 Here is how much of TeX's memory you used:
- 12303 strings out of 493089
- 184649 string characters out of 6134842
- 329797 words of memory out of 5000000
- 15478 multiletter control sequences out of 15000+600000
+ 12320 strings out of 493089
+ 185198 string characters out of 6134842
+ 329929 words of memory out of 5000000
+ 15488 multiletter control sequences out of 15000+600000
  13656 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 53i,11n,92p,1773b,411s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 53i,11n,92p,1887b,411s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><
@@ -860,10 +894,10 @@ sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
 ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/loc
 al/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/loca
 l/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on Team40_MortalityPrediction.pdf (6 pages, 363662 bytes).
+Output written on Team40_MortalityPrediction.pdf (7 pages, 514944 bytes).
 PDF statistics:
- 177 PDF objects out of 1000 (max. 8388607)
- 152 compressed objects within 2 object streams
- 38 named destinations out of 1000 (max. 500000)
- 144 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 198 PDF objects out of 1000 (max. 8388607)
+ 168 compressed objects within 2 object streams
+ 43 named destinations out of 1000 (max. 500000)
+ 162 words of extra memory for PDF output out of 10000 (max. 10000000)
 

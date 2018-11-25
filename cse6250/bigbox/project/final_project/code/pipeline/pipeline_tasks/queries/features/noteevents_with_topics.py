@@ -42,7 +42,7 @@ pd.options.display.max_rows = 1000
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
 
-# Currently set limit to 1,000 for just testing purposes. Will want to remove later.
+# Can set limit e.g. 1,000 for just testing purposes. But remove the limit in production
 QUERY = """
 select
   subject_id,
@@ -62,9 +62,36 @@ def get_args():
     parser.add_argument('--db_url', help='Database url string to the db.', required=True)
     return parser.parse_args()
 
-def label_charts_with_topics(dictionary, lda_model, lda_model_tfidf):
+def lemmatize_stemming(text):
+    """
+    Lemmatize: lemmatized — words in third person are changed to first person
+    
+    Verbs in past and future tenses are changed into present.
+    """
+    return stemmer.stem(WordNetLemmatizer().lemmatize(text, pos='v'))
+
+
+def preprocess(text):
+    """
+    Preprocess Text:
+    
+    Remove words in "STOPWORDS" and remove words 3 letters or less
+    """
+    result = []
+    for token in gensim.utils.simple_preprocess(text):
+        if token not in gensim.parsing.preprocessing.STOPWORDS and len(token) > 3:
+            result.append(lemmatize_stemming(token))
+    return result
+
+def label_charts_with_topics(df, dictionary, lda_model, lda_model_tfidf):
     """
     Write Topics to DB
+
+    Keyword Args:
+      df: DataFrame containing Charts (most likely from mimiciii.noteevents)
+      dictionary: Dictionary Object Returned by LDA
+      lda_model: LDA Model from Bag of Words
+      lda_model_tf_idf: LDA Model from TF-IDF
 
     Loop through each chart and label with topics.
     """
@@ -101,7 +128,7 @@ def label_charts_with_topics(dictionary, lda_model, lda_model_tfidf):
 
 def main():
     """Execute Stuff"""
-    print('Running noteevents_lda_models to perform topic modeling')
+    print('Running noteevents_with_topics to read model objects and label note events')
     args = get_args()
     dbm = DBManager(db_url=args.db_url)
 
@@ -109,16 +136,16 @@ def main():
     df = dbm.load_query_table(QUERY)
 
     print('Loading Dictionary, and LDA Model Objects!')
-    dictionary_pickle = open('./inventory/dictionary.obj', 'r')
-    lda_model_pickle = open('./inventory/lda_model.obj', 'r')
-    lda_model_tfidf_pickle = open('./inventory/lda_model_tfidf.obj', 'r')
+    dictionary_pickle = open('./inventory/dictionary.obj', 'rb')
+    lda_model_pickle = open('./inventory/lda_model.obj', 'rb')
+    lda_model_tfidf_pickle = open('./inventory/lda_model_tfidf.obj', 'rb')
 
     dictionary = pickle.load(dictionary_pickle)
     lda_model = pickle.load(lda_model_pickle)
     lda_model_tfidf = pickle.load(lda_model_tfidf_pickle)
 
     print('Using LDA Model Objects to Label Notes!')
-    df_topic_score = label_charts_with_topics(dictionary, lda_model, lda_model_tfidf)
+    df_topic_score = label_charts_with_topics(df, dictionary, lda_model, lda_model_tfidf)
 
 
 if __name__ == '__main__':

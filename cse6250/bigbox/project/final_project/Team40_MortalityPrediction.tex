@@ -34,7 +34,7 @@
 \maketitle
 
 \begin{abstract}
-Medical data capturing and electronic health records are now improving to the point where we are rapidly improving the amount and quality of data we get about a patient. Socioeconomic data is often captured such as race, marital status, and even insurance type (e.g. Medicaid or Medicare). Electronic Health Record (EHR) systems often track key clinical values like certain labs, prescription history, and acute diagnoses. We also have access to real-time vital signs that becomes available in intensive care unit (ICU) settings. However, the challenge comes in modeling this data due to the high density and heterogeneous data types. Furthermore, because any modeling will ultimately support human decision making (doctors and other clinical staff), interpretability comes at a premium. Because of this, using natural language processing tools to decompose free-text clinical notes into meaningful features is very attractive and valuable since it offers a potentially richer set of meaningful features that are hard to capture in structured form. In this project, we fit three models: a baseline model composing purely of static and demographic features, a model with structured clinical data (e.g. labs, diagnoses, prescriptions), and a model that uses the same features as the previous two but is augmented using topics extracted from conducting Latent Dirichlet Allocation (LDA) on charts and notes data associated with the patient. The baseline model achieves an AUROC of about 70\%. The improved models are still a work in progress and we will report on their progress in the final draft. We also want to thank Dr. Kumar Dharmarajan, a geriatrician, who helped provide some clinical context on the top few topics that LDA abstracted.
+Medical data capturing and electronic health records are now improving to the point where we are rapidly improving the amount and quality of data we get about a patient. Socioeconomic data is often captured such as race, marital status, and even insurance type (e.g. Medicaid or Medicare). Electronic Health Record (EHR) systems often track key clinical values like certain labs, prescription history, and acute diagnoses. We also have access to real-time vital signs that becomes available in intensive care unit (ICU) settings. However, the challenge comes in modeling this data due to the high density and heterogeneous data types. Furthermore, because any modeling will ultimately support human decision making (doctors and other clinical staff), interpretability comes at a premium. Because of this, using natural language processing tools to decompose free-text clinical notes into meaningful features is very attractive and valuable since it offers a potentially richer set of meaningful features that are hard to capture in structured form. In this project, we fit three models: a baseline model composing purely of static and demographic features, a model with structured clinical data (e.g. labs, diagnoses, prescriptions), and a model that uses the same features as the previous two but is augmented using topics extracted from conducting Latent Dirichlet Allocation (LDA) on charts and notes data associated with the patient. The baseline model achieves an AUROC of about 70\%. The improved model that uses all the features in the baseline model but also uses diagnoses achieves an AUROC of about 80\%. Finally, the model with all features including topic modeling achieves an AUROC of about 85\%. We also want to thank Dr. Kumar Dharmarajan, a geriatrician, who helped provide some clinical context on the top few topics that LDA abstracted.
 \end{abstract} 
 
 \newpage
@@ -91,13 +91,16 @@ Now that we have done some data exploration, this next section will discuss feat
  & (1) & (2) \\\
 Categories & Features & Extracted \\ \hline
  &  &   \\
-Demographic and Static Features & Age, Gender, Ethnicity, Admission Type, Insurance Type &  \\\
+Demographic and Static Features & Age (at time of admission), Gender, Ethnicity, Admission Type, Insurance Type &  \\\
 \\\
-Vital Signs & Heart Rate & Min, Max \\\
+Clinical Diagnoses & Clinical Classification Software (CCS) Higher Level Categories & One Hot Encoded: 1 if Patient has diagnosis that maps to the CCS code during the admission, else 0 \\\
 \\\
 Clinical Notes & Topics using LDA &  \\\
 \end{tabularx}
 \end{table}
+
+\subsubsection{Diagnoses Features}
+Note that the MIMIC dataset already provides $diagnoses_icd$ table which contains ICD Diagnoses for patients within the hospital. Many of these diagnoses are captured in the admission using ICD9 codes. However, note that there are almost 68,000 different ICD9 codes. Given that we only see about 60,000 admissions, including all ICD9 codes would result in huge sparsity which could hurt model performance. Thus, to more meaningfully use diagnosis information, we perform hierarchical categorization using \href{https://www.hcup-us.ahrq.gov/toolssoftware/ccs/ccs.jsp}{Clinical Classification Software} codes which are produced by HCUP (Health Cost and Utilization Project via AHRQ). Clinical Classification Software (CCS) codes provide an ontology from ICD 9 Diagnosis Codes to higher level meaningful categorization, collapsing 68,000 ICD 9 Diagnoses codes to about 200 higher level CCS codes. We then perform One-Hot Encoding on the CCS codes for diagnoses logged in each admission as additional features.
 
 \subsubsection{Topic Modeling: LDA}
 To extract additional features, we conduct LDA on Note Events table within MIMIC III. We first tokenize the dataset by splitting the text into sentences and sentences into words. We lowercase all words and remove punctuation. Words fewer than 3 characters are removed. We use the $gensim$ and $nltk$ libraries and remove all stop words from $gensim$. We create a TF-IDF (Term Frequency - Inverse Document Frequency) model object and run LDA using TF-IDF to create topics. Examples of the topics created are shown below.
@@ -125,7 +128,7 @@ Topic Number & Top Words \\ \hline
 We first provide a baseline model that is a Random Forest model that only uses the Demographic and Static Features as described in Table \ref{Features}. The purpose of this is to provide a simple model that can serve as a baseline. We then split the data into 70\% Training and 30\% Test, so the Training dataset had 41,283 rows and the Test data set contained 17,693 rows. We then use Stratified K-Fold Validation with $n_splits = 6$. For features, we one-hot encoded $admission_type$, $insurance$, $language$, $marital_status$, and $ethnicity$. In the end, this yielded a total of 137 features, one for each value, including when the value is null.
 
 \subsubsection{Improved Model: With Structured Clinical Data}
-We will then create an improved model above baseline that uses all the same features but also adds structured clinical data such as labs, prescriptions, and previous utilization. We will use a similar Training/Test split.
+We will then create an improved model above baseline that uses all the same features but also adds structured clinical data. In particular, we use the ICD 9 Diagnosis data provided by MIMIC, but perform higher level categorization using Clinical Classification Software (CCS) codes. We will use a similar Training/Test split of 70\% Training and 30\% Test to evaluate.
 
 \subsubsection{Best Model: Using LDA}
 Our last model will use the same features as in the previous models, but will also include features for each topic returned by LDA on charts relevant to the admission for each patient.
@@ -147,7 +150,17 @@ We first show results of the baseline Random Forest model that only uses the Dem
 As Figure \ref{BaselineModelPerformance} shows, even with just basic Demographic and Static Features, the model does OK. Average AUROC is about 0.70, and precision recall curve is about 0.1809 (with baseline mortality rate of about 9\% as we saw in Section \ref{Data Exploration}.
 
 \subsubsection{Improved Model: With Structured Clinical Data}
-This model will be fit and discussed by the Final Draft.
+Next, we use all the same features as the baseline model which uses Demographic and Static Features, but also use structured diagnosis data with higher level CCS categorization, as described in Table \ref{Features}.
+
+\begin{figure}[H]
+\centering     %%% not \center
+\subfigure[ROC]{\label{fig:a}\includegraphics[width=70mm]{./images/modelperformance-improved-roc}}
+\subfigure[Precision Recall]{\label{fig:b}\includegraphics[width=70mm]{./images/modelperformance-improved-pr}}
+\caption{Demographic and Static Features + Diagnoses: Model Performance}
+\label{ImprovedModelPerformance}
+\end{figure}
+
+As Figure \ref{ImprovedModelPerformance} shows, with additional Diagnosis data with higher level CCS categorization, the model improves significantly, with Average AUROC around 0.8 and precision recall curve at about 0.35.
 
 \subsubsection{Best Model: Using LDA}
 This model will be fit and discussed by the Final Draft. See Table \ref{LDA} for an example of topics that were extracted by LDA.
