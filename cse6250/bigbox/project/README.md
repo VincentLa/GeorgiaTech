@@ -72,3 +72,4 @@ psql 'dbname=mimic host=c4sf-sba.postgres.database.azure.com user=mimicuser@c4sf
 
 ## Examples of Projects
 1. https://github.com/sukilau/mimiciii-project/blob/master/paper.pdf
+2. Youtube Presentation: https://www.youtube.com/watch?v=x90HVtF8E04
