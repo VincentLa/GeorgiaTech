@@ -2,35 +2,31 @@
 \beamer@slide {Research Question}{3}
 \beamer@slide {Presentation Outline 2}{5}
 \beamer@slide {Literature Review}{6}
-\beamer@slide {Literature Review}{7}
-\beamer@slide {Background: BPS}{8}
-\beamer@slide {Background: BPS}{9}
-\beamer@slide {Background: BPS}{10}
-\beamer@slide {Background: MCAS}{11}
-\beamer@slide {Presentation Outline 3}{12}
-\beamer@slide {Data}{13}
-\beamer@slide {Data: Table of Means}{14}
-\beamer@slide {Data}{15}
-\beamer@slide {Presentation Outline 4}{16}
-\beamer@slide {Theoretical Background}{17}
-\beamer@slide {Theoretical Background: Tiebout Model}{18}
-\beamer@slide {Theoretical Background: Tiebout Model}{19}
-\beamer@slide {Theoretical Background: Tiebout Model}{20}
-\beamer@slide {Presentation Outline 5}{21}
-\beamer@slide {Empirical Design}{22}
-\beamer@slide {PrimaryEquation}{22}
-\beamer@slide {Empirical Design RD Diagram}{24}
-\beamer@slide {Empirical Design}{25}
-\beamer@slide {Empirical Design}{26}
-\beamer@slide {Empirical Design}{27}
-\beamer@slide {BasicActualEquation}{27}
-\beamer@slide {Presentation Outline 6}{28}
-\beamer@slide {Results: Baseline Regression}{29}
-\beamer@slide {MCAS baseline results}{29}
-\beamer@slide {MCAS Bedroom Sensitivity}{30}
-\beamer@slide {MCAS Big Diff}{31}
-\beamer@slide {MCAS WZ Control}{32}
-\beamer@slide {MCAS Max Sec WZ}{33}
-\beamer@slide {MCAS Dummies}{34}
-\beamer@slide {Presentation Outline 7}{35}
-\beamer@slide {Conclusion}{36}
+\beamer@slide {Presentation Outline 3}{7}
+\beamer@slide {Data}{8}
+\beamer@slide {Data: Descriptive Statistics}{9}
+\beamer@slide {AdmissionsDeaths}{9}
+\beamer@slide {AdmissionsDistribution}{10}
+\beamer@slide {AdmissionsLengths}{11}
+\beamer@slide {AdmissionsInsurance}{12}
+\beamer@slide {Presentation Outline 4}{13}
+\beamer@slide {Empirical Design}{14}
+\beamer@slide {Features}{14}
+\beamer@slide {Feature Selection: CCS}{15}
+\beamer@slide {Feature Selection: Topic Modeling}{16}
+\beamer@slide {Feature Selection: Topic Modeling}{17}
+\beamer@slide {LDA}{17}
+\beamer@slide {Model}{18}
+\beamer@slide {Presentation Outline 6}{19}
+\beamer@slide {Results: Overview}{20}
+\beamer@slide {fig:a}{21}
+\beamer@slide {fig:b}{21}
+\beamer@slide {BaselineModelPerformance}{21}
+\beamer@slide {fig:a}{22}
+\beamer@slide {fig:b}{22}
+\beamer@slide {ImprovedModelPerformance}{22}
+\beamer@slide {fig:a}{23}
+\beamer@slide {fig:b}{23}
+\beamer@slide {BestModelPerformance}{23}
+\beamer@slide {Presentation Outline 7}{24}
+\beamer@slide {Conclusion}{25}

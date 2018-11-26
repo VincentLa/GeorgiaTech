@@ -7,6 +7,7 @@
 \usepackage{epsfig}
 \usepackage{epstopdf}
 \usepackage{pdfpages}
+\usepackage{subfigure}
 
 
 \captionsetup[table]{labelformat = empty}
@@ -52,13 +53,11 @@
 \newline
 \item[3.] Data
 \newline
-\item[4.] Theoretical Framework
+\item[4.] Empirical Design
 \newline
-\item[5.] Empirical Design
+\item[5.] Results
 \newline
-\item[6.] Results
-\newline
-\item[7.] Future Considerations
+\item[6.] Future Considerations
 \end{enumerate}
 \end{frame}
 
@@ -66,9 +65,9 @@
 \label{Research Question}
 \frametitle{Research Question}
 \begin{itemize}
-	\item Overall: Capitalization of School Quality onto Housing Prices
+	\item Overall: Mortality Prediction in the ICU
 	\newline
-	\item Specific: What is the causal effect of increase in school quality (as measured by standardized test scores) on local housing prices?
+	\item Specific: What is the probability that a patient in the ICU will become deceased using static and demographic features, medical diagnoses, and topics from clinical notes?
 \end{itemize}
 \end{frame}
 
@@ -78,17 +77,15 @@
 	\item Why do we care?
 	\newline
 		\begin{itemize}
-%. On average, a one standard deviation improvement in teacher VA in a single grade raises earnings by 1.3% at age 28.			
-			\item We believe better schools/teachers improve students' future outcomes (Chetty et. al, 2013)
-			\item What about homeowners?
+			\item There is a plethora of literature on predicting mortality rates.
+			\item Quick feedback loops can affect clinical decision making
 			\newline
 		\end{itemize}
-	\item What is the true effect of schools on housing prices?
+	\item Can unstructured data be helpful?
 	\newline
 		\begin{itemize}
-			\item Be careful! Omitted Variables Bias problem!
-			%Over Schools Districts and over space -- we're mainly concerned with over space, e.g. neighborhood characteristics
-			\item Abundant existing literature that presents solutions to these problems
+			\item Lots of potential meaningful information within medical charts and notes.
+			\item Perform Topic Modeling (LDA) on the clinical notes to extract meaningful features
 		\end{itemize}
 \end{itemize}
 \end{frame}
@@ -103,130 +100,28 @@
 \newline
 \item[3.] Data
 \newline
-\item[4.] Theoretical Framework
+\item[4.] Empirical Design
 \newline
-\item[5.] Empirical Design
+\item[5.] Results
 \newline
-\item[6.] Results
-\newline
-\item[7.] Future Considerations
+\item[6.] Future Considerations
 \end{enumerate}
 \end{frame}
 
 \begin{frame}
 \label{Literature Review}
 \frametitle{Review of Existing Literature}
-Instrumental Variables
+Ghassemi (2014)
 \begin{itemize}
-%1 standard deviation increase in school quality is associated with a 1.87\% increase in housing prices
-\item Rosenthal (2003)
+\item Does a similar approach in predicting mortality using notes from ICU
 \newline
 \end{itemize}
 
-Regression Discontinuity
+Other Studies
 \begin{itemize}
-\item Black (1999) popularized the RD approach
+\item Desalvo (2005): Provides an interesting "baseline" model performance by predicting mortality using a question to the patient about their health
 
-\item Kane, Reigg, and Staiger (2006) 
-
-%Paris, France one standard deviation increase in school quality is associated with a 2\% rise in sales prices.
-\item Fack and Grenet (2010)
-
-\item Black and Machin (2010) -- Survey Study 
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\label{Literature Review}
-\frametitle{Review of Existing Literature}
-Instrumental Variables
-\begin{itemize}
-%1 standard deviation increase in school quality is associated with a 1.87\% increase in housing prices
-\item Rosenthal (2003)
-\newline
-\end{itemize}
-
-Regression Discontinuity
-\begin{itemize}
-\item Black (1999) popularized the RD approach
-
-\item Kane, Reigg, and Staiger (2006) 
-
-%Paris, France one standard deviation increase in school quality is associated with a 2\% rise in sales prices.
-\item Fack and Grenet (2010)
-
-\item Black and Machin (2010) -- Survey Study 
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\label{Background: BPS}
-\frametitle{Background: Boston Public School District (BPS)}
-Quick Facts:
-\begin{itemize}
-\item Population of Boston (2012): 636,479
-\item Land Area (2010): 48.28 mi$^2$
-%Does not include Charter Schools
-\item Total Schools (2012 - 2013): 127
-\item Total Students Enrolled in BPS: $\approx$ 57,000 (74 \% of student age population)
-\item Total Schools Serving Fourth Grade: 71
-\item Total Fourth Grade Students Enrolled in BPS: $\approx$ 4,000
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\label{Background: BPS}
-\frametitle{Background: Boston Public School District (BPS)}
-Registration Mechanism: System of Priorities
-\begin{itemize}
-\item[1] Sibling + Walk Zone
-\item[2] Sibling
-\item[3] Walk Zone \newline
-\end{itemize}
-Walk Zone (Elementary Schools): ``1 mile radius around the school, calculated by drawing a circle with 1-mile radius centered at the school and adding the entirety of any geocode the circle touches" (Pathak and Shi, 2013). 
-\newline \newline
-Any student could apply to any school within his/her walk zone, regardless of actual school zone. 
-\end{frame}
-
-\begin{frame}
-\label{Background: BPS}
-\frametitle{Background: Boston Public School District (BPS)}
-Walk Zone Facts
-\begin{itemize}
-\item 50\% of each school's seats are reserved for walk zone students.
-\item (2012-2013) 86\% of BPS families listed a walk zone school as one of their top three choices.
-\newline
-\end{itemize}
-
-Charter Schools
-\begin{itemize}
-\item Not part of BPS, do not follow the same registration/priority mechanism (Lottery Based)
-\item We exclude charter schools from this study. \newline
-\end{itemize}
-
-%Pilot schools remain under local jurisdiction and maintain the same basic tenure and salary guidelines as traditional schools, but have more flexibility to make operational and curricular decisions.
-Pilot Schools
-\begin{itemize}
-\item Technically part of BPS, occupy the middle ground between traditional public schools and charter schools
-\item Follows the same student assignment policy
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\label{Background: MCAS}
-\frametitle{MCAS}
-Massachusetts Comprehensive Assessment System (MCAS): 4th Grade Tests
-\begin{itemize}
-\item[1] Mathematics
-\item[2] English Language Arts and Reading Comprehension (ELA) \newline
-\end{itemize}
-
-Performance Levels (Raw Score Totals)
-\begin{itemize}
-\item[1] Advanced (260 - 280)
-\item[2] Proficient (240 - 259)
-\item[3] Needs Improvement (220 - 239)
-\item[4] Warning/Failing (200 - 219) 
+\item Siontis (2011): Overall Survey Study for mortality prediction
 \end{itemize}
 \end{frame}
 
@@ -240,87 +135,72 @@ Performance Levels (Raw Score Totals)
 \newline
 \item[3.] \textbf{Data}
 \newline
-\item[4.] Theoretical Framework
+\item[4.] Empirical Design
 \newline
-\item[5.] Empirical Design
+\item[5.] Results
 \newline
-\item[6.] Results
-\newline
-\item[7.] Future Considerations
+\item[6.] Future Considerations
 \end{enumerate}
 \end{frame}
 
 \begin{frame}
 \label{Data}
 \frametitle{Data}
-Housing Data
+MIMIC III (Medical Information Mart for Intensive Care)
 \begin{itemize}
-\item 2009 - 2013 Boston Residential Sales provided by the City of Boston Assessing Department
-\item Includes all residential real estate ``arms-length" transactions. Total: 20,932
-\item Includes a large vector of housing characteristics \newline
-\end{itemize}
-
-School Data
-\begin{itemize}
-\item Massachusetts Department of Education Statewide Reports
-\item MCAS Results from 1998 - 2013
-\item Also obtained vectors of student/teacher characteristics
+\item Freely (deanonymized) available critical care database developed by MIT Lab for Computational Physiology
+\item Contains about 40,000 Patients; 60,000 admissions, and 6,000 mortality events from Beth Israel Deaconess Medical Center between 2001 and 2012
+\item Includes both structured and unstructured data (e.g. static and demographic features); unstructured data includes vitals, clinical notes)
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\label{Data: Table of Means}
-\frametitle{Data}
-\begin{table}[H]
-\tiny
-\newcolumntype{C}{>{\centering\arraybackslash}X}% centering
+\label{Data: Descriptive Statistics}
+\frametitle{Data: Descriptive Statistics}
+Mortality Rate: About 12\%
+
+\begin{figure}[H]
 \centering
-\begin{tabularx}{\textwidth}{l C C C}\hline
- & (1) & (2) & (3) \\\
-VARIABLES & Mean & SD & \# Obs. \\ \hline
- &  &  &  \\
-School Characteristics \\\
-&&&\\\
-\hspace{5mm} ELA Proficient or Higher & 25.95 & 12.32 & 71 \\\
-\hspace{5mm} ELA Advanced & 3.023 & 2.882 & 71 \\\
-\hspace{5mm} ELA Proficient & 22.93 & 10.01 & 71 \\\
-\hspace{5mm} ELA Needs Improvement & 47.35 & 7.090 & 71 \\\
-\hspace{5mm} ELA Warning/Failing & 26.75 & 11.93 & 71 \\\
-\hspace{5mm} ELA Composite Performance Index & 65.41 & 10.42 & 71 \\\
-\hspace{5mm} ELA Student Growth Percentile & 44.16 & 11.96 & 68 \\\
-\hspace{5mm} Math Proficient or Higher & 23.67 & 12.58 & 71 \\\
-\hspace{5mm} Math Advanced & 5.945 & 4.997 & 71 \\\
-\hspace{5mm} Math Proficient & 17.74 & 8.161 & 71 \\\
-\hspace{5mm} Math Needs Improvement & 45.73 & 7.492 & 71 \\\
-\hspace{5mm} Math Warning/Failing & 30.66 & 11.75 & 71 \\\
-\hspace{5mm} Math Composite Performance Index & 65.00 & 10.45 & 71 \\\
-\hspace{5mm} Math Student Growth Percentile & 49.94 & 13.21 & 68 \\\
-&&&\\\
-\hspace{5mm} Total Number of Classes & 111.3 & 74.17 & 71 \\\
-\hspace{5mm} Average Class Size & 17.93 & 2.370 & 71 \\\
-\hspace{5mm} Total Number of Students & 420.2 & 192.7 & 71 \\\
-\hspace{5mm} Percentage Black & 31.96 & 20.19 & 71 \\\
-\hspace{5mm} Percentage White & 14.57 & 14.87 & 71 \\\
-\hspace{5mm} Percentage Male & 52.37 & 3.743 & 71 \\\
-\hspace{5mm} Percentage Students Limited English & 32.42 & 17.67 & 71 \\\
-\hspace{5mm} Percentage Students Low Income & 73.07 & 12.74 & 71 \\\
-\hspace{5mm} Total Number of Teachers & 30.37 & 15.06 & 71 \\\
-\hspace{5mm} Percentage of Teachers Licensed & 95.74 & 2.904 & 71 \\ \hline
-\end{tabularx}
-\end{table}
+\caption{Admissions Deaths}
+\label{AdmissionsDeaths}
+\includegraphics[page = {1}, scale = 0.4]{./images/admissions-deaths.png}
+\end{figure}
 \end{frame}
 
 \begin{frame}
-\label{Data}
-\frametitle{Data}
-School Data
-\begin{itemize}
-\item Prior to 2001, 4th Grade MCAS also include SCI section. Excluded these results from our study
-\newline
-\item Primary measure of school quality is percentage of students scoring proficient or advanced
-\newline
-\item Combine Math and ELA performance by simply summing the two, consistent with Black (1999)
-\end{itemize}
+\frametitle{Data: Descriptive Statistics}
+Most patients were admitted once to the hospital, a fraction were readmitted, and there is a right tail of patients who were admitted many times.
+
+\begin{figure}[H]
+\centering
+\caption{Admissions Distribution}
+\label{AdmissionsDistribution}
+\includegraphics[page = {1}, scale = 0.2]{./images/admissions-distribution.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Data: Descriptive Statistics}
+On average, patients were admitted for about 10 days, with the median closer to 6.5, suggesting large right skew.
+
+\begin{figure}[H]
+\centering
+\caption{Admissions Lengths}
+\label{AdmissionsLengths}
+\includegraphics[page = {1}, scale = 0.2]{./images/admissions-lengths.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Data: Descriptive Statistics}
+The modal patient is a Medicare patient, which makes sense since Medicare patients reflect higher risk and more likely to be in ICU setting.
+
+\begin{figure}[H]
+\centering
+\caption{Admissions Insurance}
+\label{AdmissionsInsurance}
+\includegraphics[page = {1}, scale = 0.4]{./images/admissions-insurance-summary.png}
+\end{figure}
 \end{frame}
 
 \begin{frame}
@@ -333,112 +213,103 @@ School Data
 \newline
 \item[3.] Data
 \newline
-\item[4.] \textbf{Theoretical Framework}
+\item[4.] \textbf{Empirical Design}
 \newline
-\item[5.] Empirical Design
+\item[5.] Results
 \newline
-\item[6.] Results
-\newline
-\item[7.] Future Considerations
-\end{enumerate}
-\end{frame}
-
-\begin{frame}
-\label{Theoretical Background}
-\frametitle{Theoretical Background}
-Initial Hypothesis
-\begin{itemize}
-\item Increasing the quality of the best walk zone school is associated with higher housing prices \newline
-\item Increasing the quality of multiple walk one schools (increase school choice) is associated with lower housing prices.
-	\begin{itemize}
-		\item This is perhaps unintuitive
-		\item Explained by application of Tiebout Model
-	\end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\label{Theoretical Background: Tiebout Model}
-\frametitle{Theoretical Background: Tiebout Model}
-\end{frame}
-
-\begin{frame}
-\label{Theoretical Background: Tiebout Model}
-\frametitle{Theoretical Background: Tiebout Model}
-\end{frame}
-
-\begin{frame}
-\label{Theoretical Background: Tiebout Model}
-\frametitle{Theoretical Background: Tiebout Model}
-\end{frame}
-
-
-\begin{frame}
-\label{Presentation Outline 5}
-\frametitle{Presentation Outline}
-\begin{enumerate}
-\item[1.] Research Question
-\newline
-\item[2.] Brief Review of Existing Literature and Background
-\newline
-\item[3.] Data
-\newline
-\item[4.] Theoretical Framework
-\newline
-\item[5.] \textbf{Empirical Design}
-\newline
-\item[6.] Results
-\newline
-\item[7.] Future Considerations
+\item[6.] Future Considerations
 \end{enumerate}
 \end{frame}
 
 \begin{frame}
 \label{Empirical Design}
-\frametitle{Empirical Regression Equation}
-\begin{equation}
-\label{PrimaryEquation}
-lnPrice_{it} = \beta_0  + \beta_1 School \ Quality + \beta_2 \mathbf{X}_{it} +  \phi + \gamma + \mu_{it},
-\end{equation}
+\frametitle{Feature Selection}
+
+\begin{table}[H]
+\tiny
+\newcolumntype{C}{>{\centering\arraybackslash}X}% centering
+\caption{Features}
+\label{Features}
+\centering
+\begin{tabularx}{\textwidth}{l C C}\hline
+ & (1) & (2) \\\
+Categories & Features & Extracted \\ \hline
+ &  &   \\
+Demographic and Static Features & Age (at time of admission), Gender, Ethnicity, Admission Type, Insurance Type &  \\\
+\\\
+Clinical Diagnoses & Clinical Classification Software (CCS) Higher Level Categories & One Hot Encoded: 1 if Patient has diagnosis that maps to the CCS code during the admission, else 0 \\\
+\\\
+Clinical Notes & Topics using Latient Dirichlet Allocation (LDA) & Scores from Notes from the admission \\\
+\end{tabularx}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\label{Feature Selection: CCS}
+\frametitle{Feature Selection: Diagnosis Data}
+
+Diagnosis Data (ICD9)
 \begin{itemize}
-\item $ln Price$: Natural log of the sales price of the property
-\item $School \ Quality$: Measure of local school quality
-\item $\mathbf{X}_{it}$: Vector of property-related characteristics
-\item $\phi$: Time Dummies
-\item $\gamma$: Vector of Neighborhood and School Characteristics \newline
+\item The International Classification of Diseases (ICD9) contains almost 65,000 total diagnosis codes.
+\item With only 60,000 admissions, including all diagnosis codes will lead to very sparse data.
 \end{itemize}
 
-\pause
-However, omitted variables/endogeneity Problems remain.
-\end{frame}
+Clinical Classification Software (CCS) Codes
 
-\begin{frame}
-\label{Empirical Design RD Diagram}
-\frametitle{Empirical Design: Regression Discontinuity Approach}
-\end{frame}
-
-\begin{frame}
-\label{Empirical Design}
-\end{frame}
-
-\begin{frame}
-\label{Empirical Design}
-\frametitle{Empirical Design: Regression Discontinuity Approach}
-\end{frame}
-
-\begin{frame}
-\label{Empirical Design}
-\frametitle{Empirical Regression Equation}
-\begin{equation}
-\label{BasicActualEquation}
-lnPrice_{it} = \beta_0 + \beta_1 Test_i + \beta_2 X_{it} + K + \phi + \mu_{it},
-\end{equation}
 \begin{itemize}
-\item $ln Price$: Natural log of the sales price of the property
-\item $Test_i$: MCAS Result of a walk zone school for house $i$
-\item $\mathbf{X}_{it}$: Vector of property-related characteristics
-\item $\phi$: Year Dummies
-\item $K$ Square Block Dummies \newline
+\item To extract higher level and clinically meaningful classifications, we use the CCS ontologies produced by AHRQ via HCUP
+\item CCS provides a many to one mapping of diagnosis codes to about 200 CCS codes which is helpful to reduce dimensionality and also is more clinically meaningful.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\label{Feature Selection: Topic Modeling}
+\frametitle{Feature Selection: Topic Modeling}
+
+Latent Dirichlet Allocation (LDA) Topic Modeling
+
+\begin{itemize}
+\item Performed LDA on Note Events data to extract topics from notes recorded during an admission
+\item Extracted a total of 10 topics.
+\item For each document, we scored the probability that the topic was relevant to the document.
+\item To construct the feature, we summed the scores for each patient-admission.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\label{Feature Selection: Topic Modeling}
+\frametitle{Feature Selection: Topic Modeling}
+
+Examples of Topics extracted from LDA\footnote{We would like to thank Dr. Kumar Dharmarajan, a geriatrician, who helped provide some clinical context on the top few topics that LDA abstracted.}
+
+\begin{table}[H]
+\footnotesize
+\newcolumntype{C}{>{\centering\arraybackslash}X}% centering
+\caption{Examples of Topics Returned by LDA}
+\label{LDA}
+\centering
+\begin{tabularx}{\textwidth}{l C C}\hline
+ & (1) \\\
+Topic Number & Top Words \\ \hline
+ &    \\\
+0 & contrast, mass, head, imag, brain  \\\
+1 & effus, pleural, lung, chang, portabl \\\
+2 & spine, arteri, carotid, imag, cervic
+\end{tabularx}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\label{Model}
+\frametitle{Model}
+
+Random Forest Classifier
+
+\begin{itemize}
+\item We choose a Random Forest classifier as our main model to predict mortality
+\item A non-parametric model like Random Forest can detect non-linearities and interactions that are likely present within the data but we don't know a priori.
+\item 70\% Train vs. 30\% Test Split
+\item Metrics: AUROC, and Precision-Recall
 \end{itemize}
 \end{frame}
 
@@ -452,212 +323,66 @@ lnPrice_{it} = \beta_0 + \beta_1 Test_i + \beta_2 X_{it} + K + \phi + \mu_{it},
 \newline
 \item[3.] Data
 \newline
-\item[4.] Theoretical Framework
+\item[4.] Empirical Design
 \newline
-\item[5.] Empirical Design
+\item[5.] \textbf{Results}
 \newline
-\item[6.] \textbf{Results}
-\newline
-\item[7.] Future Considerations
+\item[6.] Future Considerations
 \end{enumerate}
 \end{frame}
 
 \begin{frame}
-\label{Results: Baseline Regression}
-\frametitle{Results: Baseline Regression}
-\begin{table}[H]
-\tiny
-\newcolumntype{C}{>{\centering\arraybackslash}X}% centering
-\caption{Effect of MCAS Scores on Housing Prices. Dependent Variable: Natural Log of Sale Price. SE Clustered by Walk Zone Groups}
-\label{MCAS baseline results}
-\centering
-\begin{tabularx}{\textwidth}{l C C C C C}\hline
- & (1) & (2) & (3) & (4) & (5) \\\
-VARIABLES & All Houses & All Houses & 0.5 Sq. Mile Blocks & 0.4 Sq. Mile Blocks & 0.3 Sq. Mile Blocks\\ \hline
- &  &  &  &  &   \\\
-Best \% Prof or Adv & 0.121* & 0.0840* & 0.0380* & 0.0414*** & 0.0503**  \\\
- & (0.0618) & (0.0450) & (0.0194) & (0.0129) & (0.0202) \\\
-Constant & 12.60*** & 12.21*** & 12.14*** & 12.09*** & 12.07*** \\\
- & (0.169) & (0.138) & (0.0861) & (0.0716) & (0.0799) \\\
- &  &  &  &  &    \\\
-Observations & 20,716 & 20,320 & 20,320 & 20,320 & 20,320  \\\
- R-squared & 0.034 & 0.404 & 0.733 & 0.746 & 0.747 \\\
- House Controls$^a$ & NO & YES & YES & YES & YES \\\
- Year FE & NO & YES & YES & YES & YES\\\
- Square Block FE& NO & NO & YES & YES & YES \\ \hline
-\multicolumn{6}{c}{ Robust standard errors in parentheses} \\
-\multicolumn{6}{c}{ *** p$<$0.01, ** p$<$0.05, * p$<$0.1} \\
-\end{tabularx}
-\begin{minipage}[t]{1\columnwidth}
-{\tiny $^a$ House Controls include: total \# bedrooms, total \# bathrooms, total \# bathrooms$^2$, size (in sq ft.), age of building, age of building$^2$. These are the same controls that Black (1999) uses.}
-\end{minipage}\tabularnewline
-\end{table}
+\label{Results: Overview}
+\frametitle{Results: Overview}
+The main outcome variable is whether mortality was recorded in the hospital event after the admission. We present results from three models:
+
+\begin{itemize}
+\item Baseline Model: Only uses Demographic and Static Features (e.g. age at admission, gender, insurance, race)
+\item Baseline + Clinical Diagnosis: Includes all the features from the Baseline model but also uses diagnosis data (with higher level groupings produced by CCS)
+\item Baseline + Clinical Diagnosis + Clinical Notes: Includes all the features from Baseline and Diagnosis data and also uses abstracted topics from Note Events using LDA.
+\end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Results: Specification Test}
-\begin{table}[H]
-\tiny
-\newcolumntype{C}{>{\centering\arraybackslash}X}% centering
-\caption{Specification Tests. Effect of MCAS Scores interacted with number of bedrooms on Housing Prices. Dependent Variable: Natural Log of Sale Price.}
-\label{MCAS Bedroom Sensitivity}
-\centering
-\begin{tabularx}{\textwidth}{l C C C C C}\hline
- & (1) & (2) & (3) & (4) & (5)  \\\
-VARIABLES & All Houses & All Houses & 0.5 Sq. Mile Blocks & 0.4 Sq. Mile Blocks & 0.3 Sq. Mile Blocks \\ \hline
- &  &  &  &  &   \\
-(Best \% Prof or Adv)$\times$ & 0.117** & 0.0976** & 0.0674*** & 0.0683*** & 0.0798*** \\
-(Dummy $\geq 2$ Bedrooms) & (0.0552) & (0.0481) & (0.0218) & (0.0146) & (0.0222) \\\\
-(Best \% Prof or Adv)$\times$ & 0.0392 & 0.0596 & -0.00406 & -0.00508 & 0.00859 \\
-(Dummy $\leq 1$ Bedrooms) & (0.0484) & (0.0428) & (0.0196) & (0.0137) & (0.0202) \\\\
-Constant & 12.68*** & 12.29*** & 12.27*** & 12.23*** & 12.19*** \\
- & (0.133) & (0.127) & (0.0735) & (0.0656) & (0.0702) \\
- &  &  &  &  &  \\
-Observations & 20,716 & 20,320 & 20,320 & 20,320 & 20,320 \\
- R-squared & 0.064 & 0.410 & 0.753 & 0.767 & 0.767 \\
- House Controls$^a$ & NO & YES & YES & YES & YES\\
- Year FE & NO & YES & YES & YES & YES\\
- Square Block FE& NO & NO & YES & YES & YES \\ \hline
-\multicolumn{6}{c}{ Robust standard errors in parentheses} \\
-\multicolumn{6}{c}{ *** p$<$0.01, ** p$<$0.05, * p$<$0.1} \\
-\end{tabularx}
-\begin{minipage}[t]{1\columnwidth}
-{\tiny $^a$ House Controls include: total \# bedrooms, total \# bathrooms, total \# bathrooms$^2$, size (in sq ft.), age of building, age of building$^2$. These are the same controls that Black (1999) uses.}
-\end{minipage}\tabularnewline
-\end{table}
+\frametitle{Results: Baseline Model}
+
+Model Metrics: AUROC (70\%); AU(PR)C (18\%)
+
+\begin{figure}[H]
+\centering     %%% not \center
+\subfigure[ROC]{\label{fig:a}\includegraphics[width=35mm]{./images/modelperformance-baseline-roc}}
+\subfigure[Precision Recall]{\label{fig:b}\includegraphics[width=35mm]{./images/modelperformance-baseline-pr}}
+\caption{Baseline Model Performance}
+\label{BaselineModelPerformance}
+\end{figure}
 \end{frame}
 
 \begin{frame}
-\frametitle{Results}
-\begin{table}[H]
-\tiny
-\newcolumntype{C}{>{\centering\arraybackslash}X}% centering
-\caption{Effect of MCAS Scores on Housing Prices. Dependent Variable: Natural Log of Sale Price. Restrict Sample to where difference between Best \% Prof or Adv in WZ and Second Best \% Prof or Adv in WZ falls in the 75th to 100th percentile. SE Clustered by Walk Zone Groups}
-\label{MCAS Big Diff}
-\centering
-\begin{tabularx}{\textwidth}{l C C C C C}\hline
- & (1) & (2) & (3) & (4) & (5) \\\
-VARIABLES & All Houses & All Houses & 0.5 Sq. Mile Blocks & 0.4 Sq. Mile Blocks & 0.3 Sq. Mile Blocks \\ \hline
- &  &  &  &  &  \\\
-Best \% Prof or Adv & 0.0490 & 0.0235 & 0.0458* & 0.0805*** & 0.0837*** \\\
- & (0.129) & (0.0687) & (0.0249) & (0.0133) & (0.0201)  \\\
-Constant & 13.14*** & 12.34*** & 12.22*** & 12.08*** & 12.10*** \\\
- & (0.465) & (0.235) & (0.105) & (0.0638) & (0.0874)  \\\
- &  &  &  &  &   \\\
-Observations & 6,221 & 6,170 & 6,170 & 6,170 & 6,170 \\\
- R-squared & 0.003 & 0.584 & 0.782 & 0.783 & 0.787  \\\
- House Controls$^a$ & NO & YES & YES & YES & YES\\\
- Year FE & NO & YES & YES & YES & YES \\\
- Square Block FE& NO & NO & YES & YES & YES \\ \hline
-\multicolumn{6}{c}{ Robust standard errors in parentheses} \\
-\multicolumn{6}{c}{ *** p$<$0.01, ** p$<$0.05, * p$<$0.1} \\
-\end{tabularx}
-\begin{minipage}[t]{1\columnwidth}
-{\tiny $^a$ House Controls include: total \# bedrooms, total \# bathrooms, total \# bathrooms$^2$, size (in sq ft.), age of building, age of building$^2$. These are the same controls that Black (1999) uses.}
-\end{minipage}\tabularnewline
-\end{table}
+\frametitle{Results: Baseline + Clinical Diagnosis Model}
+
+Model Metrics: AUROC (83\%); AU(PR)C (36\%)
+
+\begin{figure}[H]
+\centering     %%% not \center
+\subfigure[ROC]{\label{fig:a}\includegraphics[width=35mm]{./images/modelperformance-improved-roc}}
+\subfigure[Precision Recall]{\label{fig:b}\includegraphics[width=35mm]{./images/modelperformance-improved-pr}}
+\caption{Baseline + Clinical Diagnosis Model Performance}
+\label{ImprovedModelPerformance}
+\end{figure}
 \end{frame}
 
 \begin{frame}
-\frametitle{Results}
-\begin{table}[H]
-\tiny
-\newcolumntype{C}{>{\centering\arraybackslash}X}% centering
-\caption{Effect of MCAS Scores on Housing Prices. Dependent Variable: Natural Log of Sale Price. SE Clustered by Walk Zone Groups}
-\label{MCAS WZ Control}
-\centering
-\begin{tabularx}{\textwidth}{l C C C C C}\hline
- & (1) & (2) & (3) & (4) & (5) \\\
-VARIABLES & All Houses & All Houses & 0.5 Sq. Mile Blocks & 0.4 Sq. Mile Blocks & 0.3 Sq. Mile Blocks \\ \hline
- &  &  &  &  &   \\\
-Best \% Prof or Adv & 0.128** & 0.0918** & 0.0452** & 0.0518*** & 0.0525** \\\
- & (0.0632) & (0.0464) & (0.0200) & (0.0151) & (0.0237)  \\\
-Total \# WZ & -0.0392** & -0.0374*** & -0.0124 & -0.0203** & -0.00403  \\\
- & (0.0175) & (0.0141) & (0.0102) & (0.00953) & (0.0120)  \\\
-Constant & 12.73*** & 12.32*** & 12.16*** & 12.14*** & 12.07*** \\\
- & (0.172) & (0.145) & (0.0878) & (0.0665) & (0.0703) \\\
- &  &  &  &  &    \\\
-Observations & 20,716 & 20,320 & 20,320 & 20,320 & 20,320  \\\
- R-squared & 0.050 & 0.418 & 0.733 & 0.747 & 0.747 \\\
-  House Controls$^a$ & NO & YES & YES & YES & YES \\\
- Year FE & NO & YES & YES & YES & YES \\\
- Square Block FE& NO & NO & YES & YES & YES  \\ \hline
-\multicolumn{6}{c}{ Robust standard errors in parentheses} \\
-\multicolumn{6}{c}{ *** p$<$0.01, ** p$<$0.05, * p$<$0.1} \\
-\end{tabularx}
-\begin{minipage}[t]{1\columnwidth}
-{\tiny $^a$ House Controls include: total \# bedrooms, total \# bathrooms, total \# bathrooms$^2$, size (in sq ft.), age of building, age of building$^2$. These are the same controls that Black (1999) uses.}
-\end{minipage}\tabularnewline
-\end{table}
-\end{frame}
+\frametitle{Results: Baseline + Clinical Diagnosis + Clinical Notes Model}
 
-\begin{frame}
-\frametitle{Results}
-\begin{table}[H]
-\tiny
-\newcolumntype{C}{>{\centering\arraybackslash}X}% centering
-\caption{Effect of MCAS Scores on Housing Prices. Dependent Variable: Natural Log of Sale Price. SE Clustered by Walk Zone Groups}
-\label{MCAS Max Sec WZ}
-\centering
-\begin{tabularx}{\textwidth}{l C C C C C}\hline
- & (1) & (2) & (3) & (4) & (5) \\\
-VARIABLES & All Houses & All Houses & 0.5 Sq. Mile Blocks & 0.4 Sq. Mile Blocks & 0.3 Sq. Mile Blocks  \\ \hline
- &  &  &  &  &    \\\
-Best \% Prof or Adv & 0.213*** & 0.169*** & 0.0615*** & 0.0652*** & 0.0667*** \\\
- & (0.0474) & (0.0380) & (0.0214) & (0.0156) & (0.0243) \\\
-Sec \% Prof or Adv & -0.366*** & -0.305*** & -0.0804** & -0.0974*** & -0.0877***  \\\
- & (0.0434) & (0.0450) & (0.0331) & (0.0256) & (0.0215)  \\\
-Total \# WZ & 0.0249* & 0.0128 & 0.00714 & 0.00209 & 0.0152 \\\
- & (0.0133) & (0.0128) & (0.0131) & (0.0103) & (0.0120)  \\\
-Constant & 12.93*** & 12.44*** & 12.20*** & 12.21*** & 12.13***  \\\
- & (0.149) & (0.125) & (0.0923) & (0.0746) & (0.0745)  \\\
- &  &  &  &     \\\
-Observations & 20,010 & 19,630 & 19,630 & 19,630 & 19,630 \\\
- R-squared & 0.209 & 0.519 & 0.736 & 0.750 & 0.750 \\\
-  House Controls$^a$ & NO & YES & YES & YES & YES \\\
- Year FE & NO & YES & YES & YES & YES \\\
- Square Block FE& NO & NO & YES & YES & YES  \\ \hline
-\multicolumn{6}{c}{ Robust standard errors in parentheses} \\
-\multicolumn{6}{c}{ *** p$<$0.01, ** p$<$0.05, * p$<$0.1} \\
-\end{tabularx}
-\begin{minipage}[t]{1\columnwidth}
-{\tiny $^a$ House Controls include: total \# bedrooms, total \# bathrooms, total \# bathrooms$^2$, size (in sq ft.), age of building, age of building$^2$. These are the same controls that Black (1999) uses.}
-\end{minipage}\tabularnewline
-\end{table}
-\end{frame}
+Model Metrics: AUROC (83\%); AU(PR)C (42\%)
 
-\begin{frame}
-\frametitle{Results}
-\begin{table}[H]
-\tiny
-\newcolumntype{C}{>{\centering\arraybackslash}X}% centering
-\caption{Effect of MCAS Scores on Housing Prices. Dependent Variable: Natural Log of Sale Price.}
-\label{MCAS Dummies}
-\centering
-\begin{tabularx}{\textwidth}{l C C C C C}\hline
- & (1) & (2) & (3) & (4) & (5)  \\\
-VARIABLES & All Houses & All Houses & 0.5 Sq. Mile Blocks & 0.4 Sq. Mile Blocks & 0.3 Sq. Mile Blocks \\ \hline
- &  &  &  &  &   \\
- \underline{No. of Top Schools}&  &  &  &   &  \\\
-$\geq 1$ & 0.204* & 0.112 & 0.0614 & 0.0901** & 0.0713 \\\
- & (0.122) & (0.0957) & (0.0479) & (0.0382) & (0.0596) ) \\\
-$\geq 2$ & -0.323*** & -0.235*** & -0.0234 & -0.0773*** & -0.0379  \\\
- & (0.104) & (0.0848) & (0.0292) & (0.0273) & (0.0390)  \\\
-Constant & 12.91*** & 12.46*** & 12.21*** & 12.17*** & 12.18*** \\\
- & (0.0812) & (0.0752) & (0.0694) & (0.0612) & (0.0672) \\\
- &  &  &  &  & \\\
-Observations & 20,932 & 20,536 & 20,536 & 20,536 & 20,536 \\\
- R-squared & 0.067 & 0.420 & 0.734 & 0.748 & 0.748  \\\
- House Controls$^a$ & NO & YES & YES & YES & YES\\\
- Year FE & NO & YES & YES & YES & YES\\\
- Square Block FE& NO & NO & YES & YES & YES \\ \hline
-\multicolumn{6}{c}{ Robust standard errors in parentheses} \\
-\multicolumn{6}{c}{ *** p$<$0.01, ** p$<$0.05, * p$<$0.1} \\
-\end{tabularx}
-\begin{minipage}[t]{1\columnwidth}
-{\tiny $^a$ House Controls include: total \# bedrooms, total \# bathrooms, total \# bathrooms$^2$, size (in sq ft.), age of building, age of building$^2$. These are the same controls that Black (1999) uses.}
-\end{minipage}\tabularnewline
-\end{table}
+\begin{figure}[H]
+\centering     %%% not \center
+\subfigure[ROC]{\label{fig:a}\includegraphics[width=35mm]{./images/modelperformance-best-roc}}
+\subfigure[Precision Recall]{\label{fig:b}\includegraphics[width=35mm]{./images/modelperformance-best-pr}}
+\caption{Baseline + Clinical Diagnosis + Clinical Notes Model Performance}
+\label{BestModelPerformance}
+\end{figure}
 \end{frame}
 
 \begin{frame}
@@ -670,13 +395,11 @@ Observations & 20,932 & 20,536 & 20,536 & 20,536 & 20,536 \\\
 \newline
 \item[3.] Data
 \newline
-\item[4.] Theoretical Framework
+\item[4.] Empirical Design
 \newline
-\item[5.] Empirical Design
+\item[5.] Results
 \newline
-\item[6.] Results
-\newline
-\item[7.] \textbf{Future Considerations}
+\item[6.] \textbf{Future Considerations}
 \end{enumerate}
 \end{frame}
 
@@ -684,70 +407,17 @@ Observations & 20,932 & 20,536 & 20,536 & 20,536 & 20,536 \\\
 \label{Conclusion}
 \frametitle{Conclusion}
 \begin{itemize}
-\item[1] One SD increase in best walk zone school's \% students scoring proficient or advanced on MCAS $\Rightarrow$ 5\% increase in house sales price
+\item[1] Even just using static and demographic features provides some predictive power
 	\begin{itemize}
-		\item Average Sales Price: \$535,645 $\approx$ \$26,000 premium \newline
+		\item Age at time of admission was an important feature, along with insurance type (which makes sense as this is a proxy for risk).
 	\end{itemize}
-\item[2] Presence of several good schools within walk zone mitigates (and reverses) this effect 
+\item[2] Model significantly improves with diagnosis data and clinical notes
 	\begin{itemize}
-		\item Holding best school constant, improving second best school within walk zone leads to a decrease in sales price
-		\item Home buyers willing to pay 6 - 9\% premium for houses with 1 good walk zone school. Only 2 - 4 \% for houses with multiple good walk zone schools.
+		\item Using CCS Diagnosis codes significantly improved model performance 
+		\item Using Clinical Notes improved Precision-Recall tradeoff which would be very useful in clinical setting
 	\end{itemize}
+\item[3] \textbf{Next step would be to talk with clinicians and improve interpretability of the model to make it actionable in a clinical setting!}
 \end{itemize}
-\end{frame}
-
-
-\begin{frame}
-\fontsize{2}{1}
-\frametitle{References}
- \begin{enumerate}
-	\item Angrist, J. D., Cohodes, S. C., Dynarski, S. M., Pathak, P. A., and Walters, C.R. (2013). Stand and Deliver: Effects of Boston's Charter High Schools on College Preparation, Entry, and Choice. {\em NBER Working Paper,} No. 19275. 
-	
-	\item Abdulkadiroglu, Atila; Pathak, Parag A.; Roth, Alvin E. and Siinmez, Tayfun. (2005) "The Boston Public School Match." \textit{American Economic Review, 2005 (Papers and Proceedings)}, 95(2), pp. 368-71. 
-
-	
-	\item Abdulkadiroglu, A., Angrist, J., Dynarski, S., Kane, T.J., and Pathak, P. (2011). Accountability and flexibility in public schools: Evidence from Boston's charters and pilots. \textit{The Quarterly Journal of Economics}, 126(2):699-748
-	
-	\item Belfield, C. R., and Levin H. M. (2002). The Effects of Competition Between Schools on Educational Outcomes: A Review for the United States. \textit{Review of Educational Research} 72(2): 279-341
-
-	\item Black, Sandra E. (1999). ``Do Better Schools Matter? Parental Valuation of Elementary Education." \textit{Quarterly Journal of Economics} 114(2): 577-599
-	
-	\item Black, Sandra E. and Machin, Stephen (2010). ``Housing Valuation of School Performance." \textit{Handbook of the Economics of Education} Vol 3. Chapter 10: 485-519
-	
-	\item Budde, R. (1988) Education by Charter: Restructuring school districts: Key to long-term continuing improvement in American Education. Andover, MA: Regional Laboratory for Educational Improvement of the Northeast \& Islands
-	
-	\item Crone, Theodore. (2006). Capitalization of the Quality of Local Public Schools: What do Home Buyers Value? \textit{Federal Reserve Bank of Philadelphia Working Paper} No. 06-15.
-	
-	\item Gibbons, S., Machin, S., (2006). Paying for primary schools: admission constraints, school popularity or congestion? \textit{Economic Journal} 116(510), 77-92
-	
-	\item Hanushek, E. A., Kain, J. F., Rivkin, S. G., and Branch, G. F. (2007) Charter School Quality and Parental Decision Making with School Choice. \textit{Journal of Public Economics} 91(5): 823-848
-	
-	\item Horowitz, J., Keil, S., and Spector, L. (2009) Do Charter Schools Affect Property Values?. \textit{The Review of Regional Studies} 39(3): 297-316
-	
-	\item Imberman, S., Naretta, M., and O'Rourke, M. (2014). The Value of Charter Schools: Evidence from Housing Prices.
-	
-	\item Nguyen-Hoang, P., and Yinger, J. (2011). The Capitalization of School Quality into House Values: A Review. \textit{Journal of Housing Economics} 20, pp.30-48
-	
-	\item Pathak, P., and Shi, P. (2013). Simulating Alternative School Choice Options in Boston -- Main Report. \textit{MIT School Effectiveness and Inequality Initiative}
-	
-	\item Rouse, C. E., and Barrow, L. (2009). School Vouchers and Student Achievement: Recent Evidence and Remaining Questions. \textit{Annual Review of Economics} 1: 17-24
-	
-	\item Rosenthal, L. (2003), The Value of Secondary School Quality. \textit{Oxford Bulletin of Economics and Statistics} 65: 329–355
-	
-	\item Ross, S., Yinger, J. (1999). Sorting and Voting: A Review of the Literature on Urban Public Fiannce. \textit{Handbook of Urban and Regional Economics} 3, pp. 2001-2060
-	
-	\item Schwartz, A., Voicu, I., and Mertens K. M., (2014). Do Choice Schools Break the Link Between Public Schools and Property Values? Evidence from House Prices in New York City.
-	
-	\item Thernstrom, A. M. and Thernstrom, S. (2003). No excuses: Closing the racial gap in learning. Simon \& Schuster, New York.
-	
-	\item Weimer, D. L., Wolkoff, M. J., (2001). School performance and housing values: using non-contiguous district and incorporation boundaries to identify school effects. \textit{National Tax Journal} 54(2): 231 - 254
-  
-  \end{enumerate}
-\end{frame}
-
-\begin{frame} 
-\frametitle{Questions?}
-\centerline{{\Huge Questions?}}
 \end{frame}
 
 \end{document}

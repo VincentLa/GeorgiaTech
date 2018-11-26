@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  26 NOV 2018 01:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  26 NOV 2018 07:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -842,107 +842,127 @@ File: pppdftex.def 2015/05/11 v0.4x Pdfpages driver for pdfTeX (AM)
 \c@AM@survey=\count162
 \AM@templatesizebox=\box54
 )
+(/usr/local/texlive/2015/texmf-dist/tex/latex/subfigure/subfigure.sty
+Package: subfigure 2002/03/15 v2.1.5 subfigure package
+\subfigtopskip=\skip62
+\subfigcapskip=\skip63
+\subfigcaptopadj=\dimen221
+\subfigbottomskip=\skip64
+\subfigcapmargin=\dimen222
+\subfiglabelskip=\skip65
+\c@subfigure=\count163
+\c@lofdepth=\count164
+\c@subtable=\count165
+\c@lotdepth=\count166
+
+****************************************
+* Local config file subfigure.cfg used *
+****************************************
+(/usr/local/texlive/2015/texmf-dist/tex/latex/subfigure/subfigure.cfg)
+\subfig@top=\skip66
+\subfig@bottom=\skip67
+)
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\long' on input line 37.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\<def>-command' on input line 37.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\beamer@todo' on input line 37.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\<def>-command' on input line 37.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\beamer@ospec' on input line 37.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\beamer@argscount' on input line 37.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 37.
+(hyperref)                removing `\long' on input line 38.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\long' on input line 37.
+(hyperref)                removing `\<def>-command' on input line 38.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\<def>-command' on input line 37.
+(hyperref)                removing `\beamer@todo' on input line 38.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\beamer@todo' on input line 37.
+(hyperref)                removing `\<def>-command' on input line 38.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\<def>-command' on input line 37.
+(hyperref)                removing `\beamer@ospec' on input line 38.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\beamer@ospec' on input line 37.
+(hyperref)                removing `\beamer@argscount' on input line 38.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\beamer@argscount' on input line 37.
+(hyperref)                removing `\@ifnextchar' on input line 38.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `\@ifnextchar' on input line 37.
+(hyperref)                removing `\long' on input line 38.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<def>-command' on input line 38.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\beamer@todo' on input line 38.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<def>-command' on input line 38.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\beamer@ospec' on input line 38.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\beamer@argscount' on input line 38.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@ifnextchar' on input line 38.
 
 (./Presentation_Team40_MortalityPrediction.aux
 
-LaTeX Warning: Label `Literature Review' multiply defined.
+LaTeX Warning: Label `Feature Selection: Topic Modeling' multiply defined.
 
 
-LaTeX Warning: Label `Background: BPS' multiply defined.
+LaTeX Warning: Label `fig:a' multiply defined.
 
 
-LaTeX Warning: Label `Background: BPS' multiply defined.
+LaTeX Warning: Label `sub@fig:a' multiply defined.
 
 
-LaTeX Warning: Label `Data' multiply defined.
+LaTeX Warning: Label `fig:b' multiply defined.
 
 
-LaTeX Warning: Label `Theoretical Background: Tiebout Model' multiply defined.
+LaTeX Warning: Label `sub@fig:b' multiply defined.
 
 
-LaTeX Warning: Label `Theoretical Background: Tiebout Model' multiply defined.
+LaTeX Warning: Label `fig:a' multiply defined.
 
 
-LaTeX Warning: Label `Empirical Design' multiply defined.
+LaTeX Warning: Label `sub@fig:a' multiply defined.
 
 
-LaTeX Warning: Label `Empirical Design' multiply defined.
+LaTeX Warning: Label `fig:b' multiply defined.
 
 
-LaTeX Warning: Label `Empirical Design' multiply defined.
+LaTeX Warning: Label `sub@fig:b' multiply defined.
 
 )
 \openout1 = `Presentation_Team40_MortalityPrediction.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 41.
-LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 42.
+LaTeX Font Info:    ... okay on input line 42.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -980,20 +1000,20 @@ LaTeX Font Info:    ... okay on input line 41.
 
 (/usr/local/texlive/2015/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count163
-\scratchdimen=\dimen221
+\scratchcounter=\count167
+\scratchdimen=\dimen223
 \scratchbox=\box55
-\nofMPsegments=\count164
-\nofMParguments=\count165
+\nofMPsegments=\count168
+\nofMParguments=\count169
 \everyMPshowfont=\toks46
-\MPscratchCnt=\count166
-\MPscratchDim=\dimen222
-\MPnumerator=\count167
-\makeMPintoPDFobject=\count168
+\MPscratchCnt=\count170
+\MPscratchDim=\dimen224
+\MPnumerator=\count171
+\makeMPintoPDFobject=\count172
 \everyMPtoPDFconversion=\toks47
 ) ABD: EveryShipout initializing macros
 \AtBeginShipoutBox=\box56
-Package hyperref Info: Link coloring OFF on input line 41.
+Package hyperref Info: Link coloring OFF on input line 42.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -1001,11 +1021,11 @@ Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count169
+\c@section@level=\count173
 )
-LaTeX Info: Redefining \ref on input line 41.
-LaTeX Info: Redefining \pageref on input line 41.
-LaTeX Info: Redefining \nameref on input line 41.
+LaTeX Info: Redefining \ref on input line 42.
+LaTeX Info: Redefining \pageref on input line 42.
+LaTeX Info: Redefining \nameref on input line 42.
 
 (./Presentation_Team40_MortalityPrediction.out)
 (./Presentation_Team40_MortalityPrediction.out)
@@ -1013,57 +1033,57 @@ LaTeX Info: Redefining \nameref on input line 41.
 \openout5 = `Presentation_Team40_MortalityPrediction.out'.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 41.
+(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 42.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 41.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 42.
 \symnumbers=\mathgroup6
 \sympureletters=\mathgroup7
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/cmr/m/n on input line 41.
-LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 41.
+(Font)                  OT1/cmss/m/n --> OT1/cmr/m/n on input line 42.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 42.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 41.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 42.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 41.
-LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 41.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 42.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 42.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/m/n on input line 41.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/m/n on input line 42.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> OT1/cmss/m/n on input line 41.
-LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 41.
+(Font)                  OT1/cmss/bx/n --> OT1/cmss/m/n on input line 42.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 42.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> OT1/cmss/m/it on input line 41.
+(Font)                  OT1/cmr/m/it --> OT1/cmss/m/it on input line 42.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> OT1/cmss/m/it on input line 41.
-LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 41.
+(Font)                  OT1/cmr/bx/it --> OT1/cmss/m/it on input line 42.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 42.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 41.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 42.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 41.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 42.
 LaTeX Font Info:    Overwriting symbol font `numbers' in version `bold'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/bx/n on input line 41.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/bx/n on input line 42.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  OT1/cmss/m/it --> OT1/cmss/bx/it on input line 41.
+(Font)                  OT1/cmss/m/it --> OT1/cmss/bx/it on input line 42.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
-(Font)                  OT1/cmss/bx/n --> OT1/cmr/bx/n on input line 41.
+(Font)                  OT1/cmss/bx/n --> OT1/cmr/bx/n on input line 42.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> OT1/cmss/bx/n on input line 41.
+(Font)                  OT1/cmss/bx/n --> OT1/cmss/bx/n on input line 42.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/bx/n on input line 41.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/bx/n on input line 42.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmss/m/it --> OT1/cmss/bx/it on input line 41.
+(Font)                  OT1/cmss/m/it --> OT1/cmss/bx/it on input line 42.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/bx/n on input line 41.
-LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 41.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/bx/n on input line 42.
+LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 42.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `normal'
 (Font)                  OT1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 4
-1.
+2.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
 (Font)                  OT1/cmss/bx/it --> OT1/mathkerncmss/m/sl on input line 
-41.
+42.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
 (Font)                  OT1/mathkerncmss/m/sl --> OT1/mathkerncmss/bx/sl on inp
-ut line 41.
+ut line 42.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/beamer/translator/dicts/translato
 r-basic-dictionary/translator-basic-dictionary-English.dict
@@ -1089,7 +1109,7 @@ Dictionary: translator-numbers-dictionary, Language: English
 r-theorem-dictionary/translator-theorem-dictionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
 )
-LaTeX Info: Redefining \includegraphics on input line 41.
+LaTeX Info: Redefining \includegraphics on input line 42.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: Incompatible package detected (regarding \caption).
 (caption)             \caption = macro:->\ifx \@captype \@undefined \@latex@err
@@ -1103,42 +1123,43 @@ Package caption Warning: \caption will not be redefined since it's already
 (caption)                unknown to the caption package.
 See the caption package documentation for explanation.
 
+Package caption Info: subfigure package is loaded.
 Package caption Info: End \AtBeginDocument code.
 (./Presentation_Team40_MortalityPrediction.nav)
-LaTeX Font Info:    Try loading font information for U+msa on input line 41.
+LaTeX Font Info:    Try loading font information for U+msa on input line 42.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 41.
+LaTeX Font Info:    Try loading font information for U+msb on input line 42.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Try loading font information for OT1+mathkerncmss on input 
-line 41.
+line 42.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/sansmathaccent/ot1mathkerncmss.fd
 File: ot1mathkerncmss.fd 2013/03/27 Fontinst v1.933 font definitions for OT1/ma
 thkerncmss.
 )
-Overfull \hbox (101.27423pt too wide) in paragraph at lines 41--41
+Overfull \hbox (101.27423pt too wide) in paragraph at lines 42--42
 [][]\OT1/cmss/m/n/9 vincent.la@gatech.edu|  
  []
 
 
-Overfull \hbox (158.71255pt too wide) in paragraph at lines 41--41
+Overfull \hbox (158.71255pt too wide) in paragraph at lines 42--42
 [][]\OT1/cmss/m/n/9 avinash.ananthakrishnan@gatech.edu|  
  []
 
 
-Overfull \hbox (3.71893pt too wide) in paragraph at lines 41--41
+Overfull \hbox (3.71893pt too wide) in paragraph at lines 42--42
  [][]  
  []
 
 
 LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <4> not available
-(Font)              size <5> substituted on input line 43.
+(Font)              size <5> substituted on input line 44.
 
 
 Overfull \hbox (3.71893pt too wide) has occurred while \output is active
@@ -1182,12 +1203,7 @@ Overfull \hbox (9.0315pt too wide) has occurred while \output is active
 
 [6
 
-]pdfTeX warning (ext4): destination with the same identifier (name{Literature\0
-40Review}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.160 \end{frame}
-                 
+]
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
@@ -1201,45 +1217,66 @@ Overfull \hbox (9.0315pt too wide) has occurred while \output is active
 
 [8
 
-]pdfTeX warning (ext4): destination with the same identifier (name{Background:\
-040BPS}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.189 \end{frame}
-                 
+] <./images/admissions-deaths.png, id=92, 596.2275pt x 88.33pt>
+File: ./images/admissions-deaths.png Graphic file (type png)
+
+<use ./images/admissions-deaths.png>
+Package pdftex.def Info: ./images/admissions-deaths.png used on input line 168.
+
+(pdftex.def)             Requested size: 238.48677pt x 35.33136pt.
+
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
 
 [9
 
-]pdfTeX warning (ext4): destination with the same identifier (name{Background:\
-040BPS}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.213 \end{frame}
-                 
+ <./images/admissions-deaths.png>]
+<./images/admissions-distribution.png, id=103, 1003.75pt x 493.845pt>
+File: ./images/admissions-distribution.png Graphic file (type png)
+
+<use ./images/admissions-distribution.png>
+Package pdftex.def Info: ./images/admissions-distribution.png used on input lin
+e 180.
+(pdftex.def)             Requested size: 200.74644pt x 98.76724pt.
+
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
 
 [10
 
-]
+ <./images/admissions-distribution.png>]
+<./images/admissions-lengths.png, id=112, 1153.30875pt x 102.3825pt>
+File: ./images/admissions-lengths.png Graphic file (type png)
+
+<use ./images/admissions-lengths.png>
+Package pdftex.def Info: ./images/admissions-lengths.png used on input line 192
+.
+(pdftex.def)             Requested size: 230.65765pt x 20.47614pt.
+
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
 
 [11
 
-]
+ <./images/admissions-lengths.png>]
+<./images/admissions-insurance-summary.png, id=121, 733.74126pt x 166.6225pt>
+File: ./images/admissions-insurance-summary.png Graphic file (type png)
+
+<use ./images/admissions-insurance-summary.png>
+Package pdftex.def Info: ./images/admissions-insurance-summary.png used on inpu
+t line 204.
+(pdftex.def)             Requested size: 293.4913pt x 66.64781pt.
+
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
 
 [12
 
-]
+ <./images/admissions-insurance-summary.png>]
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
@@ -1247,22 +1284,13 @@ Overfull \hbox (9.0315pt too wide) has occurred while \output is active
 [13
 
 ]
-Overfull \vbox (5.79073pt too high) detected at line 311
- []
-
-
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
 
 [14
 
-]pdfTeX warning (ext4): destination with the same identifier (name{Data}) has b
-een already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.324 \end{frame}
-                 
+]
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
@@ -1276,7 +1304,12 @@ Overfull \hbox (9.0315pt too wide) has occurred while \output is active
 
 [16
 
-]
+]pdfTeX warning (ext4): destination with the same identifier (name{Feature\040S
+election:\040Topic\040Modeling}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.300 \end{frame}
+                 
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
@@ -1290,24 +1323,14 @@ Overfull \hbox (9.0315pt too wide) has occurred while \output is active
 
 [18
 
-]pdfTeX warning (ext4): destination with the same identifier (name{Theoretical\
-040Background:\040Tiebout\040Model}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.368 \end{frame}
-                 
+]
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
 
 [19
 
-]pdfTeX warning (ext4): destination with the same identifier (name{Theoretical\
-040Background:\040Tiebout\040Model}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.373 \end{frame}
-                 
+]
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
@@ -1315,165 +1338,110 @@ Overfull \hbox (9.0315pt too wide) has occurred while \output is active
 [20
 
 ]
+<./images/modelperformance-baseline-roc.png, id=190, 441.65pt x 308.15125pt>
+File: ./images/modelperformance-baseline-roc.png Graphic file (type png)
+
+<use ./images/modelperformance-baseline-roc.png>
+Package pdftex.def Info: ./images/modelperformance-baseline-roc.png used on inp
+ut line 358.
+(pdftex.def)             Requested size: 99.58464pt x 69.48149pt.
+
+<./images/modelperformance-baseline-pr.png, id=191, 420.57124pt x 291.0875pt>
+File: ./images/modelperformance-baseline-pr.png Graphic file (type png)
+
+<use ./images/modelperformance-baseline-pr.png>
+Package pdftex.def Info: ./images/modelperformance-baseline-pr.png used on inpu
+t line 358.
+(pdftex.def)             Requested size: 99.58464pt x 68.92523pt.
+
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
 
 [21
 
-]
+ <./images/modelperformance-baseline-roc.png> <./images/modelperformance-baseli
+ne-pr.png>]pdfTeX warning (ext4): destination with the same identifier (name{fi
+g:a}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.372 \end{frame}
+                 
+<./images/modelperformance-improved-roc.png, id=203, 396.48125pt x 273.02pt>
+File: ./images/modelperformance-improved-roc.png Graphic file (type png)
+
+<use ./images/modelperformance-improved-roc.png>
+Package pdftex.def Info: ./images/modelperformance-improved-roc.png used on inp
+ut line 372.
+(pdftex.def)             Requested size: 99.58464pt x 68.57144pt.
+pdfTeX warning (ext4): destination with the same identifier (name{fig:b}) has b
+een already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.372 \end{frame}
+                 
+<./images/modelperformance-improved-pr.png, id=204, 396.48125pt x 276.03125pt>
+File: ./images/modelperformance-improved-pr.png Graphic file (type png)
+
+<use ./images/modelperformance-improved-pr.png>
+Package pdftex.def Info: ./images/modelperformance-improved-pr.png used on inpu
+t line 372.
+(pdftex.def)             Requested size: 99.58464pt x 69.32774pt.
+
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
 
 [22
 
-]
+ <./images/modelperformance-improved-roc.png> <./images/modelperformance-improv
+ed-pr.png>]pdfTeX warning (ext4): destination with the same identifier (name{fi
+g:a}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.386 \end{frame}
+                 
+<./images/modelperformance-best-roc.png, id=214, 407.5225pt x 284.06125pt>
+File: ./images/modelperformance-best-roc.png Graphic file (type png)
+
+<use ./images/modelperformance-best-roc.png>
+Package pdftex.def Info: ./images/modelperformance-best-roc.png used on input l
+ine 386.
+(pdftex.def)             Requested size: 99.58464pt x 69.41573pt.
+pdfTeX warning (ext4): destination with the same identifier (name{fig:b}) has b
+een already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.386 \end{frame}
+                 
+<./images/modelperformance-best-pr.png, id=215, 392.46625pt x 266.9975pt>
+File: ./images/modelperformance-best-pr.png Graphic file (type png)
+
+<use ./images/modelperformance-best-pr.png>
+Package pdftex.def Info: ./images/modelperformance-best-pr.png used on input li
+ne 386.
+(pdftex.def)             Requested size: 99.58464pt x 67.74734pt.
+
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
 
 [23
 
-]
+ <./images/modelperformance-best-roc.png> <./images/modelperformance-best-pr.pn
+g>]
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
 
 [24
 
-]pdfTeX warning (ext4): destination with the same identifier (name{Empirical\04
-0Design}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.422 \end{frame}
-                 
+]
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
 
 [25
-
-]pdfTeX warning (ext4): destination with the same identifier (name{Empirical\04
-0Design}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.427 \end{frame}
-                 
-Overfull \hbox (9.0315pt too wide) has occurred while \output is active
- [][]  
- []
-
-[26
-
-]pdfTeX warning (ext4): destination with the same identifier (name{Empirical\04
-0Design}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.443 \end{frame}
-                 
-Overfull \hbox (9.0315pt too wide) has occurred while \output is active
- [][]  
- []
-
-[27
-
-]
-Overfull \hbox (9.0315pt too wide) has occurred while \output is active
- [][]  
- []
-
-[28
-
-]
-Overfull \hbox (9.0315pt too wide) has occurred while \output is active
- [][]  
- []
-
-[29
-
-]
-Overfull \vbox (4.33328pt too high) detected at line 528
- []
-
-
-Overfull \hbox (9.0315pt too wide) has occurred while \output is active
- [][]  
- []
-
-[30
-
-]
-Overfull \hbox (9.0315pt too wide) has occurred while \output is active
- [][]  
- []
-
-[31
-
-]
-Overfull \hbox (9.0315pt too wide) has occurred while \output is active
- [][]  
- []
-
-[32
-
-]
-Overfull \hbox (9.0315pt too wide) has occurred while \output is active
- [][]  
- []
-
-[33
-
-]
-Overfull \hbox (9.0315pt too wide) has occurred while \output is active
- [][]  
- []
-
-[34
-
-]
-Overfull \hbox (9.0315pt too wide) has occurred while \output is active
- [][]  
- []
-
-[35
-
-]
-Overfull \hbox (9.0315pt too wide) has occurred while \output is active
- [][]  
- []
-
-[36
-
-]
-
-LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <2> not available
-(Font)              size <5> substituted on input line 746.
-
-
-LaTeX Font Warning: Font shape `OT1/cmss/m/it' in size <2> not available
-(Font)              size <5> substituted on input line 746.
-
-Missing character: There is no â in font cmss8!
-Missing character: There is no € in font cmss8!
-Missing character: There is no “ in font cmss8!
-
-Overfull \vbox (2.61838pt too high) detected at line 746
- []
-
-
-Overfull \hbox (9.0315pt too wide) has occurred while \output is active
- [][]  
- []
-
-[37
-
-]
-Overfull \hbox (9.0315pt too wide) has occurred while \output is active
- [][]  
- []
-
-[38
 
 ]
 \tf@nav=\write6
@@ -1485,49 +1453,42 @@ Overfull \hbox (9.0315pt too wide) has occurred while \output is active
 \tf@snm=\write8
 \openout8 = `Presentation_Team40_MortalityPrediction.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 753.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 753.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 423.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 423.
  (./Presentation_Team40_MortalityPrediction.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 753.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 753.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 423.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 423.
 Package rerunfilecheck Info: File `Presentation_Team40_MortalityPrediction.out'
  has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 
 
 LaTeX Font Warning: Size substitutions with differences
-(Font)              up to 3.0pt have occurred.
+(Font)              up to 1.0pt have occurred.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 753.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 423.
  ) 
 Here is how much of TeX's memory you used:
- 18854 strings out of 493089
- 360116 string characters out of 6134842
- 462068 words of memory out of 5000000
- 21792 multiletter control sequences out of 15000+600000
- 18552 words of font info for 67 fonts, out of 8000000 for 9000
+ 18968 strings out of 493089
+ 362743 string characters out of 6134842
+ 431901 words of memory out of 5000000
+ 21916 multiletter control sequences out of 15000+600000
+ 13982 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 56i,23n,57p,479b,730s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
-></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb><
-/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></
-usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></u
-sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></us
-r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/
-local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb></usr/lo
-cal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/l
-ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/l
-ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi8.pfb></usr/lo
-cal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/loc
-al/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb>
-Output written on Presentation_Team40_MortalityPrediction.pdf (38 pages, 179583
+ 56i,23n,57p,479b,724s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb
+></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb>
+</usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></
+usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb></us
+r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb>
+Output written on Presentation_Team40_MortalityPrediction.pdf (25 pages, 736207
  bytes).
 PDF statistics:
- 373 PDF objects out of 1000 (max. 8388607)
- 302 compressed objects within 4 object streams
- 104 named destinations out of 1000 (max. 500000)
- 91 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 276 PDF objects out of 1000 (max. 8388607)
+ 206 compressed objects within 3 object streams
+ 78 named destinations out of 1000 (max. 500000)
+ 141 words of extra memory for PDF output out of 10000 (max. 10000000)
 
