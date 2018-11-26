@@ -305,6 +305,6 @@ select
   coalesce(ats.topic_9, 0) as topic_9
 from datasets.model_demog_dx as model_demog_dx
   left join datasets.admissions_topic_scores as ats
-    on model_demog_dx.hadm_id = ats.hadm_id
+    on model_demog_dx.hadm_id = ats.hadm_ids
 )
 ;
