@@ -52,7 +52,6 @@ select
   text
 from mimiciii.noteevents
 where hadm_id is not null
-limit 1000
 """
 
 
@@ -97,7 +96,7 @@ def label_charts_with_topics(df, dictionary, lda_model, lda_model_tfidf):
     """
     dict_topic_score = {}
     hadm_ids = []
-    texts = []
+    # texts = []
     text_ids = []
     topic_indexes = []
     topic_scores = []
@@ -107,19 +106,21 @@ def label_charts_with_topics(df, dictionary, lda_model, lda_model_tfidf):
         bow_vector = dictionary.doc2bow(preprocess(chart))
         for topic_index, score in sorted(lda_model[bow_vector], key=lambda tup: -1*tup[1]):
             hadm_ids.append(row['hadm_id'])
-            texts.append(row['text'])
+            # texts.append(row['text'])
             text_ids.append(row['row_id'])
             topic_indexes.append(topic_index)
             topic_scores.append(score)
             topic_labels.append(lda_model.print_topic(topic_index, 5))
     dict_topic_score['hadm_ids'] = hadm_ids
-    dict_topic_score['texts'] = texts
-    dict_topic_score['text_ids'] = text_ids
+    # dict_topic_score['texts'] = texts
+    dict_topic_score['noteevent_row_id'] = text_ids
     dict_topic_score['topic_indexes'] = topic_indexes
     dict_topic_score['topic_scores'] = topic_scores
     dict_topic_score['topic_labels'] = topic_labels
 
     df_topic_score = pd.DataFrame(dict_topic_score)
+
+    print('just printing dataframe to make sure it worked')
     print(df_topic_score.head())
     print(df_topic_score.shape)
 
@@ -132,7 +133,7 @@ def main():
     args = get_args()
     dbm = DBManager(db_url=args.db_url)
 
-    print('DataFrame')
+    print('Loading DataFrame')
     df = dbm.load_query_table(QUERY)
 
     print('Loading Dictionary, and LDA Model Objects!')
@@ -147,7 +148,11 @@ def main():
     print('Using LDA Model Objects to Label Notes!')
     df_topic_score = label_charts_with_topics(df, dictionary, lda_model, lda_model_tfidf)
 
-    print('Done Labeling Notes! Now writing to DB')
+    print('Done Labeling Notes! Now saving the DF Locally just in case write to DB Fails')
+    noteevents_with_topics_df_pickle = open('./inventory/noteevents_with_topics_df.obj', 'wb')
+    pickle.dump(df_topic_score, noteevents_with_topics_df_pickle)
+    
+    print('Finally, writing to DB!')
     dbm.write_df_table(
         df_topic_score,
         table_name='noteevents_with_topics',
