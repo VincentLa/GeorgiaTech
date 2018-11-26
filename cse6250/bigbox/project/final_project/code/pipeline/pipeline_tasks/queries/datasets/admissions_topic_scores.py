@@ -47,6 +47,10 @@ def create_adm_topic_features():
     df_pivoted.columns = ['topic_' + str(col) for col in df_pivoted.columns.values]
     df_pivoted.reset_index(inplace=True)
     df_pivoted.fillna(0, inplace=True)
+
+    print('printing Pivoted Dataset head just to check it works')
+    print(df_pivoted.head())
+    print(df_pivoted.shape)
     return df_pivoted    
 
 
@@ -55,7 +59,11 @@ def main():
     print('Running admissions_topic_scores.py')
     args = get_args()
     dbm = DBManager(db_url=args.db_url)
+
+    print('Loading DataFrame')
     df = create_adm_topic_features()
+    
+    print('Successfully Loaded DataFrame now writing to DB!')
     dbm.write_df_table(
         df,
         table_name='admissions_topic_scores',

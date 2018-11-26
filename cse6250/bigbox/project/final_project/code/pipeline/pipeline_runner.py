@@ -111,9 +111,10 @@ def main():
         # 'queries/features/add_indexes_noteevents_with_topics',
         # 'queries/datasets/admissions_diagnoses_icd_ccs_mapping',
         # 'queries.datasets.admissions_ccs_ohe.py',
-        'queries.datasets.admissions_topic_scores.py',
+        # 'queries.datasets.admissions_topic_scores.py',
         # 'queries/datasets/model_demog',
         # 'queries/datasets/model_demog_dx',
+        'queries/datasets/model_demog_dx_notetopics',
     ]
 
     if args.run_parse:
