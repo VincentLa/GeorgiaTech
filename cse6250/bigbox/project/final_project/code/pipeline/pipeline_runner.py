@@ -108,9 +108,10 @@ def main():
         # 'queries/datasets/create_schema',
         # 'queries.features.noteevents_lda_models.py',
         # 'queries.features.noteevents_with_topics.py',
-        'queries/features/add_indexes_noteevents_with_topics',
+        # 'queries/features/add_indexes_noteevents_with_topics',
         # 'queries/datasets/admissions_diagnoses_icd_ccs_mapping',
         # 'queries.datasets.admissions_ccs_ohe.py',
+        'queries.datasets.admissions_topic_scores.py',
         # 'queries/datasets/model_demog',
         # 'queries/datasets/model_demog_dx',
     ]
