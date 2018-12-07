@@ -6,7 +6,7 @@ CREATE EXTERNAL TABLE diagnoses_icd (
     SEQ_NUM INT,
     ICD9_CODE VARCHAR(10)
   )
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES (    "separatorChar" = ",",    "quoteChar"     = "\"" )
 STORED AS TEXTFILE
 LOCATION '/mimic/diagnoses_icd'
 tblproperties ("skip.header.line.count"="1");

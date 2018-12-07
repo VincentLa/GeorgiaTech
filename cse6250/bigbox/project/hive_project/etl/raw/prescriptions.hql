@@ -20,7 +20,7 @@ CREATE EXTERNAL TABLE prescriptions (
     FORM_UNIT_DISP VARCHAR(120),
     ROUTE VARCHAR(120)
   )
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES (    "separatorChar" = ",",    "quoteChar"     = "\"" )
 STORED AS TEXTFILE
 LOCATION '/mimic/prescriptions'
 tblproperties ("skip.header.line.count"="1");

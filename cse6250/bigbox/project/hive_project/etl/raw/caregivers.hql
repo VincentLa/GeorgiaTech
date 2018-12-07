@@ -5,7 +5,7 @@ CREATE EXTERNAL TABLE caregivers (
     LABEL VARCHAR(15),
     DESCRIPTION VARCHAR(30)
   )
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES (    "separatorChar" = ",",    "quoteChar"     = "\"" )
 STORED AS TEXTFILE
 LOCATION '/mimic/caregivers'
 tblproperties ("skip.header.line.count"="1");

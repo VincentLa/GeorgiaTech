@@ -10,7 +10,7 @@ CREATE EXTERNAL TABLE d_cpt (
     MINCODEINSUBSECTION INT,
     MAXCODEINSUBSECTION INT,
   )
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES (    "separatorChar" = ",",    "quoteChar"     = "\"" )
 STORED AS TEXTFILE
 LOCATION '/mimic/d_cpt'
 tblproperties ("skip.header.line.count"="1");

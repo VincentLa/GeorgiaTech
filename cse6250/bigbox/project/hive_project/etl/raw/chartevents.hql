@@ -16,7 +16,7 @@ CREATE EXTERNAL TABLE chartevents (
     RESULTSTATUS VARCHAR(50),
     STOPPED VARCHAR(50)
   )
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES (    "separatorChar" = ",",    "quoteChar"     = "\"" )
 STORED AS TEXTFILE
 LOCATION '/mimic/chartevents'
 tblproperties ("skip.header.line.count"="1");

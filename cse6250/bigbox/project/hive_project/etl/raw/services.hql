@@ -7,7 +7,7 @@ CREATE EXTERNAL TABLE services (
     PREV_SERVICE VARCHAR(20),
     CURR_SERVICE VARCHAR(20)
   )
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES (    "separatorChar" = ",",    "quoteChar"     = "\"" )
 STORED AS TEXTFILE
 LOCATION '/mimic/services'
 tblproperties ("skip.header.line.count"="1");

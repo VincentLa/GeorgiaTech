@@ -23,7 +23,7 @@ CREATE EXTERNAL TABLE inputevents_cv (
     ORIGINALRATEUOM VARCHAR(30),
     ORIGINALSITE VARCHAR(30)
   )
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES (    "separatorChar" = ",",    "quoteChar"     = "\"" )
 STORED AS TEXTFILE
 LOCATION '/mimic/inputevents_cv'
 tblproperties ("skip.header.line.count"="1");

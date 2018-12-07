@@ -13,7 +13,7 @@ CREATE EXTERNAL TABLE icustays (
     OUTTIME TIMESTAMP,
     LOS DOUBLE
   )
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES (    "separatorChar" = ",",    "quoteChar"     = "\"" )
 STORED AS TEXTFILE
 LOCATION '/mimic/icustays'
 tblproperties ("skip.header.line.count"="1");

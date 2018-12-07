@@ -32,7 +32,7 @@ CREATE EXTERNAL TABLE inputevents_mv (
     ORIGINALAMOUNT DOUBLE,
     ORIGINALRATE DOUBLE
   )
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES (    "separatorChar" = ",",    "quoteChar"     = "\"" )
 STORED AS TEXTFILE
 LOCATION '/mimic/inputevents_mv'
 tblproperties ("skip.header.line.count"="1");

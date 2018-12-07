@@ -10,7 +10,7 @@ CREATE EXTERNAL TABLE labevents (
     VALUEUOM VARCHAR(20),
     FLAG VARCHAR(20)
   )
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES (    "separatorChar" = ",",    "quoteChar"     = "\"" )
 STORED AS TEXTFILE
 LOCATION '/mimic/labevents'
 tblproperties ("skip.header.line.count"="1");

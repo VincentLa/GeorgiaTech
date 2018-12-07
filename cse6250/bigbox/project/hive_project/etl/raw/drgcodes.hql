@@ -9,7 +9,7 @@ CREATE EXTERNAL TABLE drgcodes (
     DRG_SEVERITY SMALLINT,
     DRG_MORTALITY SMALLINT,
   )
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES (    "separatorChar" = ",",    "quoteChar"     = "\"" )
 STORED AS TEXTFILE
 LOCATION '/mimic/drgcodes'
 tblproperties ("skip.header.line.count"="1");

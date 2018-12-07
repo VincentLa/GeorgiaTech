@@ -5,7 +5,7 @@ CREATE EXTERNAL TABLE d_icd_diagnoses (
     SHORT_TITLE VARCHAR(50),
     LONG_TITLE VARCHAR(255)
   )
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES (    "separatorChar" = ",",    "quoteChar"     = "\"" )
 STORED AS TEXTFILE
 LOCATION '/mimic/d_icd_diagnoses'
 tblproperties ("skip.header.line.count"="1");

@@ -14,7 +14,11 @@ CREATE EXTERNAL TABLE transfers (
     OUTTIME TIMESTAMP,
     LOS DOUBLE
   )
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+WITH SERDEPROPERTIES (
+   "separatorChar" = ",",
+   "quoteChar"     = "\""
+)
 STORED AS TEXTFILE
 LOCATION '/mimic/transfers'
 tblproperties ("skip.header.line.count"="1");

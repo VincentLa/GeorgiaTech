@@ -7,7 +7,7 @@ CREATE EXTERNAL TABLE d_labitems (
     CATEGORY VARCHAR(100),
     LOINC_CODE VARCHAR(100)
   )
-ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES (    "separatorChar" = ",",    "quoteChar"     = "\"" )
 STORED AS TEXTFILE
 LOCATION '/mimic/d_labitems'
 tblproperties ("skip.header.line.count"="1");
