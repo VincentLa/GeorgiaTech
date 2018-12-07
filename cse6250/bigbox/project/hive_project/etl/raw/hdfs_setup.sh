@@ -11,19 +11,19 @@ sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/d_icd_diagnoses'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/d_icd_procedures'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/d_items'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/d_labitems'
-sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/icustays
-sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/inputevents_cv
-sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/inputevents_mv
-sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/labevents
-sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/microbiologyevents
-sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/notevents
-sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/outputevents
-sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/patients
-sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/prescriptions
-sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/procedureevents_mv
-sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/procedures_icd
-sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/services
-sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/transfers
+sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/icustays'
+sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/inputevents_cv'
+sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/inputevents_mv'
+sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/labevents'
+sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/microbiologyevents'
+sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/notevents'
+sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/outputevents'
+sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/patients'
+sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/prescriptions'
+sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/procedureevents_mv'
+sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/procedures_icd'
+sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/services'
+sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/transfers'
 
 sudo su hdfs -c 'hdfs dfs -mkdir -p /ccs/ccs_dx_map'
 sudo su hdfs -c 'hdfs dfs -mkdir -p /ccs/ccs_proc_map'
