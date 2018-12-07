@@ -10,9 +10,10 @@ services:
     domainname: local
     restart: "no" # always, on-failure, unless-stopped
     volumes:
-      - ./homeworks:/homeworks
       - ./data/logs:/var/log
       - ./data/host:/mnt/host
+      - ./homeworks:/homeworks
+      - ./project:/project
     environment:
       - CONTAINER=docker
     networks:
