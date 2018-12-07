@@ -69,6 +69,9 @@ psql 'dbname=mimic host=c4sf-sba.postgres.database.azure.com user=mimicuser@c4sf
 ## Examples of Projects
 1. Youtube Presentation: https://www.youtube.com/watch?v=x90HVtF8E04
 
+## Using Hive and Pandas
+1. Blog Post: https://medium.com/@surankularatna/intro-to-hive-and-pandas-analysis-of-london-crime-data-2008-2016-part-1-2137532dc8db
+
 ## What to Submit
 https://piazza.com/class/jjjilbkqk8m1r4?cid=1190
 1. Final Paper (PDF)
