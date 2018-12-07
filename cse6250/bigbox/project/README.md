@@ -1,14 +1,7 @@
 # Georgia Tech CSE6250 Big Data for Healthcare Project
-
-## Project Draft Instructions:
-Your draft should be in a form of regular research publication.
-It means all sections which are common in research publication such as Abstract, Introduction, Method, Experimental Results, Discussion, and Conclusion must be there. You don't have to use exactly the same section names or structure described above, but you should have those 'contents' somewhere in your paper.
-You should organize well and write clearly each section so that it is easily readable.
-
-A couple of additional comments are:
-
-Describe your method/approach clearly, concisely, but specifically. It should be at the level of that any reader can follow and reproduce your work after she read your paper.
-Even if your current results are not good as expected, there must be analyses about what possible reasons and solutions/plans are. It is same for when your results are good.
+Authors:
+1. Avi Ananthakrishnan
+2. Vincent La
 
 ## Downloading and Uploading Data
 Data: https://physionet.org/works/MIMICIIIClinicalDatabase/files/
@@ -70,6 +63,19 @@ psql 'dbname=mimic host=c4sf-sba.postgres.database.azure.com user=mimicuser@c4sf
 #### One Hot Encoder
 [Documentation for One Hot Encoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html)
 
+## Examples of Future Work
+1. BI Tool: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4743095/
+
 ## Examples of Projects
-1. https://github.com/sukilau/mimiciii-project/blob/master/paper.pdf
-2. Youtube Presentation: https://www.youtube.com/watch?v=x90HVtF8E04
+1. Youtube Presentation: https://www.youtube.com/watch?v=x90HVtF8E04
+
+## What to Submit
+https://piazza.com/class/jjjilbkqk8m1r4?cid=1190
+1. Final Paper (PDF)
+2. Presentation Slides with Youtube Link to Presentation
+3. Compressed File Containing all Code, Data (Sample Data is OK) and the final best model and instructions to run the code.
+
+## Things Remaining To Do 2018-12-06
+1. Need to Compress Data to just be Sample Data.
+2. Need to Export Final Best Model
+3. Complete README on instructions to run the code.
