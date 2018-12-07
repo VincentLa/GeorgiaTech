@@ -16,7 +16,7 @@ sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/inputevents_cv'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/inputevents_mv'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/labevents'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/microbiologyevents'
-sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/notevents'
+sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/noteevents'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/outputevents'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/patients'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/prescriptions'
@@ -24,10 +24,8 @@ sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/procedureevents_mv'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/procedures_icd'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/services'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/transfers'
-
 sudo su hdfs -c 'hdfs dfs -mkdir -p /ccs/ccs_dx_map'
 sudo su hdfs -c 'hdfs dfs -mkdir -p /ccs/ccs_proc_map'
-
 sudo su hdfs -c 'hdfs dfs -chown -R root /mimic'
 sudo su hdfs -c 'hdfs dfs -chown -R root /ccs'
 
@@ -50,7 +48,7 @@ hdfs dfs -put  -f /project/data/INPUTEVENTS_CV.csv /mimic/inputevents_cv
 hdfs dfs -put  -f /project/data/INPUTEVENTS_MV.csv /mimic/inputevents_mv
 hdfs dfs -put  -f /project/data/LABEVENTS.csv /mimic/labevents
 hdfs dfs -put  -f /project/data/MICROBIOLOGYEVENTS.csv /mimic/microbiologyevents
-hdfs dfs -put  -f /project/data/NOTEEVENTS.csv /mimic/notevents
+hdfs dfs -put  -f /project/data/NOTEEVENTS.csv /mimic/noteevents
 hdfs dfs -put  -f /project/data/OUTPUTEVENTS.csv /mimic/outputevents
 hdfs dfs -put  -f /project/data/PATIENTS.csv /mimic/patients
 hdfs dfs -put  -f /project/data/PRESCRIPTIONS.csv /mimic/prescriptions
