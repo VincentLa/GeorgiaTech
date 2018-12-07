@@ -1,4 +1,4 @@
-sudo su hdfs -c ' sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/admissions'
+sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/admissions'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/callout'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/caregivers'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/chartevents'
