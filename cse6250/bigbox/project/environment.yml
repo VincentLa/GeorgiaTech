@@ -2,10 +2,12 @@ name: cse6250-project
 dependencies:
   - cycler=0.10.0=py36_0
   - freetype=2.8
-  - gensim=3.6.0
+  - gensim
   - gitpython=2.1.11
+  - impyla==0.14.1
   - ipykernel==5.1.0
   - libpng=1.6.34
+  - jupyter
   - matplotlib=2.2.2
   - mkl=2018.0.3=1
   - nltk=3.3
@@ -14,7 +16,8 @@ dependencies:
   - openssl=1.0.2o
   - pandas=0.23.0
   - pip=10.0.1=py36_0
-  - psycopg2=2.7.6.1
+  - psycopg2
+  - pyhive=0.6.1
   - pyparsing=2.2.0=py36_0
   - pyqt=5.9.2
   - python=3.6.5

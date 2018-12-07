@@ -22,6 +22,11 @@ SSH into Docker Container
 ssh -p 2333 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./config/ssh/id_rsa root@127.0.0.1
 ```
 
+Start the HIVE Server for Python
+```
+hive --service hiveserver2 --hiveconf hive.server2.thrift.port=10000 --hiveconf hive.root.logger=INFO,console --hiveconf hive.server2.authentication=NOSASL
+```
+
 Tar directory
 ```
 tar -czvf 903178639-vla6-hw4.tar.gz 903178639-vla6-hw4
