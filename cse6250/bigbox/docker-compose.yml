@@ -2,9 +2,7 @@ version: '3'
 
 services:
   bootcamp:
-    build:
-      context: ./
-      dockerfile: Dockerfile
+    build: .
     # bootcamp.local
     hostname: bootcamp
     domainname: local
