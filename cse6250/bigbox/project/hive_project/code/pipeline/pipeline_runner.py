@@ -3,6 +3,7 @@ Script to batch run tasks
 
 Note that for Python Files with Hive we can do:
 conn = hive.Connection(host='localhost', port=10000, auth='NOSASL')
+db_url=
 """
 
 import argparse
@@ -51,7 +52,11 @@ def _str2bool(v):
 def get_args():
     """Use argparse to parse command line arguments."""
     parser = argparse.ArgumentParser(description='Runner for tasks')
-    parser.add_argument('--db_url', help='Database url string to the db.', type=str, required=True)
+    parser.add_argument('--db_url',
+                        help='Database url string to the db.',
+                        type=str,
+                        required=False,
+                        default='hive://localhost:10000/default')
     parser.add_argument(
         '--run_parse',
         help='Values: True or False. If True: Run Parse tasks; If False: Do not run parse tasks',

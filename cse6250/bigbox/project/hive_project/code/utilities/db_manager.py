@@ -2,6 +2,7 @@
 import urllib.parse
 
 import pandas as pd
+import pyhive
 import psycopg2 as ps
 import sqlalchemy as sa
 from pandas.io.sql import SQLTable
@@ -26,6 +27,7 @@ class DBManager(object):
         self.db_url = db_url
         result = urllib.parse.urlparse(db_url)
         self.host = result.hostname
+        self.port = result.port
         self.user = result.username
         self.dbname = result.path[1:]
         self.password = result.password
@@ -55,12 +57,8 @@ class DBManager(object):
 
     def write_query_table(self, query):
         """Given a Create Table Query. Execute the Query to write against the DWH"""
-        conn_string = "host={0} user={1} dbname={2} password={3}".format(
-            self.host, self.user, self.dbname, self.password)
-        conn = ps.connect(conn_string)
-        with conn:
-            cur = conn.cursor()
-            cur.execute(query)
+        conn=hive.Connection(host=self.host, port=self.port,auth='NOSASL')
+        conn.execute(query) 
 
     def write_df_table(self, df, table_name, schema=None, dtype=None, if_exists='replace', index=False, use_fast=True):
         """
