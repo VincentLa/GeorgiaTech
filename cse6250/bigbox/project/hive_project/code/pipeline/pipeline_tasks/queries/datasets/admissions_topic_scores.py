@@ -8,6 +8,7 @@ import argparse
 import os
 
 import pandas as pd
+from pyhive import hive
 from sklearn.preprocessing import LabelBinarizer
 import sqlalchemy as sa
 from sqlalchemy import create_engine
@@ -15,15 +16,12 @@ from sqlalchemy import create_engine
 from utilities.db_manager import DBManager
 from utilities import util_functions as uf
 
-DWH = os.getenv('MIMIC_DWH')
-engine = create_engine(DWH)
-
 QUERY = """
 select
   hadm_ids,
   topic_indexes,
   sum(topic_scores) as topic_scores
-from features.noteevents_with_topics
+from noteevents_with_topics
 group by hadm_ids, topic_indexes
 """
 
@@ -41,8 +39,8 @@ def create_adm_topic_features():
 
     Basically need to pivot to get unique at hadm_ids level.
     """
-    with engine.begin() as conn:
-        df = pd.read_sql(QUERY, conn)
+    conn = hive.Connection(host='localhost', port=10000, auth='NOSASL')
+    df = pd.read_sql(QUERY, conn)
     df_pivoted = df.pivot(index='hadm_ids', columns='topic_indexes', values='topic_scores')
     df_pivoted.columns = ['topic_' + str(col) for col in df_pivoted.columns.values]
     df_pivoted.reset_index(inplace=True)
@@ -58,17 +56,13 @@ def main():
     """Execute Stuff"""
     print('Running admissions_topic_scores.py')
     args = get_args()
-    dbm = DBManager(db_url=args.db_url)
+    # dbm = DBManager(db_url=args.db_url)
 
     print('Loading DataFrame')
     df = create_adm_topic_features()
     
     print('Successfully Loaded DataFrame now writing to DB!')
-    dbm.write_df_table(
-        df,
-        table_name='admissions_topic_scores',
-        schema='datasets',
-        if_exists='replace')
+    df.to_csv('./inventory/admissions_topic_scores.csv', index=False)
 
 
 if __name__ == '__main__':

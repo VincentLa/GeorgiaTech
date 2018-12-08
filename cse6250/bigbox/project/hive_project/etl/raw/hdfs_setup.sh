@@ -26,8 +26,12 @@ sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/services'
 sudo su hdfs -c ' hdfs dfs -mkdir -p /mimic/transfers'
 sudo su hdfs -c 'hdfs dfs -mkdir -p /ccs/ccs_dx_map'
 sudo su hdfs -c 'hdfs dfs -mkdir -p /ccs/ccs_proc_map'
+sudo su hdfs -c 'hdfs dfs -mkdir -p /model/noteevents_with_topics'
+sudo su hdfs -c 'hdfs dfs -mkdir -p /model/admissions_ccs_ohe'
+sudo su hdfs -c 'hdfs dfs -mkdir -p /model/admissions_topic_scores'
 sudo su hdfs -c 'hdfs dfs -chown -R root /mimic'
 sudo su hdfs -c 'hdfs dfs -chown -R root /ccs'
+sudo su hdfs -c 'hdfs dfs -chown -R root /model'
 
 
 hdfs dfs -put  -f /project/data/ADMISSIONS.csv /mimic/admissions
@@ -58,3 +62,6 @@ hdfs dfs -put  -f /project/data/SERVICES.csv /mimic/services
 hdfs dfs -put  -f /project/data/TRANSFERS.csv /mimic/transfers
 hdfs dfs -put  -f /project/data/ccs/ccs_dx_map.csv /ccs/ccs_dx_map
 hdfs dfs -put  -f /project/data/ccs/ccs_proc_map.csv /ccs/ccs_proc_map
+hdfs dfs -put  -f /project/hive_project/code/inventory/noteevents_with_topics.csv /model/noteevents_with_topics
+hdfs dfs -put  -f /project/hive_project/code/inventory/admissions_ccs_ohe.csv /model/admissions_ccs_ohe
+hdfs dfs -put  -f /project/hive_project/code/inventory/admissions_topic_scores.csv /model/admissions_topic_scores

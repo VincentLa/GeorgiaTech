@@ -62,7 +62,7 @@ class DBManager(object):
             cur = conn.cursor()
             cur.execute(query)
 
-    def write_df_table(self, df, table_name, schema, dtype=None, if_exists='replace', index=False, use_fast=True):
+    def write_df_table(self, df, table_name, schema=None, dtype=None, if_exists='replace', index=False, use_fast=True):
         """
         Writes Pandas Dataframe to Table in DB
 
@@ -71,7 +71,8 @@ class DBManager(object):
                        True. In some cases, there are currently some bugs with writing if columns contain commas.
                        In that case, set to False, and will use the regular Pandas write to SQL (with a monkey-patch)
         """
-        self.create_schema(schema=schema)
+        if schema:
+          self.create_schema(schema=schema)
 
         if use_fast:
             with self.engine.begin() as conn:

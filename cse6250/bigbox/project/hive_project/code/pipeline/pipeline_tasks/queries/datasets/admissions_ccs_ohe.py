@@ -5,6 +5,7 @@ import argparse
 import os
 
 import pandas as pd
+from pyhive import hive
 from sklearn.preprocessing import LabelBinarizer
 import sqlalchemy as sa
 from sqlalchemy import create_engine
@@ -12,14 +13,14 @@ from sqlalchemy import create_engine
 from utilities.db_manager import DBManager
 from utilities import util_functions as uf
 
-DWH = os.getenv('MIMIC_DWH')
-engine = create_engine(DWH)
+# DWH = os.getenv('MIMIC_DWH')
+# engine = create_engine(DWH)
 
 QUERY = """
 select
   hadm_id,
   ccs_category_description
-from datasets.admissions_diagnoses_icd_ccs_mapping
+from admissions_diagnoses_icd_ccs_mapping
 where ccs_category_description is not null
 """
 
@@ -35,8 +36,10 @@ def perform_ohe():
     """
     Perform One Hot Encoding
     """
-    with engine.begin() as conn:
-        df = pd.read_sql(QUERY, conn)
+    conn = hive.Connection(host='localhost', port=10000, auth='NOSASL')
+    df = pd.read_sql(QUERY, conn)
+    print('printing dataframe')
+    print(df.head())
 
     ccs_lb = LabelBinarizer()
     X = ccs_lb.fit_transform(df.ccs_category_description.values)
@@ -57,13 +60,10 @@ def main():
     """Execute Stuff"""
     print('Running admissions_ccs_ohe.py. This file performs One Hot Encoding for Admissions and Diagnoses with Higher Level categorization with CCS Codes')
     args = get_args()
-    dbm = DBManager(db_url=args.db_url)
+    # dbm = DBManager(db_url=args.db_url)
+
     df = perform_ohe()
-    dbm.write_df_table(
-        df,
-        table_name='admissions_ccs_ohe',
-        schema='datasets',
-        if_exists='replace')
+    df.to_csv('./inventory/admissions_ccs_ohe.csv', index=False)
 
 
 if __name__ == '__main__':

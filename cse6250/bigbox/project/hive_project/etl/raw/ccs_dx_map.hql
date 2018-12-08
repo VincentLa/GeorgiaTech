@@ -7,7 +7,7 @@ CREATE EXTERNAL TABLE ccs_dx_map (
     OPTIONAL_CCS_CATEGORY STRING,
     OPTIONAL_CCS_CATEGORY_DESCRIPTION STRING
 )
-ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES (    "separatorChar" = ",",    "quoteChar"     = "\"" )
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde' WITH SERDEPROPERTIES (    "separatorChar" = ",",    "quoteChar"     = "'" )
 STORED AS TEXTFILE
 LOCATION '/ccs/ccs_dx_map'
 tblproperties ("skip.header.line.count"="1");

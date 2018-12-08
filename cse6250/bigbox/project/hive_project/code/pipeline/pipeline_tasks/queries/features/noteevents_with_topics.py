@@ -11,6 +11,7 @@ import sys
 import numpy as np
 import pandas as pd
 import pickle
+from pyhive import hive
 import sqlalchemy as sa
 from sqlalchemy import create_engine
 
@@ -34,8 +35,8 @@ nltk.download('wordnet')
 
 stemmer = SnowballStemmer('english')
 
-DWH = os.getenv('MIMIC_DWH')
-engine = create_engine(DWH)
+# DWH = os.getenv('MIMIC_DWH')
+# engine = create_engine(DWH)
 
 pd.options.display.max_columns = 1000
 pd.options.display.max_rows = 1000
@@ -50,7 +51,7 @@ select
   row_id,
   chartdate,
   text
-from mimiciii.noteevents
+from noteevents
 where hadm_id is not null
 """
 
@@ -132,9 +133,11 @@ def main():
     print('Running noteevents_with_topics to read model objects and label note events')
     args = get_args()
     dbm = DBManager(db_url=args.db_url)
+    conn = hive.Connection(host='localhost', port=10000, auth='NOSASL')
 
     print('Loading DataFrame')
-    df = dbm.load_query_table(QUERY)
+    # df = dbm.load_query_table(QUERY)
+    df = pd.read_sql(QUERY, conn)
 
     print('Loading Dictionary, and LDA Model Objects!')
     dictionary_pickle = open('./inventory/dictionary.obj', 'rb')
@@ -153,12 +156,8 @@ def main():
     pickle.dump(df_topic_score, noteevents_with_topics_df_pickle)
     
     print('Finally, writing to DB!')
-    dbm.write_df_table(
-        df_topic_score,
-        table_name='noteevents_with_topics',
-        schema='features',
-        if_exists='replace',
-        use_fast=True)
+    # Writing back to HIVE is hard from Pandas so first output to CSV
+    df_topic_score.to_csv('./inventory/noteevents_with_topics.csv', index=False)
 
     print('Done Writing to DB!')
 

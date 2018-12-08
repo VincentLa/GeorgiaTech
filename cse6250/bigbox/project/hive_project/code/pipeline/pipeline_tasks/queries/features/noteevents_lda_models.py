@@ -95,6 +95,8 @@ def process_docs(df):
     5. Words are stemmed — words are reduced to their root form.
     """
     data_text = df[['text']]
+    # print('printing text')
+    # print(data_text)
     data_text['index'] = data_text.index
     documents = data_text
     processed_docs = documents['text'].map(preprocess)
@@ -144,8 +146,6 @@ def main():
     print('Loading DataFrame')
     conn = hive.Connection(host='localhost', port=10000, auth='NOSASL')
     df = pd.read_sql(QUERY, conn)
-    print(df.head())
-    # df = dbm.load_query_table(QUERY)
 
     print('Successfully Loaded DataFrame, now running LDA!')
     processed_docs = process_docs(df)
