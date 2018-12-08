@@ -3,7 +3,7 @@ create table model_demog as
 select
   adm.hadm_id,
   case when patients.gender = 'M' then 1 else 0 end as is_male,
-  datediff(adm.admittime, patients.dob) as age_at_admit,
+  datediff(cast(adm.admittime as string), cast(patients.dob as string)) as age_at_admit,
   adm.admission_type,
   adm.insurance,
   adm.language,
