@@ -59,6 +59,7 @@ sudo service hbase-regionserver start
 sudo service hbase-master start
 sudo service hbase-thrift start
 
+sudo service hive-service start
 
 echo "master is ready, rock it!"
 # Holding over here

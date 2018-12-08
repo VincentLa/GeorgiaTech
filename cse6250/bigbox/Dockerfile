@@ -77,7 +77,7 @@ COPY config/hbase /etc/hbase/conf/
 COPY config/hive /etc/hive/conf/
 COPY config/spark /etc/spark/conf/
 COPY config/zookeeper /etc/zookeeper/conf/
-
+COPY config/init.d/hive-service /etc/init.d/
 
 # 6. Execute initialization script
 RUN /scripts/init.sh
