@@ -1,6 +1,5 @@
-drop table if exists datasets.model_demog_dx_notetopics;
-create table datasets.model_demog_dx_notetopics as
-(
+drop table if exists model_demog_dx_notetopics;
+create table model_demog_dx_notetopics as
 select
   model_demog_dx.hadm_id,
   model_demog_dx.hospital_expire_flag,
@@ -303,8 +302,7 @@ select
   coalesce(ats.topic_7, 0) as topic_7,
   coalesce(ats.topic_8, 0) as topic_8,
   coalesce(ats.topic_9, 0) as topic_9
-from datasets.model_demog_dx as model_demog_dx
-  left join datasets.admissions_topic_scores as ats
+from model_demog_dx as model_demog_dx
+  left join admissions_topic_scores as ats
     on model_demog_dx.hadm_id = ats.hadm_ids
-)
 ;
