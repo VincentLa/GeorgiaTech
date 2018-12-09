@@ -52,6 +52,8 @@ engine = create_engine(test_DWH)
 ## Downloading and Uploading Data
 Note, the data comes from MIMIC III. More information can be found here: https://physionet.org/works/MIMICIIIClinicalDatabase/files/
 
+Note that, we also put "test" data from MIMIC III into the [data](./data) directory. These are essentially the top 100 rows from each of the MIMIC III file just for test submission purposes.
+
 ## Useful Docker Commands
 Runs a docker container with options represent in a YAML config
 ```
