@@ -56,6 +56,22 @@ OR
 psql 'dbname=mimic host=c4sf-sba.postgres.database.azure.com user=mimicuser@c4sf-sba password=PASSWORD port=5432 options=--search_path=mimiciii' -f postgres_add_indexes.sql
 ```
 
+## Useful Docker Commands
+Runs a docker container with options represent in a YAML config
+```
+docker-compose up
+```
+
+SSH into Docker Container
+```
+ssh -p 2333 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./config/ssh/id_rsa root@127.0.0.1
+```
+
+Start the HIVE Server for Python
+```
+hive --service hiveserver2 --hiveconf hive.server2.thrift.port=10000 --hiveconf hive.root.logger=INFO,console --hiveconf hive.server2.authentication=NOSASL
+```
+
 ## Libraries and Useful Functions Used
 
 ### scikit-learn

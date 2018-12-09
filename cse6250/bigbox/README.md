@@ -11,6 +11,23 @@ docker run -it -m 8192m -h bootcamp.local \
   /bin/bash
 ```
 
+## Useful Commands
+Runs a docker container with options represent in a YAML config
+```
+docker-compose up
+```
+
+SSH into Docker Container
+```
+ssh -p 2333 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./config/ssh/id_rsa root@127.0.0.1
+```
+
+Start the HIVE Server for Python
+```
+hive --service hiveserver2 --hiveconf hive.server2.thrift.port=10000 --hiveconf hive.root.logger=INFO,console --hiveconf hive.server2.authentication=NOSASL
+```
+
+
 Related Links:
 
 + Docker Image: [https://hub.docker.com/r/sunlab/bigbox/](https://hub.docker.com/r/sunlab/bigbox/)

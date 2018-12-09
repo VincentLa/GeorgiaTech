@@ -1,7 +1,7 @@
 # Pipeline Runner
 This pipeline runner is a way to keep all tasks hitting our database in a central location. The value of this, is that we can recreate the state of our database very easily, and we know where are all the tasks that are writing to our database.
 
-The entry point into the pipeline runner is [pipeline_runner.py](./pipeline_runner.py). In this file, we essentially create a `for` loop that loops through all the files in a list and executes them. Currently we only support `.hql` and `.py` files.
+The entry point into the pipeline runner is [pipeline_runner.py](./pipeline_runner.py). In this file, we essentially create a `for` loop that loops through all the files in a list and executes them. Currently we only support `.sh`, `.hql` and `.py` files.
 
 ## Adding Additional Files
 To add additional files to run, add the file name to the appropriate list object.
@@ -9,7 +9,7 @@ To add additional files to run, add the file name to the appropriate list object
 To run the pipeline, you need to have the connection string stored as an environment variable. You will also need to have Python3 installed as well as necessary dependencies specified in `environment.yml`. 
 
 ## Running the Pipeline Runner
-To actually run `pipeline_runner.py` you need to first be in the `code` folder of the repository. `cd` into that.
+To actually run `pipeline_runner.py` you need to first be in the `code` [folder](../) of the repository. `cd` into that.
 
 In addition (especially if you are running the pipeline end-to-end including parsing the raw CSV/Excel files to load into the Database), you will need to have the data in the proper location: `./data`. 
 
@@ -21,7 +21,7 @@ python -m pipeline.pipeline_runner --db_url=$MIMIC_DWH
 To understand what this is doing:
 1. `-m` option: run library module as a script. See official docs https://docs.python.org/3.6/using/cmdline.html and https://docs.python.org/3.6/tutorial/modules.html if you're looking for a deeper understanding
 2. `--db_url`: is the option name for the database URL. We read this in using the `argparse` module in `pipeline_runner.py`.
-3. `$MIMIC_DWH`: the environment variable for our database URL. This assumes you've set the database URL as an environment variable.
+3. `$MIMIC_DWH`: the environment variable for our database URL. This assumes you've set the database URL as an environment variable. Also, by default, we pass in local HIVE DB URI: 'hive://localhost:10000/default'
 
 ## Tasks to Run
 1. First, run [hdfs_setup.sh](../../etl/raw/hdfs_setup.sh)

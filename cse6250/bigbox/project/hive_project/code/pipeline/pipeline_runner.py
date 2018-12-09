@@ -3,7 +3,7 @@ Script to batch run tasks
 
 Note that for Python Files with Hive we can do:
 conn = hive.Connection(host='localhost', port=10000, auth='NOSASL')
-db_url=
+db_url= 'hive://localhost:10000/default'
 """
 
 import argparse
@@ -87,9 +87,14 @@ def run_files(dbm, files, db_url):
                                   '--db_url={}'.format(db_url)])
             p.communicate()
             print("Done running the python file {}".format(file))
-        else:
-            dbm.write_query_table(sql_utils.get_sql_as_string(SQL_PATH + '/' + file))
-            print("Done running SQL file {}".format(file))
+        elif file[-4:] == '.hql':
+            p = subprocess.Popen(['hive', '-f', 'pipeline/pipeline_tasks/{}'.format(file)])
+            p.communicate()
+            print("Done running the hive file {}".format(file))
+        elif file[-3:] == '.sh':
+            p = subprocess.Popen(['bash', '{}'.format(file)])
+            p.communicate()
+            print("Done running the bash script {}".format(file))
         localendtime = dt.datetime.now()
         localduration = localendtime - localstarttime
         print(localendtime)
@@ -111,14 +116,46 @@ def main():
 
     # Define list of files you want to run
     tasks = [
+        '../etl/raw/hdfs_setup.sh',
+        '../etl/raw/admissions.hql',
+        '../etl/raw/callout.hql',
+        '../etl/raw/caregivers.hql',
+        '../etl/raw/ccs_dx_map.hql',
+        '../etl/raw/ccs_proc_map.hql',
+        '../etl/raw/chartevents.hql',
+        '../etl/raw/cptevents.hql',
+        '../etl/raw/d_cpt.hql',
+        '../etl/raw/d_icd_diagnoses.hql',
+        '../etl/raw/d_icd_procedures.hql',
+        '../etl/raw/d_items.hql',
+        '../etl/raw/d_labitems.hql',
+        '../etl/raw/datetimeevents.hql',
+        '../etl/raw/diagnoses_icd.hql',
+        '../etl/raw/drgcodes.hql',
+        '../etl/raw/icustays.hql',
+        '../etl/raw/inputevents_cv.hql',
+        '../etl/raw/inputevents_mv.hql',
+        '../etl/raw/labevents.hql',
+        '../etl/raw/microbiologyevents.hql',
+        '../etl/raw/noteevents.hql',
+        '../etl/raw/outputevents.hql',
+        '../etl/raw/patients.hql',
+        '../etl/raw/prescriptions.hql',
+        '../etl/raw/procedureevents_mv.hql',
+        '../etl/raw/procedures_icd.hql',
+        '../etl/raw/services.hql',
+        '../etl/raw/transfers.hql',
         'queries.features.noteevents_lda_models.py',
         'queries.features.noteevents_with_topics.py',
-        'queries/datasets/admissions_diagnoses_icd_ccs_mapping',
+        '../etl/model/noteevents_with_topics.hql',
+        'queries/datasets/admissions_diagnoses_icd_ccs_mapping.hql',
         'queries.datasets.admissions_ccs_ohe.py',
+        '../etl/model/admissions_ccs_ohe.hql',
         'queries.datasets.admissions_topic_scores.py',
-        'queries/datasets/model_demog',
-        'queries/datasets/model_demog_dx',
-        'queries/datasets/model_demog_dx_notetopics',
+        '../etl/model/admissions_topic_scores.hql',
+        'queries/datasets/model_demog.hql',
+        'queries/datasets/model_demog_dx.hql',
+        'queries/datasets/model_demog_dx_notetopics.hql',
     ]
 
     if args.run_parse:
