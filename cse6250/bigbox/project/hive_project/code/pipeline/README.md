@@ -35,7 +35,7 @@ To understand what this is doing:
 6. Run [admissions_diagnoses_icd_ccs_mapping.hql](./pipeline_tasks/queries/datasets/admissions_diagnoses_icd_ccs_mapping.hql)
 7. Run [admissions_ccs_ohe.py](./pipeline_tasks/queries/datasets/admissions_ccs_ohe.py). This creates [admissions_ccs_ohe.csv](../inventory/admissions_ccs_ohe.csv).
 8. Run [admissions_ccs_ohe.hql](../../etl/model/admissions_ccs_ohe.hql)
-9. Run [admissions_topic_scores.py](./pipeline_tasks/queries/datasets/admissions_topics_scores.py). This creates [admissions_topic_scores.csv](../inventory/admissions_topic_scores.csv)
+9. Run [admissions_topic_scores.py](./pipeline_tasks/queries/datasets/admissions_topic_scores.py). This creates [admissions_topic_scores.csv](../inventory/admissions_topic_scores.csv)
 10. Run [admissions_topic_scores.hql](../../etl/model/admissions_topic_scores.hql)
 11. Run [model_demog.hql](./pipeline_tasks/queries/datasets/model_demog.hql)
 12. Run [model_demog_dx.hql](./pipeline_tasks/queries/datasets/model_demog_dx.hql)
