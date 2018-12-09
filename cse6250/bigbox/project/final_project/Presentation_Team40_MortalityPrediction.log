@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  26 NOV 2018 07:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  9 DEC 2018 15:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1304,12 +1304,7 @@ Overfull \hbox (9.0315pt too wide) has occurred while \output is active
 
 [16
 
-]pdfTeX warning (ext4): destination with the same identifier (name{Feature\040S
-election:\040Topic\040Modeling}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.300 \end{frame}
-                 
+]
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
@@ -1323,7 +1318,12 @@ Overfull \hbox (9.0315pt too wide) has occurred while \output is active
 
 [18
 
-]
+]pdfTeX warning (ext4): destination with the same identifier (name{Feature\040S
+election:\040Topic\040Modeling}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.332 \end{frame}
+                 
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
@@ -1338,89 +1338,35 @@ Overfull \hbox (9.0315pt too wide) has occurred while \output is active
 [20
 
 ]
-<./images/modelperformance-baseline-roc.png, id=190, 441.65pt x 308.15125pt>
-File: ./images/modelperformance-baseline-roc.png Graphic file (type png)
-
-<use ./images/modelperformance-baseline-roc.png>
-Package pdftex.def Info: ./images/modelperformance-baseline-roc.png used on inp
-ut line 358.
-(pdftex.def)             Requested size: 99.58464pt x 69.48149pt.
-
-<./images/modelperformance-baseline-pr.png, id=191, 420.57124pt x 291.0875pt>
-File: ./images/modelperformance-baseline-pr.png Graphic file (type png)
-
-<use ./images/modelperformance-baseline-pr.png>
-Package pdftex.def Info: ./images/modelperformance-baseline-pr.png used on inpu
-t line 358.
-(pdftex.def)             Requested size: 99.58464pt x 68.92523pt.
-
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
 
 [21
 
- <./images/modelperformance-baseline-roc.png> <./images/modelperformance-baseli
-ne-pr.png>]pdfTeX warning (ext4): destination with the same identifier (name{fi
-g:a}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.372 \end{frame}
-                 
-<./images/modelperformance-improved-roc.png, id=203, 396.48125pt x 273.02pt>
-File: ./images/modelperformance-improved-roc.png Graphic file (type png)
-
-<use ./images/modelperformance-improved-roc.png>
-Package pdftex.def Info: ./images/modelperformance-improved-roc.png used on inp
-ut line 372.
-(pdftex.def)             Requested size: 99.58464pt x 68.57144pt.
-pdfTeX warning (ext4): destination with the same identifier (name{fig:b}) has b
-een already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.372 \end{frame}
-                 
-<./images/modelperformance-improved-pr.png, id=204, 396.48125pt x 276.03125pt>
-File: ./images/modelperformance-improved-pr.png Graphic file (type png)
-
-<use ./images/modelperformance-improved-pr.png>
-Package pdftex.def Info: ./images/modelperformance-improved-pr.png used on inpu
-t line 372.
-(pdftex.def)             Requested size: 99.58464pt x 69.32774pt.
-
+]
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
 
 [22
 
- <./images/modelperformance-improved-roc.png> <./images/modelperformance-improv
-ed-pr.png>]pdfTeX warning (ext4): destination with the same identifier (name{fi
-g:a}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.386 \end{frame}
-                 
-<./images/modelperformance-best-roc.png, id=214, 407.5225pt x 284.06125pt>
-File: ./images/modelperformance-best-roc.png Graphic file (type png)
+]
+<./images/modelperformance-baseline-roc.png, id=204, 441.65pt x 308.15125pt>
+File: ./images/modelperformance-baseline-roc.png Graphic file (type png)
 
-<use ./images/modelperformance-best-roc.png>
-Package pdftex.def Info: ./images/modelperformance-best-roc.png used on input l
-ine 386.
-(pdftex.def)             Requested size: 99.58464pt x 69.41573pt.
-pdfTeX warning (ext4): destination with the same identifier (name{fig:b}) has b
-een already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.386 \end{frame}
-                 
-<./images/modelperformance-best-pr.png, id=215, 392.46625pt x 266.9975pt>
-File: ./images/modelperformance-best-pr.png Graphic file (type png)
+<use ./images/modelperformance-baseline-roc.png>
+Package pdftex.def Info: ./images/modelperformance-baseline-roc.png used on inp
+ut line 390.
+(pdftex.def)             Requested size: 99.58464pt x 69.48149pt.
 
-<use ./images/modelperformance-best-pr.png>
-Package pdftex.def Info: ./images/modelperformance-best-pr.png used on input li
-ne 386.
-(pdftex.def)             Requested size: 99.58464pt x 67.74734pt.
+<./images/modelperformance-baseline-pr.png, id=205, 420.57124pt x 291.0875pt>
+File: ./images/modelperformance-baseline-pr.png Graphic file (type png)
+
+<use ./images/modelperformance-baseline-pr.png>
+Package pdftex.def Info: ./images/modelperformance-baseline-pr.png used on inpu
+t line 390.
+(pdftex.def)             Requested size: 99.58464pt x 68.92523pt.
 
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
@@ -1428,20 +1374,88 @@ Overfull \hbox (9.0315pt too wide) has occurred while \output is active
 
 [23
 
- <./images/modelperformance-best-roc.png> <./images/modelperformance-best-pr.pn
-g>]
+ <./images/modelperformance-baseline-roc.png> <./images/modelperformance-baseli
+ne-pr.png>]pdfTeX warning (ext4): destination with the same identifier (name{fi
+g:a}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.404 \end{frame}
+                 
+<./images/modelperformance-improved-roc.png, id=217, 396.48125pt x 273.02pt>
+File: ./images/modelperformance-improved-roc.png Graphic file (type png)
+
+<use ./images/modelperformance-improved-roc.png>
+Package pdftex.def Info: ./images/modelperformance-improved-roc.png used on inp
+ut line 404.
+(pdftex.def)             Requested size: 99.58464pt x 68.57144pt.
+pdfTeX warning (ext4): destination with the same identifier (name{fig:b}) has b
+een already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.404 \end{frame}
+                 
+<./images/modelperformance-improved-pr.png, id=218, 396.48125pt x 276.03125pt>
+File: ./images/modelperformance-improved-pr.png Graphic file (type png)
+
+<use ./images/modelperformance-improved-pr.png>
+Package pdftex.def Info: ./images/modelperformance-improved-pr.png used on inpu
+t line 404.
+(pdftex.def)             Requested size: 99.58464pt x 69.32774pt.
+
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
 
 [24
 
-]
+ <./images/modelperformance-improved-roc.png> <./images/modelperformance-improv
+ed-pr.png>]pdfTeX warning (ext4): destination with the same identifier (name{fi
+g:a}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.418 \end{frame}
+                 
+<./images/modelperformance-best-roc.png, id=228, 407.5225pt x 284.06125pt>
+File: ./images/modelperformance-best-roc.png Graphic file (type png)
+
+<use ./images/modelperformance-best-roc.png>
+Package pdftex.def Info: ./images/modelperformance-best-roc.png used on input l
+ine 418.
+(pdftex.def)             Requested size: 99.58464pt x 69.41573pt.
+pdfTeX warning (ext4): destination with the same identifier (name{fig:b}) has b
+een already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.418 \end{frame}
+                 
+<./images/modelperformance-best-pr.png, id=229, 392.46625pt x 266.9975pt>
+File: ./images/modelperformance-best-pr.png Graphic file (type png)
+
+<use ./images/modelperformance-best-pr.png>
+Package pdftex.def Info: ./images/modelperformance-best-pr.png used on input li
+ne 418.
+(pdftex.def)             Requested size: 99.58464pt x 67.74734pt.
+
 Overfull \hbox (9.0315pt too wide) has occurred while \output is active
  [][]  
  []
 
 [25
+
+ <./images/modelperformance-best-roc.png> <./images/modelperformance-best-pr.pn
+g>]
+Overfull \hbox (9.0315pt too wide) has occurred while \output is active
+ [][]  
+ []
+
+[26
+
+]
+Overfull \hbox (9.0315pt too wide) has occurred while \output is active
+ [][]  
+ []
+
+[27
 
 ]
 \tf@nav=\write6
@@ -1453,11 +1467,11 @@ Overfull \hbox (9.0315pt too wide) has occurred while \output is active
 \tf@snm=\write8
 \openout8 = `Presentation_Team40_MortalityPrediction.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 423.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 423.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 455.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 455.
  (./Presentation_Team40_MortalityPrediction.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 423.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 423.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 455.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 455.
 Package rerunfilecheck Info: File `Presentation_Team40_MortalityPrediction.out'
  has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
@@ -1469,13 +1483,13 @@ LaTeX Font Warning: Size substitutions with differences
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 423.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 455.
  ) 
 Here is how much of TeX's memory you used:
- 18968 strings out of 493089
- 362743 string characters out of 6134842
- 431901 words of memory out of 5000000
- 21916 multiletter control sequences out of 15000+600000
+ 18978 strings out of 493089
+ 362815 string characters out of 6134842
+ 431902 words of memory out of 5000000
+ 21920 multiletter control sequences out of 15000+600000
  13982 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  56i,23n,57p,479b,724s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1484,11 +1498,11 @@ Here is how much of TeX's memory you used:
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></
 usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb></us
 r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb>
-Output written on Presentation_Team40_MortalityPrediction.pdf (25 pages, 736207
+Output written on Presentation_Team40_MortalityPrediction.pdf (27 pages, 738504
  bytes).
 PDF statistics:
- 276 PDF objects out of 1000 (max. 8388607)
- 206 compressed objects within 3 object streams
- 78 named destinations out of 1000 (max. 500000)
+ 291 PDF objects out of 1000 (max. 8388607)
+ 219 compressed objects within 3 object streams
+ 84 named destinations out of 1000 (max. 500000)
  141 words of extra memory for PDF output out of 10000 (max. 10000000)
 

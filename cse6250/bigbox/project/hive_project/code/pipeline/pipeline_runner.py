@@ -88,8 +88,11 @@ def run_files(dbm, files, db_url):
             p.communicate()
             print("Done running the python file {}".format(file))
         elif file[-4:] == '.hql':
-            p = subprocess.Popen(['hive', '-f', 'pipeline/pipeline_tasks/{}'.format(file)])
-            p.communicate()
+            with open(file, 'r') as sql_file:
+                hql_file = sql_file.read()
+                dbm.write_query_table(hql_file)
+            # p = subprocess.Popen(['hive', '-f', 'pipeline/pipeline_tasks/{}'.format(file)])
+            # p.communicate()
             print("Done running the hive file {}".format(file))
         elif file[-3:] == '.sh':
             p = subprocess.Popen(['bash', '{}'.format(file)])

@@ -204,6 +204,38 @@ The modal patient is a Medicare patient, which makes sense since Medicare patien
 \end{frame}
 
 \begin{frame}
+\frametitle{Data: ETL and Tech Stack}
+\label{ETL}
+The tech stack that we use is:
+
+\begin{itemize}
+\item Python runtime
+\item Hive + Hadoop
+\item HBase data store
+\item Run local to machine, did not use a hosted service like AWS EMR
+\item Configuration of hive + Hadoop was tuned to available machine
+
+  \begin{itemize}
+    \item Local used default settings
+    \item Full run of pipeline had increased parallelism to utilize resources quicker
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Data: ETL and Tech Stack}
+\label{ETL2}
+\begin{itemize}
+\item Pipeline was modeled as a set of scripts run
+\item Starts with ETL of CSV files into HBase
+\item Extracts features into HBase tables via HiveQL
+\item HBase tables are transformed to Pandas data frames via HiveQL
+\item ML models are run in Scikit-learn
+\item Final model is exported as pickled Scikit-learn object
+\end{itemize}
+\end{frame}
+
+\begin{frame}
 \label{Presentation Outline 4}
 \frametitle{Presentation Outline}
 \begin{enumerate}

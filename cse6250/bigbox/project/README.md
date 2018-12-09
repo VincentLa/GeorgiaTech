@@ -3,6 +3,13 @@ Authors:
 1. Avi Ananthakrishnan
 2. Vincent La
 
+## Environment
+We will use Anaconda to manage the environment. The dependencies are specified in [environment.yml](./environment.yml) file. To create the environment, run:
+
+```
+conda env create -f environment.yml 
+```
+
 ## Running Code
 All of our code can be found within the [hive_project/code](./hive_project/code) and [hive_project/etl](./hive_project/etl) directories.
 

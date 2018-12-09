@@ -9,24 +9,26 @@
 \beamer@slide {AdmissionsDistribution}{10}
 \beamer@slide {AdmissionsLengths}{11}
 \beamer@slide {AdmissionsInsurance}{12}
-\beamer@slide {Presentation Outline 4}{13}
-\beamer@slide {Empirical Design}{14}
-\beamer@slide {Features}{14}
-\beamer@slide {Feature Selection: CCS}{15}
-\beamer@slide {Feature Selection: Topic Modeling}{16}
-\beamer@slide {Feature Selection: Topic Modeling}{17}
-\beamer@slide {LDA}{17}
-\beamer@slide {Model}{18}
-\beamer@slide {Presentation Outline 6}{19}
-\beamer@slide {Results: Overview}{20}
-\beamer@slide {fig:a}{21}
-\beamer@slide {fig:b}{21}
-\beamer@slide {BaselineModelPerformance}{21}
-\beamer@slide {fig:a}{22}
-\beamer@slide {fig:b}{22}
-\beamer@slide {ImprovedModelPerformance}{22}
+\beamer@slide {ETL}{13}
+\beamer@slide {ETL2}{14}
+\beamer@slide {Presentation Outline 4}{15}
+\beamer@slide {Empirical Design}{16}
+\beamer@slide {Features}{16}
+\beamer@slide {Feature Selection: CCS}{17}
+\beamer@slide {Feature Selection: Topic Modeling}{18}
+\beamer@slide {Feature Selection: Topic Modeling}{19}
+\beamer@slide {LDA}{19}
+\beamer@slide {Model}{20}
+\beamer@slide {Presentation Outline 6}{21}
+\beamer@slide {Results: Overview}{22}
 \beamer@slide {fig:a}{23}
 \beamer@slide {fig:b}{23}
-\beamer@slide {BestModelPerformance}{23}
-\beamer@slide {Presentation Outline 7}{24}
-\beamer@slide {Conclusion}{25}
+\beamer@slide {BaselineModelPerformance}{23}
+\beamer@slide {fig:a}{24}
+\beamer@slide {fig:b}{24}
+\beamer@slide {ImprovedModelPerformance}{24}
+\beamer@slide {fig:a}{25}
+\beamer@slide {fig:b}{25}
+\beamer@slide {BestModelPerformance}{25}
+\beamer@slide {Presentation Outline 7}{26}
+\beamer@slide {Conclusion}{27}
