@@ -26,7 +26,7 @@ To understand what this is doing:
 ## Tasks to Run
 1. First, run [hdfs_setup.sh](../../etl/raw/hdfs_setup.sh)
 2. Then, run [raw](../../etl/raw) ETL *.hql files to load the MIMIC datasets. Note that for the purposes of this submission, we are only loading the first 100 rows because of size issues.
-3. Then run [queries/features/noteevents_lda_models.py](./pipeline_tasks/queries/features/noteevents_lda_models.py). This creates 3 objects within the [inventory](../inventory) directory. All 3 objects are pickled objects from Natural Language Processing and do not need to directly be uploaded to DB.
+3. Then run [queries/features/noteevents_lda_models.py](./pipeline\_tasks/queries/features/noteevents_lda_models.py). This creates 3 objects within the [inventory](../inventory) directory. All 3 objects are pickled objects from Natural Language Processing and do not need to directly be uploaded to DB.
   1. dictionary.obj
   2. lda_model_tfif.obj
   3. lda_model.obj
