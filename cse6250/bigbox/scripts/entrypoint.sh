@@ -62,9 +62,9 @@ sudo service hbase-thrift start
 sudo service hive-server start
 
 export AIRFLOW_HOME=/project
-airflow initdb
-airflow scheduler -D
-airflow webserver -D
+# airflow initdb
+# airflow scheduler -D
+# airflow webserver -D
 
 echo "master is ready, rock it!"
 # Holding over here
