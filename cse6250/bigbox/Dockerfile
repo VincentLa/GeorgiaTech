@@ -77,18 +77,26 @@ COPY config/hbase /etc/hbase/conf/
 COPY config/hive /etc/hive/conf/
 COPY config/spark /etc/spark/conf/
 COPY config/zookeeper /etc/zookeeper/conf/
+
 COPY config/init.d/hive-service /etc/init.d/
 
 # 6. Execute initialization script
 RUN /scripts/init.sh
 
 # 7. Install Miniconda Python
-RUN wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && chmod +x miniconda.sh && ./miniconda.sh -b -p /usr/local/conda3 && rm -rf miniconda.sh
+RUN wget https://repo.continuum.io/miniconda/Miniconda3-4.5.1-Linux-x86_64.sh -O miniconda.sh && chmod +x miniconda.sh && ./miniconda.sh -b -p /usr/local/conda3 && rm -rf miniconda.sh
 ENV PATH /usr/local/conda3/bin:$PATH
 RUN echo 'export PATH=/usr/local/conda3/bin:$PATH' >> /etc/profile.d/bigbox.sh
 RUN conda install --yes numpy ipython
 RUN pip install asciinema
 
+RUN pip install cython
+
+ENV AIRFLOW_GPL_UNIDECODE yes
+RUN pip install apache-airflow
+RUN pip install apache-airflow[jdbc,hdfs,hive,redis]
+RUN pip install tenacity>=4.10.0
+ENV AIRFLOW_HOME /project
 
 # N. tini
 ENV TINI_VERSION v0.18.0

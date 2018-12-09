@@ -59,7 +59,12 @@ sudo service hbase-regionserver start
 sudo service hbase-master start
 sudo service hbase-thrift start
 
-sudo service hive-service start
+sudo service hive-server start
+
+export AIRFLOW_HOME=/project
+airflow initdb
+airflow scheduler -D
+airflow webserver -D
 
 echo "master is ready, rock it!"
 # Holding over here

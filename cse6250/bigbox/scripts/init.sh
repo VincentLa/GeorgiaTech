@@ -34,7 +34,8 @@ export CLASSPATH=$CLASSPATH:$HADOOP_CONF_DIR
 
 
 export PATH=$PATH:$ZOOKEEPER_HOME/bin
-
+export AIRFLOW_HOME=/project
+export AIRFLOW_CONN_HIVE_LOCAL=hive://localhost:10000/default
 EOF
 
 echo '127.0.0.1 bootcamp.local' >> /etc/hosts

@@ -1,7 +1,13 @@
 _site/
 .sass-cache/
 .jekyll-metadata
-
+/project/.idea
+/project/*.err
+/project/*.out
+/project/*.log
+/project/*.pid
+/project/final_project/code/.idea/
+/project/logs
 # data directory
 /data/*
 !/data/.placeholder
