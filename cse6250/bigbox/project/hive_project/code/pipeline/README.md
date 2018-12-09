@@ -32,7 +32,7 @@ To understand what this is doing:
   3. lda_model.obj
 4. Run [queries/features/noteevents_with_topics.py](./pipeline_tasks/queries/features/noteevents_with_topics.py). This creates [noteevents_with_topics.csv](../inventory/noteevents_with_topics.csv).
 5. Run [noteevents_with_topics.hql](../../etl/model/noteevents_with_topics.hql)
-6. Run [admissions_diagnoses_icd_ccs_mapping.hql](./queries/datasets/admissions_diagnoses_icd_ccs_mapping.hql)
+6. Run [admissions_diagnoses_icd_ccs_mapping.hql](./pipeline_tasks/queries/datasets/admissions_diagnoses_icd_ccs_mapping.hql)
 7. Run [admissions_ccs_ohe.py](./pipeline_tasks/queries/datasets/admissions_ccs_ohe.py). This creates [admissions_ccs_ohe.csv](../inventory/admissions_ccs_ohe.csv).
 8. Run [admissions_ccs_ohe.hql](../../etl/model/admissions_ccs_ohe.hql)
 9. Run [admissions_topic_scores.py](./pipeline_tasks/queries/datasets/admissions_topics_scores.py). This creates [admissions_topic_scores.csv](../inventory/admissions_topic_scores.csv)
