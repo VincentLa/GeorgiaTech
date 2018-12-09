@@ -9,7 +9,7 @@ from airflow.operators.hive_operator import HiveOperator
 
 DAG_ARGS = {
     'owner': 'airflow',
-    'start_date': airflow.utils.dates.days_ago(hours=1),
+    'start_date': airflow.utils.dates.days_ago(0, hour=1),
 }
 
 PROJECT_DAG = DAG(
@@ -64,7 +64,7 @@ SENTINEL_INIT_ETL_END = DummyOperator(
     dag=PROJECT_DAG
 )
 
-for etl_set in {MIMIC_ETL_FILES, CCS_ETL_FILES}:
+for etl_set in [MIMIC_ETL_FILES, CCS_ETL_FILES]:
     for elem in etl_set:
         mkdir_op = BashOperator(
             task_id=f'mkdir_mimic_{elem}',
