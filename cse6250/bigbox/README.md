@@ -22,6 +22,11 @@ SSH into Docker Container
 ssh -p 2333 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./config/ssh/id_rsa root@127.0.0.1
 ```
 
+Start Hive Service
+```
+sudo service start hive-service
+```
+
 Start the HIVE Server for Python
 ```
 hive --service hiveserver2 --hiveconf hive.server2.thrift.port=10000 --hiveconf hive.root.logger=INFO,console --hiveconf hive.server2.authentication=NOSASL
