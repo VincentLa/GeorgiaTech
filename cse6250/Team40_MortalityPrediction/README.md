@@ -7,6 +7,8 @@ All relevant code is located inside the [project](./project) directory. This top
 
 However, to see the actual code go into the [project](./project) directory. In particular, the [project/README.md](./project/README.md) file will contain instructions on how to actually run the code.
 
+Note that the best model returned by our Machine Learning Model is returned in [best_model.obj](./best_model.obj).
+
 ## Useful Commands
 Runs a docker container with options represent in a YAML config
 ```

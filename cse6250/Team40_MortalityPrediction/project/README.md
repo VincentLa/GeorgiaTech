@@ -3,6 +3,9 @@ Authors:
 1. Avi Ananthakrishnan
 2. Vincent La
 
+## Best Model
+Note that the best model returned by our Machine Learning Model is returned in [best_model.obj](../best_model.obj).
+
 ## Environment
 We will use Anaconda to manage the environment. The dependencies are specified in [environment.yml](./environment.yml) file. To create the environment, run:
 
