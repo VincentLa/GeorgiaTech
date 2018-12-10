@@ -3,6 +3,7 @@ import urllib.parse
 
 import pandas as pd
 import pyhive
+from pyhive import hive
 import psycopg2 as ps
 import sqlalchemy as sa
 from pandas.io.sql import SQLTable
