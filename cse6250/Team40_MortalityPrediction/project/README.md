@@ -15,7 +15,7 @@ All of our code can be found within the [hive_project/code](./hive_project/code)
 
 Once ETL and other transformations are done and data is loaded into the DB, then you can run the Machine Learning Model. The Machine Learning Model is done in a Jupyter Notebook in [ML Notebook.ipynb](./hive_project/code/ML Notebook.ipynb).
 
-Note that all of our code is inside the [code](./hive_project/code) directory. In particular, the files that need to be run in order are:
+Note that all of our code is inside the [code](./hive_project/code) directory. Note that there is a [pipeline_runner.py](./hive_project/code/pipeline/pipeline_runner.py) file that runs all the files in order. For more information on how to run the pipeline runner see the [README.md](./hive_project/code/pipeline/README.md). In particular, the files that need to be run in order are:
 
 1. First, run [hdfs_setup.sh](./hive_project/code/etl/raw/hdfs_setup.sh)
 2. Then, run [raw](./hive_project/code/etl/raw) ETL *.hql files to load the MIMIC datasets. Note that for the purposes of this submission, we are only loading the first 100 rows because of size issues.
