@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+<configuration>
+
+<!-- Site specific YARN configuration properties -->
+
+    <property>
+        <name>yarn.web-proxy.address</name>
+        <value>0.0.0.0:19987</value>
+    </property>
+
+    <property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+    </property>
+
+    <!-- https://stackoverflow.com/questions/21005643/container-is-running-beyond-memory-limits  -->
+    <property>
+        <name>yarn.nodemanager.vmem-check-enabled</name>
+        <value>false</value>
+        <description>Whether virtual memory limits will be enforced for containers</description>
+    </property>
+
+    <property>
+        <name>yarn.nodemanager.vmem-pmem-ratio</name>
+        <value>4</value>
+        <description>Ratio between virtual memory to physical memory when setting memory limits for containers</description>
+    </property>
+
+    <!-- https://community.cloudera.com/t5/Web-UI-Hue-Beeswax/Launcher-ERROR-reason-Main-class-org-apache-oozie-action-hadoop/td-p/27686 -->
+    <!-- https://www.cloudera.com/documentation/enterprise/5-3-x/topics/cdh_ig_yarn_tuning.html -->
+    <!-- as well as https://stackoverflow.com/questions/30828879 -->
+    <!-- -->
+    <property>
+        <name>yarn.scheduler.minimum-allocation-mb</name>
+        <value>1024</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.increment-allocation-mb</name>
+        <value>512</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.maximum-allocation-mb</name>
+        <value>8192</value>
+    </property>
+    <!-- -->
+    
+    <!-- -->
+    <property>
+        <name>yarn.nodemanager.resource.memory-mb</name>
+        <value>2048</value>
+    </property>
+    <!-- -->
+
+    <property>
+        <name>yarn.scheduler.minimum-allocation-vcores</name>
+        <value>1</value>
+    </property>
+    <property>
+        <name>yarn.scheduler.maximum-allocation-vcores</name>
+        <value>32</value>
+    </property>
+    
+    
+    <!-- In case of the hard disk limitation -->
+    <property>
+      <name>yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage</name>
+      <value>100</value>
+    </property>
+
+    <!-- For Cluster -->
+    <!-- ref: http://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-common/yarn-default.xml -->
+    <!-- rest of the configurations: https://www.alexjf.net/blog/distributed-systems/hadoop-yarn-installation-definitive-guide/ -->
+    <property>
+        <name>yarn.resourcemanager.hostname</name>
+        <value>bootcamp.local</value>
+    </property>
+
+</configuration>

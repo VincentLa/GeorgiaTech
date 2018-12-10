@@ -24,7 +24,7 @@ ssh -p 2333 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ./con
 
 Start Hive Service
 ```
-sudo service start hive-service
+sudo service hive-service start
 ```
 
 Start the HIVE Server for Python

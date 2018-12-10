@@ -1,0 +1,101 @@
+"ROW_ID","ITEMID","LABEL","FLUID","CATEGORY","LOINC_CODE"
+546,51346,"Blasts","Cerebrospinal Fluid (CSF)","Hematology","26447-3"
+547,51347,"Eosinophils","Cerebrospinal Fluid (CSF)","Hematology","26451-5"
+548,51348,"Hematocrit, CSF","Cerebrospinal Fluid (CSF)","Hematology","30398-2"
+549,51349,"Hypersegmented Neutrophils","Cerebrospinal Fluid (CSF)","Hematology","26506-6"
+550,51350,"Immunophenotyping","Cerebrospinal Fluid (CSF)","Hematology",
+551,51351,"Lymphs","Cerebrospinal Fluid (CSF)","Hematology","26479-6"
+552,51352,"Macrophage","Cerebrospinal Fluid (CSF)","Hematology","30426-1"
+553,51353,"Mesothelial cells","Cerebrospinal Fluid (CSF)","Hematology","30429-5"
+554,51354,"Metamyelocytes","Cerebrospinal Fluid (CSF)","Hematology","30366-9"
+555,51355,"Monocytes","Cerebrospinal Fluid (CSF)","Hematology","26486-1"
+556,51356,"Myelocytes","Cerebrospinal Fluid (CSF)","Hematology","30447-7"
+557,51357,"NRBC","Cerebrospinal Fluid (CSF)","Hematology","48778-5"
+558,51358,"Other","Cerebrospinal Fluid (CSF)","Hematology",
+559,51359,"Plasma","Cerebrospinal Fluid (CSF)","Hematology","47413-0"
+560,51360,"Polys","Cerebrospinal Fluid (CSF)","Hematology","26517-3"
+561,51361,"Promyelocytes","Cerebrospinal Fluid (CSF)","Hematology",
+562,51362,"RBC, CSF","Cerebrospinal Fluid (CSF)","Hematology","26454-9"
+563,51363,"WBC, CSF","Cerebrospinal Fluid (CSF)","Hematology","26465-5"
+564,51364,"Young","Cerebrospinal Fluid (CSF)","Hematology",
+565,51365,"Atypical Lymphocytes","Joint Fluid","Hematology","33371-6"
+566,51366,"Bands","Joint Fluid","Hematology","33361-7"
+567,51367,"Basophils","Joint Fluid","Hematology","17833-5"
+568,51368,"Eosinophils","Joint Fluid","Hematology","17834-3"
+569,51369,"Hematocrit, Joint Fluid","Joint Fluid","Hematology",
+570,51370,"Joint Crystals, Birefringence","Joint Fluid","Hematology",
+571,51371,"Joint Crystals, Comment","Joint Fluid","Hematology",
+572,51372,"Joint Crystals, Location","Joint Fluid","Hematology",
+573,51373,"Joint Crystals, Number","Joint Fluid","Hematology",
+574,51374,"Joint Crystals, Shape","Joint Fluid","Hematology",
+575,51375,"Lymphocytes","Joint Fluid","Hematology","26483-8"
+576,51376,"Macrophage","Joint Fluid","Hematology","33376-5"
+577,51377,"Mesothelial Cells","Joint Fluid","Hematology","33365-8"
+578,51378,"Metamyelocytes","Joint Fluid","Hematology",
+579,51379,"Monocytes","Joint Fluid","Hematology","17835-0"
+580,51380,"NRBC","Joint Fluid","Hematology","48040-0"
+581,51381,"Other","Joint Fluid","Hematology",
+582,51382,"Polys","Joint Fluid","Hematology","26522-3"
+583,51383,"RBC, Joint Fluid","Joint Fluid","Hematology","26458-0"
+584,51384,"WBC, Joint Fluid","Joint Fluid","Hematology","26469-7"
+585,51385,"Atypical Lymphocytes","Other Body Fluid","Hematology","30417-0"
+586,51386,"Bands","Other Body Fluid","Hematology","26510-8"
+587,51387,"Basophils","Other Body Fluid","Hematology","28543-7"
+588,51388,"CD10","Other Body Fluid","Hematology","51217-8"
+589,51389,"CD103","Other Body Fluid","Hematology",
+590,51390,"CD117","Other Body Fluid","Hematology","42867-2"
+591,51391,"CD11c","Other Body Fluid","Hematology","51232-7"
+592,51392,"CD13","Other Body Fluid","Hematology","51238-4"
+593,51393,"CD138","Other Body Fluid","Hematology","42871-4"
+594,51394,"CD14","Other Body Fluid","Hematology","51248-3"
+595,51395,"CD15","Other Body Fluid","Hematology","51252-5"
+596,51396,"CD16","Other Body Fluid","Hematology",
+597,51397,"CD16/56","Other Body Fluid","Hematology","18268-3"
+598,51398,"CD19","Other Body Fluid","Hematology","17829-3"
+599,51399,"CD2","Other Body Fluid","Hematology","17827-7"
+600,51400,"CD20","Other Body Fluid","Hematology","57418-6"
+601,51401,"CD22","Other Body Fluid","Hematology","42875-5"
+602,51402,"CD23","Other Body Fluid","Hematology","51269-9"
+603,51403,"CD25","Other Body Fluid","Hematology",
+604,51404,"CD3","Other Body Fluid","Hematology","17826-9"
+605,51405,"CD33","Other Body Fluid","Hematology","51294-7"
+606,51406,"CD34","Other Body Fluid","Hematology",
+607,51407,"CD38","Other Body Fluid","Hematology","51299-6"
+608,51408,"CD4","Other Body Fluid","Hematology","17822-8"
+609,51409,"CD4/CD8 Ratio","Other Body Fluid","Hematology","18266-7"
+610,51410,"CD41","Other Body Fluid","Hematology","51320-0"
+611,51411,"CD45","Other Body Fluid","Hematology","17823-6"
+612,51412,"CD5","Other Body Fluid","Hematology","57423-6"
+613,51413,"CD56","Other Body Fluid","Hematology","57424-4"
+614,51414,"CD57","Other Body Fluid","Hematology",
+615,51415,"CD64","Other Body Fluid","Hematology","51366-3"
+616,51416,"CD7","Other Body Fluid","Hematology","57425-1"
+617,51417,"CD71","Other Body Fluid","Hematology","57426-9"
+618,51418,"CD8","Other Body Fluid","Hematology","17824-4"
+619,51419,"Eosinophils","Other Body Fluid","Hematology","26452-3"
+620,51420,"FMC-7","Other Body Fluid","Hematology","57428-5"
+621,51421,"Glyco A","Other Body Fluid","Hematology","57430-1"
+622,51422,"Hematocrit, Other Fluid","Other Body Fluid","Hematology","11153-4"
+623,51423,"HLA-DR","Other Body Fluid","Hematology","51381-2"
+624,51424,"Immunophenotyping","Other Body Fluid","Hematology",
+625,51425,"Kappa","Other Body Fluid","Hematology",
+626,51426,"Lambda","Other Body Fluid","Hematology",
+627,51427,"Lymphocytes","Other Body Fluid","Hematology","11031-2"
+628,51428,"Macrophage","Other Body Fluid","Hematology","12230-9"
+629,51429,"Mesothelial cells","Other Body Fluid","Hematology","28544-5"
+630,51430,"Metamyelocytes","Other Body Fluid","Hematology","17801-2"
+631,51431,"Monos","Other Body Fluid","Hematology","10330-9"
+632,51432,"Myelocytes","Other Body Fluid","Hematology","17800-4"
+633,51433,"NRBC","Other Body Fluid","Hematology",
+634,51434,"Other Cell","Other Body Fluid","Hematology",
+635,51435,"Plasma","Other Body Fluid","Hematology","17803-8"
+636,51436,"Polys","Other Body Fluid","Hematology","26518-1"
+637,51437,"Promyelocytes","Other Body Fluid","Hematology","17799-8"
+638,51438,"RBC, Other Fluid","Other Body Fluid","Hematology","26455-6"
+639,51439,"WBC, Other Fluid","Other Body Fluid","Hematology","26466-3"
+640,51440,"Atypical Lymphocytes","Pleural","Hematology","33370-8"
+641,51441,"Bands","Pleural","Hematology",
+642,51442,"Basophils","Pleural","Hematology","35070-2"
+643,51443,"Blasts","Pleural","Hematology",
+644,51444,"Eosinophils","Pleural","Hematology","30379-2"
+645,51445,"Hematocrit, Pleural","Pleural","Hematology",
