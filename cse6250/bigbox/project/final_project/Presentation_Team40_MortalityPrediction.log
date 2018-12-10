@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  9 DEC 2018 15:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  9 DEC 2018 15:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1486,10 +1486,10 @@ LaTeX Warning: There were multiply-defined labels.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 455.
  ) 
 Here is how much of TeX's memory you used:
- 18978 strings out of 493089
- 362815 string characters out of 6134842
+ 18980 strings out of 493089
+ 362831 string characters out of 6134842
  431902 words of memory out of 5000000
- 21920 multiletter control sequences out of 15000+600000
+ 21922 multiletter control sequences out of 15000+600000
  13982 words of font info for 51 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  56i,23n,57p,479b,724s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1498,7 +1498,7 @@ Here is how much of TeX's memory you used:
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></
 usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmss9.pfb></us
 r/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb>
-Output written on Presentation_Team40_MortalityPrediction.pdf (27 pages, 738504
+Output written on Presentation_Team40_MortalityPrediction.pdf (27 pages, 738500
  bytes).
 PDF statistics:
  291 PDF objects out of 1000 (max. 8388607)

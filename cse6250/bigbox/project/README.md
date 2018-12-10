@@ -17,19 +17,19 @@ Once ETL and other transformations are done and data is loaded into the DB, then
 
 Note that all of our code is inside the [code](./hive_project/code) directory. In particular, the files that need to be run in order are:
 
-1. First, run [hdfs_setup.sh](./hive_project/etl/raw/hdfs_setup.sh)
-2. Then, run [raw](./hive_project/etl/raw) ETL *.hql files to load the MIMIC datasets. Note that for the purposes of this submission, we are only loading the first 100 rows because of size issues.
+1. First, run [hdfs_setup.sh](./hive_project/code/etl/raw/hdfs_setup.sh)
+2. Then, run [raw](./hive_project/code/etl/raw) ETL *.hql files to load the MIMIC datasets. Note that for the purposes of this submission, we are only loading the first 100 rows because of size issues.
 3. Then run [queries/features/noteevents_lda_models.py](./hive_project/code/pipeline/pipeline_tasks/queries/features/noteevents_lda_models.py). This creates 3 objects within the [inventory](./hive_project/code/inventory) directory. All 3 objects are pickled objects from Natural Language Processing and do not need to directly be uploaded to DB.
     * dictionary.obj
     * lda_model_tfif.obj
     * lda_model.obj
 4. Run [queries/features/noteevents_with_topics.py](./hive_project/code/pipeline/pipeline_tasks/queries/features/noteevents_with_topics.py). This creates [noteevents_with_topics.csv](./hive_project/code/inventory/noteevents_with_topics.csv).
-5. Run [noteevents_with_topics.hql](./hive_project/etl/model/noteevents_with_topics.hql)
+5. Run [noteevents_with_topics.hql](./hive_project/code/etl/model/noteevents_with_topics.hql)
 6. Run [admissions_diagnoses_icd_ccs_mapping.hql](./pipeline_tasks/queries/datasets/admissions_diagnoses_icd_ccs_mapping.hql)
 7. Run [admissions_ccs_ohe.py](./hive_project/code/pipeline/pipeline_tasks/queries/datasets/admissions_ccs_ohe.py). This creates [admissions_ccs_ohe.csv](../inventory/admissions_ccs_ohe.csv).
-8. Run [admissions_ccs_ohe.hql](./hive_project/etl/model/admissions_ccs_ohe.hql)
+8. Run [admissions_ccs_ohe.hql](./hive_project/code/etl/model/admissions_ccs_ohe.hql)
 9. Run [admissions_topic_scores.py](./hive_project/code/pipeline/pipeline_tasks/queries/datasets/admissions_topic_scores.py). This creates [admissions_topic_scores.csv](./hive_project/code/inventory/admissions_topic_scores.csv)
-10. Run [admissions_topic_scores.hql](./hive_project/etl/model/admissions_topic_scores.hql)
+10. Run [admissions_topic_scores.hql](./hive_project/code/etl/model/admissions_topic_scores.hql)
 11. Run [model_demog.hql](./hive_project/code/pipeline/pipeline_tasks/queries/datasets/model_demog.hql)
 12. Run [model_demog_dx.hql](./hive_project/code/pipeline/pipeline_tasks/queries/datasets/model_demog_dx.hql)
 13. Run [model_demog_dx_notetopics.hql](./hive_project/code/pipeline/pipeline_tasks/queries/datasets/model_demog_dx_notetopics.hql)

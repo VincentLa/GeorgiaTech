@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  26 NOV 2018 01:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  9 DEC 2018 16:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -799,96 +799,101 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 35.
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <7> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 35.
- [1
+
+Underfull \hbox (badness 10000) in paragraph at lines 37--41
+
+ []
+
+[1
 
 {/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 49--56
+Underfull \hbox (badness 10000) in paragraph at lines 52--59
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 49--56
+Underfull \hbox (badness 10000) in paragraph at lines 52--59
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 60--64
+Underfull \hbox (badness 10000) in paragraph at lines 63--67
 
  []
 
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 67--71
+Underfull \hbox (badness 10000) in paragraph at lines 70--74
 
  []
 
-<./images/admissions-deaths.png, id=97, 596.2275pt x 88.33pt>
+<./images/admissions-deaths.png, id=98, 596.2275pt x 88.33pt>
 File: ./images/admissions-deaths.png Graphic file (type png)
 
 <use ./images/admissions-deaths.png>
-Package pdftex.def Info: ./images/admissions-deaths.png used on input line 76.
+Package pdftex.def Info: ./images/admissions-deaths.png used on input line 79.
 (pdftex.def)             Requested size: 238.48677pt x 35.33136pt.
  [3 <./images/admissions-deaths.png>]
 [4]
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 139.
+(hyperref)                than one, level fixed on input line 142.
 
-<./images/modelperformance-baseline-roc.png, id=115, 441.65pt x 308.15125pt>
+<./images/modelperformance-baseline-roc.png, id=116, 441.65pt x 308.15125pt>
 File: ./images/modelperformance-baseline-roc.png Graphic file (type png)
 
 <use ./images/modelperformance-baseline-roc.png>
 Package pdftex.def Info: ./images/modelperformance-baseline-roc.png used on inp
-ut line 144.
+ut line 147.
 (pdftex.def)             Requested size: 199.16928pt x 138.9677pt.
 
-<./images/modelperformance-baseline-pr.png, id=116, 420.57124pt x 291.0875pt>
+<./images/modelperformance-baseline-pr.png, id=117, 420.57124pt x 291.0875pt>
 File: ./images/modelperformance-baseline-pr.png Graphic file (type png)
 
 <use ./images/modelperformance-baseline-pr.png>
 Package pdftex.def Info: ./images/modelperformance-baseline-pr.png used on inpu
-t line 145.
+t line 148.
 (pdftex.def)             Requested size: 199.16928pt x 137.85048pt.
  [5 <./images/modelperformance-baseline-roc.png> <./images/modelperformance-bas
 eline-pr.png>]
-<./images/modelperformance-improved-roc.png, id=129, 396.48125pt x 273.02pt>
+<./images/modelperformance-improved-roc.png, id=130, 396.48125pt x 273.02pt>
 File: ./images/modelperformance-improved-roc.png Graphic file (type png)
 
 <use ./images/modelperformance-improved-roc.png>
 Package pdftex.def Info: ./images/modelperformance-improved-roc.png used on inp
-ut line 157.
+ut line 160.
 (pdftex.def)             Requested size: 199.16928pt x 137.15121pt.
 
-<./images/modelperformance-improved-pr.png, id=130, 396.48125pt x 276.03125pt>
+<./images/modelperformance-improved-pr.png, id=131, 396.48125pt x 276.03125pt>
 File: ./images/modelperformance-improved-pr.png Graphic file (type png)
 
 <use ./images/modelperformance-improved-pr.png>
 Package pdftex.def Info: ./images/modelperformance-improved-pr.png used on inpu
-t line 158.
+t line 161.
 (pdftex.def)             Requested size: 199.16928pt x 138.66391pt.
 
-<./images/modelperformance-best-roc.png, id=134, 407.5225pt x 284.06125pt>
+<./images/modelperformance-best-roc.png, id=135, 407.5225pt x 284.06125pt>
 File: ./images/modelperformance-best-roc.png Graphic file (type png)
 
 <use ./images/modelperformance-best-roc.png>
 Package pdftex.def Info: ./images/modelperformance-best-roc.png used on input l
-ine 170.
+ine 173.
 (pdftex.def)             Requested size: 199.16928pt x 138.83145pt.
 
-<./images/modelperformance-best-pr.png, id=135, 392.46625pt x 266.9975pt>
+<./images/modelperformance-best-pr.png, id=136, 392.46625pt x 266.9975pt>
 File: ./images/modelperformance-best-pr.png Graphic file (type png)
 
 <use ./images/modelperformance-best-pr.png>
 Package pdftex.def Info: ./images/modelperformance-best-pr.png used on input li
-ne 171.
+ne 174.
 (pdftex.def)             Requested size: 199.16928pt x 135.49876pt.
  [6 <./images/modelperformance-improved-roc.png> <./images/modelperformance-imp
 roved-pr.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 178--185
+Underfull \hbox (badness 10000) in paragraph at lines 181--188
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 178--185
+Underfull \hbox (badness 10000) in paragraph at lines 181--188
 
  []
 
@@ -897,12 +902,12 @@ png>]
 Missing character: There is no â in font cmr12!
 Missing character: There is no € in font cmr12!
 Missing character: There is no “ in font cmr12!
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 201.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 204.
  [8]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 201.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 204.
  (./Team40_MortalityPrediction.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 201.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 201.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 204.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 204.
 Package rerunfilecheck Info: File `Team40_MortalityPrediction.out' has not chan
 ged.
 (rerunfilecheck)             Checksum: 3482AEE04CCC53C1FEE5CBA713BE03DC;1186.
@@ -927,10 +932,10 @@ sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr
 /local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/l
 ocal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
 cal/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on Team40_MortalityPrediction.pdf (8 pages, 662564 bytes).
+Output written on Team40_MortalityPrediction.pdf (8 pages, 663939 bytes).
 PDF statistics:
- 208 PDF objects out of 1000 (max. 8388607)
- 174 compressed objects within 2 object streams
+ 209 PDF objects out of 1000 (max. 8388607)
+ 175 compressed objects within 2 object streams
  47 named destinations out of 1000 (max. 500000)
  172 words of extra memory for PDF output out of 10000 (max. 10000000)
 
