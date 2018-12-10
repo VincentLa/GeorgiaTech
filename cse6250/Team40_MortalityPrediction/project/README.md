@@ -11,7 +11,7 @@ conda env create -f environment.yml
 ```
 
 ## Running Code
-All of our code can be found within the [hive_project/code](./hive_project/code) and [hive_project/etl](./hive_project/etl) directories.
+All of our code can be found within the [hive_project/code](./hive_project/code) and [hive_project/etl](./hive_project/code/etl) directories.
 
 Once ETL and other transformations are done and data is loaded into the DB, then you can run the Machine Learning Model. The Machine Learning Model is done in a Jupyter Notebook in [ML Notebook.ipynb](./hive_project/code/ML Notebook.ipynb).
 
