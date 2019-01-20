@@ -1,0 +1,203 @@
+\documentclass[12pt, final]{article}
+\usepackage{fullpage,amsthm,amsfonts,amsmath}
+\usepackage{enumerate}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{epsfig}
+\usepackage{epstopdf}
+\usepackage{datatool}
+\usepackage{array}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{tabularx, booktabs}
+\usepackage{pdfpages}
+\usepackage{standalone}
+\usepackage{hyperref}
+\usepackage{subfigure}
+\usepackage{graphicx}
+\hypersetup{colorlinks = true, urlcolor = blue, filecolor = blue, linkcolor = blue}
+\floatstyle{plaintop}
+\restylefloat{table}
+\renewcommand{\thefootnote}{$\star$} 
+
+\begin{document}
+\title{Exploring Educational Technology (Spring 2019) Assignment 2}
+
+\date{\today}
+
+%%
+\renewcommand{\thefootnote}{$\dag$}
+%%
+\author{Vincent La\footnote{vincent.la@gatech.edu}}
+
+\maketitle
+
+\begin{abstract}
+This assignment surveys the expanse of educational technology research community. We will look at a variety of types of sources to survey how the field has targeted different audiences, different specific content areas, and different technologies. We will focus our discussion around seven different categories: Technology, Audience, Content, Sociotechnical Issue, Theory, Medium, and Methodology. 
+\end{abstract} 
+
+\newpage
+%%%%%
+\renewcommand{\thefootnote}{\number\value{footnote}} 
+%%%%%
+\section{Source 1: Can Online Delivery increase Access to Education} \label{Source 1}
+For my first source, I cite a research paper Goodman (2019) \cite{Goodman} as it researches whether or not Online Delivery increases Access to Education. Furthermore, it uses data from OMSCS which I thought was really interesting!
+\\
+\\
+The paper was originally distributed as a working paper via National Bureau of Economic Research and was eventually published in the Journal of Labor Economics. The paper is the first that investigates whether online education actually affects the number of people pursuing education. Using the OMSCS program, the paper uses a Regression Discontinuity approach with exploits an admissions threshold that shows that access to the online option actually does increase enrollment into education. In conclusion, it estimates that OMSCS will boost the annual production of US CS Masters Degrees by about seven percent!
+
+\subsection{Technology}
+\textit{What technology or technologies does the source use? For example: chatbots, data analytics, virtual reality, wearable devices, etc.}
+\\
+\\
+The technology that the source uses is Data Analytics/Statistics primarily using Regression discontinuity technique to try to estimate causal effects of the program on number of people pursuing education. Specifically, in the very first cohort, the program's  admission officer read applications in descending order of undergraduate GPA until he had identified about 500 applicants to which immediate admission was offered. As a result, such offers were made only to those with a GPA of at least 3.26, a threshold that was arbitrary and unknown to applicants. The officer eventually read all of the applications and some of those below the threshold were offered deferred admission. A regression discontinuity design shows this admissions process created at the threshold a roughly 20 percentage point difference in the probability
+of admission to the online program. The paper then used National Student Clearning House data to compare enrollment outcomes for those applications just under vs just over the threshold. 
+
+\subsection{Audience}
+\textit{Who is the target audience for the source? For example: K-12 students, working professionals, informal learners, etc.}
+\\
+\\
+Audience is for the academic (Economics) research community, program administrators, policy makers.
+
+\subsection{Content}
+\textit{What content is being taught by the source? For example: computer science, math, writing, geography, etc.}
+\\
+\\
+Labor Economics
+
+\subsection{Sociotechnical Issue}
+\textit{What issue is the source addressing? For example: access to technology, gender disparities in technology use, use of technology for social good or social evil, etc.}
+\\
+\\
+Access to Education, especially for mid-career adults who may not have good access to affordable but high quality education.
+
+\subsection{Theory}
+\textit{What learning theory is the source leveraging or investigating? For example: communities of practice, social learning, spaced repetition, etc.}
+\\
+\\
+Communities of practice as it is studying the overall mechanism of how Online Masters programs (specifically OMSCS) affects enrollment into academic institution.
+
+\subsection{Medium}
+\textit{What medium is the source using to deliver its idea? For example: traditional classrooms, MOOCs, informal museum displays, etc.}
+\\
+\\
+Research Paper published in Academic Journal.
+
+\subsection{Methodology}
+\textit{How does the source investigate its idea? For example: controlled experiments, surveys and interviews, naturalistic observation, etc.}
+\\
+\\
+Quasi-experimental using Regression discontinuity design on observational data due to exploiting the fact that the very first OMSCS cohort had a artificial GPA cutoff.
+
+\section{Source 2: Evaluating Teachers: The important role of value-added} \label{Source 2}
+
+The next source we will discuss is Glazerman (2010). This paper was published in the Brown Center on Education Policy at Brookings. This source is a survey study on ``Value-Added" methodologies to measure effectiveness of teachers (generally in the K-12 range). In summary, ``Value-Added" refers to the measurement of the evaluation of teachers based on the contribution they make to the learning of their students. However, it has been controversial since many Value-Added methodologies use standardized test scores as the base data. Standardized test scores may not fully capture the nuance of the true contributions that a teacher makes on a student. Furthermore, it is very difficult to separate out value added of the teacher vs student characteristics. In particular, naively looking at test scores of schools in worse neighborhoods correlated with worse socioeconomic characteristics would imply systems level problems, not teacher-specific.
+\\
+\\
+That being said, this paper discusses the merits of ``Value-Added" methodologies. Current methods are clearly not working. In many school districts where the teachers are evaluated on a "binary" metric (e.g. Satisfactory vs not) most teachers are given "satisfactory" evaluations with no differentiation between teachers who contribute a lot and are high performing vs low-performing teachers. In addition, ``Value-Added" methodologies, although imperfect have been shown to have definitely non-zero relationship with educational outcomes. 
+
+\subsection{Technology}
+\textit{What technology or technologies does the source use? For example: chatbots, data analytics, virtual reality, wearable devices, etc.}
+\\
+\\
+This source uses data analytics, regression methods using ``Value-Added" methodologies. For further technical discussion, the seminal paper on applying ``Value-Added" methodologies within education is McCaffrey (2004) \cite{McCaffrey}.
+
+\subsection{Audience}
+\textit{Who is the target audience for the source? For example: K-12 students, working professionals, informal learners, etc.}
+\\
+\\
+K-12 students and professionals, policy makers, teachers.
+
+\subsection{Content}
+\textit{What content is being taught by the source? For example: computer science, math, writing, geography, etc.}
+\\
+\\
+Education Statistics, Economics
+
+\subsection{Sociotechnical Issue}
+\textit{What issue is the source addressing? For example: access to technology, gender disparities in technology use, use of technology for social good or social evil, etc.}
+\\
+\\
+How do we properly evaluate teachers to better differentiate and improve our education system
+
+\subsection{Theory}
+\textit{What learning theory is the source leveraging or investigating? For example: communities of practice, social learning, spaced repetition, etc.}
+\\
+\\
+Communities of practice as the source and the results from the source are about who should constitute as our children's educators.
+
+\subsection{Medium}
+\textit{What medium is the source using to deliver its idea? For example: traditional classrooms, MOOCs, informal museum displays, etc.}
+\\
+\\
+Research Paper
+
+\subsection{Methodology}
+\textit{How does the source investigate its idea? For example: controlled experiments, surveys and interviews, naturalistic observation, etc.}
+\\
+\\
+Value added regression methodology. Again see McCaffrey (2004) \cite{McCaffrey} for the seminal paper on using ``Value Added" in education.
+
+
+\section{Source 3: } \label{Source 3}
+The above two sources were sourced from Economics and Education sources (although different topics -- College vs K-12 and studying very different topics). In the next couple of sources, I'll talk more about AI in Education. 
+\\
+\\
+The next source I review is Diana (2018) \cite{Diana}. 
+
+\subsection{Technology}
+\textit{What technology or technologies does the source use? For example: chatbots, data analytics, virtual reality, wearable devices, etc.}
+
+\subsection{Audience}
+\textit{Who is the target audience for the source? For example: K-12 students, working professionals, informal learners, etc.}
+
+\subsection{Content}
+\textit{What content is being taught by the source? For example: computer science, math, writing, geography, etc.}
+
+\subsection{Sociotechnical Issue}
+\textit{What issue is the source addressing? For example: access to technology, gender disparities in technology use, use of technology for social good or social evil, etc.}
+
+\subsection{Theory}
+\textit{What learning theory is the source leveraging or investigating? For example: communities of practice, social learning, spaced repetition, etc.}
+
+\subsection{Medium}
+\textit{What medium is the source using to deliver its idea? For example: traditional classrooms, MOOCs, informal museum displays, etc.}
+
+\subsection{Methodology}
+\textit{How does the source investigate its idea? For example: controlled experiments, surveys and interviews, naturalistic observation, etc.}
+
+\section{Source 4: } \label{Source 4}
+
+\subsection{Technology}
+\textit{What technology or technologies does the source use? For example: chatbots, data analytics, virtual reality, wearable devices, etc.}
+
+\subsection{Audience}
+\textit{Who is the target audience for the source? For example: K-12 students, working professionals, informal learners, etc.}
+
+\subsection{Content}
+\textit{What content is being taught by the source? For example: computer science, math, writing, geography, etc.}
+
+\subsection{Sociotechnical Issue}
+\textit{What issue is the source addressing? For example: access to technology, gender disparities in technology use, use of technology for social good or social evil, etc.}
+
+\subsection{Theory}
+\textit{What learning theory is the source leveraging or investigating? For example: communities of practice, social learning, spaced repetition, etc.}
+
+\subsection{Medium}
+\textit{What medium is the source using to deliver its idea? For example: traditional classrooms, MOOCs, informal museum displays, etc.}
+
+\subsection{Methodology}
+\textit{How does the source investigate its idea? For example: controlled experiments, surveys and interviews, naturalistic observation, etc.}
+
+\subsection{Feature Extraction}
+Now that we have done some data exploration, this next section will discuss feature extraction and what features we actually used in our model to predict mortality.
+
+  \begin{thebibliography}{1}
+   \bibitem{Diana} Diana, N. (2018, June). Leveraging Educational Technology to Improve the Quality of Civil Discourse. In International Conference on Artificial Intelligence in Education (pp. 517-520). Springer, Cham.
+    \bibitem{Glazerman} Glazerman, S., Loeb, S., Goldhaber, D., Raudenbush, D., Staiger, D., \& Whitehurst, G.J. (2010). Evaluating teachers: The important role of value-added. The Brookings Brown Center.
+    \bibitem{Goodman} Goodman, J., Melkers, J., \& Pallais, A. (2019). Can online delivery increase access to education?. Journal of Labor Economics, 37(1), 000-000.
+    \bibitem{McCaffrey} McCaffrey, D. F., Lockwood, J. R., Koretz, D., Louis, T. A., \& Hamilton, L. (2004). Models for value-added modeling of teacher effects. Journal of educational and behavioral statistics, 29(1), 67-101.
+  \end{thebibliography}
+\end{document}
