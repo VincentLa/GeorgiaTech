@@ -1,6 +1,6 @@
 *.mp4
 vla6_exam*
-.DS_Store
+*.DS_Store
 *.pyc
 *.csv.gz
 

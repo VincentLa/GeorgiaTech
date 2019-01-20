@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  20 JAN 2019 13:44
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  20 JAN 2019 14:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -873,50 +873,148 @@ Underfull \hbox (badness 10000) in paragraph at lines 138--142
  []
 
 
-LaTeX Warning: Citation `Diana' on page 5 undefined on input line 148.
+Underfull \hbox (badness 10000) in paragraph at lines 145--145
+[][][]\OT1/cmr/m/n/10 Note that many in-ter-est-ing pa-pers were high-lighted i
+n this blog post:
+ []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 145--149
+Underfull \hbox (badness 10000) in paragraph at lines 145--145
+\OT1/cmr/m/n/10 https://www.veletsianos.com/2018/06/27/10-interesting-papers-in
+-the-proceedings-of-the-artificial-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 145--152
 
  []
 
-[5] [6]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 203.
- [7]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 203.
+
+Underfull \hbox (badness 10000) in paragraph at lines 145--152
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 154--158
+
+ []
+
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 160--164
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 166--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 172--176
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 178--182
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 184--188
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 190--194
+
+ []
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 199--203
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 205--209
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 211--215
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 217--221
+
+ []
+
+[7]
+Underfull \hbox (badness 10000) in paragraph at lines 223--227
+
+ []
+
+
+Overfull \hbox (3.39563pt too wide) in paragraph at lines 223--227
+\OT1/cmr/m/n/12 Community of In-quiry Model, So-cial Learn-ing -- (study-ing on
+-line com-mu-nity learn-ing threads) 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 229--233
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 235--239
+
+ []
+
+[8]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 247.
+ [9]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 247.
  (./vla_assignment2.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 203.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 203.
-Package rerunfilecheck Info: File `vla_assignment2.out' has not changed.
-(rerunfilecheck)             Checksum: CF029D93139A83B252FB1FDA64F04344;2017.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 247.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 247.
 
 
-LaTeX Warning: There were undefined references.
+Package rerunfilecheck Warning: File `vla_assignment2.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
 
+Package rerunfilecheck Info: Checksums for `vla_assignment2.out':
+(rerunfilecheck)             Before: 5B39C4AE303A50D7DF96C10C08D6FE7E;2092
+(rerunfilecheck)             After:  AE6BF500D0F50DAF74B6A90323D72792;2110.
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 12513 strings out of 492649
- 188497 string characters out of 6129622
- 336958 words of memory out of 5000000
- 16082 multiletter control sequences out of 15000+600000
- 9656 words of font info for 37 fonts, out of 8000000 for 9000
+ 12542 strings out of 492649
+ 188792 string characters out of 6129622
+ 337091 words of memory out of 5000000
+ 16100 multiletter control sequences out of 15000+600000
+ 13696 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 53i,11n,92p,970b,331s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
-></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></
-usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
-r/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/
-local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/l
-ocal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/loc
-al/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on vla_assignment2.pdf (7 pages, 120131 bytes).
+ 53i,11n,92p,1006b,452s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{subsection.4.8} has been referenced but does not 
+exist, replaced by a fixed one
+
+</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
+/usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></
+usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></us
+r/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/
+local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/lo
+cal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local
+/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/te
+xlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/tex
+live/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texli
+ve/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on vla_assignment2.pdf (9 pages, 141195 bytes).
 PDF statistics:
- 224 PDF objects out of 1000 (max. 8388607)
- 204 compressed objects within 3 object streams
- 46 named destinations out of 1000 (max. 500000)
+ 247 PDF objects out of 1000 (max. 8388607)
+ 223 compressed objects within 3 object streams
+ 50 named destinations out of 1000 (max. 500000)
  265 words of extra memory for PDF output out of 10000 (max. 10000000)
 
