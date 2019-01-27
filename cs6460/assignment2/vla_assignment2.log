@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  20 JAN 2019 14:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  26 JAN 2019 16:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -971,12 +971,546 @@ Underfull \hbox (badness 10000) in paragraph at lines 235--239
  []
 
 [8]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 247.
- [9]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 247.
+
+LaTeX Warning: Citation `Agarwal' on page 9 undefined on input line 267.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 270--274
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 276--280
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 282--286
+
+ []
+
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 288--292
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 294--298
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 300--304
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 306--310
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 317--321
+
+ []
+
+[10]
+Underfull \hbox (badness 10000) in paragraph at lines 323--327
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 329--333
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 335--339
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 341--345
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 347--351
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 353--357
+
+ []
+
+[11]
+Underfull \hbox (badness 10000) in paragraph at lines 364--368
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 370--374
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 376--380
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 382--386
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 388--392
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 394--398
+
+ []
+
+[12]
+Underfull \hbox (badness 10000) in paragraph at lines 400--404
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 411--415
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 417--421
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 423--427
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 429--433
+
+ []
+
+[13]
+Underfull \hbox (badness 10000) in paragraph at lines 435--439
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 441--445
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 447--451
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 458--462
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 464--468
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 470--474
+
+ []
+
+[14]
+Underfull \hbox (badness 10000) in paragraph at lines 476--480
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 482--486
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 488--492
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 494--498
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 505--509
+
+ []
+
+[15]
+Underfull \hbox (badness 10000) in paragraph at lines 511--515
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 517--521
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 523--527
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 529--533
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 535--539
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 541--545
+
+ []
+
+[16]
+Underfull \hbox (badness 10000) in paragraph at lines 552--556
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 558--562
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 564--568
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 570--574
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 576--580
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 582--586
+
+ []
+
+[17]
+Underfull \hbox (badness 10000) in paragraph at lines 588--592
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 599--603
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 605--609
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 611--615
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 617--621
+
+ []
+
+[18]
+Underfull \hbox (badness 10000) in paragraph at lines 623--627
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 629--633
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 635--639
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 644--648
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 650--654
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 656--660
+
+ []
+
+[19]
+Underfull \hbox (badness 10000) in paragraph at lines 662--666
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 668--672
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 674--678
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 680--684
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 691--695
+
+ []
+
+[20]
+Underfull \hbox (badness 10000) in paragraph at lines 697--701
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 703--707
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 709--713
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 715--719
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 721--725
+
+ []
+
+
+Overfull \hbox (1.4227pt too wide) in paragraph at lines 729--729
+[]\OT1/cmr/bx/n/17.28 Source 16: Au-to-mated Pitch Con-ver-gence Im-proves
+ []
+
+[21]
+Underfull \hbox (badness 10000) in paragraph at lines 735--739
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 741--745
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 747--751
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 753--757
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 759--763
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 765--769
+
+ []
+
+[22]
+Underfull \hbox (badness 10000) in paragraph at lines 771--775
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 782--786
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 788--792
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 794--798
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 800--804
+
+ []
+
+[23]
+Underfull \hbox (badness 10000) in paragraph at lines 806--810
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 812--816
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 818--822
+
+ []
+
+
+Overfull \hbox (15.51271pt too wide) in paragraph at lines 823--823
+[]\OT1/cmr/bx/n/17.28 Source 18: Time Se-ries Model for Pre-dict-ing Dropout
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 829--833
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 835--839
+
+ []
+
+[24]
+Underfull \hbox (badness 10000) in paragraph at lines 841--845
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 847--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 853--857
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 859--863
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 865--869
+
+ []
+
+[25]
+Underfull \hbox (badness 10000) in paragraph at lines 876--880
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 882--886
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 888--892
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 894--898
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 900--904
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 906--910
+
+ []
+
+[26]
+Underfull \hbox (badness 10000) in paragraph at lines 912--916
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 923--927
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 929--933
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 935--939
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 941--945
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 947--951
+
+ []
+
+[27]
+Underfull \hbox (badness 10000) in paragraph at lines 953--957
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 959--963
+
+ []
+
+[28] [29]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 986.
+ [30]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 986.
  (./vla_assignment2.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 247.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 247.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 986.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 986.
 
 
 Package rerunfilecheck Warning: File `vla_assignment2.out' has changed.
@@ -984,37 +1518,37 @@ Package rerunfilecheck Warning: File `vla_assignment2.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `vla_assignment2.out':
-(rerunfilecheck)             Before: 5B39C4AE303A50D7DF96C10C08D6FE7E;2092
-(rerunfilecheck)             After:  AE6BF500D0F50DAF74B6A90323D72792;2110.
+(rerunfilecheck)             Before: 2B3309A43FE1A2C8228021E37261E3DF;10871
+(rerunfilecheck)             After:  BE1564E0B2273A300035A1171B7FD60B;10963.
+
+LaTeX Warning: There were undefined references.
+
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 12542 strings out of 492649
- 188792 string characters out of 6129622
- 337091 words of memory out of 5000000
- 16100 multiletter control sequences out of 15000+600000
- 13696 words of font info for 53 fonts, out of 8000000 for 9000
+ 12863 strings out of 492649
+ 193224 string characters out of 6129622
+ 339247 words of memory out of 5000000
+ 16258 multiletter control sequences out of 15000+600000
+ 14003 words of font info for 54 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 53i,11n,92p,1006b,452s stack positions out of 5000i,500n,10000p,200000b,80000s
-pdfTeX warning (dest): name{subsection.4.8} has been referenced but does not 
-exist, replaced by a fixed one
-
-</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
-/usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></
-usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></us
-r/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/
-local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/lo
-cal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local
-/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/te
-xlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/tex
-live/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texli
-ve/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on vla_assignment2.pdf (9 pages, 141195 bytes).
+ 53i,11n,92p,1006b,451s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+</usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></
+usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
+r/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/
+local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/loc
+al/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/
+texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/t
+exlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/tex
+live/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on vla_assignment2.pdf (30 pages, 184552 bytes).
 PDF statistics:
- 247 PDF objects out of 1000 (max. 8388607)
- 223 compressed objects within 3 object streams
- 50 named destinations out of 1000 (max. 500000)
- 265 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 907 PDF objects out of 1000 (max. 8388607)
+ 856 compressed objects within 9 object streams
+ 213 named destinations out of 1000 (max. 500000)
+ 1281 words of extra memory for PDF output out of 10000 (max. 10000000)
 
