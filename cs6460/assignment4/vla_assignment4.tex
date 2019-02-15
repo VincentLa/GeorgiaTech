@@ -1,0 +1,91 @@
+\documentclass[12pt, final]{article}
+\usepackage{fullpage,amsthm,amsfonts,amsmath}
+\usepackage{enumerate}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{epsfig}
+\usepackage{epstopdf}
+\usepackage{datatool}
+\usepackage{array}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{tabularx, booktabs}
+\usepackage{pdfpages}
+\usepackage{standalone}
+\usepackage{hyperref}
+\usepackage{subfigure}
+\usepackage{graphicx}
+\hypersetup{colorlinks = true, urlcolor = blue, filecolor = blue, linkcolor = blue}
+\floatstyle{plaintop}
+\restylefloat{table}
+\renewcommand{\thefootnote}{$\star$} 
+
+\begin{document}
+\title{Exploring Your Problem (Spring 2019) Assignment 4}
+
+\date{\today}
+
+%%
+\renewcommand{\thefootnote}{$\dag$}
+%%
+\author{Vincent La\footnote{vincent.la@gatech.edu}}
+
+\maketitle
+
+\begin{abstract}
+This assignment narrows in on a particular problem, define it, and frame it in the terms of the literature I've found so far. Based on previous literature review and assignments, I choose to focus more on the problem of detecting Fake News. The track that I am likely to pursue will be a Research Track to train a model to predict Fake News. However, there will also be cross with Development track as I will look to build an application that not only predicts Fake news, but also an application where users can submit Fake News and labels of whether or not news is Fake. The specific use case that I will focus on is classifying Tweets from Twitter and whether or not the Tweet is sharing news that is Fake. The reason why I think this is important is that since the 2016 election, many political officials, including our President have taken to Twitter to disseminate a lot of communication and connect with their base. Thus a tool specifically for Twitter would be very helpful for the public.
+\end{abstract} 
+
+\newpage
+%%%%%
+\renewcommand{\thefootnote}{\number\value{footnote}} 
+%%%%%
+\section{Problem Statement}
+Overall, the problem that I want to solve is the fact that most people in the world today cannot easily disseminate which information they are receiving is false and which is true. Given that our world is more connected than ever before, social media plays a huge role in allowing people to interact with each other in ways never imagined before. In fact, I would argue that social media not only facilitates interactions, but also education as people share news links and statements that educate and persuade their followers. However, the problem is that receivers of these statements have no way to easily discern whether what they are reading is true or not; in fact, many place their trust in the person generating the statement and the default is to accept it as fact. Given the asymmetric dynamics at play though (it is much easier to generate fake news than prove that it is false), this means that many people are misinformed about issues and at worse creates divided communities where people remain in their own ``echo chambers" and point fingers at other communities.
+\\
+\\
+The problem that I want to focus most specifically on is in the context of \textit{politics}. That is communications by our political leaders. To scope the problem to something tractable in the context of this class, I will look to build an application that can detect Fake news in the context of Twitter.
+
+\section{Literature Review}
+Generally, the application of Natural Language Processing in Education has been on the rise over the past few decades. For example, Ferreira (2018) \cite{Ferreira}, discussed in the International Conference on Artificial Intelligence in Education in 2018, describes how to use Natural Language Processing and Topic Modeling to evaluate students' use of asynchronous discussions (e.g. on an Online Platform like Piazza) in online learning environments. What's interesting is how the paper examines students' cognitive development across different course topics. Burstein (2007) \cite{Burstein} also goes through a survey of how NLP has been applied to Education related topics.
+\\
+\\
+More recently NLP and Deep Learning has surfaced in applications to detect ``Fake News". This is because of the relatively recent rise of this phenomenon now that social media has become such a part of our everyday lives. As Bovet (2019) \cite{Bovet} examine, the influence and scale of Fake news exponentially escalated in 2016 with the influx of mass-scale Social Media over the past decade. In Bovet (2019) \cite{Bovet} the authors investigate the influence of fake news in Twitter during the 2016 Presidential Election. Using a data set of 171 million tweets in the five months preceeding election day, 25\% of these tweets spread either fake or extremely biased news. In addition, Polletta (2019) \cite{Polletta} provide deep stories and narratives around storytelling and the role of fake news in the Trump era. Furthermore, Next,  Allcott \cite{Allcott} discusses the usage of fake news in the 2016 election circulated through Social Media. I find this a very core \textit{Education} issue as Political Education, or the general public's knowledge about the true state of our government and politics is very important. In addition, Pennycook (2018) \cite{Pennycook} investigates the type of people that are likely to believe in fake news. Given that fake news is extremely easy to disseminate and relatively much harder to disprove, the potential negative impact of fake news on our public's education and trust of the system is immense, and solving this problem is one of the biggest and truly unprecedented problems of the 21st century.
+\\
+\\
+On existing literature, there have been many papers that have examined trying to build machine learning to detect fake news. Gurav (2019) \cite{Gurav} provides a survey study on Automated Systems developed for Fake News Detection using NLP \& Other Machine Learning Techniques. In this paper, they cite Gilda (2017) \cite{Gilda} who shows how NLP can be relevant to detect fake information. They used time period frequency-inverse frequency (TF-IDF) of bi-grams and probabilistic context free grammar detection. Buntain (2017) \cite{Buntain} use Twitter data and use NLP and ML to predict Twitter tweets that are propagating fake news. To do this, they use two-credibility focused Twitter datasets - CREDBANK, a crowdsourced dataset of accuracy assessments for events in Twitter, and PHEME, a dataset of potential rumors in Twitter and journalistic assessments of their accuracies. They apply this model to Twitter content sourced form BuzzFeed's fake news data set and show that models trained against crowdsourced workers outperform models based on journalists' assessments and models trained on apooled dataset of both crowdsourced workers and journalists. Rashkin (2017) \cite{Rashkin} uses NLP to find the types of language and wording that is typically used in fake news. Conroy (2015) \cite{Conroy} also discuss methodologies used to detect fake news.
+\\
+\\
+In addition to research papers that use existing datasets and conduct NLP and Machine Learning to predict Fake news, Diana (2018)  \cite{Diana} proposes one step further. This paper was the inspiration for me in tackling this problem because I think this paper takes the previously cited literature one step further. This paper was initially presented in the Artificial Intelligence in Education 2018 Conference.  This paper offers a interesting perspective: to use AI to build a process to classify what is "Fake news" vs real. This potentially gives a chance to classify such news at scale. To be more specific, in this paper, they propose building a tool that allows users to become educated on what fake news is and how one would detect fake news. This is important as models are not necessarily sufficient. We need to educate people on how to use their own judgement and figure out what is fake vs what is real. Second, the paper proposes building an app where users could label sources as fake or not. This is important as this allows the construction of bigger and bigger labeled datasets which could then be used for Machine Learning and improving our algorithms. I can imagine building an application similar to what Diana (2018) \cite{Diana} proposes, but specifically for Twitter Data.
+
+\section{Existing Applications and Tools}
+In terms of industry applications, Eyeo GmbH (Wladimir Palant), a German software development company, has produced a Fake News Detector as a Google Chrome Extension \cite{Eyeo}. There are similar tools as well, for example Fake News Detector \cite{Fake} which is open sourced. In addition, there is Fake News Detector AI produced by Karan Singhai \cite{Singhai}. This particular application works by the user entering a website, and then the website uses a neural network to predict whether the website has fake news.
+\\
+\\
+All of these tools offer interesting solutions and machine learning models that can be applied to what is in the user's browsers. However, there are certainly additions that can be made and improvements. For example, none of these tools allow users to add to the central datasets and add labeled data to allow for iteration and feedback to improve the machine learning models. For example, I think a great addition would be a combination of papers and industry tools cited above in addition to Wang (2017) \cite{Wang} to contribute back to baseline datasets that can be used for further Machine Learning. In addition, none of these tools are plugged into a widely used application. In particular, a lot of people consume news through Twitter. However, there is nothing out there that can analyze a set of tweets (for example tweets from President Donald Trump) and automatically classify and inform users whether the tweet is false or not. This is an important application as the President tweets very often and we need a way to know if what he is saying is true or not.
+
+\section{Conclusion}
+In conclusion, the problem that I am trying to solve is both a ``Research" and ``Development" track problem to build an application that will allow users to easily discern what information they are receiving is true or false. More specifically, I want to train a model on Twitter data to predict which Tweets are spreading false news or not. I believe that this problem is worth solving given the immense pervasiveness that Twitter has and how many users it has. As Ott (2017) \cite{Ott} discusses, in his first year as President, Donald issued 2,568 tweets, amounting to almost 7 tweets per day. This is an incredible amount of information that the President is issuing, and we need a way to combat when those tweets are spreading false news. As discussed previously, there are various researchers who are working on models to detect fake news, but there have not yet been any applications that can plug into Twitter to help users discern Fake news.
+
+  \begin{thebibliography}{1}
+  \bibitem{Allcott} Allcott, H., \& Gentzkow, M. (2017). Social media and fake news in the 2016 election. Journal of Economic Perspectives, 31(2), 211-36.
+  \bibitem{Bovet} Bovet, A., \& Makse, H. A. (2019). Influence of fake news in Twitter during the 2016 US presidential election. Nature communications, 10(1), 7.
+  \bibitem{Buntain} Buntain, C., \& Golbeck, J. (2017, November). Automatically Identifying Fake News in Popular Twitter Threads. In Smart Cloud (SmartCloud), 2017 IEEE International Conference on (pp. 208-215). IEEE.
+  \bibitem{Burstein} Burstein, J. (2009, March). Opportunities for natural language processing research in education. In International Conference on Intelligent Text Processing and Computational Linguistics (pp. 6-27). Springer, Berlin, Heidelberg.
+  \bibitem{Conroy} Conroy, N. J., Rubin, V. L., \& Chen, Y. (2015, November). Automatic deception detection: Methods for finding fake news. In Proceedings of the 78th ASIS\&T Annual Meeting: Information Science with Impact: Research in and for the Community (p. 82). American Society for Information Science.
+   \bibitem{Diana} Diana, N. (2018, June). Leveraging Educational Technology to Improve the Quality of Civil Discourse. In International Conference on Artificial Intelligence in Education (pp. 517-520). Springer, Cham.
+   \bibitem{Eyeo} Eyeo GmbH. (2019) Eyeo [Mobile Application Software]. Retrieved from https://chrome.google.com/webstore/detail/trusted-news-for-google-c/koejmcafidkcjlncgkpjfbijkhkpchei
+   \bibitem{Fake} Fake News Detector (2019) Fake News Detector [Mobile Application Software]. Retrieved from https://github.com/fake-news-detector
+   \bibitem{Ferreira} Ferreira, R., Kovanovic, V., Gasevic, D., Rolim, V. (2018, June). Towards Combined Network and Text Analytics of Student Discourse in Online Discussions. In International Conference on Artificial Intelligence in Education (pp. 111-126). Springer, Cham.
+   \bibitem{Gilda} Gilda, S. (2017, December). Evaluating machine learning algorithms for fake news detection. In Research and Development (SCOReD), 2017 IEEE 15th Student Conference on (pp. 110-115). IEEE.
+    \bibitem{Gurav} Gurav, S., Sase, S., Shinde, S., Wabale, P., \& Hirve, S. (2019). Survey on Automated System for Fake News Detection using NLP \& Machine Learning Approach.
+    \bibitem{Ott} Ott, B. L. (2017). The age of Twitter: Donald J. Trump and the politics of debasement. Critical Studies in Media Communication, 34(1), 59-68.
+    \bibitem{Pennycook} Pennycook, G., \& Rand, D. G. (2018). Who falls for fake news? The roles of bullshit receptivity, overclaiming, familiarity, and analytic thinking.
+    \bibitem{Polletta} Polletta, F., \& Callahan, J. (2019). Deep stories, nostalgia narratives, and fake news: Storytelling in the Trump era. In Politics of Meaning/Meaning of Politics (pp. 55-73). Palgrave Macmillan, Cham.
+    \bibitem{Rashkin} Rashkin, H., Choi, E., Jang, J. Y., Volkova, S., \& Choi, Y. (2017). Truth of varying shades: Analyzing language in fake news and political fact-checking. In Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing (pp. 2931-2937).
+    \bibitem{Singhai} Singhai, Karen (2019). Fake News Detector AI [Mobile Application]. Retrieved from http://www.fakenewsai.com/
+    \bibitem{Wang} Wang, W. Y. (2017). ``Liar, liar pants on fire": A new benchmark dataset for fake news detection. arXiv preprint arXiv:1705.00648.
+  \end{thebibliography}
+\end{document}
