@@ -1,0 +1,73 @@
+\documentclass[12pt, final]{article}
+\usepackage{fullpage,amsthm,amsfonts,amsmath}
+\usepackage{enumerate}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{epsfig}
+\usepackage{epstopdf}
+\usepackage{datatool}
+\usepackage{array}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{tabularx, booktabs}
+\usepackage{pdfpages}
+\usepackage{standalone}
+\usepackage{hyperref}
+\usepackage{subfigure}
+\usepackage{graphicx}
+\hypersetup{colorlinks = true, urlcolor = blue, filecolor = blue, linkcolor = blue}
+\floatstyle{plaintop}
+\restylefloat{table}
+\renewcommand{\thefootnote}{$\star$} 
+
+\usepackage{csquotes}
+\usepackage[style=apa]{biblatex}
+% \DeclareLanguageMapping{english}{english-apa}% no longer needed if you have recent (La)TeX installation
+\addbibresource{biblatex-examples.bib}% \bibliography{...} is legacy format
+
+\begin{document}
+\title{Collecting Your Sources (Spring 2019) Assignment 5}
+
+\date{\today}
+
+%%
+\renewcommand{\thefootnote}{$\dag$}
+%%
+\author{Vincent La\footnote{vincent.la@gatech.edu}}
+
+\maketitle
+
+\begin{abstract}
+Qualifier Question we will answer: You have narrowed your topic to an application that will allow K-12 students to be pen pals with each other more seamlessly across diverse areas of the country or even the globe that will filter out messages that are egregious, harmful, or hateful, but let's back up for a minute.  What societal benefits are gained from social learning through social media? What are the most successful ways of improving knowledge through social learning in the social media context? What are the risks of not filtering egregious, harmful, or hateful messages? What are the risks or effects of filtering these messages? Is there any impact on student engagement? Remember, the goal of the qualifier question is to prove you're ready to contribute to this community. So, you'll want your answer to be a bit longer and deeper, and especially well-referenced.
+\end{abstract} 
+
+\newpage
+%%%%%
+\renewcommand{\thefootnote}{\number\value{footnote}} 
+%%%%%
+
+\section{Qualifier Question Response}
+
+The main purpose of this application is to encourage young children (K-12) participate in social learning through an online application or ``social media". The application will connect young children with other young children in different communities to facilitate learning through engaging in conversations with other children from different backgrounds who offer different perspectives. To discuss the societal benefits that are gained from social learning through social media, I'll start by answering the converse; that is, how is the status quo currently detrimental to society? Currently, our inequity in our society is growing to unprecedented levels, Piketty (2015). What this means is that children are more and more growing up in communities where they do not have exposure to what life is like in other communities. This attitude breeds cynicism, discrimination, and xenophobia. For example, Colleoni (2014) examine this in depth from a political perspective on Twitter. What the authors find is that people, regardless of whether they identify as Democratic or Republican, often agree with a politician who identifies as such, even if their views are not necessarily Democratic or Republican. What this facilitates is a phenomenon often referred to as an ``echo chamber". That is, people only see the views and perspectives of what they expect and they keep only hearing those views. They come to believe only what they want and any other views are likely to be shunned, which further drives xenophobia. While Colleoni (2014) discuss this in the world of politics on mass social media, like Twitter, similar phenomenon is happening even with children. 
+\\
+\\
+There is enumerous literature that speak to the success of pen-pal relationships with children, especially in the traditional pen-pal methods. For example, Ceprano (1998) investigate a semester-long pen-pal project at 18 participating university language arts students, a class of first graders and their teacher, and the university instructors to become co‐learners in meaningful, action research. The weekly letters the university students exchanged with a class of first‐graders became the springboard for discussion. Insights about writing as derived by all participants are discussed and are accompanied with exemplary samples of children's emergent literacy. The authors find that children's growth in voice as well as the technical aspects of their writing improved. In addition, excerpts from the students' journals show that they were more aware of the effects of mediation on their own writing voice. I strongly believe that these positive effects can be demonstrated at scale and improve student engagement even in a ``social media" context as opposed to a ``traditional" pen-pal environment. 
+\\
+\\
+The closest existing application that I could find to what I would like to build is PenPal Schools, as Lie (2018) discuss. In Lie (2018), the authors look at a foreign country, Malaysia and look at the effect of the Pen Pal program. This is important to me because I would hope that my application could have global impact. The authors note that many Malaysian students have an aversion towards writing. This study explores the potential of using an online material, in the English as Second Language (ESL) classroom to develop writing skill with peers around the world via an online collaborative project. Thirty 12-year-old primary school students from Cheras, Selangor were chosen as the participants. After the March test, they were required to join PenPal Schools and take part in the online collaborative project.  The research used mixed-method design where quantitative data from pre- and post-tests and responses from semi-structured interviews were used to measure the outcome. The post test result reflected the improvement in their writing skill and it had found out that this educational website could make the writing lessons become more interesting as they could communicate and learn with peers around the world, particularly native speakers. This positive engagement and finding I think is great and hopeful that the particular application that I want to build that can build this out and prove it at scale would be extremely helpful. Thus, I strongly believe that an application that improves on this work, such as with better filtering of egregious, harmful, or hateful messages, and better match making to connect students can be conducive to learning.
+\\
+\\
+On the application of NLP, I think that filtering egregious, harmful, or hateful messages is quite important. Kou (2013) explore this topic in the context of a very popular video game, League of Legends. What they find is that because players are hidden behind the facade of a screen, they are more likely to display toxic behavior and lash out at other users. Because it might seem so impersonal, players are connected through the internet, there seems to be less filters. However, players on the receiving end have an extremely negative experience. Thus, Riot Games has taken upon itself to make sure to filter out those messages to ensure better behavior. Further risks are that if we don't filter hateful messages, our application could have the negative effect of not protecting at-risk communities, young women, etc. from being harassed. Of course, there is some risk of filtering messages, especially if we're filtering messages that aren't actually hateful. That could result in censoring, but it's definitely better to have false positives than false negatives. 
+
+  \begin{thebibliography}{1}
+  \bibitem{Ceprano} Ceprano, M. A., \& Garan, E. M. (1998). Emerging voices in a university pen‐pal project: Layers of discovery in action research. Literacy Research and Instruction, 38(1), 31-56.
+  \bibitem{Colleoni} Colleoni, E., Rozza, A., \& Arvidsson, A. (2014). Echo chamber or public sphere? Predicting political orientation and measuring political homophily in Twitter using big data. Journal of Communication, 64(2), 317-332.
+ \bibitem{Kou} Kou, Y., \& Nardi, B. (2013). Regulating anti-social behavior on the Internet: The example of League of Legends.
+  \bibitem{Lie} Lie, W. W., \& Yunus, M. M. (2018). Pen Pals Are Now in Your Finger Tips—A Global Collaboration Online Project to Develop Writing Skills.
+  \bibitem{Piketty} Piketty, T. (2015). About capital in the twenty-first century. American Economic Review, 105(5), 48-53.
+  \end{thebibliography}
+
+
+\end{document}
