@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  14 FEB 2019 18:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018) (preloaded format=pdflatex 2018.4.16)  24 FEB 2019 14:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -954,7 +954,7 @@ Package biblatex Info: ... file 'english.lbx' found.
 (/usr/local/texlive/2018/texmf-dist/tex/latex/biblatex/lbx/english.lbx
 File: english.lbx 2018/03/04 v3.11 biblatex localization (PK/MW)
 ))))
-No file vla_qualifier_question.aux.
+(./vla_qualifier_question.aux)
 \openout1 = `vla_qualifier_question.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
@@ -971,6 +971,7 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 30.
 LaTeX Font Info:    ... okay on input line 30.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 30.
 LaTeX Font Info:    ... okay on input line 30.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -1046,6 +1047,8 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 30.
 LaTeX Info: Redefining \pageref on input line 30.
 LaTeX Info: Redefining \nameref on input line 30.
+
+(./vla_qualifier_question.out) (./vla_qualifier_question.out)
 \@outlinefile=\write6
 \openout6 = `vla_qualifier_question.out'.
 
@@ -1095,45 +1098,28 @@ Underfull \hbox (badness 10000) in paragraph at lines 53--63
 
  []
 
-[2]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 73.
- [3]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 73.
+[2] [3]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 78.
+ [4]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 78.
  (./vla_qualifier_question.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 73.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 73.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 78.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 78.
+Package rerunfilecheck Info: File `vla_qualifier_question.out' has not changed.
 
-
-Package rerunfilecheck Warning: File `vla_qualifier_question.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `vla_qualifier_question.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  6D99200A9A07C5B4E61C94EEC76693B8;62.
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package biblatex Warning: Please (re)run Biber on the file:
-(biblatex)                vla_qualifier_question
-(biblatex)                and rerun LaTeX afterwards.
-
+(rerunfilecheck)             Checksum: 6D99200A9A07C5B4E61C94EEC76693B8;62.
 Package logreq Info: Writing requests to 'vla_qualifier_question.run.xml'.
 \openout1 = `vla_qualifier_question.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 19434 strings out of 492649
- 319436 string characters out of 6129622
- 869930 words of memory out of 5000000
- 22976 multiletter control sequences out of 15000+600000
+ 19453 strings out of 492649
+ 319728 string characters out of 6129622
+ 872354 words of memory out of 5000000
+ 22983 multiletter control sequences out of 15000+600000
  8695 words of font info for 34 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,11n,99p,1701b,3976s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,11n,99p,2570b,3976s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></
@@ -1141,10 +1127,10 @@ usr/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
 r/local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/
 local/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/l
 ocal/texlive/2018/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on vla_qualifier_question.pdf (3 pages, 93964 bytes).
+Output written on vla_qualifier_question.pdf (4 pages, 96028 bytes).
 PDF statistics:
- 58 PDF objects out of 1000 (max. 8388607)
- 45 compressed objects within 1 object stream
- 11 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 72 PDF objects out of 1000 (max. 8388607)
+ 58 compressed objects within 1 object stream
+ 17 named destinations out of 1000 (max. 500000)
+ 9 words of extra memory for PDF output out of 10000 (max. 10000000)
 
