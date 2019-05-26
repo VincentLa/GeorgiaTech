@@ -50,7 +50,7 @@ class DataCenter(Topo):
         #NOTE:  Switch to Switch links will be bw=10 delay=0
         #NOTE:  Hosts to Switch links will be bw=1 delay=1
         #NOTE:  Use the following configurations as appropriate when creating the links
-	swlinkConfig = {'bw': 10, 'delay': '0ms', 'max_queue_size': max_queue_size}
+        swlinkConfig = {'bw': 10, 'delay': '0ms', 'max_queue_size': max_queue_size}
         hostlinkConfig = {'bw': 1, 'delay': '1ms','max_queue_size': max_queue_size}
         tls = self.addSwitch('tls1')
         #TODO: Create your DataCenter Mininet Topology here!
@@ -59,8 +59,21 @@ class DataCenter(Topo):
         #NOTE: You MUST label low level switches s1x1, s1x2...s1xfi... sfix1, sfix2,... sfixfi  
         #NOTE: You MUST label hosts as h1x1x1, h1x1x2, ... hfixfixn     
         #HINT: Use a loop to construct the topology in pieces. Don't forget the link configuration.
+        
+        # Creating mid level switches
+        for f in range(1, fi + 1):
+            exec("mls%s = self.addSwitch('mls%s')" % (f, f))
+        
+        # Creating low level switches
+        for f in range(1, fi + 1):
+            for j in range(1, fi + 1):
+                exec("s%sx%s = self.addSwitch('s%sx%s')" % (f, j, f, j))
 
-
+        # Creating hosts
+        for f in range(1, fi + 1):
+            for j in range(1, fi + 1):
+                for number in range(1, n + 1):
+                    exec("h%sx%sx%s = self.addHost('h%sx%sx%s', **hostConfig)" % (f, j, number, f, j, number))
 
         
 def main():
