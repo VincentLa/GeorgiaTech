@@ -63,17 +63,20 @@ class DataCenter(Topo):
         # Creating mid level switches
         for f in range(1, fi + 1):
             exec("mls%s = self.addSwitch('mls%s')" % (f, f))
+            exec("self.addLink(tls, mls%s, **swlinkConfig)" % f)
         
         # Creating low level switches
         for f in range(1, fi + 1):
             for j in range(1, fi + 1):
                 exec("s%sx%s = self.addSwitch('s%sx%s')" % (f, j, f, j))
+                exec("self.addLink(mls%s, s%sx%s, **swlinkConfig)" % (f, f, j))
 
         # Creating hosts
         for f in range(1, fi + 1):
             for j in range(1, fi + 1):
                 for number in range(1, n + 1):
                     exec("h%sx%sx%s = self.addHost('h%sx%sx%s', **hostConfig)" % (f, j, number, f, j, number))
+                    exec("self.addLink(s%sx%s, h%sx%sx%s, **hostlinkConfig)" % (f, j, f, j, number))
 
         
 def main():
