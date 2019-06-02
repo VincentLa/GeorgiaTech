@@ -36,9 +36,9 @@ class Switch(StpSwitch):
         
         #TODO: Define a data structure to keep track of which links are part of / not part of the spanning tree.
         self.root = idNum
+        self.act_links = {n: True for n in neighbors}
         self.distance_to_root = 0
         self.switch_through = None
-        self.act_links = dict.fromkeys(neighbors, True) 
 
     def send_initial_messages(self):
         #TODO: This function needs to create and send the initial messages from this switch.
@@ -63,44 +63,43 @@ class Switch(StpSwitch):
             self.switch_through = message.origin
             self.distance_to_root = message.distance + 1
             for n in self.links:
-                if n == self.switch_through:
-                    self.send_message(
-                        Message(self.root, self.distance_to_root, self.switchID, n, pathThrough=True)
+                self.send_message(
+                    Message(claimedRoot=self.root,
+                            distanceToRoot=self.distance_to_root,
+                            originID=self.switchID,
+                            destinationID=n,
+                            pathThrough=(n==self.switch_through)
                     )
-                else:
-                    self.send_message(
-                        Message(self.root, self.distance_to_root, self.switchID, n, pathThrough=False)
-                    )
+                )
         elif message.root == self.root:
-            if message.distance + 1 < self.distance_to_root:
-                self.distance_to_root = message.distance + 1
-                self.switch_through = message.origin
-                self.act_links[message.origin]= True
-                for n in self.links:
-                    if n==self.switch_through:
-                        self.send_message(
-                            Message(self.root, self.distance_to_root, self.switchID, n, pathThrough=True)
-                        )
-                    else:
-                        self.send_message(
-                            Message(self.root, self.distance_to_root, self.switchID, n, pathThrough=False)
-                        )
-            elif message.distance + 1 == self.distance_to_root:
+            if message.distance + 1 == self.distance_to_root:
                 if message.origin < self.switch_through:
                     self.act_links[self.switch_through] = False
                     self.switch_through = message.origin
                 elif message.origin > self.switch_through:
                     self.act_links[message.origin] = False             
-                
                 for n in self.links:
-                    if n==self.switch_through:
-                        self.send_message(
-                            Message(self.root, self.distance_to_root, self.switchID, n, pathThrough=True)
+                    self.send_message(
+                        Message(claimedRoot=self.root,
+                                distanceToRoot=self.distance_to_root,
+                                originID=self.switchID,
+                                destinationID=n,
+                                pathThrough=(n==self.switch_through)
                         )
-                    else:
-                        self.send_message(
-                            Message(self.root, self.distance_to_root, self.switchID, n, pathThrough=False)
+                    )
+            elif message.distance + 1 < self.distance_to_root:
+                self.act_links[message.origin] = True
+                self.distance_to_root = message.distance + 1
+                self.switch_through = message.origin
+                for n in self.links:
+                    self.send_message(
+                        Message(claimedRoot=self.root,
+                                distanceToRoot=self.distance_to_root,
+                                originID=self.switchID,
+                                destinationID=n,
+                                pathThrough=(n==self.switch_through)
                         )
+                    )
             elif message.distance + 1 > self.distance_to_root:
                 self.act_links[message.origin] = message.pathThrough
         return
@@ -117,10 +116,9 @@ class Switch(StpSwitch):
         #      for switch 2 would have the following text:
         #      2 - 1, 2 - 3
         #      A full example of a valid output file is included (sample_output.txt) with the project skeleton.
-
-        logstring=""
+        logstring = ""
         for k, v in sorted(self.act_links.items()):
             if v:
-                logstring+="%d - %d, " %(self.switchID, k)        
-        logstring = logstring[:-2]
+                logstring = logstring + "%d - %d, " % (self.switchID, k)        
+        logstring = logstring[:-2]  # Hacky way to remove the last ", " characters
         return logstring
