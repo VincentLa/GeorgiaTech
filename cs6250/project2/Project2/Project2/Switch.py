@@ -118,7 +118,5 @@ class Switch(StpSwitch):
         #      A full example of a valid output file is included (sample_output.txt) with the project skeleton.
         logstring = ""
         for k, v in sorted(self.act_links.items()):
-            if v:
-                logstring = logstring + "%d - %d, " % (self.switchID, k)        
-        logstring = logstring[:-2]  # Hacky way to remove the last ", " characters
-        return logstring
+            if v: logstring = logstring + "%d - %d, " % (self.switchID, k)
+        return logstring[:-2]  # Hacky way to remove the last ", " characters
