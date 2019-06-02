@@ -35,10 +35,12 @@ class Switch(StpSwitch):
         super(Switch, self).__init__(idNum, topolink, neighbors)
         
         #TODO: Define a data structure to keep track of which links are part of / not part of the spanning tree.
-        self.root = idNum
-        self.act_links = {n: True for n in neighbors}
-        self.distance_to_root = 0
-        self.switch_through = None
+        self.data_structure = {
+            'root': idNum,
+            'act_links': {n: True for n in neighbors},
+            'distance_to_root': 0,
+            'switch_through': None
+        }
 
     def send_initial_messages(self):
         #TODO: This function needs to create and send the initial messages from this switch.
@@ -46,8 +48,8 @@ class Switch(StpSwitch):
 	    #      Use self.send_message(msg) to send this.  DO NOT use self.topology.send_message(msg)
         for n in self.links:
             self.send_message(
-                Message(claimedRoot=self.root,
-                        distanceToRoot=self.distance_to_root,
+                Message(claimedRoot=self.data_structure['root'],
+                        distanceToRoot=self.data_structure['distance_to_root'],
                         originID=self.switchID,
                         destinationID=n,
                         pathThrough=False)
@@ -57,51 +59,51 @@ class Switch(StpSwitch):
     def process_message(self, message):
         #TODO: This function needs to accept an incoming message and process it accordingly.
         #      This function is called every time the switch receives a new message.
-        if message.root < self.root:
-            self.act_links[message.origin] = True
-            self.root = message.root
-            self.switch_through = message.origin
-            self.distance_to_root = message.distance + 1
+        if message.root < self.data_structure['root']:
+            self.data_structure['act_links'][message.origin] = True
+            self.data_structure['root'] = message.root
+            self.data_structure['switch_through'] = message.origin
+            self.data_structure['distance_to_root'] = message.distance + 1
             for n in self.links:
                 self.send_message(
-                    Message(claimedRoot=self.root,
-                            distanceToRoot=self.distance_to_root,
+                    Message(claimedRoot=self.data_structure['root'],
+                            distanceToRoot=self.data_structure['distance_to_root'],
                             originID=self.switchID,
                             destinationID=n,
-                            pathThrough=(n==self.switch_through)
+                            pathThrough=(n==self.data_structure['switch_through'])
                     )
                 )
-        elif message.root == self.root:
-            if message.distance + 1 == self.distance_to_root:
-                if message.origin < self.switch_through:
-                    self.act_links[self.switch_through] = False
-                    self.switch_through = message.origin
-                elif message.origin > self.switch_through:
-                    self.act_links[message.origin] = False             
+        elif message.root == self.data_structure['root']:
+            if message.distance + 1 == self.data_structure['distance_to_root']:
+                if message.origin < self.data_structure['switch_through']:
+                    self.data_structure['act_links'][self.data_structure['switch_through']] = False
+                    self.data_structure['switch_through'] = message.origin
+                elif message.origin > self.data_structure['switch_through']:
+                    self.data_structure['act_links'][message.origin] = False             
                 for n in self.links:
                     self.send_message(
-                        Message(claimedRoot=self.root,
-                                distanceToRoot=self.distance_to_root,
+                        Message(claimedRoot=self.data_structure['root'],
+                                distanceToRoot=self.data_structure['distance_to_root'],
                                 originID=self.switchID,
                                 destinationID=n,
-                                pathThrough=(n==self.switch_through)
+                                pathThrough=(n==self.data_structure['switch_through'])
                         )
                     )
-            elif message.distance + 1 < self.distance_to_root:
-                self.act_links[message.origin] = True
-                self.distance_to_root = message.distance + 1
-                self.switch_through = message.origin
+            elif message.distance + 1 < self.data_structure['distance_to_root']:
+                self.data_structure['act_links'][message.origin] = True
+                self.data_structure['distance_to_root'] = message.distance + 1
+                self.data_structure['switch_through'] = message.origin
                 for n in self.links:
                     self.send_message(
-                        Message(claimedRoot=self.root,
-                                distanceToRoot=self.distance_to_root,
+                        Message(claimedRoot=self.data_structure['root'],
+                                distanceToRoot=self.data_structure['distance_to_root'],
                                 originID=self.switchID,
                                 destinationID=n,
-                                pathThrough=(n==self.switch_through)
+                                pathThrough=(n==self.data_structure['switch_through'])
                         )
                     )
-            elif message.distance + 1 > self.distance_to_root:
-                self.act_links[message.origin] = message.pathThrough
+            elif message.distance + 1 > self.data_structure['distance_to_root']:
+                self.data_structure['act_links'][message.origin] = message.pathThrough
         return
         
     def generate_logstring(self):
@@ -117,6 +119,6 @@ class Switch(StpSwitch):
         #      2 - 1, 2 - 3
         #      A full example of a valid output file is included (sample_output.txt) with the project skeleton.
         logstring = ""
-        for k, v in sorted(self.act_links.items()):
+        for k, v in sorted(self.data_structure['act_links'].items()):
             if v: logstring = logstring + "%d - %d, " % (self.switchID, k)
         return logstring[:-2]  # Hacky way to remove the last ", " characters
