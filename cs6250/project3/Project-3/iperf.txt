@@ -2,7 +2,7 @@
 Client connecting to 10.0.0.2, TCP port 5001
 TCP window size: 32.0 MByte (WARNING: requested 16.0 MByte)
 ------------------------------------------------------------
-[  3] local 10.0.0.1 port 39742 connected with 10.0.0.2 port 5001
+[  3] local 10.0.0.1 port 39769 connected with 10.0.0.2 port 5001
 [ ID] Interval       Transfer     Bandwidth
 [  3]  0.0- 1.0 sec  10.5 MBytes  88.1 Mbits/sec
 [  3]  1.0- 2.0 sec  0.00 Bytes  0.00 bits/sec
@@ -107,3 +107,87 @@ TCP window size: 32.0 MByte (WARNING: requested 16.0 MByte)
 [  3] 100.0-101.0 sec  0.00 Bytes  0.00 bits/sec
 [  3] 101.0-102.0 sec  0.00 Bytes  0.00 bits/sec
 [  3] 102.0-103.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 103.0-104.0 sec  3.50 MBytes  29.4 Mbits/sec
+[  3] 104.0-105.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 105.0-106.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 106.0-107.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 107.0-108.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 108.0-109.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 109.0-110.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 110.0-111.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 111.0-112.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 112.0-113.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 113.0-114.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 114.0-115.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 115.0-116.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 116.0-117.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 117.0-118.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 118.0-119.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 119.0-120.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 120.0-121.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 121.0-122.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 122.0-123.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 123.0-124.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 124.0-125.0 sec  3.50 MBytes  29.4 Mbits/sec
+[  3] 125.0-126.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 126.0-127.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 127.0-128.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 128.0-129.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 129.0-130.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 130.0-131.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 131.0-132.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 132.0-133.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 133.0-134.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 134.0-135.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 135.0-136.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 136.0-137.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 137.0-138.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 138.0-139.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 139.0-140.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 140.0-141.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 141.0-142.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 142.0-143.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 143.0-144.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 144.0-145.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 145.0-146.0 sec  3.50 MBytes  29.4 Mbits/sec
+[  3] 146.0-147.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 147.0-148.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 148.0-149.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 149.0-150.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 150.0-151.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 151.0-152.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 152.0-153.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 153.0-154.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 154.0-155.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 155.0-156.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 156.0-157.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 157.0-158.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 158.0-159.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 159.0-160.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 160.0-161.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 161.0-162.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 162.0-163.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 163.0-164.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 164.0-165.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 165.0-166.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 166.0-167.0 sec  3.50 MBytes  29.4 Mbits/sec
+[  3] 167.0-168.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 168.0-169.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 169.0-170.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 170.0-171.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 171.0-172.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 172.0-173.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 173.0-174.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 174.0-175.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 175.0-176.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 176.0-177.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 177.0-178.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 178.0-179.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 179.0-180.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 180.0-181.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 181.0-182.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 182.0-183.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 183.0-184.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 184.0-185.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 185.0-186.0 sec  0.00 Bytes  0.00 bits/sec
+[  3] 186.0-187.0 sec  0.00 Bytes  0.00 bits/sec
