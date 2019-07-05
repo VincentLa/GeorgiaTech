@@ -6,7 +6,37 @@ from pyretic.lib.std import *
 from pyretic.lib.query import packets
 from pyretic.core import packet
 
-from collections import namedtuple
+
+def define_rules(policy, rule):
+    """
+    Helper Function that takes in a policy, rule and returns the rule.
+    """
+    # If Rules say block everything:
+    if (policy['srcmac']=='-' and policy['dstmac']=='-' and policy['srcip']=='-' and policy['dstip']=='-' and policy['srcport']=='-' and policy['dstport']=='-' and policy['protocol']=='-'):
+        rule = match(ethtype=packet.IPV4, protocol=packet.TCP_PROTO)
+    else:  
+        #Check srcmac and dstmac
+        if ((policy['srcmac'] != '-') and (policy['dstmac'] != '-')):
+            rule = match(srcmac = EthAddr(policy['srcmac']), dstmac = EthAddr(policy['dstmac']))
+        elif (policy['srcmac'] != '-'):
+            rule = match(srcmac = EthAddr(policy['srcmac']))
+        elif (policy['dstmac'] != '-'):
+            rule = match(dstmac = EthAddr(policy['dstmac']))
+
+        #Check dstport & srcport
+        if (policy['srcport'] != '-'):
+            rule = rule & match(srcport = int(policy['srcport']))
+        if (policy['dstport'] != '-'):
+            rule = rule & match(dstport = int(policy['dstport']))
+        
+        #Check srcip and dstip
+        if ((policy['srcip'] != '-') and (policy['dstip'] != '-')):
+            rule = rule & match(srcip = IPAddr(policy['srcip']), dstip=IPAddr(policy['dstip']))
+        elif (policy['srcip'] != '-'):
+            rule = rule & match(dstip = IPAddr(policy['srcip']))
+        elif (policy['dstip'] != '-'):
+            rule = rule & match(dstip = IPAddr(policy['dstip']))
+    return rule
 
 
 def make_firewall_policy(config):
@@ -20,9 +50,6 @@ def make_firewall_policy(config):
     rules = []
 
     # Make Dictionary of Firewall Policy
-    Policy_Rule= namedtuple('Policy_Rule',
-                            ('srcmac', 'dstmac','srcip','dstip','srcport','dstport', 'protocol')
-                           )
     firewall_policy = {}
 
     for entry in config:
@@ -36,67 +63,32 @@ def make_firewall_policy(config):
         # in your completed assignments.  Do not hardcode your solution - you must use items
         # in the entry[] dictionary object to build your final ruleset for each line in the
         # policy file.
-        firewall_policy[entry['rulenum']] = Policy_Rule(
-            entry['macaddr_src'],
-            entry['macaddr_dst'],
-            entry['ipaddr_src'],
-            entry['ipaddr_dst'],
-            entry['port_src'],
-            entry['port_dst'],
-            entry['protocol']
-        )
+        firewall_policy[entry['rulenum']] = {
+            'srcmac': entry['macaddr_src'],
+            'dstmac': entry['macaddr_dst'],
+            'srcip': entry['ipaddr_src'],
+            'dstip': entry['ipaddr_dst'],
+            'srcport': entry['port_src'],
+            'dstport': entry['port_dst'],
+            'protocol': entry['protocol']
+        }
 
-    for policy_rule in firewall_policy.values():
-        if policy_rule.protocol=='T':
-            rule = match(ethtype=packet.IPV4, protocol= packet.TCP_PROTO)
-            rules.append(process_firewall_helper(policy_rule, rule))
+    for policy in firewall_policy.values():
+        if policy['protocol']=='T':
+            rules.append(define_rules(policy, match(ethtype=packet.IPV4, protocol= packet.TCP_PROTO)))
 
-        elif policy_rule.protocol=='U':
-            rule = match(ethtype=packet.IPV4,protocol= packet.UDP_PROTO)
-            rules.append(process_firewall_helper(policy_rule, rule))
+        elif policy['protocol']=='U':
+            rules.append(define_rules(policy, match(ethtype=packet.IPV4, protocol= packet.UDP_PROTO)))
 
-        elif policy_rule.protocol=='I':
-            rule = match(ethtype=packet.IPV4,protocol= packet.ICMP_PROTO)
-            rules.append(process_firewall_helper(policy_rule, rule))
+        elif policy['protocol']=='I':
+            rules.append(define_rules(policy, match(ethtype=packet.IPV4, protocol= packet.ICMP_PROTO)))
 
-        elif policy_rule.protocol=='B':
-            rule1 = match(ethtype=packet.IPV4,protocol= packet.TCP_PROTO) 
-            rule2 = match(ethtype=packet.IPV4, protocol= packet.UDP_PROTO)
-            rules.append(process_firewall_helper(policy_rule, rule1))
-            rules.append(process_firewall_helper(policy_rule, rule2))
+        elif policy['protocol']=='B':
+            rules.append(define_rules(policy, match(ethtype=packet.IPV4, protocol= packet.TCP_PROTO)))
+            rules.append(define_rules(policy, match(ethtype=packet.IPV4, protocol= packet.UDP_PROTO)))
     
     allowed = ~(union(rules))
 
     return allowed
-
-
-def process_firewall_helper(policy_rule, rule):
-    # If Rules say block everything:
-    if (policy_rule.srcmac == '-' and policy_rule.dstmac== '-' and policy_rule.srcip== '-' and policy_rule.dstip == '-' and policy_rule.srcport== '-' and policy_rule.dstport == '-' and policy_rule.protocol== '-'):
-        print "Rules say Block Everything"
-        rule = match(ethtype=packet.IPV4, protocol=packet.TCP_PROTO)
-    else:  
-        #Check srcmac and dstmac
-        if ((policy_rule.srcmac != '-') and (policy_rule.dstmac != '-')):
-            rule = match(srcmac = EthAddr(policy_rule.srcmac), dstmac = EthAddr(policy_rule.dstmac))
-        elif (policy_rule.srcmac != '-'):
-            rule = match(srcmac = EthAddr(policy_rule.srcmac))
-        elif (policy_rule.dstmac != '-'):
-            rule = match(dstmac = EthAddr(policy_rule.dstmac))
-
-        #Check dstport & srcport
-        if (policy_rule.srcport != '-'):
-            rule = rule & match(srcport = int(policy_rule.srcport))
-        if (policy_rule.dstport != '-'):
-            rule = rule & match(dstport = int(policy_rule.dstport))
-        
-        #Check srcip and dstip
-        if ((policy_rule.srcip != '-') and (policy_rule.dstip != '-')):
-            rule = rule & match(srcip = IPAddr(policy_rule.srcip), dstip=IPAddr(policy_rule.dstip))
-        elif (policy_rule.srcip != '-'):
-            rule = rule & match(dstip = IPAddr(policy_rule.srcip))
-        elif (policy_rule.dstip != '-'):
-            rule = rule & match(dstip = IPAddr(policy_rule.dstip))
-    return rule
 
 
