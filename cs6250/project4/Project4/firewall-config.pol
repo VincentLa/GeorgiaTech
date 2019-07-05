@@ -1,0 +1,38 @@
+# CS 6250 Summer 2019 - Firewall Policy
+# Rule number, srcmac, dstmac, srcip, dstip, srcport, dstport, protocol
+# Rule number is incremented each time - mostly for debug purposes
+# - for a rule element indicates that you don't need to match it.
+# Comments are on their own line
+
+# Rule 1. Write firewall policy rules to block PPTP that will prohibit all hosts
+# from accessing a PPTP server running on server2
+1, -, -, -, 10.0.0.6, -, 1723, T
+
+# Rule 2. Write firewall policy rules that will prohibit all hosts from connecting to a SSH server on
+# the east hosts (e1-e3). (TCP and UDP Port 22)
+2, -, -, -, 10.0.0.1, -, 22, B
+3, -, -, -, 10.0.0.2, -, 22, B
+4, -, -, -, 10.0.0.3, -, 22, B
+
+# Rule 3. WRite firewall policy rule(s) to protect the DNS and NTP Services
+# on server1 and sever2 from being accessed all hosts. 
+5, -, -, -, 10.0.0.5, -, 123, U
+6, -, -, -, 10.0.0.5, -, 53, U
+7, -, -, -, 10.0.0.6, -, 123, U
+8, -, -, -, 10.0.0.6, -, 53, U
+
+# Rule 4. Write a series of firewall policy rules disallowing hosts w1 and w2 from pinging mobile1. 
+9, -, -, 10.0.0.8, 10.0.0.4, -, -, I
+10, -, -, 10.0.0.9, 10.0.0.4, -, -, I
+
+# Rule 5. Write a series of firewall policies to disallow all traffic destined to TCP ports 9950-9952
+# on host e3 from host e1
+11, -, -, 10.0.0.1, 10.0.0.3, -, 9950, T
+12, -, -, 10.0.0.1, 10.0.0.3, -, 9951, T
+13, -, -, 10.0.0.1, 10.0.0.3, -, 9952, T
+
+# Rule 6. Write a series of firewall policies to restrict host mobile1 from communicating to any of the
+# east hosts (e1-e3) on both TCP and UDP policies 
+14, -, -, 10.0.0.4, 10.0.0.1, -, -, B
+15, -, -, 10.0.0.4, 10.0.0.2, -, -, B
+16, -, -, 10.0.0.4, 10.0.0.3, -, -, B

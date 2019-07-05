@@ -1,0 +1,15 @@
+# CS 6250 Summer 2019 - Bad Firewall Policy Example
+# Rule number, srcmac, dstmac, srcip, dstip, srcport, dstport, protocol
+# Refer to the instructions for the full syntax of the pol file.
+# Rule number is incremented each time - mostly for debug purposes
+# - for a rule element indicates that you don't need to match it.
+# Comments are on their own line
+
+# Bad Protocol Reference
+1, -, -, -, -, -, 80, 6
+# Incomplete MAC Address
+2, 00:00:00:00:00:00, 00:00:00:00:01, -, -, -, -, T
+# Improper IP Address
+3, -, -, h1, 2.3.4.5, -, -, U
+# Not enough entries
+4, -, -, -, -, -, -

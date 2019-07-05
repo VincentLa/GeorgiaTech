@@ -1,0 +1,9 @@
+# CS 6250 Summer 2019 - Good Firewall Policy Example
+# Rule number, srcmac, dstmac, srcip, dstip, srcport, dstport, protocol
+# Rule number is incremented each time - mostly for debug purposes
+# - for a rule element indicates that you don't need to match it.
+# Comments are on their own line
+
+# Disallows access to TCP destination port 1080 from all computers
+1, -, -, -, -, -, 1080, T
+
