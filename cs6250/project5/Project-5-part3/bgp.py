@@ -34,6 +34,7 @@ def log(s, col="green"):
 class Router(Switch):
     """Defines a new router that is inside a network namespace so that the
     individual routing entries don't collide.
+
     """
     ID = 0
     def __init__(self, name, **kwargs):
@@ -57,8 +58,11 @@ class Router(Switch):
 
 
 class SimpleTopo(Topo):
-    """The Autonomous System topology is a simple straight-line topology
-    between AS1 -- AS2 -- AS3.  The rogue AS (AS4) connects to AS1 directly.
+    """
+    Corresponds to Topology in Part 3
+
+    Replicate topology as stated in https://www2.cs.arizona.edu/~bzhang/paper/07-dsn-hijack.pdf
+    Figure 1
     """
     def __init__(self):
         # Add default members to class.
@@ -67,10 +71,10 @@ class SimpleTopo(Topo):
         num_ases = 5
         num_hosts = num_hosts_per_as * num_ases
         # The topology has one router per AS
-        routers = []
+	routers = []
         for i in xrange(num_ases):
             router = self.addSwitch('R%d' % (i+1))
-        routers.append(router)
+	    routers.append(router)
         hosts = []
         for i in xrange(num_ases):
             router = 'R%d' % (i+1)
@@ -80,6 +84,12 @@ class SimpleTopo(Topo):
                 hosts.append(host)
                 self.addLink(router, host)
 
+        # Commenting this out, this made since in the simple topology
+        # when it was just linear.
+        # for i in xrange(num_ases-1):
+        #     self.addLink('R%d' % (i+1), 'R%d' % (i+2))
+
+        # Following Figure 1 in the provided paper
         self.addLink('R1', 'R2')
         self.addLink('R1', 'R3')
         self.addLink('R2', 'R3')
@@ -101,6 +111,11 @@ class SimpleTopo(Topo):
 
 
 def getIP(hostname):
+    """
+    Following Hijack Scenario in Figure 2 of paper
+
+    AS-6 wrongly announces prefix that belonds to AS-1
+    """
     AS, idx = hostname.replace('h', '').split('-')
     AS = int(AS)
     if AS == 6:
@@ -112,7 +127,7 @@ def getIP(hostname):
 def getGateway(hostname):
     AS, idx = hostname.replace('h', '').split('-')
     AS = int(AS)
-    # This condition gives AS4 the same IP range as AS3 so it can be an
+    # This condition gives AS6 the same IP range as AS1 so it can be an
     # attacker.
     if AS == 6:
         AS = 1
